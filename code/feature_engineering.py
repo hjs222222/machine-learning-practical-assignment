@@ -225,8 +225,8 @@ def compare_scalers(df, feature_cols):
     zs = ZScoreScaler().fit(X_tr)
     for ax, (name, data) in zip(axes, [
             ("(a) 原始数据", X_all[:, idx]),
-            ("(b) Min-Max 归一化（训练集拟合）", mm.transform(X_all)[:, idx]),
-            ("(c) Z-score 标准化（训练集拟合）", zs.transform(X_all)[:, idx])]):
+            ("(b) Min-Max 归一化", mm.transform(X_all)[:, idx]),
+            ("(c) Z-score 标准化", zs.transform(X_all)[:, idx])]):
         bp = ax.boxplot([data[:, i] for i in range(len(show))], tick_labels=show,
                         patch_artist=True,
                         flierprops=dict(marker=".", markersize=2, alpha=.3))
@@ -235,7 +235,6 @@ def compare_scalers(df, feature_cols):
             patch.set_alpha(0.6)
         ax.set_title(name, fontsize=11)
         ax.tick_params(axis="x", rotation=30)
-    plt.suptitle("图2-1  归一化前后特征取值分布对比（scaler 仅训练集拟合）", fontsize=13, y=1.03)
     plt.tight_layout()
     save(fig, "fig7_归一化对比.png")
     return tab
@@ -297,8 +296,7 @@ def _plot_feature_scores(rep, top_k):
               for f in top["特征"]]
 
     axes[0].barh(top["特征"], top["互信息得分"], color=colors, alpha=0.9)
-    axes[0].set_title(f"(a) 互信息法特征重要性 Top{len(top)}（绿色=入选前{top_k}）",
-                      fontsize=11)
+    axes[0].set_title(f"(a) 互信息法特征重要性 Top{len(top)}", fontsize=11)
     axes[0].set_xlabel("互信息得分 (nats)")
     axes[0].tick_params(axis="y", labelsize=8)
 
@@ -310,7 +308,6 @@ def _plot_feature_scores(rep, top_k):
     axes[1].set_xlabel("|皮尔逊相关系数 r|")
     axes[1].tick_params(axis="y", labelsize=8)
 
-    plt.suptitle("图2-2  特征选择结果对比", fontsize=13, y=1.0)
     plt.tight_layout()
     save(fig, "fig8_特征选择.png")
 
@@ -347,7 +344,6 @@ def _plot_feature_groups(rep):
                 f"{row['互信息总得分']:.3f}\n({int(row['特征个数'])}个)",
                 ha="center", va="bottom", fontsize=9)
     ax.set_ylabel("互信息总得分 (nats)")
-    ax.set_title("图2-3  各类特征对径流的互信息贡献", fontsize=12)
     ax.tick_params(axis="x", rotation=20)
     plt.tight_layout()
     save(fig, "fig9_特征类别贡献.png")
@@ -395,7 +391,6 @@ def run(df):
         ax.set_ylabel("径流 (ft$^3$/s)", fontsize=9)
         r = np.corrcoef(d[col], d[C.TARGET])[0, 1]
         ax.set_title(f"{col}  (r={r:.3f})", fontsize=10)
-    plt.suptitle("图2-4  互信息最高的 6 个特征与径流的散点图", fontsize=13, y=1.0)
     plt.tight_layout()
     save(fig, "fig10_特征散点.png")
 

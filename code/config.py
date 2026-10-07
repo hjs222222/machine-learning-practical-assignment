@@ -17,7 +17,16 @@ import os
 # 路径
 # ----------------------------------------------------------------------------
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-DATA_PATH = os.path.join(BASE_DIR, "01047000.csv")
+
+# 数据文件可能位于多个候选位置（项目根 / 教师参考资料以及要求 / D盘副本），
+# 依次查找，找到第一个存在的即使用，保证 run_all.py 可一键复现。
+_CANDIDATES = [
+    os.path.join(BASE_DIR, "01047000.csv"),
+    os.path.join(BASE_DIR, "教师参考资料以及要求", "01047000.csv"),
+    os.path.join(BASE_DIR, "教师参考资料以及要求", "01047000", "01047000.csv"),
+    r"D:\cxdownload\01047000.csv",
+]
+DATA_PATH = next((p for p in _CANDIDATES if os.path.exists(p)), _CANDIDATES[0])
 OUTPUT_DIR = os.path.join(BASE_DIR, "output")
 FIG_DIR = os.path.join(OUTPUT_DIR, "figures")
 RESULT_DIR = os.path.join(OUTPUT_DIR, "results")
