@@ -224,8 +224,8 @@ def sec4(doc):
     para(doc, "（1）时间序列特征提取。共构造 81 个候选特征，构成如表 4-2。")
     table(doc, pd.DataFrame([
         ["季节编码", "season_春/夏/秋/冬", "4", "四季 one-hot 编码"],
-        ["月份/日序编码", "doy_sin, doy_cos, month_sin, month_cos", "4",
-         "三角周期编码，保证 12 月与 1 月的连续性"],
+        ["月份/日序编码", "doy_sin, doy_cos, month_sin, month_cos, month", "5",
+         "三角周期编码 + 月份整数列，保证 12 月与 1 月的连续性"],
         ["滞后特征", "Discharge/Prcp/Tmax/Tmin/Vp/Srad × lag(1,2,3,7,14,30)", "36",
          "引入历史信息，体现流域调蓄与汇流滞后"],
         ["窗口特征", "Discharge/Prcp × roll(3,7,14,30) × (mean,std,max)", "24",

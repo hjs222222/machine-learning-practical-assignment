@@ -94,7 +94,6 @@ def plot_hydrograph(dates, observed, predictions, title, fname, subdir=None):
                 color=PALETTE[i % len(PALETTE)], label=label)
     ax.set_xlabel("日期")
     ax.set_ylabel("径流 (ft$^3$/s)")
-    ax.set_title(title, fontsize=12)
     ax.legend(fontsize=9, ncol=2)
     fig.autofmt_xdate()
     return save(fig, fname, subdir)
@@ -125,7 +124,8 @@ def plot_scatter(y_true, preds, title, fname, subdir=None):
         ax.set_ylim(0, hi * 1.02)
     for ax in axes[len(preds):]:
         ax.axis("off")
-    plt.suptitle(title, fontsize=13, y=1.0)
+    if title:
+        plt.suptitle(title, fontsize=13, y=1.0)
     plt.tight_layout()
     return save(fig, fname, subdir)
 
@@ -143,7 +143,8 @@ def plot_metric_vs_horizon(df, metric, title, fname, subdir=None):
     ax.set_xlabel("预见期 (天)")
     ax.set_ylabel(metric)
     ax.set_xticks(range(1, 8))
-    ax.set_title(title, fontsize=12)
+    if title:
+        ax.set_title(title, fontsize=12)
     ax.legend(fontsize=9)
     plt.tight_layout()
     return save(fig, fname, subdir)
@@ -162,7 +163,8 @@ def plot_model_comparison(df, metric, title, fname, subdir=None, group_col="模�
         ax.text(rect.get_x() + rect.get_width() / 2, rect.get_height(),
                 f"{v:.3f}", ha="center", va="bottom", fontsize=9)
     ax.set_ylabel(metric)
-    ax.set_title(title, fontsize=12)
+    if title:
+        ax.set_title(title, fontsize=12)
     ax.tick_params(axis="x", rotation=20)
     lo, hi = min(0, vals.min()), max(vals) * 1.15
     ax.set_ylim(lo, hi)

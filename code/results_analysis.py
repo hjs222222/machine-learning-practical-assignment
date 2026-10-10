@@ -23,9 +23,11 @@ from evaluation import evaluate
 
 
 def load_all(prefix):
-    """读取某策略下所有模型的 7 个预见期预测。prefix: 'direct' / 'multi'"""
+    """读取某策略下所有个体模型的 7 个预见期预测。prefix: 'direct' / 'multi'
+    只加载个体模型（pred_ANN_/pred_RF_/pred_LSTM_），排除集成模型 pred_ens_*。"""
     files = [f for f in os.listdir(C.RESULT_DIR)
-             if f.startswith("pred_") and f.endswith(f"_{prefix}.npz")]
+             if f.startswith("pred_") and not f.startswith("pred_ens_")
+             and f.endswith(f"_{prefix}.npz")]
     out = {}
     for f in files:
         name = f[len("pred_"):-len(f"_{prefix}.npz")]
@@ -55,43 +57,49 @@ def main():
     base = load_all("direct")
     base_m = load_all("multi")
 
-    # 集成模型的预测由 experiment 阶段保存
+    # 集成模型的预测由 experiment 阶段保存；保留策略后缀，避免 direct/multi 互相覆盖
     ens = {}
     for f in os.listdir(C.RESULT_DIR):
         if f.startswith("pred_ens_") and f.endswith(".npz"):
-            key = f[len("pred_ens_"):-4]
+            key = f[len("pred_ens_"):-4]   # 形如 'Stacking_direct' / '简单平均_multi'
             zz = np.load(os.path.join(C.RESULT_DIR, f))
             ens[key] = {int(k[1:]): zz[k] for k in zz.files}
 
-    all_direct = {**base, **{k: v for k, v in ens.items() if k.endswith("_direct")}}
-    all_multi = {**base_m, **{k: v for k, v in ens.items() if k.endswith("_multi")}}
+    def merge_preds(base, ens_map):
+        """合并个体与集成预测，固定顺序：ANN, RF, LSTM, 简单平均, Stacking"""
+        m = dict(base)
+        for k, v in ens_map.items():
+            disp = k.replace("_direct", "").replace("_multi", "")
+            m[disp] = v
+        return {k: m[k] for k in ["ANN", "RF", "LSTM", "简单平均", "Stacking"] if k in m}
+
+    all_direct = merge_preds(base, {k: v for k, v in ens.items() if k.endswith("_direct")})
+    all_multi = merge_preds(base_m, {k: v for k, v in ens.items() if k.endswith("_multi")})
 
     # -----------------------------------------------------------------
-    # 图3-1 水文过程线
+    # 图3-1 水文过程线（图内不放图题，图题由报告正文提供）
     # -----------------------------------------------------------------
     for h in [1, 3, 7]:
         obs = observed[origins + h]
         preds = {k: v[h] for k, v in all_direct.items()}
         _hydro(dates, obs, preds,
-               f"图3-1  多步直接预测策略：预见期 {h} 天的径流过程线（2004 年测试期）",
                f"fig11_过程线_h{h}.png")
     # 多输出策略（h=7 最关键）
     for h in [1, 7]:
         obs = observed[origins + h]
         preds = {k: v[h] for k, v in all_multi.items()}
         _hydro(dates, obs, preds,
-               f"图3-2  多输出预测策略：预见期 {h} 天的径流过程线（2004 年测试期）",
                f"fig12_多输出过程线_h{h}.png")
 
     # -----------------------------------------------------------------
-    # 图3-3 散点图
+    # 图3-3 散点图（图内不放总标题，子图标注 NSE/RMSE 保留）
     # -----------------------------------------------------------------
     for h in [1, 3, 7]:
         obs = observed[origins + h]
         preds = {k: v[h] for k, v in all_direct.items()}
         from evaluation import plot_scatter
         plot_scatter(obs, preds,
-                     f"图3-3  多步直接预测 预见期{h}天 实测—预测散点图",
+                     None,
                      f"fig13_散点_h{h}.png")
 
     # -----------------------------------------------------------------
@@ -101,13 +109,13 @@ def main():
     d1 = detail[detail["策略"] == "多步直接预测"]
     d2 = detail[detail["策略"] == "多输出预测"]
     plot_metric_vs_horizon(d1, "NSE",
-                           "图3-4  多步直接预测：NSE 随预见期的变化",
+                           None,
                            "fig14_NSE随预见期变化_直接.png")
     plot_metric_vs_horizon(d2, "NSE",
-                           "图3-5  多输出预测：NSE 随预见期的变化",
+                           None,
                            "fig15_NSE随预见期变化_多输出.png")
     plot_metric_vs_horizon(d1, "RMSE",
-                           "图3-6  多步直接预测：RMSE 随预见期的变化",
+                           None,
                            "fig16_RMSE随预见期变化_直接.png")
 
     # -----------------------------------------------------------------
@@ -116,10 +124,10 @@ def main():
     for strat, tag in [("多步直接预测", "直接"), ("多输出预测", "多输出")]:
         sub = pooled[pooled["策略"] == strat].copy()
         plot_model_comparison(sub, "NSE",
-                              f"图3-7  各模型 {strat}（1~7 天汇总）NSE 对比",
+                              None,
                               f"fig17_NSE对比_{tag}.png")
         plot_model_comparison(sub, "RMSE",
-                              f"图3-8  各模型 {strat}（1~7 天汇总）RMSE 对比",
+                              None,
                               f"fig18_RMSE对比_{tag}.png")
 
     # -----------------------------------------------------------------
@@ -136,7 +144,7 @@ def main():
     return detail, pooled
 
 
-def _hydro(dates, obs, preds, title, fname):
+def _hydro(dates, obs, preds, fname):
     fig, ax = plt.subplots(figsize=(15, 5.2))
     ax.plot(dates, obs, color="black", lw=1.8, label="实测径流", zorder=10)
     for i, (k, v) in enumerate(preds.items()):
@@ -144,7 +152,6 @@ def _hydro(dates, obs, preds, title, fname):
                 color=PALETTE[i % len(PALETTE)], label=k)
     ax.set_xlabel("日期")
     ax.set_ylabel("径流 (ft$^3$/s)")
-    ax.set_title(title, fontsize=12)
     ax.legend(fontsize=9, ncol=3)
     fig.autofmt_xdate()
     plt.tight_layout()
@@ -182,7 +189,6 @@ def _flood_zoom(dates, observed, origins, preds, n_events=2, win=12):
         ax.legend(fontsize=8)
         for lb in ax.get_xticklabels():
             lb.set_rotation(30)
-    plt.suptitle("图3-9  典型洪水事件放大分析（多步直接预测，预见期 1 天）", fontsize=13)
     plt.tight_layout()
     return save(fig, "fig19_洪水事件放大.png")
 
@@ -218,7 +224,6 @@ def _error_analysis(observed, origins, preds):
     axes[1].set_ylabel("平均绝对误差 (ft$^3$/s)")
     axes[1].set_title("(b) 绝对误差随流量量级的变化", fontsize=11)
     axes[1].legend(fontsize=8)
-    plt.suptitle("图3-10  预测误差分析", fontsize=13, y=1.02)
     plt.tight_layout()
     return save(fig, "fig20_误差分析.png")
 

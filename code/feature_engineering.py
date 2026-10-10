@@ -179,64 +179,136 @@ class ZScoreScaler:
 SCALERS = {"MinMax": MinMaxScaler, "ZScore": ZScoreScaler}
 
 
+def _feat_category(name):
+    """特征类别：用于归一化对比按类别分组展示（含滞后/窗口特征）。"""
+    if name.startswith("season_"):
+        return "季节编码"
+    if name in ("doy_sin", "doy_cos", "month_sin", "month_cos", "month"):
+        return "月份/日序编码"
+    if "_lag" in name:
+        return "滞后特征"
+    if name in ("Tmean", "Trange", "Prcp_cum7", "Prcp_cum30",
+                "Tmean_roll7", "melt_index"):
+        return "派生气象特征"
+    if "_roll" in name:
+        return "窗口特征"
+    return "原始气象因子"
+
+
 def compare_scalers(df, feature_cols):
-    """对比两种归一化方法：输出各特征归一化前后的统计量。
+    """对比两种归一化方法：逐特征输出全部特征（含滞后/窗口）归一化前后统计量。
 
     防泄漏：scaler 仅在【训练集】上拟合统计量，再应用到全量数据。
-    对比表统计量基于训练集（与实际建模一致），可视化用全量变换后数据。
+    03 CSV 为逐特征统计（基于训练集，与实际建模一致）；
+    fig7 按特征类别分组展示原始/Min-Max/Z-score 三种取值分布，
+    明确覆盖滞后特征、窗口特征与派生气象特征。
     """
     # 仅训练集用于拟合 scaler
     tr_mask = df["Date"] <= pd.Timestamp(C.TRAIN_END)
     X_tr = df.loc[tr_mask, feature_cols].values
     X_all = df[feature_cols].values
 
+    mm = MinMaxScaler().fit(X_tr)          # 仅训练集拟合
+    zs = ZScoreScaler().fit(X_tr)
+    Xs_mm_tr = mm.transform(X_tr)
+    Xs_zs_tr = zs.transform(X_tr)
+
+    # ---- 03 CSV：逐特征归一化前后统计量（训练集口径） ----
     rows = []
-    for name, cls in SCALERS.items():
-        scaler = cls().fit(X_tr)          # 仅训练集拟合
-        Xs_tr = scaler.transform(X_tr)    # 训练集上的统计
+    for i, c in enumerate(feature_cols):
+        x0, x1, x2 = X_tr[:, i], Xs_mm_tr[:, i], Xs_zs_tr[:, i]
         rows.append({
-            "归一化方法": name,
-            "变换后最小值": round(float(Xs_tr.min()), 4),
-            "变换后最大值": round(float(Xs_tr.max()), 4),
-            "变换后均值": round(float(Xs_tr.mean()), 4),
-            "变换后标准差": round(float(Xs_tr.std()), 4),
-            "是否受量纲影响": "否" if name == "MinMax" else "否",
-            "是否受异常值影响": "是（min/max 由极值决定）" if name == "MinMax"
-                                else "较小（由均值方差决定）",
+            "特征": c,
+            "类别": _feat_category(c),
+            "原始最小值": round(float(x0.min()), 4),
+            "原始最大值": round(float(x0.max()), 4),
+            "原始均值": round(float(x0.mean()), 4),
+            "原始标准差": round(float(x0.std()), 4),
+            "MinMax最小值": round(float(x1.min()), 4),
+            "MinMax最大值": round(float(x1.max()), 4),
+            "MinMax均值": round(float(x1.mean()), 4),
+            "MinMax标准差": round(float(x1.std()), 4),
+            "ZScore最小值": round(float(x2.min()), 4),
+            "ZScore最大值": round(float(x2.max()), 4),
+            "ZScore均值": round(float(x2.mean()), 4),
+            "ZScore标准差": round(float(x2.std()), 4),
         })
-    # 原始（训练集）
-    rows.insert(0, {
-        "归一化方法": "原始数据",
-        "变换后最小值": round(float(X_tr.min()), 4),
-        "变换后最大值": round(float(X_tr.max()), 4),
-        "变换后均值": round(float(X_tr.mean()), 4),
-        "变换后标准差": round(float(X_tr.std()), 4),
-        "是否受量纲影响": "是", "是否受异常值影响": "是",
-    })
     tab = pd.DataFrame(rows)
     tab.to_csv(os.path.join(C.RESULT_DIR, "03_归一化方法对比.csv"),
                index=False, encoding="utf-8-sig")
 
-    # 可视化：用训练集拟合 scaler，变换全量数据展示分布
-    show = [c for c in ["Discharge", "Prcp", "Srad", "Vp", "Tmax"] if c in feature_cols][:5]
-    fig, axes = plt.subplots(1, 3, figsize=(15, 4))
-    idx = [feature_cols.index(c) for c in show]
-    mm = MinMaxScaler().fit(X_tr)
-    zs = ZScoreScaler().fit(X_tr)
+    # ---- 可视化：按特征类别分组，覆盖滞后/窗口/派生特征 ----
+    CATS = [
+        ("原始气象因子", [c for c in
+                         ["Discharge", "Prcp", "Srad", "Vp", "Tmax"]
+                         if c in feature_cols]),
+        ("滞后特征", [c for c in feature_cols if "_lag" in c]),
+        ("窗口特征", [c for c in feature_cols if "_roll" in c]),
+        ("派生气象特征", [c for c in feature_cols if c in
+                         ("Tmean", "Trange", "Prcp_cum7", "Prcp_cum30",
+                          "Tmean_roll7", "melt_index")]),
+    ]
+    # 每类取 5 个代表（滞后/窗口优先径流与降水，量纲差异最直观）
+    def pick(cols, prefs, n=5):
+        ord_ = sorted(cols,
+                      key=lambda c: (0 if any(p in c for p in prefs) else 1, c))
+        return ord_[:n]
+
+    sel_cols = []
+    cat_of = {}
+    for name, cols in CATS:
+        if name == "原始气象因子":
+            rep = cols[:5]
+        elif name == "滞后特征":
+            rep = pick(cols, ["Discharge", "Prcp"])
+        elif name == "窗口特征":
+            rep = pick(cols, ["Discharge"])
+        else:
+            rep = cols[:5]
+        for c in rep:
+            sel_cols.append(c)
+            cat_of[c] = name
+
+    idx = [feature_cols.index(c) for c in sel_cols]
+    cat_colors = {"原始气象因子": PALETTE[0], "滞后特征": PALETTE[2],
+                  "窗口特征": PALETTE[1], "派生气象特征": "#C05A2E"}
+    fig, axes = plt.subplots(1, 3, figsize=(17, 4.6))
     for ax, (name, data) in zip(axes, [
             ("(a) 原始数据", X_all[:, idx]),
             ("(b) Min-Max 归一化", mm.transform(X_all)[:, idx]),
             ("(c) Z-score 标准化", zs.transform(X_all)[:, idx])]):
-        bp = ax.boxplot([data[:, i] for i in range(len(show))], tick_labels=show,
+        bp = ax.boxplot([data[:, i] for i in range(len(sel_cols))],
                         patch_artist=True,
                         flierprops=dict(marker=".", markersize=2, alpha=.3))
-        for patch in bp["boxes"]:
-            patch.set_facecolor(PALETTE[0])
-            patch.set_alpha(0.6)
+        for j, patch in enumerate(bp["boxes"]):
+            patch.set_facecolor(cat_colors[cat_of[sel_cols[j]]])
+            patch.set_alpha(0.65)
+        # 类别分隔线与标注
+        seen, x_last = {}, -0.5
+        for j, c in enumerate(sel_cols):
+            cat = cat_of[c]
+            if cat not in seen:
+                if j > 0:
+                    ax.axvline(j - 0.5, color="gray", ls=":", lw=1.0)
+                seen[cat] = j
+        for cat, j0 in seen.items():
+            n0 = sum(1 for c in sel_cols if cat_of[c] == cat)
+            ax.text((j0 + j0 + n0 - 1) / 2, ax.get_ylim()[1] * 1.02 if False else 1.0,
+                    cat, ha="center", va="bottom", fontsize=9,
+                    transform=ax.get_xaxis_transform())
         ax.set_title(name, fontsize=11)
-        ax.tick_params(axis="x", rotation=30)
+        ax.set_xticks(range(len(sel_cols)))
+        ax.set_xticklabels(sel_cols, rotation=45, ha="right", fontsize=7.5)
     plt.tight_layout()
     save(fig, "fig7_归一化对比.png")
+
+    # ---- 07 CSV：全特征（含滞后/窗口）Z-score 归一化后的数据表 ----
+    Xs_all = zs.transform(X_all)
+    norm = df.copy()
+    for i, c in enumerate(feature_cols):
+        norm[c] = Xs_all[:, i]
+    norm.to_csv(os.path.join(C.RESULT_DIR, "07_归一化后特征数据.csv"),
+                index=False, encoding="utf-8-sig")
     return tab
 
 
@@ -317,15 +389,15 @@ def _plot_feature_groups(rep):
     def group(name):
         if name.startswith("season_"):
             return "季节编码"
-        if name in ("doy_sin", "doy_cos", "month_sin", "month_cos"):
+        if name in ("doy_sin", "doy_cos", "month_sin", "month_cos", "month"):
             return "月份/日序编码"
         if "_lag" in name:
             return "滞后特征"
-        if "_roll" in name:
-            return "窗口特征"
         if name in ("Tmean", "Trange", "Prcp_cum7", "Prcp_cum30",
                     "Tmean_roll7", "melt_index"):
             return "派生气象特征"
+        if "_roll" in name:
+            return "窗口特征"
         return "原始气象因子"
 
     rep = rep.copy()
@@ -363,9 +435,11 @@ def run(df):
     print("\n【1. 时间序列特征提取】")
     groups = {
         "季节/月份编码": [c for c in feature_cols if c.startswith("season_")
-                          or c in ("doy_sin", "doy_cos", "month_sin", "month_cos")],
+                          or c in ("doy_sin", "doy_cos", "month_sin", "month_cos",
+                                   "month")],
         "滞后特征": [c for c in feature_cols if "_lag" in c],
-        "窗口特征": [c for c in feature_cols if "_roll" in c],
+        "窗口特征": [c for c in feature_cols if "_roll" in c
+                     and c != "Tmean_roll7"],
         "派生气象特征": [c for c in feature_cols if c in
                          ("Tmean", "Trange", "Prcp_cum7", "Prcp_cum30",
                           "Tmean_roll7", "melt_index")],
