@@ -380,8 +380,8 @@ def run(d, feats, fast=False):
     # ---------------- 个体模型 ----------------
     print("\n【1. 个体模型训练（含 GridSearchCV 超参数寻优）】")
     for mname in BASE_MODELS:
-        if mname == "LSTM" and not M.tf_available():
-            print(f"    [跳过] {mname}：TensorFlow 不可用")
+        if mname == "LSTM" and not M.torch_available():
+            print(f"    [跳过] {mname}：PyTorch 不可用")
             continue
         for strat, strat_cn in STRATEGIES:
             print(f"\n  --- {M.MODEL_CN[mname]} × {strat_cn} ---")

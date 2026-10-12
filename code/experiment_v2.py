@@ -319,7 +319,7 @@ def run(d, feature_cols):
 
     print("\n【1. 个体模型训练（GridSearchCV + TimeSeriesSplit）】")
     for mname in BASE_MODELS:
-        if mname == "LSTM" and not M.tf_available():
+        if mname == "LSTM" and not M.torch_available():
             print(f"    [跳过] {mname}：TensorFlow 不可用")
             continue
         for strat, strat_cn in STRATEGIES:

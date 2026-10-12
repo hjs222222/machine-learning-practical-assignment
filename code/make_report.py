@@ -278,7 +278,7 @@ def sec2(doc):
          "皮尔逊相关系数法与互信息法特征选择；负责报告第一、二章撰写与全文统稿"],
         [C.REPORT_META["组员2"], "组员", "个体预测模型",
          "ANN（多层感知机）多步直接与多输出模型构建；随机森林多步直接与多输出模型构建；"
-         "LSTM 网络结构设计与 Keras 模型封装；Grid Search CV 超参数寻优；"
+         "LSTM 网络结构设计与 PyTorch 模型封装；Grid Search CV 超参数寻优；"
          "多步直接/多输出两种预测策略的数据集构造；负责报告第三章「过程设计」撰写"],
         [C.REPORT_META["组员3"], "组员", "集成学习与评价",
          "简单平均集成建模；Stacking 集成（含折外预测 OOF 生成与 Ridge 元学习器）；"
@@ -404,7 +404,7 @@ def sec3(doc):
         ["数据处理", "pandas、numpy", "数据读取、特征构造与变换"],
         ["机器学习", "scikit-learn", "MLPRegressor、RandomForestRegressor、Ridge、"
                                     "GridSearchCV、TimeSeriesSplit"],
-        ["深度学习", "TensorFlow 2.x / Keras", "LSTM 网络构建与训练"],
+        ["深度学习", "PyTorch", "LSTM 网络构建与训练（GPU 加速）"],
         ["可视化", "matplotlib", "全部统计图表绘制"],
         ["评价指标", "自实现 + scikit-learn", "NSE、PBIAS 等水文专用指标"],
     ], columns=["环节", "工具/库", "用途"])

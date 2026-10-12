@@ -5,20 +5,20 @@
 个体模型（3 种）：
   1. ANN     —— 人工神经网络（sklearn MLPRegressor，多层感知机）
   2. RF      —— 随机森林（sklearn RandomForestRegressor）
-  3. LSTM    —— 长短期记忆网络（Keras/TensorFlow）
+  3. LSTM    —— 长短期记忆网络（PyTorch，支持 GPU 训练）
 
 超参数搜索：GridSearchCV。由于是时间序列，交叉验证必须使用 TimeSeriesSplit
 （前向链式切分），普通 K 折会把未来信息泄漏到训练集。
 
-说明：Keras 模型没有 sklearn 官方封装，因此实现 LSTMModel 使其具备
+说明：PyTorch 模型没有 sklearn 官方封装，因此实现 LSTMModel 使其具备
 fit/predict/get_params/set_params 接口，可直接接入 sklearn 的 GridSearchCV，
 从而三种模型使用完全一致的超参数搜索流程。
 """
 
 import os
 os.environ.setdefault("TF_CPP_MIN_LOG_LEVEL", "3")
-# 注意：PYTHONHASHSEED 必须在 Python 解释器启动前设置才有效，
-# 在脚本内设置无效，因此不在此处设置；如需复现请用 PYTHONHASHSEED=0 python run_all.py
+
+import copy
 
 import numpy as np
 from sklearn.base import BaseEstimator, RegressorMixin
@@ -29,49 +29,57 @@ from sklearn.neural_network import MLPRegressor
 import config as C
 
 # ---------------------------------------------------------------------------
-# TensorFlow 延迟导入：未安装 TF 时其余模型仍可运行
+# PyTorch 延迟导入：未安装 torch 时其余模型仍可运行
 # ---------------------------------------------------------------------------
-tf = None
-keras = None
+torch = None
 
 
-def _ensure_tf():
-    global tf, keras
-    if tf is None:
-        import tensorflow as _tf
-        from tensorflow import keras as _keras
-        tf, keras = _tf, _keras
-        tf.keras.utils.set_random_seed(C.RANDOM_STATE)
-        try:
-            tf.config.threading.set_intra_op_parallelism_threads(0)
-            tf.config.threading.set_inter_op_parallelism_threads(0)
-        except Exception:
-            pass
-    return tf, keras
+def _ensure_torch():
+    global torch
+    if torch is None:
+        import torch as _torch
+        torch = _torch
+    return torch
 
 
-def tf_available():
+def torch_available():
+    """检查 PyTorch 是否可用（GPU 版为 torch.cuda.is_available()）。"""
     try:
-        _ensure_tf()
+        _ensure_torch()
         return True
     except Exception as e:      # noqa: BLE001
-        print(f"[warn] TensorFlow 不可用：{e}")
+        print(f"[warn] PyTorch 不可用：{e}")
         return False
 
 
+def _default_device():
+    """优先使用 GPU，否则回退 CPU。"""
+    _ensure_torch()
+    return torch.device("cuda" if torch.cuda.is_available() else "cpu")
+
+
 # ===========================================================================
-# 1. LSTM —— sklearn 风格封装
+# 1. LSTM —— sklearn 风格封装（PyTorch 实现，支持 GPU）
 # ===========================================================================
 class LSTMModel(BaseEstimator, RegressorMixin):
-    """Keras LSTM 回归器，接口兼容 sklearn，可直接用于 GridSearchCV。
+    """PyTorch LSTM 回归器，接口兼容 sklearn，可直接用于 GridSearchCV。
 
     输入 X 的形状为 (样本数, 时间步长, 特征数)。
     输出维度 output_dim：1 表示单步预测（多步直接策略）；7 表示多输出策略。
+
+    网络结构与原 Keras 版等价：
+      LSTM 层 × len(units)（非末层输出全序列，层间 Dropout）
+      → Dense(32, ReLU) → Dense(output_dim)
+    训练行为与原 Keras 版保持一致：
+      - 末端 10% 作为验证集（保持时间顺序，不打乱）
+      - EarlyStopping（monitor=val_loss, patience, restore_best_weights）
+      - Adam 优化器 + MSE 损失，batch 按顺序切分（shuffle=False）
     """
 
     def __init__(self, seq_len=C.SEQ_LEN, units=(64,), dropout=0.1, lr=5e-3,
                  epochs=60, batch_size=32, patience=6, output_dim=1,
-                 random_state=C.RANDOM_STATE, verbose=0):
+                 head_units=None, random_state=C.RANDOM_STATE, verbose=0,
+                 device=None):
         self.seq_len = seq_len
         self.units = units
         self.dropout = dropout
@@ -80,57 +88,137 @@ class LSTMModel(BaseEstimator, RegressorMixin):
         self.batch_size = batch_size
         self.patience = patience
         self.output_dim = output_dim
+        self.head_units = head_units
         self.random_state = random_state
         self.verbose = verbose
+        self.device = device
 
     # -- 构建网络 ----------------------------------------------------------
     def _build(self, n_features):
-        _, keras = _ensure_tf()
-        tf, _ = _ensure_tf()
-        tf.keras.utils.set_random_seed(self.random_state)
-
-        model = keras.Sequential()
-        model.add(keras.layers.Input(shape=(self.seq_len, n_features)))
+        torch = _ensure_torch()
+        nn = torch.nn
         units = tuple(self.units)
-        for i, u in enumerate(units):
-            return_seq = (i < len(units) - 1)
-            model.add(keras.layers.LSTM(u, return_sequences=return_seq))
-            model.add(keras.layers.Dropout(self.dropout))
-        model.add(keras.layers.Dense(32, activation="relu"))
-        model.add(keras.layers.Dense(self.output_dim))
-        model.compile(optimizer=keras.optimizers.Adam(self.lr), loss="mse")
-        return model
+        output_dim = self.output_dim
+        dropout = self.dropout
+        head_units = self.head_units
+
+        class _Net(nn.Module):
+            def __init__(self):
+                super().__init__()
+                self.lstms = nn.ModuleList()
+                for i, u in enumerate(units):
+                    in_size = n_features if i == 0 else units[i - 1]
+                    self.lstms.append(nn.LSTM(in_size, u, batch_first=True))
+                self.drop = nn.Dropout(dropout)
+                # 输出头中间层宽度：多输出(7)默认 64 以增强表达力，单输出保持 32
+                hw = head_units if head_units is not None else (64 if output_dim > 1 else 32)
+                self.head = nn.Sequential(
+                    nn.Linear(units[-1], hw),
+                    nn.ReLU(),
+                    nn.Linear(hw, output_dim),
+                )
+
+            def forward(self, x):
+                for lstm in self.lstms:
+                    x, _ = lstm(x)      # 每层输出全序列，等价 Keras return_sequences
+                    x = self.drop(x)
+                x = x[:, -1, :]         # 取最后时间步（等价末层 return_sequences=False）
+                return self.head(x)
+
+        return _Net()
+
+    def _run_training(self, net, opt, loss_fn, Xtr_t, ytr_t, Xva_t, yva_t,
+                      epochs, dev):
+        """训练循环：按顺序切 batch（不打乱）、末端验证集 EarlyStopping。"""
+        best_loss = float("inf")
+        best_state = None
+        wait = 0
+        history = {"loss": [], "val_loss": []}
+
+        for epoch in range(epochs):
+            net.train()
+            epoch_loss, nb = 0.0, 0
+            for i in range(0, len(Xtr_t), self.batch_size):
+                xb = Xtr_t[i:i + self.batch_size]
+                yb = ytr_t[i:i + self.batch_size]
+                opt.zero_grad()
+                out = net(xb)
+                loss = loss_fn(out, yb)
+                loss.backward()
+                opt.step()
+                epoch_loss += loss.item() * len(xb)
+                nb += len(xb)
+            history["loss"].append(epoch_loss / nb)
+
+            net.eval()
+            with torch.no_grad():
+                val_loss = loss_fn(net(Xva_t), yva_t).item()
+            history["val_loss"].append(val_loss)
+
+            if val_loss < best_loss - 1e-5:
+                best_loss = val_loss
+                best_state = copy.deepcopy(net.state_dict())
+                wait = 0
+            else:
+                wait += 1
+                if wait >= self.patience:
+                    if self.verbose:
+                        print(f"  [LSTM] early stop @ epoch {epoch + 1}")
+                    break
+
+        if best_state is not None:
+            net.load_state_dict(best_state)
+        net.eval()
+        return net, history
 
     def fit(self, X, y):
+        torch = _ensure_torch()
+        nn = torch.nn
         X = np.asarray(X, dtype=np.float32)
         y = np.asarray(y, dtype=np.float32)
         if y.ndim == 1:
             y = y.reshape(-1, 1)
 
-        # 标准 Keras fit 默认规范化层行为；这里确保 shape 一致
-        self.model_ = self._build(X.shape[2])
-        es = None
-        _, keras = _ensure_tf()
-        es = keras.callbacks.EarlyStopping(
-            monitor="val_loss", patience=self.patience,
-            restore_best_weights=True, min_delta=1e-5)
-        self.history_ = self.model_.fit(
-            X, y, epochs=self.epochs, batch_size=self.batch_size,
-            validation_split=0.1,            # Keras 取末端 10%，保持时间顺序
-            callbacks=[es], shuffle=False,   # 时间序列不打乱
-            verbose=self.verbose)
+        torch.manual_seed(self.random_state)
+        if torch.cuda.is_available():
+            torch.cuda.manual_seed_all(self.random_state)
+
+        # 末端 10% 验证（保持时间顺序，等价 Keras validation_split=0.1 + shuffle=False）
+        n = len(X)
+        n_val = max(1, int(round(n * 0.1)))
+        Xtr, Xva = X[:-n_val], X[-n_val:]
+        ytr, yva = y[:-n_val], y[-n_val:]
+
+        dev = torch.device(self.device) if self.device else _default_device()
+        self.device_ = dev
+        net = self._build(X.shape[2]).to(dev)
+        opt = torch.optim.Adam(net.parameters(), lr=self.lr)
+        loss_fn = nn.MSELoss()
+
+        Xtr_t = torch.from_numpy(Xtr).to(dev)
+        ytr_t = torch.from_numpy(ytr).to(dev)
+        Xva_t = torch.from_numpy(Xva).to(dev)
+        yva_t = torch.from_numpy(yva).to(dev)
+
+        self.model_, self.history_ = self._run_training(
+            net, opt, loss_fn, Xtr_t, ytr_t, Xva_t, yva_t, self.epochs, dev)
         return self
 
     def predict(self, X):
+        torch = _ensure_torch()
         X = np.asarray(X, dtype=np.float32)
-        p = self.model_.predict(X, verbose=0)
+        dev = getattr(self, "device_", _default_device())
+        net = self.model_.to(dev)
+        net.eval()
+        with torch.no_grad():
+            p = net(torch.from_numpy(X).to(dev)).cpu().numpy()
         if self.output_dim == 1:
             return p.ravel()
         return p
 
     @property
     def n_epochs_run(self):
-        return len(self.history_.history.get("loss", []))
+        return len(getattr(self, "history_", {}).get("loss", []))
 
 
 # ===========================================================================
@@ -270,10 +358,10 @@ def save_model(model, model_name, strategy, h):
     path = _model_path(model_name, strategy, h)
     os.makedirs(os.path.dirname(path), exist_ok=True)
     if model_name == "LSTM":
-        # Keras 模型权重单独保存
-        keras_path = path.replace(".joblib", ".keras.weights.h5")
-        model.model_.save_weights(keras_path)
-        joblib.dump({"_keras_weights_path": keras_path}, path)
+        # PyTorch 权重单独保存为 .pt
+        torch_path = path.replace(".joblib", ".pt")
+        torch.save(model.model_.state_dict(), torch_path)
+        joblib.dump({"_torch_weights_path": torch_path}, path)
     else:
         joblib.dump(model, path)
     return path
@@ -297,7 +385,7 @@ def warm_start_train(model_name, X, y, best_params, strategy, h,
 
     - ANN：设置 warm_start=True，在已有权重上继续梯度下降
     - RF：设置 warm_start=True，在已有树基础上增加新树
-    - LSTM：加载已保存的 Keras 权重，继续训练更多 epochs
+    - LSTM：加载已保存的 PyTorch 权重，继续训练更多 epochs
 
     返回训练后的模型；没有已保存模型时返回 None。
     """
@@ -325,26 +413,33 @@ def warm_start_train(model_name, X, y, best_params, strategy, h,
         return est
 
     elif model_name == "LSTM":
-        keras_path = _model_path(model_name, strategy, h).replace(
-            ".joblib", ".keras.weights.h5")
-        if not os.path.exists(keras_path):
+        torch_path = _model_path(model_name, strategy, h).replace(
+            ".joblib", ".pt")
+        if not os.path.exists(torch_path):
             return None
         seq_len_val = seq_len or C.SEQ_LEN
         est = make_lstm(output_dim=output_dim, seq_len=seq_len_val, **kw)
         X_sample = np.asarray(X[:1], dtype=np.float32)
-        est.model_ = est._build(X_sample.shape[2])
-        est.model_.load_weights(keras_path)
+        dev = torch.device(est.device) if est.device else _default_device()
+        est.device_ = dev
+        est.model_ = est._build(X_sample.shape[2]).to(dev)
+        est.model_.load_state_dict(
+            torch.load(torch_path, map_location=dev, weights_only=True))
+        # 继续训练 extra_iter 轮（末端 10% 验证 + EarlyStopping）
         y_arr = np.asarray(y, dtype=np.float32)
         if y_arr.ndim == 1:
             y_arr = y_arr.reshape(-1, 1)
-        _, keras = _ensure_tf()
-        es = keras.callbacks.EarlyStopping(
-            monitor="val_loss", patience=est.patience,
-            restore_best_weights=True, min_delta=1e-5)
-        est.model_.fit(
-            np.asarray(X, dtype=np.float32), y_arr,
-            epochs=extra_iter, batch_size=est.batch_size,
-            validation_split=0.1, callbacks=[es], shuffle=False, verbose=0)
+        n = len(X)
+        n_val = max(1, int(round(n * 0.1)))
+        opt = torch.optim.Adam(est.model_.parameters(), lr=est.lr)
+        loss_fn = torch.nn.MSELoss()
+        Xtr_t = torch.from_numpy(np.asarray(X[:-n_val], dtype=np.float32)).to(dev)
+        ytr_t = torch.from_numpy(y_arr[:-n_val]).to(dev)
+        Xva_t = torch.from_numpy(np.asarray(X[-n_val:], dtype=np.float32)).to(dev)
+        yva_t = torch.from_numpy(y_arr[-n_val:]).to(dev)
+        est.model_, est.history_ = est._run_training(
+            est.model_, opt, loss_fn, Xtr_t, ytr_t, Xva_t, yva_t,
+            extra_iter, dev)
         print(f"    [热启动] LSTM h={h}  从已保存权重继续训练 {extra_iter} epochs")
         return est
 

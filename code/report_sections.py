@@ -156,7 +156,7 @@ def sec4(doc):
     h(doc, "4.1 开发环境", 2)
     para(doc, "操作系统 Windows 11；编程语言 Python 3.12；主要算法库："
               "scikit-learn（机器学习与超参数搜索）、"
-              "TensorFlow 2.x / Keras（LSTM 深度学习）、"
+              "PyTorch（LSTM 深度学习，GPU 加速）、"
               "pandas 与 numpy（数据处理）、"
               "matplotlib（可视化）。全部代码组织为 8 个模块，"
               "可通过 run_all.py 一键复现全部结果。")
@@ -450,11 +450,11 @@ PROBLEMS = [
      "GridSearchCV 默认使用 KFold，会把数据随机分成 K 折。"
      "对时间序列而言，验证折中的样本在时间上可能早于训练折，"
      "相当于用未来的数据训练、再去预测过去，严重高估模型能力。"
-     "同时 Keras 的 fit 若保持默认 shuffle=True，也会打乱时间顺序。",
+     "同时深度学习的 fit 若保持默认 shuffle=True，也会打乱时间顺序。",
      "将 cv 参数显式指定为 TimeSeriesSplit(n_splits=3)，"
      "保证每一折的训练集在时间上严格早于验证集；"
-     "LSTM 的 Keras fit 设置 shuffle=False，并用末端 10% 作为验证集"
-     "（Keras 的 validation_split 取的是样本末端，时间顺序得到保持）。"),
+     "LSTM 的 fit 设置 shuffle=False，并用末端 10% 作为验证集"
+     "（验证集取的是样本末端，时间顺序得到保持）。"),
     ("Stacking 元学习器训练集泄漏",
      "最初直接用个体模型在训练集上的拟合值作为元特征训练 Ridge 元学习器。"
      "由于个体模型在训练集上存在过拟合，其拟合精度高于真实泛化精度，"
@@ -471,11 +471,10 @@ PROBLEMS = [
      "同时在归一化器内部加保护，当某列标准差（或极差）为 0 时置为 1，"
      "从根本上避免除零。"),
     ("LSTM 无法直接接入 GridSearchCV",
-     "Keras 的 Sequential 模型没有 sklearn 的 fit/predict/get_params/set_params "
-     "接口，无法直接传给 GridSearchCV；而旧版的 keras.wrappers.scikit_learn "
-     "在新版本 Keras 中已被移除。",
+     "PyTorch 的 nn.Module 模型没有 sklearn 的 fit/predict/get_params/set_params "
+     "接口，无法直接传给 GridSearchCV。",
      "自行实现 LSTMModel 类，继承 sklearn 的 BaseEstimator 与 RegressorMixin，"
-     "在内部构建 Keras 网络并实现 fit/predict，"
+     "在内部构建 PyTorch 网络并实现 fit/predict，"
      "让三种模型共用同一套 GridSearchCV 流程，保证寻优方式完全一致、结果可比。"),
     ("LSTM 输入维度不匹配",
      "LSTM 需要三维输入（样本数, 时间步长, 特征数），"
