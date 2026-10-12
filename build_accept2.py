@@ -17,7 +17,7 @@ from docx.enum.table import WD_TABLE_ALIGNMENT
 from docx.oxml import OxmlElement
 from docx.oxml.ns import qn
 
-BASE = r"C:\Users\1\Desktop\machine-learning-practical-assignment"
+BASE = r"D:\machine-learning-practical-assignment"
 FIG = os.path.join(BASE, "output", "figures")
 RES = os.path.join(BASE, "output", "results")
 OUT = os.path.join(BASE, "机器学习课程实践_第二次阶段验收汇报.docx")
@@ -258,9 +258,10 @@ def main():
         bp2["最优超参数"] = bp2["最优超参数"].str[:60]
         add_table(doc, bp2, "表3-3  各模型 Grid Search CV 最优超参数（摘要）", size=7,
                   widths=[Cm(4.0), Cm(2.2), Cm(1.4), Cm(7.6)])
-    para(doc, "ANN 的最优结构在 (64,)~(256,128) 之间，alpha 与学习率因预见期而异；"
-              "RF 的最优深度多为 10~15、叶节点最少 5 个样本；LSTM 最优为 64 或 64+32 单元、"
-              "dropout=0.2、学习率 0.001/0.0005、训练轮数 80~120 轮（含早停）。")
+    para(doc, "ANN 的最优结构为保守小结构（(64,)、(128,)、(64,32)），alpha 与学习率因预见期而异，"
+              "避免大结构在样本量偏少时发生网格漂移过拟合；"
+              "RF 的最优深度多为 10~15、叶节点最少 1~5 个样本；LSTM 最优为 64 或 64+32 单元、"
+              "dropout=0.2/0.3、学习率 0.001/0.0005、训练轮数 80~120 轮（含早停）。")
     page_break(doc)
 
     # ============ 五、集成学习 ============
@@ -333,21 +334,23 @@ def main():
                     "PBIAS(%)", "MAPE(%)", "NSE_log", "NSE等级"]].copy()
         p = p[p["预见期"] == "1-7(汇总)"]
         add_table(doc, p, "表3-5  各模型 1~7 天汇总精度指标", size=8)
-    para(doc, "随机森林与 Stacking 集成整体最优（多步直接 1~7 天汇总 NSE 约 0.18~0.19）；"
-              "1 天预见期 NSE 最高约 0.4~0.5（随机森林/Stacking）。所有模型在长预见期（h≥5）"
-              "精度下降，与「未来降水未知、信息衰减」的物理规律一致。对数尺度指标（NSE_log）明显更高，"
-              "说明模型对中低水过程拟合较好，主要误差来自少数特大洪水。")
+    para(doc, "随机森林与 Stacking 集成整体最优（多步直接 1~7 天汇总 NSE 约 0.20，多输出"
+              "策略简单平均/Stacking 约 0.20~0.21）；1 天预见期 NSE 最高约 0.5（随机森林 0.526、"
+              "Stacking 0.521、ANN 0.448）。所有模型在长预见期（h≥5）精度下降，"
+              "与「未来降水未知、信息衰减」的物理规律一致。对数尺度指标（NSE_log，h=1 达 0.775）"
+              "明显更高，说明模型对中低水过程拟合较好，主要误差来自少数特大洪水。")
     page_break(doc)
 
     # ============ 七、技术实现与总结 ============
     heading(doc, "七、技术实现与总结", 1)
-    para(doc, "代码工程共 11 个核心模块，通过 run_all.py 一键复现全部图表与数值结果：")
+    para(doc, "代码工程由数据、特征、模型、实验、可视化与报告生成等多个核心模块组成，"
+              "通过 run_all.py 一键复现全部图表与数值结果（V6 定稿实验）：")
     for b in ["数据加载与字段释义、可视化分析（data_analysis.py）；",
-              "特征构造、归一化与特征选择（feature_engineering.py）；",
+              "特征构造、归一化与特征选择（feature_engineering.py，88 候选特征）；",
               "模型实现与超参数搜索（models.py，GridSearchCV + TimeSeriesSplit）；",
-              "预测实验与集成融合（experiment.py / experiment_v2.py）；",
+              "预测实验与集成融合（experiment_v6.py，含 V2~V5 迭代版本）；",
               "精度评价与结果可视化（evaluation.py / results_analysis.py）；",
-              "实验报告自动生成（make_report.py）。"]:
+              "实验报告与验收汇报自动生成（make_report.py / build_accept2.py）。"]:
         para(doc, "· " + b, indent=False)
     para(doc, "防数据泄漏措施：归一化统计量、特征选择评分、Stacking 元特征均只在训练集上估计；"
               "滞后与窗口特征只向过去取数；交叉验证使用时间序列切分。所有预测结果保存为 CSV/NPZ，"

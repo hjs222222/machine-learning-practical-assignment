@@ -61,9 +61,9 @@ def main():
 
     # ---------------- 第三部分：径流预测 ----------------
     if not skip_model:
-        _banner("第三部分  径流多步预测")
-        from experiment import run as exp_run
-        exp_run(d, selected, fast=fast)
+        _banner("第三部分  径流多步预测（V6 定稿实验）")
+        from experiment_v6 import run as exp_run
+        exp_run(d, feature_cols, fast=fast)
     else:
         print("\n[跳过] 建模阶段")
 

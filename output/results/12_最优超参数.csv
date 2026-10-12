@@ -1,43 +1,43 @@
 ﻿模型,策略,预见期,最优超参数,训练样本数,寻优耗时(s)
-人工神经网络 (ANN/MLP),多步直接预测,1,"alpha=1e-05, hidden_layer_sizes=(256, 128),...",1371,304.7
-人工神经网络 (ANN/MLP),多步直接预测,2,"alpha=0.01, hidden_layer_sizes=(128,), lear...",1370,282.2
-人工神经网络 (ANN/MLP),多步直接预测,3,"alpha=0.01, hidden_layer_sizes=(128,), lear...",1369,368.4
-人工神经网络 (ANN/MLP),多步直接预测,4,"alpha=0.0001, hidden_layer_sizes=(128, 64),...",1368,286.5
-人工神经网络 (ANN/MLP),多步直接预测,5,"alpha=0.01, hidden_layer_sizes=(256, 128), ...",1367,342.5
-人工神经网络 (ANN/MLP),多步直接预测,6,"alpha=1e-05, hidden_layer_sizes=(256, 128),...",1366,394.9
-人工神经网络 (ANN/MLP),多步直接预测,7,"alpha=0.01, hidden_layer_sizes=(256, 128), ...",1365,425.1
-人工神经网络 (ANN/MLP),多输出预测,1,"alpha=0.01, hidden_layer_sizes=(128,), lear...",1365,387.5
-人工神经网络 (ANN/MLP),多输出预测,2,"alpha=0.01, hidden_layer_sizes=(128,), lear...",1365,387.5
-人工神经网络 (ANN/MLP),多输出预测,3,"alpha=0.01, hidden_layer_sizes=(128,), lear...",1365,387.5
-人工神经网络 (ANN/MLP),多输出预测,4,"alpha=0.01, hidden_layer_sizes=(128,), lear...",1365,387.5
-人工神经网络 (ANN/MLP),多输出预测,5,"alpha=0.01, hidden_layer_sizes=(128,), lear...",1365,387.5
-人工神经网络 (ANN/MLP),多输出预测,6,"alpha=0.01, hidden_layer_sizes=(128,), lear...",1365,387.5
-人工神经网络 (ANN/MLP),多输出预测,7,"alpha=0.01, hidden_layer_sizes=(128,), lear...",1365,387.5
-随机森林 (RF),多步直接预测,1,"max_depth=10, min_samples_leaf=5, n_estimat...",1371,66.4
-随机森林 (RF),多步直接预测,2,"max_depth=10, min_samples_leaf=5, n_estimat...",1370,66.1
-随机森林 (RF),多步直接预测,3,"max_depth=15, min_samples_leaf=5, n_estimat...",1369,65.3
-随机森林 (RF),多步直接预测,4,"max_depth=15, min_samples_leaf=5, n_estimat...",1368,65.4
-随机森林 (RF),多步直接预测,5,"max_depth=10, min_samples_leaf=5, n_estimat...",1367,66.2
-随机森林 (RF),多步直接预测,6,"max_depth=10, min_samples_leaf=5, n_estimat...",1366,65.0
-随机森林 (RF),多步直接预测,7,"max_depth=15, min_samples_leaf=5, n_estimat...",1365,65.8
-随机森林 (RF),多输出预测,1,"max_depth=15, min_samples_leaf=5, n_estimat...",1365,66.1
-随机森林 (RF),多输出预测,2,"max_depth=15, min_samples_leaf=5, n_estimat...",1365,66.1
-随机森林 (RF),多输出预测,3,"max_depth=15, min_samples_leaf=5, n_estimat...",1365,66.1
-随机森林 (RF),多输出预测,4,"max_depth=15, min_samples_leaf=5, n_estimat...",1365,66.1
-随机森林 (RF),多输出预测,5,"max_depth=15, min_samples_leaf=5, n_estimat...",1365,66.1
-随机森林 (RF),多输出预测,6,"max_depth=15, min_samples_leaf=5, n_estimat...",1365,66.1
-随机森林 (RF),多输出预测,7,"max_depth=15, min_samples_leaf=5, n_estimat...",1365,66.1
-长短期记忆网络 (LSTM),多步直接预测,1,"dropout=0.3, epochs=120, lr=0.001, seq_len=...",1371,397.6
-长短期记忆网络 (LSTM),多步直接预测,2,"dropout=0.1, epochs=120, lr=0.002, seq_len=...",1370,390.1
-长短期记忆网络 (LSTM),多步直接预测,3,"dropout=0.3, epochs=120, lr=0.002, seq_len=...",1369,372.0
-长短期记忆网络 (LSTM),多步直接预测,4,"dropout=0.1, epochs=120, lr=0.002, seq_len=...",1368,301.3
-长短期记忆网络 (LSTM),多步直接预测,5,"dropout=0.3, epochs=120, lr=0.002, seq_len=...",1367,327.2
-长短期记忆网络 (LSTM),多步直接预测,6,"dropout=0.1, epochs=120, lr=0.002, seq_len=...",1366,270.7
-长短期记忆网络 (LSTM),多步直接预测,7,"dropout=0.1, epochs=120, lr=0.001, seq_len=...",1365,425.5
-长短期记忆网络 (LSTM),多输出预测,1,"dropout=0.1, epochs=120, lr=0.002, seq_len=...",1365,402.8
-长短期记忆网络 (LSTM),多输出预测,2,"dropout=0.1, epochs=120, lr=0.002, seq_len=...",1365,402.8
-长短期记忆网络 (LSTM),多输出预测,3,"dropout=0.1, epochs=120, lr=0.002, seq_len=...",1365,402.8
-长短期记忆网络 (LSTM),多输出预测,4,"dropout=0.1, epochs=120, lr=0.002, seq_len=...",1365,402.8
-长短期记忆网络 (LSTM),多输出预测,5,"dropout=0.1, epochs=120, lr=0.002, seq_len=...",1365,402.8
-长短期记忆网络 (LSTM),多输出预测,6,"dropout=0.1, epochs=120, lr=0.002, seq_len=...",1365,402.8
-长短期记忆网络 (LSTM),多输出预测,7,"dropout=0.1, epochs=120, lr=0.002, seq_len=...",1365,402.8
+人工神经网络 (ANN/MLP),多步直接预测,1,"alpha=0.01, hidden_layer_sizes=(64, 32), le...",1401,316.4
+人工神经网络 (ANN/MLP),多步直接预测,2,"alpha=1e-05, hidden_layer_sizes=(128,), lea...",1400,384.5
+人工神经网络 (ANN/MLP),多步直接预测,3,"alpha=0.01, hidden_layer_sizes=(128,), lear...",1399,737.1
+人工神经网络 (ANN/MLP),多步直接预测,4,"alpha=0.01, hidden_layer_sizes=(128,), lear...",1398,275.1
+人工神经网络 (ANN/MLP),多步直接预测,5,"alpha=0.01, hidden_layer_sizes=(128,), lear...",1397,161.8
+人工神经网络 (ANN/MLP),多步直接预测,6,"alpha=0.01, hidden_layer_sizes=(64, 32), le...",1396,187.0
+人工神经网络 (ANN/MLP),多步直接预测,7,"alpha=0.01, hidden_layer_sizes=(64, 32), le...",1395,162.1
+人工神经网络 (ANN/MLP),多输出预测,1,"alpha=1e-05, hidden_layer_sizes=(128,), lea...",1395,187.9
+人工神经网络 (ANN/MLP),多输出预测,2,"alpha=1e-05, hidden_layer_sizes=(128,), lea...",1395,187.9
+人工神经网络 (ANN/MLP),多输出预测,3,"alpha=1e-05, hidden_layer_sizes=(128,), lea...",1395,187.9
+人工神经网络 (ANN/MLP),多输出预测,4,"alpha=1e-05, hidden_layer_sizes=(128,), lea...",1395,187.9
+人工神经网络 (ANN/MLP),多输出预测,5,"alpha=1e-05, hidden_layer_sizes=(128,), lea...",1395,187.9
+人工神经网络 (ANN/MLP),多输出预测,6,"alpha=1e-05, hidden_layer_sizes=(128,), lea...",1395,187.9
+人工神经网络 (ANN/MLP),多输出预测,7,"alpha=1e-05, hidden_layer_sizes=(128,), lea...",1395,187.9
+长短期记忆网络 (LSTM),多步直接预测,1,"dropout=0.3, epochs=80, lr=0.001, seq_len=3...",1401,52.1
+长短期记忆网络 (LSTM),多步直接预测,2,"dropout=0.2, epochs=80, lr=0.001, seq_len=3...",1400,44.5
+长短期记忆网络 (LSTM),多步直接预测,3,"dropout=0.3, epochs=80, lr=0.001, seq_len=3...",1399,41.0
+长短期记忆网络 (LSTM),多步直接预测,4,"dropout=0.3, epochs=80, lr=0.001, seq_len=3...",1398,41.0
+长短期记忆网络 (LSTM),多步直接预测,5,"dropout=0.3, epochs=80, lr=0.001, seq_len=3...",1397,47.1
+长短期记忆网络 (LSTM),多步直接预测,6,"dropout=0.3, epochs=80, lr=0.001, seq_len=3...",1396,38.5
+长短期记忆网络 (LSTM),多步直接预测,7,"dropout=0.3, epochs=80, lr=0.001, seq_len=3...",1395,37.2
+长短期记忆网络 (LSTM),多输出预测,1,"dropout=0.3, epochs=80, lr=0.001, seq_len=3...",1395,39.1
+长短期记忆网络 (LSTM),多输出预测,2,"dropout=0.3, epochs=80, lr=0.001, seq_len=3...",1395,39.1
+长短期记忆网络 (LSTM),多输出预测,3,"dropout=0.3, epochs=80, lr=0.001, seq_len=3...",1395,39.1
+长短期记忆网络 (LSTM),多输出预测,4,"dropout=0.3, epochs=80, lr=0.001, seq_len=3...",1395,39.1
+长短期记忆网络 (LSTM),多输出预测,5,"dropout=0.3, epochs=80, lr=0.001, seq_len=3...",1395,39.1
+长短期记忆网络 (LSTM),多输出预测,6,"dropout=0.3, epochs=80, lr=0.001, seq_len=3...",1395,39.1
+长短期记忆网络 (LSTM),多输出预测,7,"dropout=0.3, epochs=80, lr=0.001, seq_len=3...",1395,39.1
+随机森林 (RF),多步直接预测,1,"max_depth=15, min_samples_leaf=5, n_estimat...",1401,28.4
+随机森林 (RF),多步直接预测,2,"max_depth=10, min_samples_leaf=5, n_estimat...",1400,27.7
+随机森林 (RF),多步直接预测,3,"max_depth=10, min_samples_leaf=5, n_estimat...",1399,27.8
+随机森林 (RF),多步直接预测,4,"max_depth=10, min_samples_leaf=5, n_estimat...",1398,28.3
+随机森林 (RF),多步直接预测,5,"max_depth=None, min_samples_leaf=5, n_estim...",1397,28.3
+随机森林 (RF),多步直接预测,6,"max_depth=None, min_samples_leaf=5, n_estim...",1396,27.0
+随机森林 (RF),多步直接预测,7,"max_depth=None, min_samples_leaf=5, n_estim...",1395,25.4
+随机森林 (RF),多输出预测,1,"max_depth=10, min_samples_leaf=5, n_estimat...",1395,24.3
+随机森林 (RF),多输出预测,2,"max_depth=10, min_samples_leaf=5, n_estimat...",1395,24.3
+随机森林 (RF),多输出预测,3,"max_depth=10, min_samples_leaf=5, n_estimat...",1395,24.3
+随机森林 (RF),多输出预测,4,"max_depth=10, min_samples_leaf=5, n_estimat...",1395,24.3
+随机森林 (RF),多输出预测,5,"max_depth=10, min_samples_leaf=5, n_estimat...",1395,24.3
+随机森林 (RF),多输出预测,6,"max_depth=10, min_samples_leaf=5, n_estimat...",1395,24.3
+随机森林 (RF),多输出预测,7,"max_depth=10, min_samples_leaf=5, n_estimat...",1395,24.3

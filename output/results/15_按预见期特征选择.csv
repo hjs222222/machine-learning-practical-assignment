@@ -2,7 +2,7 @@
 1,50,Discharge_roll3_mean; Discharge_roll3_max; Discharge_lag1; Discharge_roll7_mean; Discharge_lag2
 2,50,Discharge_roll3_mean; Discharge_lag1; Discharge_roll3_max; Discharge_roll7_mean; Discharge_lag2
 3,50,Discharge_roll3_mean; Discharge_lag1; Discharge_roll3_max; Discharge_roll7_mean; Discharge_roll14_mean
-4,50,Discharge_roll3_mean; Discharge_lag1; Discharge_roll3_max; Discharge_roll14_mean; Discharge_roll7_mean
-5,50,Discharge_roll3_mean; Discharge_roll14_mean; Prcp_roll30_max; Discharge_lag1; Discharge_roll7_mean
-6,50,Prcp_roll30_max; Discharge_roll14_mean; Discharge_roll7_mean; Discharge_roll14_max; Discharge_roll3_mean
-7,50,Prcp_roll30_max; Discharge_roll14_mean; Discharge_roll7_mean; Discharge_roll30_mean; Discharge_roll14_max
+4,50,Discharge_roll3_mean; Discharge_roll3_max; Discharge_lag1; Discharge_roll14_mean; Discharge_roll7_mean
+5,50,Discharge_roll3_mean; Discharge_roll14_mean; Discharge_lag1; Prcp_roll30_max; Discharge_roll7_mean
+6,50,Prcp_roll30_max; Discharge_roll14_mean; Discharge_roll7_mean; Discharge_roll3_mean; Discharge_roll14_max
+7,50,Prcp_roll30_max; Discharge_roll14_mean; Discharge_roll7_mean; Discharge_roll14_max; Discharge_roll30_mean

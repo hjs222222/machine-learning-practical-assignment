@@ -92,6 +92,19 @@ def add_derived_features(df):
     d["Tmean_roll7"] = d["Tmean"].rolling(7, min_periods=7).mean()
     # 融雪指数：日均温高于 0 degC 的积温（近似融雪驱动）
     d["melt_index"] = d["Tmean"].clip(lower=0).rolling(7, min_periods=7).sum()
+    # ---- 洪水物理信号特征（后续训练增强，全部只用历史信息）----
+    # 径流一阶差分：涨水/退水趋势（洪峰上升段的直接指示）
+    d["Discharge_diff1"] = d["Discharge"] - d["Discharge"].shift(1)
+    d["Discharge_diff3"] = d["Discharge"] - d["Discharge"].shift(3)
+    d["Discharge_diff7"] = d["Discharge"] - d["Discharge"].shift(7)
+    # 降水累积补全 3/14 天窗口（暴雨产流：短时强降水的直接累积量）
+    d["Prcp_roll3_sum"] = d["Prcp"].rolling(3, min_periods=3).sum()
+    d["Prcp_roll14_sum"] = d["Prcp"].rolling(14, min_periods=14).sum()
+    # 强降水天数计数：过去 3 天降水量 >10mm 的天数（0~3，暴雨频率）
+    d["Prcp_heavy3"] = (d["Prcp"] > 10.0).astype(float).rolling(
+        3, min_periods=3).sum()
+    # 降水突增：当日较前一日降水增量（暴雨启动信号）
+    d["Prcp_diff1"] = d["Prcp"] - d["Prcp"].shift(1)
     return d
 
 
@@ -188,7 +201,10 @@ def _feat_category(name):
     if "_lag" in name:
         return "滞后特征"
     if name in ("Tmean", "Trange", "Prcp_cum7", "Prcp_cum30",
-                "Tmean_roll7", "melt_index"):
+                "Tmean_roll7", "melt_index",
+                "Discharge_diff1", "Discharge_diff3", "Discharge_diff7",
+                "Prcp_roll3_sum", "Prcp_roll14_sum", "Prcp_heavy3",
+                "Prcp_diff1"):
         return "派生气象特征"
     if "_roll" in name:
         return "窗口特征"
@@ -246,7 +262,10 @@ def compare_scalers(df, feature_cols):
         ("窗口特征", [c for c in feature_cols if "_roll" in c]),
         ("派生气象特征", [c for c in feature_cols if c in
                          ("Tmean", "Trange", "Prcp_cum7", "Prcp_cum30",
-                          "Tmean_roll7", "melt_index")]),
+                          "Tmean_roll7", "melt_index",
+                          "Discharge_diff1", "Discharge_diff3", "Discharge_diff7",
+                          "Prcp_roll3_sum", "Prcp_roll14_sum", "Prcp_heavy3",
+                          "Prcp_diff1")]),
     ]
     # 每类取 5 个代表（滞后/窗口优先径流与降水，量纲差异最直观）
     def pick(cols, prefs, n=5):
@@ -394,7 +413,10 @@ def _plot_feature_groups(rep):
         if "_lag" in name:
             return "滞后特征"
         if name in ("Tmean", "Trange", "Prcp_cum7", "Prcp_cum30",
-                    "Tmean_roll7", "melt_index"):
+                    "Tmean_roll7", "melt_index",
+                    "Discharge_diff1", "Discharge_diff3", "Discharge_diff7",
+                    "Prcp_roll3_sum", "Prcp_roll14_sum", "Prcp_heavy3",
+                    "Prcp_diff1"):
             return "派生气象特征"
         if "_roll" in name:
             return "窗口特征"
@@ -439,10 +461,14 @@ def run(df):
                                    "month")],
         "滞后特征": [c for c in feature_cols if "_lag" in c],
         "窗口特征": [c for c in feature_cols if "_roll" in c
-                     and c != "Tmean_roll7"],
+                     and c != "Tmean_roll7"
+                     and c not in ("Prcp_roll3_sum", "Prcp_roll14_sum")],
         "派生气象特征": [c for c in feature_cols if c in
                          ("Tmean", "Trange", "Prcp_cum7", "Prcp_cum30",
-                          "Tmean_roll7", "melt_index")],
+                          "Tmean_roll7", "melt_index",
+                          "Discharge_diff1", "Discharge_diff3", "Discharge_diff7",
+                          "Prcp_roll3_sum", "Prcp_roll14_sum", "Prcp_heavy3",
+                          "Prcp_diff1")],
         "原始气象因子": [c for c in feature_cols if c in C.USABLE_RAW_FEATURES],
     }
     for k, v in groups.items():
