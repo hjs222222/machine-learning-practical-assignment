@@ -21,7 +21,6 @@
 │   ├── figures/                  # 全部统计图表（PNG）
 │   ├── results/                  # 全部结果表（CSV）与预测文件（NPZ）
 │   └── run_full.log              # 完整运行日志
-├── 实验报告-机器学习课程实践-径流预测.docx   # 生成的可提交实验报告
 └── README.md
 ```
 
