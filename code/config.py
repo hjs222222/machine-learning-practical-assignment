@@ -22,6 +22,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # 依次查找，找到第一个存在的即使用，保证 run_all.py 可一键复现。
 _CANDIDATES = [
     os.path.join(BASE_DIR, "01047000.csv"),
+    os.path.join(BASE_DIR, "Teacher Resources & Requirements", "01047000.csv"),
     os.path.join(BASE_DIR, "教师参考资料以及要求", "01047000.csv"),
     os.path.join(BASE_DIR, "教师参考资料以及要求", "01047000", "01047000.csv"),
     r"D:\cxdownload\01047000.csv",

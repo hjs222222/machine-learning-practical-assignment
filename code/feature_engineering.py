@@ -3,7 +3,7 @@
 第二部分：特征工程
 ==================
 1. 时间序列特征提取
-   (1) 季节编码（四季 one-hot）、月份编码（月份 sin/cos + 年内日序 sin/cos）
+   (1) 季节编码（四季 one-hot）与月份编码
    (2) 滞后特征（lag）：径流与气象因子的 1/2/3/7/14/30 天滞后
    (3) 窗口特征（rolling）：径流与降水的 3/7/14/30 天滑动均值、标准差、最大值
 2. 特征归一化：实现最小-最大归一化(Min-Max)与 Z-score 标准化，并对比
@@ -33,20 +33,9 @@ SEASONS = ["春", "夏", "秋", "冬"]
 # 1. 时间序列特征提取
 # ===========================================================================
 def add_time_features(df):
-    """(1) 季节编码 + 月份编码。
-
-    周期性变量用 sin/cos 三角编码，可以避免"12 月与 1 月相距最远"的假象；
-    同时保留四季 one-hot 便于解释。
-    """
+    """(1) 季节编码与月份编码。"""
     d = df.copy()
-    doy = d["Date"].dt.dayofyear
     month = d["Date"].dt.month
-
-    # 周期三角编码：年内日序（周期 365.25）、月份（周期 12）
-    d["doy_sin"] = np.sin(2 * np.pi * doy / 365.25)
-    d["doy_cos"] = np.cos(2 * np.pi * doy / 365.25)
-    d["month_sin"] = np.sin(2 * np.pi * month / 12.0)
-    d["month_cos"] = np.cos(2 * np.pi * month / 12.0)
 
     # 四季 one-hot
     season = month.map(SEASON_MAP)
@@ -196,8 +185,8 @@ def _feat_category(name):
     """特征类别：用于归一化对比按类别分组展示（含滞后/窗口特征）。"""
     if name.startswith("season_"):
         return "季节编码"
-    if name in ("doy_sin", "doy_cos", "month_sin", "month_cos", "month"):
-        return "月份/日序编码"
+    if name == "month":
+        return "月份编码"
     if "_lag" in name:
         return "滞后特征"
     if name in ("Tmean", "Trange", "Prcp_cum7", "Prcp_cum30",
@@ -408,8 +397,8 @@ def _plot_feature_groups(rep):
     def group(name):
         if name.startswith("season_"):
             return "季节编码"
-        if name in ("doy_sin", "doy_cos", "month_sin", "month_cos", "month"):
-            return "月份/日序编码"
+        if name == "month":
+            return "月份编码"
         if "_lag" in name:
             return "滞后特征"
         if name in ("Tmean", "Trange", "Prcp_cum7", "Prcp_cum30",
@@ -456,9 +445,8 @@ def run(df):
 
     print("\n【1. 时间序列特征提取】")
     groups = {
-        "季节/月份编码": [c for c in feature_cols if c.startswith("season_")
-                          or c in ("doy_sin", "doy_cos", "month_sin", "month_cos",
-                                   "month")],
+        "季节/月编码": [c for c in feature_cols if c.startswith("season_")
+                        or c == "month"],
         "滞后特征": [c for c in feature_cols if "_lag" in c],
         "窗口特征": [c for c in feature_cols if "_roll" in c
                      and c != "Tmean_roll7"

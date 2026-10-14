@@ -222,15 +222,14 @@ def sec4(doc):
 
     # ---------------- 4.3 特征工程 ----------------
     h(doc, "4.3 特征工程结果", 2)
-    para(doc, "（1）时间序列特征提取。共构造 88 个候选特征，构成如表 4-2。"
+    para(doc, "（1）时间序列特征提取。共构造 84 个候选特征，构成如表 4-2。"
               "在常规特征之外，针对本流域「陡涨陡落」的洪水特性，"
               "补充了 7 个洪水信号特征：径流差分（Discharge_diff1/3/7，刻画涨水趋势）、"
               "降水累积（Prcp_roll3_sum、Prcp_roll14_sum）、强降水计数（Prcp_heavy3）"
               "与降水突增（Prcp_diff1）。")
     table(doc, pd.DataFrame([
         ["季节编码", "season_春/夏/秋/冬", "4", "四季 one-hot 编码"],
-        ["月份/日序编码", "doy_sin, doy_cos, month_sin, month_cos, month", "5",
-         "三角周期编码 + 月份整数列，保证 12 月与 1 月的连续性"],
+        ["月份编码", "month", "1", "提取月份信息"],
         ["滞后特征", "Discharge/Prcp/Tmax/Tmin/Vp/Srad × lag(1,2,3,7,14,30)", "36",
          "引入历史信息，体现流域调蓄与汇流滞后"],
         ["窗口特征", "Discharge/Prcp × roll(3,7,14,30) × (mean,std,max)", "24",
