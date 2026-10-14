@@ -21,6 +21,17 @@
 │   ├── figures/                  # 全部统计图表（PNG）
 │   ├── results/                  # 全部结果表（CSV）与预测文件（NPZ）
 │   └── run_full.log              # 完整运行日志
+├── Teacher Resources & Requirements/ # 教师提供的阶段验收说明、模板与资料
+├── 验收/
+│   ├── acceptance x/              # 第 x 次验收可直接交付的最终材料
+│   │   ├── 第x次阶段验收报告.md    # 也可以是 .html 或 .docx
+│   │   ├── figures/               # 报告引用的最终图片
+│   │   ├── data/                  # 报告引用的最终 CSV 等数据
+│   │   └── artifacts/             # 其他最终交付附件
+│   ├── report code/
+│   │   └── reportx/               # 生成第 x 次报告的代码与非交付性中间文件
+│   └── acceptance.md              # 阶段验收归档规范
+├── AGENT.MD                       # AI 编写与检查阶段验收报告的协作规范
 └── README.md
 ```
 
@@ -50,6 +61,32 @@ python run_all.py              # 完整运行（含全部 GridSearchCV，约 1.5
 python run_all.py --fast       # 小规模快速验证（缩小网格与训练轮数，约 10 分钟）
 python run_all.py --skip-model # 跳过建模，仅基于已有结果重绘图表与报告
 ```
+
+## 阶段验收交付
+
+每次阶段验收必须严格依据 `Teacher Resources & Requirements/` 中的《第 x 次阶段验收说明》完成；详细协作规则见 [AGENT.MD](AGENT.MD) 和 [验收/acceptance.md](验收/acceptance.md)。
+
+交付第 `x` 次验收时：
+
+1. 在 `验收/acceptance x/` 中存放最终验收报告及其直接引用的图片、CSV 和其他附件；
+2. 报告可使用 `.md`、`.html` 或 `.docx`，格式以教师要求为准；
+3. 报告中的每个图片、CSV、代码或其他验收附件必须使用可直接打开的相对链接；
+4. `acceptance x/` 只保留可直接提交的最终材料，不放源代码、草稿、缓存、临时文件或运行日志；
+5. 生成报告的代码放在 `验收/report code/reportx/`。代码产生的最终图表、CSV 和报告必须输出或复制到对应的 `acceptance x/`，不能只留在代码目录。
+
+提交前应确认：报告逐项回应了阶段验收说明、所有链接目标真实存在且可打开、结论能追溯到实际实验结果。
+
+## 读取教师资料
+
+编写或修改验收报告前，先读取 `Teacher Resources & Requirements/` 中与本次验收有关的资料。对于 PDF、Word、PowerPoint、Excel 或其他不便直接阅读的文件，可使用已安装的 MarkItDown 转为 Markdown 以便提取要求：
+
+```powershell
+conda run -n markitdown markitdown "C:\文件路径\源文件.pdf" -o "C:\文件路径\提取结果.md"
+```
+
+- 不需要激活或切换 Conda 环境。
+- 当前仅安装 MarkItDown 本体及 `[all]` 格式依赖，未安装 OCR 或第三方插件；扫描件和图片型 PDF 可能无法提取文字。
+- 提取出的临时 Markdown 仅用于阅读和整理要求，不应放入 `验收/acceptance x/`。
 
 ## 模型热启动（在已有最优模型上继续训练）
 
