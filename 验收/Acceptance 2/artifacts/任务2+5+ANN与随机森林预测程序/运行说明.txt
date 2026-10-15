@@ -1,0 +1,6 @@
+任务2+5 ANN与随机森林预测程序
+
+本目录包含复现网格搜索与多步预测所需的代码模块和教师提供的数据。
+在已安装 numpy、pandas、scikit-learn、matplotlib 的 Python 环境中，
+于本目录运行：python code/run_task2_acceptance.py
+完整网格搜索耗时较长；运行结果写入本目录 output/。

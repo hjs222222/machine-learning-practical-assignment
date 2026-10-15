@@ -1,0 +1,477 @@
+﻿模型,策略,预见期,params,std_test_score,rank_test_score,mean_test_RMSE
+ANN,多输出预测,1,"{'alpha': 1e-05, 'hidden_layer_sizes': (128,), 'learning_rate_init': 0.0005}",0.088762718371129,1,0.6801791449249647
+ANN,多输出预测,1,"{'alpha': 0.01, 'hidden_layer_sizes': (64,), 'learning_rate_init': 0.0005}",0.1156397639770234,2,0.684894155215173
+ANN,多输出预测,1,"{'alpha': 0.01, 'hidden_layer_sizes': (128,), 'learning_rate_init': 0.0005}",0.0914289901293191,3,0.6853524927441831
+ANN,多输出预测,1,"{'alpha': 0.0001, 'hidden_layer_sizes': (128,), 'learning_rate_init': 0.0005}",0.0915956466111173,4,0.6862453858329909
+ANN,多输出预测,1,"{'alpha': 0.0001, 'hidden_layer_sizes': (64,), 'learning_rate_init': 0.0005}",0.1196099449068238,5,0.6905621755640152
+ANN,多输出预测,1,"{'alpha': 1e-05, 'hidden_layer_sizes': (64,), 'learning_rate_init': 0.0005}",0.121137686121549,6,0.6928543582395674
+ANN,多输出预测,1,"{'alpha': 0.01, 'hidden_layer_sizes': (128, 64), 'learning_rate_init': 0.0005}",0.099383519311741,7,0.7022611009140447
+ANN,多输出预测,1,"{'alpha': 0.0001, 'hidden_layer_sizes': (128, 64), 'learning_rate_init': 0.0005}",0.1006169441411712,8,0.7060308599343306
+ANN,多输出预测,1,"{'alpha': 0.01, 'hidden_layer_sizes': (128, 64), 'learning_rate_init': 0.001}",0.1144180234978585,9,0.7073995212872645
+ANN,多输出预测,1,"{'alpha': 1e-05, 'hidden_layer_sizes': (128, 64), 'learning_rate_init': 0.0005}",0.1084280820212873,10,0.7144164017020316
+ANN,多输出预测,1,"{'alpha': 0.01, 'hidden_layer_sizes': (64,), 'learning_rate_init': 0.001}",0.1072177373331766,11,0.720239424210572
+ANN,多输出预测,1,"{'alpha': 1e-05, 'hidden_layer_sizes': (64,), 'learning_rate_init': 0.001}",0.1085209107399148,12,0.7238741774362824
+ANN,多输出预测,1,"{'alpha': 0.0001, 'hidden_layer_sizes': (64,), 'learning_rate_init': 0.001}",0.1107367732560714,13,0.7262464264274451
+ANN,多输出预测,1,"{'alpha': 0.01, 'hidden_layer_sizes': (256, 128), 'learning_rate_init': 0.001}",0.1267375780203687,14,0.7310573969978961
+ANN,多输出预测,1,"{'alpha': 1e-05, 'hidden_layer_sizes': (256, 128), 'learning_rate_init': 0.001}",0.1330031185189995,15,0.731396550959824
+ANN,多输出预测,1,"{'alpha': 1e-05, 'hidden_layer_sizes': (128, 64), 'learning_rate_init': 0.001}",0.1188371012612335,16,0.7336751146506675
+ANN,多输出预测,1,"{'alpha': 0.0001, 'hidden_layer_sizes': (128, 64), 'learning_rate_init': 0.001}",0.1194627406106743,17,0.7339622150561986
+ANN,多输出预测,1,"{'alpha': 1e-05, 'hidden_layer_sizes': (256, 128), 'learning_rate_init': 0.0005}",0.1270022034628667,18,0.7384915282103476
+ANN,多输出预测,1,"{'alpha': 0.01, 'hidden_layer_sizes': (128,), 'learning_rate_init': 0.001}",0.1146239107317063,19,0.7392878097229549
+ANN,多输出预测,1,"{'alpha': 0.0001, 'hidden_layer_sizes': (256, 128), 'learning_rate_init': 0.0005}",0.1294223579841913,20,0.7402407807436099
+ANN,多输出预测,1,"{'alpha': 0.01, 'hidden_layer_sizes': (256, 128), 'learning_rate_init': 0.0005}",0.1265640787014473,21,0.7412358394215056
+ANN,多输出预测,1,"{'alpha': 0.0001, 'hidden_layer_sizes': (256, 128), 'learning_rate_init': 0.001}",0.1268888335239182,22,0.7418305333671641
+ANN,多输出预测,1,"{'alpha': 1e-05, 'hidden_layer_sizes': (128,), 'learning_rate_init': 0.001}",0.1000891700518531,23,0.7423925596424817
+ANN,多输出预测,1,"{'alpha': 0.0001, 'hidden_layer_sizes': (128,), 'learning_rate_init': 0.001}",0.0989087124639096,24,0.7436922233619901
+ANN,多输出预测,2,"{'alpha': 1e-05, 'hidden_layer_sizes': (128,), 'learning_rate_init': 0.0005}",0.088762718371129,1,0.6801791449249647
+ANN,多输出预测,2,"{'alpha': 0.01, 'hidden_layer_sizes': (64,), 'learning_rate_init': 0.0005}",0.1156397639770234,2,0.684894155215173
+ANN,多输出预测,2,"{'alpha': 0.01, 'hidden_layer_sizes': (128,), 'learning_rate_init': 0.0005}",0.0914289901293191,3,0.6853524927441831
+ANN,多输出预测,2,"{'alpha': 0.0001, 'hidden_layer_sizes': (128,), 'learning_rate_init': 0.0005}",0.0915956466111173,4,0.6862453858329909
+ANN,多输出预测,2,"{'alpha': 0.0001, 'hidden_layer_sizes': (64,), 'learning_rate_init': 0.0005}",0.1196099449068238,5,0.6905621755640152
+ANN,多输出预测,2,"{'alpha': 1e-05, 'hidden_layer_sizes': (64,), 'learning_rate_init': 0.0005}",0.121137686121549,6,0.6928543582395674
+ANN,多输出预测,2,"{'alpha': 0.01, 'hidden_layer_sizes': (128, 64), 'learning_rate_init': 0.0005}",0.099383519311741,7,0.7022611009140447
+ANN,多输出预测,2,"{'alpha': 0.0001, 'hidden_layer_sizes': (128, 64), 'learning_rate_init': 0.0005}",0.1006169441411712,8,0.7060308599343306
+ANN,多输出预测,2,"{'alpha': 0.01, 'hidden_layer_sizes': (128, 64), 'learning_rate_init': 0.001}",0.1144180234978585,9,0.7073995212872645
+ANN,多输出预测,2,"{'alpha': 1e-05, 'hidden_layer_sizes': (128, 64), 'learning_rate_init': 0.0005}",0.1084280820212873,10,0.7144164017020316
+ANN,多输出预测,2,"{'alpha': 0.01, 'hidden_layer_sizes': (64,), 'learning_rate_init': 0.001}",0.1072177373331766,11,0.720239424210572
+ANN,多输出预测,2,"{'alpha': 1e-05, 'hidden_layer_sizes': (64,), 'learning_rate_init': 0.001}",0.1085209107399148,12,0.7238741774362824
+ANN,多输出预测,2,"{'alpha': 0.0001, 'hidden_layer_sizes': (64,), 'learning_rate_init': 0.001}",0.1107367732560714,13,0.7262464264274451
+ANN,多输出预测,2,"{'alpha': 0.01, 'hidden_layer_sizes': (256, 128), 'learning_rate_init': 0.001}",0.1267375780203687,14,0.7310573969978961
+ANN,多输出预测,2,"{'alpha': 1e-05, 'hidden_layer_sizes': (256, 128), 'learning_rate_init': 0.001}",0.1330031185189995,15,0.731396550959824
+ANN,多输出预测,2,"{'alpha': 1e-05, 'hidden_layer_sizes': (128, 64), 'learning_rate_init': 0.001}",0.1188371012612335,16,0.7336751146506675
+ANN,多输出预测,2,"{'alpha': 0.0001, 'hidden_layer_sizes': (128, 64), 'learning_rate_init': 0.001}",0.1194627406106743,17,0.7339622150561986
+ANN,多输出预测,2,"{'alpha': 1e-05, 'hidden_layer_sizes': (256, 128), 'learning_rate_init': 0.0005}",0.1270022034628667,18,0.7384915282103476
+ANN,多输出预测,2,"{'alpha': 0.01, 'hidden_layer_sizes': (128,), 'learning_rate_init': 0.001}",0.1146239107317063,19,0.7392878097229549
+ANN,多输出预测,2,"{'alpha': 0.0001, 'hidden_layer_sizes': (256, 128), 'learning_rate_init': 0.0005}",0.1294223579841913,20,0.7402407807436099
+ANN,多输出预测,2,"{'alpha': 0.01, 'hidden_layer_sizes': (256, 128), 'learning_rate_init': 0.0005}",0.1265640787014473,21,0.7412358394215056
+ANN,多输出预测,2,"{'alpha': 0.0001, 'hidden_layer_sizes': (256, 128), 'learning_rate_init': 0.001}",0.1268888335239182,22,0.7418305333671641
+ANN,多输出预测,2,"{'alpha': 1e-05, 'hidden_layer_sizes': (128,), 'learning_rate_init': 0.001}",0.1000891700518531,23,0.7423925596424817
+ANN,多输出预测,2,"{'alpha': 0.0001, 'hidden_layer_sizes': (128,), 'learning_rate_init': 0.001}",0.0989087124639096,24,0.7436922233619901
+ANN,多输出预测,3,"{'alpha': 1e-05, 'hidden_layer_sizes': (128,), 'learning_rate_init': 0.0005}",0.088762718371129,1,0.6801791449249647
+ANN,多输出预测,3,"{'alpha': 0.01, 'hidden_layer_sizes': (64,), 'learning_rate_init': 0.0005}",0.1156397639770234,2,0.684894155215173
+ANN,多输出预测,3,"{'alpha': 0.01, 'hidden_layer_sizes': (128,), 'learning_rate_init': 0.0005}",0.0914289901293191,3,0.6853524927441831
+ANN,多输出预测,3,"{'alpha': 0.0001, 'hidden_layer_sizes': (128,), 'learning_rate_init': 0.0005}",0.0915956466111173,4,0.6862453858329909
+ANN,多输出预测,3,"{'alpha': 0.0001, 'hidden_layer_sizes': (64,), 'learning_rate_init': 0.0005}",0.1196099449068238,5,0.6905621755640152
+ANN,多输出预测,3,"{'alpha': 1e-05, 'hidden_layer_sizes': (64,), 'learning_rate_init': 0.0005}",0.121137686121549,6,0.6928543582395674
+ANN,多输出预测,3,"{'alpha': 0.01, 'hidden_layer_sizes': (128, 64), 'learning_rate_init': 0.0005}",0.099383519311741,7,0.7022611009140447
+ANN,多输出预测,3,"{'alpha': 0.0001, 'hidden_layer_sizes': (128, 64), 'learning_rate_init': 0.0005}",0.1006169441411712,8,0.7060308599343306
+ANN,多输出预测,3,"{'alpha': 0.01, 'hidden_layer_sizes': (128, 64), 'learning_rate_init': 0.001}",0.1144180234978585,9,0.7073995212872645
+ANN,多输出预测,3,"{'alpha': 1e-05, 'hidden_layer_sizes': (128, 64), 'learning_rate_init': 0.0005}",0.1084280820212873,10,0.7144164017020316
+ANN,多输出预测,3,"{'alpha': 0.01, 'hidden_layer_sizes': (64,), 'learning_rate_init': 0.001}",0.1072177373331766,11,0.720239424210572
+ANN,多输出预测,3,"{'alpha': 1e-05, 'hidden_layer_sizes': (64,), 'learning_rate_init': 0.001}",0.1085209107399148,12,0.7238741774362824
+ANN,多输出预测,3,"{'alpha': 0.0001, 'hidden_layer_sizes': (64,), 'learning_rate_init': 0.001}",0.1107367732560714,13,0.7262464264274451
+ANN,多输出预测,3,"{'alpha': 0.01, 'hidden_layer_sizes': (256, 128), 'learning_rate_init': 0.001}",0.1267375780203687,14,0.7310573969978961
+ANN,多输出预测,3,"{'alpha': 1e-05, 'hidden_layer_sizes': (256, 128), 'learning_rate_init': 0.001}",0.1330031185189995,15,0.731396550959824
+ANN,多输出预测,3,"{'alpha': 1e-05, 'hidden_layer_sizes': (128, 64), 'learning_rate_init': 0.001}",0.1188371012612335,16,0.7336751146506675
+ANN,多输出预测,3,"{'alpha': 0.0001, 'hidden_layer_sizes': (128, 64), 'learning_rate_init': 0.001}",0.1194627406106743,17,0.7339622150561986
+ANN,多输出预测,3,"{'alpha': 1e-05, 'hidden_layer_sizes': (256, 128), 'learning_rate_init': 0.0005}",0.1270022034628667,18,0.7384915282103476
+ANN,多输出预测,3,"{'alpha': 0.01, 'hidden_layer_sizes': (128,), 'learning_rate_init': 0.001}",0.1146239107317063,19,0.7392878097229549
+ANN,多输出预测,3,"{'alpha': 0.0001, 'hidden_layer_sizes': (256, 128), 'learning_rate_init': 0.0005}",0.1294223579841913,20,0.7402407807436099
+ANN,多输出预测,3,"{'alpha': 0.01, 'hidden_layer_sizes': (256, 128), 'learning_rate_init': 0.0005}",0.1265640787014473,21,0.7412358394215056
+ANN,多输出预测,3,"{'alpha': 0.0001, 'hidden_layer_sizes': (256, 128), 'learning_rate_init': 0.001}",0.1268888335239182,22,0.7418305333671641
+ANN,多输出预测,3,"{'alpha': 1e-05, 'hidden_layer_sizes': (128,), 'learning_rate_init': 0.001}",0.1000891700518531,23,0.7423925596424817
+ANN,多输出预测,3,"{'alpha': 0.0001, 'hidden_layer_sizes': (128,), 'learning_rate_init': 0.001}",0.0989087124639096,24,0.7436922233619901
+ANN,多输出预测,4,"{'alpha': 1e-05, 'hidden_layer_sizes': (128,), 'learning_rate_init': 0.0005}",0.088762718371129,1,0.6801791449249647
+ANN,多输出预测,4,"{'alpha': 0.01, 'hidden_layer_sizes': (64,), 'learning_rate_init': 0.0005}",0.1156397639770234,2,0.684894155215173
+ANN,多输出预测,4,"{'alpha': 0.01, 'hidden_layer_sizes': (128,), 'learning_rate_init': 0.0005}",0.0914289901293191,3,0.6853524927441831
+ANN,多输出预测,4,"{'alpha': 0.0001, 'hidden_layer_sizes': (128,), 'learning_rate_init': 0.0005}",0.0915956466111173,4,0.6862453858329909
+ANN,多输出预测,4,"{'alpha': 0.0001, 'hidden_layer_sizes': (64,), 'learning_rate_init': 0.0005}",0.1196099449068238,5,0.6905621755640152
+ANN,多输出预测,4,"{'alpha': 1e-05, 'hidden_layer_sizes': (64,), 'learning_rate_init': 0.0005}",0.121137686121549,6,0.6928543582395674
+ANN,多输出预测,4,"{'alpha': 0.01, 'hidden_layer_sizes': (128, 64), 'learning_rate_init': 0.0005}",0.099383519311741,7,0.7022611009140447
+ANN,多输出预测,4,"{'alpha': 0.0001, 'hidden_layer_sizes': (128, 64), 'learning_rate_init': 0.0005}",0.1006169441411712,8,0.7060308599343306
+ANN,多输出预测,4,"{'alpha': 0.01, 'hidden_layer_sizes': (128, 64), 'learning_rate_init': 0.001}",0.1144180234978585,9,0.7073995212872645
+ANN,多输出预测,4,"{'alpha': 1e-05, 'hidden_layer_sizes': (128, 64), 'learning_rate_init': 0.0005}",0.1084280820212873,10,0.7144164017020316
+ANN,多输出预测,4,"{'alpha': 0.01, 'hidden_layer_sizes': (64,), 'learning_rate_init': 0.001}",0.1072177373331766,11,0.720239424210572
+ANN,多输出预测,4,"{'alpha': 1e-05, 'hidden_layer_sizes': (64,), 'learning_rate_init': 0.001}",0.1085209107399148,12,0.7238741774362824
+ANN,多输出预测,4,"{'alpha': 0.0001, 'hidden_layer_sizes': (64,), 'learning_rate_init': 0.001}",0.1107367732560714,13,0.7262464264274451
+ANN,多输出预测,4,"{'alpha': 0.01, 'hidden_layer_sizes': (256, 128), 'learning_rate_init': 0.001}",0.1267375780203687,14,0.7310573969978961
+ANN,多输出预测,4,"{'alpha': 1e-05, 'hidden_layer_sizes': (256, 128), 'learning_rate_init': 0.001}",0.1330031185189995,15,0.731396550959824
+ANN,多输出预测,4,"{'alpha': 1e-05, 'hidden_layer_sizes': (128, 64), 'learning_rate_init': 0.001}",0.1188371012612335,16,0.7336751146506675
+ANN,多输出预测,4,"{'alpha': 0.0001, 'hidden_layer_sizes': (128, 64), 'learning_rate_init': 0.001}",0.1194627406106743,17,0.7339622150561986
+ANN,多输出预测,4,"{'alpha': 1e-05, 'hidden_layer_sizes': (256, 128), 'learning_rate_init': 0.0005}",0.1270022034628667,18,0.7384915282103476
+ANN,多输出预测,4,"{'alpha': 0.01, 'hidden_layer_sizes': (128,), 'learning_rate_init': 0.001}",0.1146239107317063,19,0.7392878097229549
+ANN,多输出预测,4,"{'alpha': 0.0001, 'hidden_layer_sizes': (256, 128), 'learning_rate_init': 0.0005}",0.1294223579841913,20,0.7402407807436099
+ANN,多输出预测,4,"{'alpha': 0.01, 'hidden_layer_sizes': (256, 128), 'learning_rate_init': 0.0005}",0.1265640787014473,21,0.7412358394215056
+ANN,多输出预测,4,"{'alpha': 0.0001, 'hidden_layer_sizes': (256, 128), 'learning_rate_init': 0.001}",0.1268888335239182,22,0.7418305333671641
+ANN,多输出预测,4,"{'alpha': 1e-05, 'hidden_layer_sizes': (128,), 'learning_rate_init': 0.001}",0.1000891700518531,23,0.7423925596424817
+ANN,多输出预测,4,"{'alpha': 0.0001, 'hidden_layer_sizes': (128,), 'learning_rate_init': 0.001}",0.0989087124639096,24,0.7436922233619901
+ANN,多输出预测,5,"{'alpha': 1e-05, 'hidden_layer_sizes': (128,), 'learning_rate_init': 0.0005}",0.088762718371129,1,0.6801791449249647
+ANN,多输出预测,5,"{'alpha': 0.01, 'hidden_layer_sizes': (64,), 'learning_rate_init': 0.0005}",0.1156397639770234,2,0.684894155215173
+ANN,多输出预测,5,"{'alpha': 0.01, 'hidden_layer_sizes': (128,), 'learning_rate_init': 0.0005}",0.0914289901293191,3,0.6853524927441831
+ANN,多输出预测,5,"{'alpha': 0.0001, 'hidden_layer_sizes': (128,), 'learning_rate_init': 0.0005}",0.0915956466111173,4,0.6862453858329909
+ANN,多输出预测,5,"{'alpha': 0.0001, 'hidden_layer_sizes': (64,), 'learning_rate_init': 0.0005}",0.1196099449068238,5,0.6905621755640152
+ANN,多输出预测,5,"{'alpha': 1e-05, 'hidden_layer_sizes': (64,), 'learning_rate_init': 0.0005}",0.121137686121549,6,0.6928543582395674
+ANN,多输出预测,5,"{'alpha': 0.01, 'hidden_layer_sizes': (128, 64), 'learning_rate_init': 0.0005}",0.099383519311741,7,0.7022611009140447
+ANN,多输出预测,5,"{'alpha': 0.0001, 'hidden_layer_sizes': (128, 64), 'learning_rate_init': 0.0005}",0.1006169441411712,8,0.7060308599343306
+ANN,多输出预测,5,"{'alpha': 0.01, 'hidden_layer_sizes': (128, 64), 'learning_rate_init': 0.001}",0.1144180234978585,9,0.7073995212872645
+ANN,多输出预测,5,"{'alpha': 1e-05, 'hidden_layer_sizes': (128, 64), 'learning_rate_init': 0.0005}",0.1084280820212873,10,0.7144164017020316
+ANN,多输出预测,5,"{'alpha': 0.01, 'hidden_layer_sizes': (64,), 'learning_rate_init': 0.001}",0.1072177373331766,11,0.720239424210572
+ANN,多输出预测,5,"{'alpha': 1e-05, 'hidden_layer_sizes': (64,), 'learning_rate_init': 0.001}",0.1085209107399148,12,0.7238741774362824
+ANN,多输出预测,5,"{'alpha': 0.0001, 'hidden_layer_sizes': (64,), 'learning_rate_init': 0.001}",0.1107367732560714,13,0.7262464264274451
+ANN,多输出预测,5,"{'alpha': 0.01, 'hidden_layer_sizes': (256, 128), 'learning_rate_init': 0.001}",0.1267375780203687,14,0.7310573969978961
+ANN,多输出预测,5,"{'alpha': 1e-05, 'hidden_layer_sizes': (256, 128), 'learning_rate_init': 0.001}",0.1330031185189995,15,0.731396550959824
+ANN,多输出预测,5,"{'alpha': 1e-05, 'hidden_layer_sizes': (128, 64), 'learning_rate_init': 0.001}",0.1188371012612335,16,0.7336751146506675
+ANN,多输出预测,5,"{'alpha': 0.0001, 'hidden_layer_sizes': (128, 64), 'learning_rate_init': 0.001}",0.1194627406106743,17,0.7339622150561986
+ANN,多输出预测,5,"{'alpha': 1e-05, 'hidden_layer_sizes': (256, 128), 'learning_rate_init': 0.0005}",0.1270022034628667,18,0.7384915282103476
+ANN,多输出预测,5,"{'alpha': 0.01, 'hidden_layer_sizes': (128,), 'learning_rate_init': 0.001}",0.1146239107317063,19,0.7392878097229549
+ANN,多输出预测,5,"{'alpha': 0.0001, 'hidden_layer_sizes': (256, 128), 'learning_rate_init': 0.0005}",0.1294223579841913,20,0.7402407807436099
+ANN,多输出预测,5,"{'alpha': 0.01, 'hidden_layer_sizes': (256, 128), 'learning_rate_init': 0.0005}",0.1265640787014473,21,0.7412358394215056
+ANN,多输出预测,5,"{'alpha': 0.0001, 'hidden_layer_sizes': (256, 128), 'learning_rate_init': 0.001}",0.1268888335239182,22,0.7418305333671641
+ANN,多输出预测,5,"{'alpha': 1e-05, 'hidden_layer_sizes': (128,), 'learning_rate_init': 0.001}",0.1000891700518531,23,0.7423925596424817
+ANN,多输出预测,5,"{'alpha': 0.0001, 'hidden_layer_sizes': (128,), 'learning_rate_init': 0.001}",0.0989087124639096,24,0.7436922233619901
+ANN,多输出预测,6,"{'alpha': 1e-05, 'hidden_layer_sizes': (128,), 'learning_rate_init': 0.0005}",0.088762718371129,1,0.6801791449249647
+ANN,多输出预测,6,"{'alpha': 0.01, 'hidden_layer_sizes': (64,), 'learning_rate_init': 0.0005}",0.1156397639770234,2,0.684894155215173
+ANN,多输出预测,6,"{'alpha': 0.01, 'hidden_layer_sizes': (128,), 'learning_rate_init': 0.0005}",0.0914289901293191,3,0.6853524927441831
+ANN,多输出预测,6,"{'alpha': 0.0001, 'hidden_layer_sizes': (128,), 'learning_rate_init': 0.0005}",0.0915956466111173,4,0.6862453858329909
+ANN,多输出预测,6,"{'alpha': 0.0001, 'hidden_layer_sizes': (64,), 'learning_rate_init': 0.0005}",0.1196099449068238,5,0.6905621755640152
+ANN,多输出预测,6,"{'alpha': 1e-05, 'hidden_layer_sizes': (64,), 'learning_rate_init': 0.0005}",0.121137686121549,6,0.6928543582395674
+ANN,多输出预测,6,"{'alpha': 0.01, 'hidden_layer_sizes': (128, 64), 'learning_rate_init': 0.0005}",0.099383519311741,7,0.7022611009140447
+ANN,多输出预测,6,"{'alpha': 0.0001, 'hidden_layer_sizes': (128, 64), 'learning_rate_init': 0.0005}",0.1006169441411712,8,0.7060308599343306
+ANN,多输出预测,6,"{'alpha': 0.01, 'hidden_layer_sizes': (128, 64), 'learning_rate_init': 0.001}",0.1144180234978585,9,0.7073995212872645
+ANN,多输出预测,6,"{'alpha': 1e-05, 'hidden_layer_sizes': (128, 64), 'learning_rate_init': 0.0005}",0.1084280820212873,10,0.7144164017020316
+ANN,多输出预测,6,"{'alpha': 0.01, 'hidden_layer_sizes': (64,), 'learning_rate_init': 0.001}",0.1072177373331766,11,0.720239424210572
+ANN,多输出预测,6,"{'alpha': 1e-05, 'hidden_layer_sizes': (64,), 'learning_rate_init': 0.001}",0.1085209107399148,12,0.7238741774362824
+ANN,多输出预测,6,"{'alpha': 0.0001, 'hidden_layer_sizes': (64,), 'learning_rate_init': 0.001}",0.1107367732560714,13,0.7262464264274451
+ANN,多输出预测,6,"{'alpha': 0.01, 'hidden_layer_sizes': (256, 128), 'learning_rate_init': 0.001}",0.1267375780203687,14,0.7310573969978961
+ANN,多输出预测,6,"{'alpha': 1e-05, 'hidden_layer_sizes': (256, 128), 'learning_rate_init': 0.001}",0.1330031185189995,15,0.731396550959824
+ANN,多输出预测,6,"{'alpha': 1e-05, 'hidden_layer_sizes': (128, 64), 'learning_rate_init': 0.001}",0.1188371012612335,16,0.7336751146506675
+ANN,多输出预测,6,"{'alpha': 0.0001, 'hidden_layer_sizes': (128, 64), 'learning_rate_init': 0.001}",0.1194627406106743,17,0.7339622150561986
+ANN,多输出预测,6,"{'alpha': 1e-05, 'hidden_layer_sizes': (256, 128), 'learning_rate_init': 0.0005}",0.1270022034628667,18,0.7384915282103476
+ANN,多输出预测,6,"{'alpha': 0.01, 'hidden_layer_sizes': (128,), 'learning_rate_init': 0.001}",0.1146239107317063,19,0.7392878097229549
+ANN,多输出预测,6,"{'alpha': 0.0001, 'hidden_layer_sizes': (256, 128), 'learning_rate_init': 0.0005}",0.1294223579841913,20,0.7402407807436099
+ANN,多输出预测,6,"{'alpha': 0.01, 'hidden_layer_sizes': (256, 128), 'learning_rate_init': 0.0005}",0.1265640787014473,21,0.7412358394215056
+ANN,多输出预测,6,"{'alpha': 0.0001, 'hidden_layer_sizes': (256, 128), 'learning_rate_init': 0.001}",0.1268888335239182,22,0.7418305333671641
+ANN,多输出预测,6,"{'alpha': 1e-05, 'hidden_layer_sizes': (128,), 'learning_rate_init': 0.001}",0.1000891700518531,23,0.7423925596424817
+ANN,多输出预测,6,"{'alpha': 0.0001, 'hidden_layer_sizes': (128,), 'learning_rate_init': 0.001}",0.0989087124639096,24,0.7436922233619901
+ANN,多输出预测,7,"{'alpha': 1e-05, 'hidden_layer_sizes': (128,), 'learning_rate_init': 0.0005}",0.088762718371129,1,0.6801791449249647
+ANN,多输出预测,7,"{'alpha': 0.01, 'hidden_layer_sizes': (64,), 'learning_rate_init': 0.0005}",0.1156397639770234,2,0.684894155215173
+ANN,多输出预测,7,"{'alpha': 0.01, 'hidden_layer_sizes': (128,), 'learning_rate_init': 0.0005}",0.0914289901293191,3,0.6853524927441831
+ANN,多输出预测,7,"{'alpha': 0.0001, 'hidden_layer_sizes': (128,), 'learning_rate_init': 0.0005}",0.0915956466111173,4,0.6862453858329909
+ANN,多输出预测,7,"{'alpha': 0.0001, 'hidden_layer_sizes': (64,), 'learning_rate_init': 0.0005}",0.1196099449068238,5,0.6905621755640152
+ANN,多输出预测,7,"{'alpha': 1e-05, 'hidden_layer_sizes': (64,), 'learning_rate_init': 0.0005}",0.121137686121549,6,0.6928543582395674
+ANN,多输出预测,7,"{'alpha': 0.01, 'hidden_layer_sizes': (128, 64), 'learning_rate_init': 0.0005}",0.099383519311741,7,0.7022611009140447
+ANN,多输出预测,7,"{'alpha': 0.0001, 'hidden_layer_sizes': (128, 64), 'learning_rate_init': 0.0005}",0.1006169441411712,8,0.7060308599343306
+ANN,多输出预测,7,"{'alpha': 0.01, 'hidden_layer_sizes': (128, 64), 'learning_rate_init': 0.001}",0.1144180234978585,9,0.7073995212872645
+ANN,多输出预测,7,"{'alpha': 1e-05, 'hidden_layer_sizes': (128, 64), 'learning_rate_init': 0.0005}",0.1084280820212873,10,0.7144164017020316
+ANN,多输出预测,7,"{'alpha': 0.01, 'hidden_layer_sizes': (64,), 'learning_rate_init': 0.001}",0.1072177373331766,11,0.720239424210572
+ANN,多输出预测,7,"{'alpha': 1e-05, 'hidden_layer_sizes': (64,), 'learning_rate_init': 0.001}",0.1085209107399148,12,0.7238741774362824
+ANN,多输出预测,7,"{'alpha': 0.0001, 'hidden_layer_sizes': (64,), 'learning_rate_init': 0.001}",0.1107367732560714,13,0.7262464264274451
+ANN,多输出预测,7,"{'alpha': 0.01, 'hidden_layer_sizes': (256, 128), 'learning_rate_init': 0.001}",0.1267375780203687,14,0.7310573969978961
+ANN,多输出预测,7,"{'alpha': 1e-05, 'hidden_layer_sizes': (256, 128), 'learning_rate_init': 0.001}",0.1330031185189995,15,0.731396550959824
+ANN,多输出预测,7,"{'alpha': 1e-05, 'hidden_layer_sizes': (128, 64), 'learning_rate_init': 0.001}",0.1188371012612335,16,0.7336751146506675
+ANN,多输出预测,7,"{'alpha': 0.0001, 'hidden_layer_sizes': (128, 64), 'learning_rate_init': 0.001}",0.1194627406106743,17,0.7339622150561986
+ANN,多输出预测,7,"{'alpha': 1e-05, 'hidden_layer_sizes': (256, 128), 'learning_rate_init': 0.0005}",0.1270022034628667,18,0.7384915282103476
+ANN,多输出预测,7,"{'alpha': 0.01, 'hidden_layer_sizes': (128,), 'learning_rate_init': 0.001}",0.1146239107317063,19,0.7392878097229549
+ANN,多输出预测,7,"{'alpha': 0.0001, 'hidden_layer_sizes': (256, 128), 'learning_rate_init': 0.0005}",0.1294223579841913,20,0.7402407807436099
+ANN,多输出预测,7,"{'alpha': 0.01, 'hidden_layer_sizes': (256, 128), 'learning_rate_init': 0.0005}",0.1265640787014473,21,0.7412358394215056
+ANN,多输出预测,7,"{'alpha': 0.0001, 'hidden_layer_sizes': (256, 128), 'learning_rate_init': 0.001}",0.1268888335239182,22,0.7418305333671641
+ANN,多输出预测,7,"{'alpha': 1e-05, 'hidden_layer_sizes': (128,), 'learning_rate_init': 0.001}",0.1000891700518531,23,0.7423925596424817
+ANN,多输出预测,7,"{'alpha': 0.0001, 'hidden_layer_sizes': (128,), 'learning_rate_init': 0.001}",0.0989087124639096,24,0.7436922233619901
+RF,多步直接预测,1,"{'max_depth': 15, 'min_samples_leaf': 5, 'n_estimators': 500}",0.0282540488310134,1,0.3136790782226019
+RF,多步直接预测,1,"{'max_depth': None, 'min_samples_leaf': 5, 'n_estimators': 500}",0.0284053565910737,2,0.313834857832647
+RF,多步直接预测,1,"{'max_depth': 20, 'min_samples_leaf': 5, 'n_estimators': 500}",0.0284053565910737,3,0.3138348578326471
+RF,多步直接预测,1,"{'max_depth': 15, 'min_samples_leaf': 5, 'n_estimators': 300}",0.0280647084153627,4,0.3142530015320076
+RF,多步直接预测,1,"{'max_depth': 10, 'min_samples_leaf': 5, 'n_estimators': 500}",0.0287921825077758,5,0.3143029008288161
+RF,多步直接预测,1,"{'max_depth': None, 'min_samples_leaf': 5, 'n_estimators': 300}",0.0282107071363793,6,0.3143872709132
+RF,多步直接预测,1,"{'max_depth': 20, 'min_samples_leaf': 5, 'n_estimators': 300}",0.0282107071363793,7,0.3143872709132
+RF,多步直接预测,1,"{'max_depth': 10, 'min_samples_leaf': 5, 'n_estimators': 300}",0.028195258926007,8,0.3146741937190909
+RF,多步直接预测,1,"{'max_depth': 15, 'min_samples_leaf': 1, 'n_estimators': 500}",0.02466381299624,9,0.3330952700795415
+RF,多步直接预测,1,"{'max_depth': 20, 'min_samples_leaf': 1, 'n_estimators': 500}",0.0249319634646956,10,0.333585953277832
+RF,多步直接预测,1,"{'max_depth': 10, 'min_samples_leaf': 1, 'n_estimators': 500}",0.0248872210451721,11,0.3335933356482706
+RF,多步直接预测,1,"{'max_depth': None, 'min_samples_leaf': 1, 'n_estimators': 500}",0.0253271588370006,12,0.3338163845187409
+RF,多步直接预测,1,"{'max_depth': 15, 'min_samples_leaf': 1, 'n_estimators': 300}",0.0252926282944226,13,0.3347852367127783
+RF,多步直接预测,1,"{'max_depth': None, 'min_samples_leaf': 1, 'n_estimators': 300}",0.0249769600131494,14,0.3348621279022006
+RF,多步直接预测,1,"{'max_depth': 20, 'min_samples_leaf': 1, 'n_estimators': 300}",0.024765219512292,15,0.3348855911660338
+RF,多步直接预测,1,"{'max_depth': 10, 'min_samples_leaf': 1, 'n_estimators': 300}",0.0265861221081613,16,0.3360865114876676
+RF,多步直接预测,2,"{'max_depth': 10, 'min_samples_leaf': 5, 'n_estimators': 300}",0.0334217944400572,1,0.4471206614521803
+RF,多步直接预测,2,"{'max_depth': 15, 'min_samples_leaf': 5, 'n_estimators': 300}",0.0341615354442545,2,0.4481737908506238
+RF,多步直接预测,2,"{'max_depth': None, 'min_samples_leaf': 5, 'n_estimators': 300}",0.0341372210940722,3,0.4482473109349116
+RF,多步直接预测,2,"{'max_depth': 20, 'min_samples_leaf': 5, 'n_estimators': 300}",0.0341372210940722,3,0.4482473109349116
+RF,多步直接预测,2,"{'max_depth': 15, 'min_samples_leaf': 5, 'n_estimators': 500}",0.0341872307593453,5,0.448794758056434
+RF,多步直接预测,2,"{'max_depth': 20, 'min_samples_leaf': 5, 'n_estimators': 500}",0.0342133455069952,6,0.4488683762496933
+RF,多步直接预测,2,"{'max_depth': None, 'min_samples_leaf': 5, 'n_estimators': 500}",0.0342133455069952,7,0.4488683762496934
+RF,多步直接预测,2,"{'max_depth': 10, 'min_samples_leaf': 5, 'n_estimators': 500}",0.0341410980278953,8,0.4490046401727485
+RF,多步直接预测,2,"{'max_depth': 10, 'min_samples_leaf': 1, 'n_estimators': 500}",0.0604832885359184,9,0.5080408630308887
+RF,多步直接预测,2,"{'max_depth': None, 'min_samples_leaf': 1, 'n_estimators': 300}",0.0633142397883158,10,0.5097804606429701
+RF,多步直接预测,2,"{'max_depth': 15, 'min_samples_leaf': 1, 'n_estimators': 500}",0.0628693532955493,11,0.5100918674430007
+RF,多步直接预测,2,"{'max_depth': 20, 'min_samples_leaf': 1, 'n_estimators': 300}",0.0632990814258916,12,0.5104864478155132
+RF,多步直接预测,2,"{'max_depth': None, 'min_samples_leaf': 1, 'n_estimators': 500}",0.0637644786990139,13,0.5107037746683997
+RF,多步直接预测,2,"{'max_depth': 10, 'min_samples_leaf': 1, 'n_estimators': 300}",0.0634829656480002,14,0.5107215455375842
+RF,多步直接预测,2,"{'max_depth': 15, 'min_samples_leaf': 1, 'n_estimators': 300}",0.0625484322322017,15,0.5111519437376271
+RF,多步直接预测,2,"{'max_depth': 20, 'min_samples_leaf': 1, 'n_estimators': 500}",0.0635997037791848,16,0.5115285858125468
+RF,多步直接预测,3,"{'max_depth': 10, 'min_samples_leaf': 5, 'n_estimators': 300}",0.0399301711657555,1,0.5247825505577787
+RF,多步直接预测,3,"{'max_depth': 15, 'min_samples_leaf': 5, 'n_estimators': 300}",0.0424343294128658,2,0.5275066032633647
+RF,多步直接预测,3,"{'max_depth': None, 'min_samples_leaf': 5, 'n_estimators': 300}",0.042543415604592,3,0.5276020750153341
+RF,多步直接预测,3,"{'max_depth': 20, 'min_samples_leaf': 5, 'n_estimators': 300}",0.042543415604592,3,0.5276020750153341
+RF,多步直接预测,3,"{'max_depth': 10, 'min_samples_leaf': 5, 'n_estimators': 500}",0.0403649843733626,5,0.5280150525466083
+RF,多步直接预测,3,"{'max_depth': 15, 'min_samples_leaf': 5, 'n_estimators': 500}",0.0404088068391275,6,0.5290877977273719
+RF,多步直接预测,3,"{'max_depth': 20, 'min_samples_leaf': 5, 'n_estimators': 500}",0.0408237845953771,7,0.529316755822464
+RF,多步直接预测,3,"{'max_depth': None, 'min_samples_leaf': 5, 'n_estimators': 500}",0.0408237845953772,8,0.5293167558224641
+RF,多步直接预测,3,"{'max_depth': None, 'min_samples_leaf': 1, 'n_estimators': 300}",0.0560373740080526,9,0.5783574414713687
+RF,多步直接预测,3,"{'max_depth': 15, 'min_samples_leaf': 1, 'n_estimators': 300}",0.0562125845477293,10,0.5786644186059225
+RF,多步直接预测,3,"{'max_depth': 20, 'min_samples_leaf': 1, 'n_estimators': 300}",0.0557883380144065,11,0.5792793785274087
+RF,多步直接预测,3,"{'max_depth': None, 'min_samples_leaf': 1, 'n_estimators': 500}",0.0606642382587304,12,0.5819486815149327
+RF,多步直接预测,3,"{'max_depth': 20, 'min_samples_leaf': 1, 'n_estimators': 500}",0.0603555784864122,13,0.5821789008285202
+RF,多步直接预测,3,"{'max_depth': 15, 'min_samples_leaf': 1, 'n_estimators': 500}",0.0591275838079014,14,0.5824799289156463
+RF,多步直接预测,3,"{'max_depth': 10, 'min_samples_leaf': 1, 'n_estimators': 300}",0.0652284954987847,15,0.5853626606724304
+RF,多步直接预测,3,"{'max_depth': 10, 'min_samples_leaf': 1, 'n_estimators': 500}",0.067849371964388,16,0.5864283697559335
+RF,多步直接预测,4,"{'max_depth': 10, 'min_samples_leaf': 5, 'n_estimators': 500}",0.052781440916084,1,0.581109055151556
+RF,多步直接预测,4,"{'max_depth': 15, 'min_samples_leaf': 5, 'n_estimators': 500}",0.0537636279603029,2,0.5816132102176333
+RF,多步直接预测,4,"{'max_depth': None, 'min_samples_leaf': 5, 'n_estimators': 500}",0.0540460798990728,3,0.5820543741579135
+RF,多步直接预测,4,"{'max_depth': 20, 'min_samples_leaf': 5, 'n_estimators': 500}",0.0540460798990728,3,0.5820543741579135
+RF,多步直接预测,4,"{'max_depth': 15, 'min_samples_leaf': 5, 'n_estimators': 300}",0.0567438353515007,5,0.5854964654390965
+RF,多步直接预测,4,"{'max_depth': None, 'min_samples_leaf': 5, 'n_estimators': 300}",0.0571057043065909,6,0.5859817249958592
+RF,多步直接预测,4,"{'max_depth': 20, 'min_samples_leaf': 5, 'n_estimators': 300}",0.0571057043065909,6,0.5859817249958592
+RF,多步直接预测,4,"{'max_depth': 10, 'min_samples_leaf': 5, 'n_estimators': 300}",0.0569195653691583,8,0.586434189616951
+RF,多步直接预测,4,"{'max_depth': 15, 'min_samples_leaf': 1, 'n_estimators': 500}",0.0779134003351966,9,0.6260680144489327
+RF,多步直接预测,4,"{'max_depth': 10, 'min_samples_leaf': 1, 'n_estimators': 500}",0.0779106687429052,10,0.627726641072562
+RF,多步直接预测,4,"{'max_depth': None, 'min_samples_leaf': 1, 'n_estimators': 500}",0.0803692051176986,11,0.628344696138538
+RF,多步直接预测,4,"{'max_depth': 20, 'min_samples_leaf': 1, 'n_estimators': 500}",0.0801902448311477,12,0.6293429959720878
+RF,多步直接预测,4,"{'max_depth': 15, 'min_samples_leaf': 1, 'n_estimators': 300}",0.0832265552688204,13,0.630760035324824
+RF,多步直接预测,4,"{'max_depth': 10, 'min_samples_leaf': 1, 'n_estimators': 300}",0.0829277981253965,14,0.6310772669707566
+RF,多步直接预测,4,"{'max_depth': 20, 'min_samples_leaf': 1, 'n_estimators': 300}",0.0854020153778147,15,0.6327888505835452
+RF,多步直接预测,4,"{'max_depth': None, 'min_samples_leaf': 1, 'n_estimators': 300}",0.0851135291531805,16,0.6334069002509758
+RF,多步直接预测,5,"{'max_depth': None, 'min_samples_leaf': 5, 'n_estimators': 500}",0.0692957408076075,1,0.6205967754735984
+RF,多步直接预测,5,"{'max_depth': 20, 'min_samples_leaf': 5, 'n_estimators': 500}",0.0692957408076075,2,0.6205967754735985
+RF,多步直接预测,5,"{'max_depth': 10, 'min_samples_leaf': 5, 'n_estimators': 500}",0.0693124032484684,3,0.6206092370894584
+RF,多步直接预测,5,"{'max_depth': 10, 'min_samples_leaf': 5, 'n_estimators': 300}",0.0678109560944619,4,0.6208844277892616
+RF,多步直接预测,5,"{'max_depth': 15, 'min_samples_leaf': 5, 'n_estimators': 500}",0.0696951296275913,5,0.6211561696229014
+RF,多步直接预测,5,"{'max_depth': None, 'min_samples_leaf': 5, 'n_estimators': 300}",0.0685595393969164,6,0.6213371835904818
+RF,多步直接预测,5,"{'max_depth': 20, 'min_samples_leaf': 5, 'n_estimators': 300}",0.0685595393969164,6,0.6213371835904818
+RF,多步直接预测,5,"{'max_depth': 15, 'min_samples_leaf': 5, 'n_estimators': 300}",0.0688104017457475,8,0.6217981415949255
+RF,多步直接预测,5,"{'max_depth': 10, 'min_samples_leaf': 1, 'n_estimators': 300}",0.0806322365860561,9,0.6556603913351595
+RF,多步直接预测,5,"{'max_depth': 20, 'min_samples_leaf': 1, 'n_estimators': 300}",0.0808231586826106,10,0.656883672487495
+RF,多步直接预测,5,"{'max_depth': 10, 'min_samples_leaf': 1, 'n_estimators': 500}",0.0814644120526061,11,0.6575296925664261
+RF,多步直接预测,5,"{'max_depth': 15, 'min_samples_leaf': 1, 'n_estimators': 300}",0.0811078705166181,12,0.6578440209272107
+RF,多步直接预测,5,"{'max_depth': 15, 'min_samples_leaf': 1, 'n_estimators': 500}",0.0813136569705231,13,0.6578721012906744
+RF,多步直接预测,5,"{'max_depth': None, 'min_samples_leaf': 1, 'n_estimators': 300}",0.0812412136259029,14,0.6584076775437259
+RF,多步直接预测,5,"{'max_depth': 20, 'min_samples_leaf': 1, 'n_estimators': 500}",0.0809158805722701,15,0.6586165179403686
+RF,多步直接预测,5,"{'max_depth': None, 'min_samples_leaf': 1, 'n_estimators': 500}",0.0819867415952971,16,0.6587510951995984
+RF,多步直接预测,6,"{'max_depth': None, 'min_samples_leaf': 5, 'n_estimators': 500}",0.0828839980851109,1,0.6596023392282705
+RF,多步直接预测,6,"{'max_depth': 20, 'min_samples_leaf': 5, 'n_estimators': 500}",0.082883998085111,1,0.6596023392282705
+RF,多步直接预测,6,"{'max_depth': 15, 'min_samples_leaf': 5, 'n_estimators': 500}",0.083140363618537,3,0.6596373596059033
+RF,多步直接预测,6,"{'max_depth': 15, 'min_samples_leaf': 5, 'n_estimators': 300}",0.0846842740107432,4,0.660261021449387
+RF,多步直接预测,6,"{'max_depth': 10, 'min_samples_leaf': 5, 'n_estimators': 500}",0.0838538637849078,5,0.6604405013770984
+RF,多步直接预测,6,"{'max_depth': None, 'min_samples_leaf': 5, 'n_estimators': 300}",0.0845402554881515,6,0.6605945304813772
+RF,多步直接预测,6,"{'max_depth': 20, 'min_samples_leaf': 5, 'n_estimators': 300}",0.0845402554881514,7,0.6605945304813773
+RF,多步直接预测,6,"{'max_depth': 10, 'min_samples_leaf': 5, 'n_estimators': 300}",0.0854542006984869,8,0.6619591616970419
+RF,多步直接预测,6,"{'max_depth': 10, 'min_samples_leaf': 1, 'n_estimators': 500}",0.0933753102030644,9,0.7015182745194092
+RF,多步直接预测,6,"{'max_depth': 15, 'min_samples_leaf': 1, 'n_estimators': 300}",0.0939543579656446,10,0.7018054330906986
+RF,多步直接预测,6,"{'max_depth': 15, 'min_samples_leaf': 1, 'n_estimators': 500}",0.0963679914451402,11,0.7024850892955765
+RF,多步直接预测,6,"{'max_depth': 10, 'min_samples_leaf': 1, 'n_estimators': 300}",0.0930110748044618,12,0.7049110240145194
+RF,多步直接预测,6,"{'max_depth': 20, 'min_samples_leaf': 1, 'n_estimators': 500}",0.0945073481191091,13,0.704912908907275
+RF,多步直接预测,6,"{'max_depth': None, 'min_samples_leaf': 1, 'n_estimators': 500}",0.0949432223727466,14,0.7051203651883817
+RF,多步直接预测,6,"{'max_depth': 20, 'min_samples_leaf': 1, 'n_estimators': 300}",0.0932442037855264,15,0.707220796660987
+RF,多步直接预测,6,"{'max_depth': None, 'min_samples_leaf': 1, 'n_estimators': 300}",0.0942888494065422,16,0.7078362427245648
+RF,多步直接预测,7,"{'max_depth': None, 'min_samples_leaf': 5, 'n_estimators': 500}",0.0867210294074448,1,0.6881348314839194
+RF,多步直接预测,7,"{'max_depth': 20, 'min_samples_leaf': 5, 'n_estimators': 500}",0.0867210294074448,1,0.6881348314839194
+RF,多步直接预测,7,"{'max_depth': 10, 'min_samples_leaf': 5, 'n_estimators': 500}",0.0864090862027146,3,0.6883091354664245
+RF,多步直接预测,7,"{'max_depth': 15, 'min_samples_leaf': 5, 'n_estimators': 500}",0.0872012588771077,4,0.6888070044109548
+RF,多步直接预测,7,"{'max_depth': None, 'min_samples_leaf': 5, 'n_estimators': 300}",0.0875505240895335,5,0.6895294810306699
+RF,多步直接预测,7,"{'max_depth': 20, 'min_samples_leaf': 5, 'n_estimators': 300}",0.0875505240895335,5,0.6895294810306699
+RF,多步直接预测,7,"{'max_depth': 15, 'min_samples_leaf': 5, 'n_estimators': 300}",0.0878610319500596,7,0.6899879470991239
+RF,多步直接预测,7,"{'max_depth': 10, 'min_samples_leaf': 5, 'n_estimators': 300}",0.0870695699439616,8,0.6908806837955977
+RF,多步直接预测,7,"{'max_depth': 15, 'min_samples_leaf': 1, 'n_estimators': 500}",0.0942535218263269,9,0.7264699548533501
+RF,多步直接预测,7,"{'max_depth': 20, 'min_samples_leaf': 1, 'n_estimators': 500}",0.0929737297797164,10,0.7271662778611802
+RF,多步直接预测,7,"{'max_depth': None, 'min_samples_leaf': 1, 'n_estimators': 500}",0.0925567576682679,11,0.7272336228975721
+RF,多步直接预测,7,"{'max_depth': 15, 'min_samples_leaf': 1, 'n_estimators': 300}",0.0974743929378329,12,0.7280937987839339
+RF,多步直接预测,7,"{'max_depth': 10, 'min_samples_leaf': 1, 'n_estimators': 500}",0.0911028430307769,13,0.7287006902379823
+RF,多步直接预测,7,"{'max_depth': 20, 'min_samples_leaf': 1, 'n_estimators': 300}",0.0948351488103639,14,0.7292358402320582
+RF,多步直接预测,7,"{'max_depth': None, 'min_samples_leaf': 1, 'n_estimators': 300}",0.0950239351515215,15,0.7294700716417379
+RF,多步直接预测,7,"{'max_depth': 10, 'min_samples_leaf': 1, 'n_estimators': 300}",0.0926733695044452,16,0.7326006705028535
+RF,多输出预测,1,"{'max_depth': 10, 'min_samples_leaf': 5, 'n_estimators': 300}",0.0535830044611011,1,0.5538459882505778
+RF,多输出预测,1,"{'max_depth': 15, 'min_samples_leaf': 5, 'n_estimators': 300}",0.0529311523357372,2,0.5540207976423276
+RF,多输出预测,1,"{'max_depth': None, 'min_samples_leaf': 5, 'n_estimators': 300}",0.0528964769518397,3,0.5541234365188755
+RF,多输出预测,1,"{'max_depth': 20, 'min_samples_leaf': 5, 'n_estimators': 300}",0.0528964769518397,3,0.5541234365188755
+RF,多输出预测,1,"{'max_depth': None, 'min_samples_leaf': 5, 'n_estimators': 500}",0.0536367196119583,5,0.5541596691770231
+RF,多输出预测,1,"{'max_depth': 20, 'min_samples_leaf': 5, 'n_estimators': 500}",0.0536367196119584,5,0.5541596691770231
+RF,多输出预测,1,"{'max_depth': 15, 'min_samples_leaf': 5, 'n_estimators': 500}",0.0533867197725983,7,0.5542254659920784
+RF,多输出预测,1,"{'max_depth': 10, 'min_samples_leaf': 5, 'n_estimators': 500}",0.0540977414288614,8,0.554537764882145
+RF,多输出预测,1,"{'max_depth': 20, 'min_samples_leaf': 1, 'n_estimators': 300}",0.0582683927177853,9,0.5821660199213904
+RF,多输出预测,1,"{'max_depth': 15, 'min_samples_leaf': 1, 'n_estimators': 300}",0.0592314453078916,10,0.5830686206546353
+RF,多输出预测,1,"{'max_depth': None, 'min_samples_leaf': 1, 'n_estimators': 300}",0.0578722972987275,11,0.5830741827620105
+RF,多输出预测,1,"{'max_depth': 10, 'min_samples_leaf': 1, 'n_estimators': 300}",0.0618673179176647,12,0.5839001793592032
+RF,多输出预测,1,"{'max_depth': 10, 'min_samples_leaf': 1, 'n_estimators': 500}",0.0614083998716314,13,0.5840297478873212
+RF,多输出预测,1,"{'max_depth': 20, 'min_samples_leaf': 1, 'n_estimators': 500}",0.0592422898056032,14,0.5844050941767266
+RF,多输出预测,1,"{'max_depth': 15, 'min_samples_leaf': 1, 'n_estimators': 500}",0.0603779567548676,15,0.5844986193642566
+RF,多输出预测,1,"{'max_depth': None, 'min_samples_leaf': 1, 'n_estimators': 500}",0.0589950822368766,16,0.5846799921865821
+RF,多输出预测,2,"{'max_depth': 10, 'min_samples_leaf': 5, 'n_estimators': 300}",0.0535830044611011,1,0.5538459882505778
+RF,多输出预测,2,"{'max_depth': 15, 'min_samples_leaf': 5, 'n_estimators': 300}",0.0529311523357372,2,0.5540207976423276
+RF,多输出预测,2,"{'max_depth': None, 'min_samples_leaf': 5, 'n_estimators': 300}",0.0528964769518397,3,0.5541234365188755
+RF,多输出预测,2,"{'max_depth': 20, 'min_samples_leaf': 5, 'n_estimators': 300}",0.0528964769518397,3,0.5541234365188755
+RF,多输出预测,2,"{'max_depth': None, 'min_samples_leaf': 5, 'n_estimators': 500}",0.0536367196119583,5,0.5541596691770231
+RF,多输出预测,2,"{'max_depth': 20, 'min_samples_leaf': 5, 'n_estimators': 500}",0.0536367196119584,5,0.5541596691770231
+RF,多输出预测,2,"{'max_depth': 15, 'min_samples_leaf': 5, 'n_estimators': 500}",0.0533867197725983,7,0.5542254659920784
+RF,多输出预测,2,"{'max_depth': 10, 'min_samples_leaf': 5, 'n_estimators': 500}",0.0540977414288614,8,0.554537764882145
+RF,多输出预测,2,"{'max_depth': 20, 'min_samples_leaf': 1, 'n_estimators': 300}",0.0582683927177853,9,0.5821660199213904
+RF,多输出预测,2,"{'max_depth': 15, 'min_samples_leaf': 1, 'n_estimators': 300}",0.0592314453078916,10,0.5830686206546353
+RF,多输出预测,2,"{'max_depth': None, 'min_samples_leaf': 1, 'n_estimators': 300}",0.0578722972987275,11,0.5830741827620105
+RF,多输出预测,2,"{'max_depth': 10, 'min_samples_leaf': 1, 'n_estimators': 300}",0.0618673179176647,12,0.5839001793592032
+RF,多输出预测,2,"{'max_depth': 10, 'min_samples_leaf': 1, 'n_estimators': 500}",0.0614083998716314,13,0.5840297478873212
+RF,多输出预测,2,"{'max_depth': 20, 'min_samples_leaf': 1, 'n_estimators': 500}",0.0592422898056032,14,0.5844050941767266
+RF,多输出预测,2,"{'max_depth': 15, 'min_samples_leaf': 1, 'n_estimators': 500}",0.0603779567548676,15,0.5844986193642566
+RF,多输出预测,2,"{'max_depth': None, 'min_samples_leaf': 1, 'n_estimators': 500}",0.0589950822368766,16,0.5846799921865821
+RF,多输出预测,3,"{'max_depth': 10, 'min_samples_leaf': 5, 'n_estimators': 300}",0.0535830044611011,1,0.5538459882505778
+RF,多输出预测,3,"{'max_depth': 15, 'min_samples_leaf': 5, 'n_estimators': 300}",0.0529311523357372,2,0.5540207976423276
+RF,多输出预测,3,"{'max_depth': None, 'min_samples_leaf': 5, 'n_estimators': 300}",0.0528964769518397,3,0.5541234365188755
+RF,多输出预测,3,"{'max_depth': 20, 'min_samples_leaf': 5, 'n_estimators': 300}",0.0528964769518397,3,0.5541234365188755
+RF,多输出预测,3,"{'max_depth': None, 'min_samples_leaf': 5, 'n_estimators': 500}",0.0536367196119583,5,0.5541596691770231
+RF,多输出预测,3,"{'max_depth': 20, 'min_samples_leaf': 5, 'n_estimators': 500}",0.0536367196119584,5,0.5541596691770231
+RF,多输出预测,3,"{'max_depth': 15, 'min_samples_leaf': 5, 'n_estimators': 500}",0.0533867197725983,7,0.5542254659920784
+RF,多输出预测,3,"{'max_depth': 10, 'min_samples_leaf': 5, 'n_estimators': 500}",0.0540977414288614,8,0.554537764882145
+RF,多输出预测,3,"{'max_depth': 20, 'min_samples_leaf': 1, 'n_estimators': 300}",0.0582683927177853,9,0.5821660199213904
+RF,多输出预测,3,"{'max_depth': 15, 'min_samples_leaf': 1, 'n_estimators': 300}",0.0592314453078916,10,0.5830686206546353
+RF,多输出预测,3,"{'max_depth': None, 'min_samples_leaf': 1, 'n_estimators': 300}",0.0578722972987275,11,0.5830741827620105
+RF,多输出预测,3,"{'max_depth': 10, 'min_samples_leaf': 1, 'n_estimators': 300}",0.0618673179176647,12,0.5839001793592032
+RF,多输出预测,3,"{'max_depth': 10, 'min_samples_leaf': 1, 'n_estimators': 500}",0.0614083998716314,13,0.5840297478873212
+RF,多输出预测,3,"{'max_depth': 20, 'min_samples_leaf': 1, 'n_estimators': 500}",0.0592422898056032,14,0.5844050941767266
+RF,多输出预测,3,"{'max_depth': 15, 'min_samples_leaf': 1, 'n_estimators': 500}",0.0603779567548676,15,0.5844986193642566
+RF,多输出预测,3,"{'max_depth': None, 'min_samples_leaf': 1, 'n_estimators': 500}",0.0589950822368766,16,0.5846799921865821
+RF,多输出预测,4,"{'max_depth': 10, 'min_samples_leaf': 5, 'n_estimators': 300}",0.0535830044611011,1,0.5538459882505778
+RF,多输出预测,4,"{'max_depth': 15, 'min_samples_leaf': 5, 'n_estimators': 300}",0.0529311523357372,2,0.5540207976423276
+RF,多输出预测,4,"{'max_depth': None, 'min_samples_leaf': 5, 'n_estimators': 300}",0.0528964769518397,3,0.5541234365188755
+RF,多输出预测,4,"{'max_depth': 20, 'min_samples_leaf': 5, 'n_estimators': 300}",0.0528964769518397,3,0.5541234365188755
+RF,多输出预测,4,"{'max_depth': None, 'min_samples_leaf': 5, 'n_estimators': 500}",0.0536367196119583,5,0.5541596691770231
+RF,多输出预测,4,"{'max_depth': 20, 'min_samples_leaf': 5, 'n_estimators': 500}",0.0536367196119584,5,0.5541596691770231
+RF,多输出预测,4,"{'max_depth': 15, 'min_samples_leaf': 5, 'n_estimators': 500}",0.0533867197725983,7,0.5542254659920784
+RF,多输出预测,4,"{'max_depth': 10, 'min_samples_leaf': 5, 'n_estimators': 500}",0.0540977414288614,8,0.554537764882145
+RF,多输出预测,4,"{'max_depth': 20, 'min_samples_leaf': 1, 'n_estimators': 300}",0.0582683927177853,9,0.5821660199213904
+RF,多输出预测,4,"{'max_depth': 15, 'min_samples_leaf': 1, 'n_estimators': 300}",0.0592314453078916,10,0.5830686206546353
+RF,多输出预测,4,"{'max_depth': None, 'min_samples_leaf': 1, 'n_estimators': 300}",0.0578722972987275,11,0.5830741827620105
+RF,多输出预测,4,"{'max_depth': 10, 'min_samples_leaf': 1, 'n_estimators': 300}",0.0618673179176647,12,0.5839001793592032
+RF,多输出预测,4,"{'max_depth': 10, 'min_samples_leaf': 1, 'n_estimators': 500}",0.0614083998716314,13,0.5840297478873212
+RF,多输出预测,4,"{'max_depth': 20, 'min_samples_leaf': 1, 'n_estimators': 500}",0.0592422898056032,14,0.5844050941767266
+RF,多输出预测,4,"{'max_depth': 15, 'min_samples_leaf': 1, 'n_estimators': 500}",0.0603779567548676,15,0.5844986193642566
+RF,多输出预测,4,"{'max_depth': None, 'min_samples_leaf': 1, 'n_estimators': 500}",0.0589950822368766,16,0.5846799921865821
+RF,多输出预测,5,"{'max_depth': 10, 'min_samples_leaf': 5, 'n_estimators': 300}",0.0535830044611011,1,0.5538459882505778
+RF,多输出预测,5,"{'max_depth': 15, 'min_samples_leaf': 5, 'n_estimators': 300}",0.0529311523357372,2,0.5540207976423276
+RF,多输出预测,5,"{'max_depth': None, 'min_samples_leaf': 5, 'n_estimators': 300}",0.0528964769518397,3,0.5541234365188755
+RF,多输出预测,5,"{'max_depth': 20, 'min_samples_leaf': 5, 'n_estimators': 300}",0.0528964769518397,3,0.5541234365188755
+RF,多输出预测,5,"{'max_depth': None, 'min_samples_leaf': 5, 'n_estimators': 500}",0.0536367196119583,5,0.5541596691770231
+RF,多输出预测,5,"{'max_depth': 20, 'min_samples_leaf': 5, 'n_estimators': 500}",0.0536367196119584,5,0.5541596691770231
+RF,多输出预测,5,"{'max_depth': 15, 'min_samples_leaf': 5, 'n_estimators': 500}",0.0533867197725983,7,0.5542254659920784
+RF,多输出预测,5,"{'max_depth': 10, 'min_samples_leaf': 5, 'n_estimators': 500}",0.0540977414288614,8,0.554537764882145
+RF,多输出预测,5,"{'max_depth': 20, 'min_samples_leaf': 1, 'n_estimators': 300}",0.0582683927177853,9,0.5821660199213904
+RF,多输出预测,5,"{'max_depth': 15, 'min_samples_leaf': 1, 'n_estimators': 300}",0.0592314453078916,10,0.5830686206546353
+RF,多输出预测,5,"{'max_depth': None, 'min_samples_leaf': 1, 'n_estimators': 300}",0.0578722972987275,11,0.5830741827620105
+RF,多输出预测,5,"{'max_depth': 10, 'min_samples_leaf': 1, 'n_estimators': 300}",0.0618673179176647,12,0.5839001793592032
+RF,多输出预测,5,"{'max_depth': 10, 'min_samples_leaf': 1, 'n_estimators': 500}",0.0614083998716314,13,0.5840297478873212
+RF,多输出预测,5,"{'max_depth': 20, 'min_samples_leaf': 1, 'n_estimators': 500}",0.0592422898056032,14,0.5844050941767266
+RF,多输出预测,5,"{'max_depth': 15, 'min_samples_leaf': 1, 'n_estimators': 500}",0.0603779567548676,15,0.5844986193642566
+RF,多输出预测,5,"{'max_depth': None, 'min_samples_leaf': 1, 'n_estimators': 500}",0.0589950822368766,16,0.5846799921865821
+RF,多输出预测,6,"{'max_depth': 10, 'min_samples_leaf': 5, 'n_estimators': 300}",0.0535830044611011,1,0.5538459882505778
+RF,多输出预测,6,"{'max_depth': 15, 'min_samples_leaf': 5, 'n_estimators': 300}",0.0529311523357372,2,0.5540207976423276
+RF,多输出预测,6,"{'max_depth': None, 'min_samples_leaf': 5, 'n_estimators': 300}",0.0528964769518397,3,0.5541234365188755
+RF,多输出预测,6,"{'max_depth': 20, 'min_samples_leaf': 5, 'n_estimators': 300}",0.0528964769518397,3,0.5541234365188755
+RF,多输出预测,6,"{'max_depth': None, 'min_samples_leaf': 5, 'n_estimators': 500}",0.0536367196119583,5,0.5541596691770231
+RF,多输出预测,6,"{'max_depth': 20, 'min_samples_leaf': 5, 'n_estimators': 500}",0.0536367196119584,5,0.5541596691770231
+RF,多输出预测,6,"{'max_depth': 15, 'min_samples_leaf': 5, 'n_estimators': 500}",0.0533867197725983,7,0.5542254659920784
+RF,多输出预测,6,"{'max_depth': 10, 'min_samples_leaf': 5, 'n_estimators': 500}",0.0540977414288614,8,0.554537764882145
+RF,多输出预测,6,"{'max_depth': 20, 'min_samples_leaf': 1, 'n_estimators': 300}",0.0582683927177853,9,0.5821660199213904
+RF,多输出预测,6,"{'max_depth': 15, 'min_samples_leaf': 1, 'n_estimators': 300}",0.0592314453078916,10,0.5830686206546353
+RF,多输出预测,6,"{'max_depth': None, 'min_samples_leaf': 1, 'n_estimators': 300}",0.0578722972987275,11,0.5830741827620105
+RF,多输出预测,6,"{'max_depth': 10, 'min_samples_leaf': 1, 'n_estimators': 300}",0.0618673179176647,12,0.5839001793592032
+RF,多输出预测,6,"{'max_depth': 10, 'min_samples_leaf': 1, 'n_estimators': 500}",0.0614083998716314,13,0.5840297478873212
+RF,多输出预测,6,"{'max_depth': 20, 'min_samples_leaf': 1, 'n_estimators': 500}",0.0592422898056032,14,0.5844050941767266
+RF,多输出预测,6,"{'max_depth': 15, 'min_samples_leaf': 1, 'n_estimators': 500}",0.0603779567548676,15,0.5844986193642566
+RF,多输出预测,6,"{'max_depth': None, 'min_samples_leaf': 1, 'n_estimators': 500}",0.0589950822368766,16,0.5846799921865821
+RF,多输出预测,7,"{'max_depth': 10, 'min_samples_leaf': 5, 'n_estimators': 300}",0.0535830044611011,1,0.5538459882505778
+RF,多输出预测,7,"{'max_depth': 15, 'min_samples_leaf': 5, 'n_estimators': 300}",0.0529311523357372,2,0.5540207976423276
+RF,多输出预测,7,"{'max_depth': None, 'min_samples_leaf': 5, 'n_estimators': 300}",0.0528964769518397,3,0.5541234365188755
+RF,多输出预测,7,"{'max_depth': 20, 'min_samples_leaf': 5, 'n_estimators': 300}",0.0528964769518397,3,0.5541234365188755
+RF,多输出预测,7,"{'max_depth': None, 'min_samples_leaf': 5, 'n_estimators': 500}",0.0536367196119583,5,0.5541596691770231
+RF,多输出预测,7,"{'max_depth': 20, 'min_samples_leaf': 5, 'n_estimators': 500}",0.0536367196119584,5,0.5541596691770231
+RF,多输出预测,7,"{'max_depth': 15, 'min_samples_leaf': 5, 'n_estimators': 500}",0.0533867197725983,7,0.5542254659920784
+RF,多输出预测,7,"{'max_depth': 10, 'min_samples_leaf': 5, 'n_estimators': 500}",0.0540977414288614,8,0.554537764882145
+RF,多输出预测,7,"{'max_depth': 20, 'min_samples_leaf': 1, 'n_estimators': 300}",0.0582683927177853,9,0.5821660199213904
+RF,多输出预测,7,"{'max_depth': 15, 'min_samples_leaf': 1, 'n_estimators': 300}",0.0592314453078916,10,0.5830686206546353
+RF,多输出预测,7,"{'max_depth': None, 'min_samples_leaf': 1, 'n_estimators': 300}",0.0578722972987275,11,0.5830741827620105
+RF,多输出预测,7,"{'max_depth': 10, 'min_samples_leaf': 1, 'n_estimators': 300}",0.0618673179176647,12,0.5839001793592032
+RF,多输出预测,7,"{'max_depth': 10, 'min_samples_leaf': 1, 'n_estimators': 500}",0.0614083998716314,13,0.5840297478873212
+RF,多输出预测,7,"{'max_depth': 20, 'min_samples_leaf': 1, 'n_estimators': 500}",0.0592422898056032,14,0.5844050941767266
+RF,多输出预测,7,"{'max_depth': 15, 'min_samples_leaf': 1, 'n_estimators': 500}",0.0603779567548676,15,0.5844986193642566
+RF,多输出预测,7,"{'max_depth': None, 'min_samples_leaf': 1, 'n_estimators': 500}",0.0589950822368766,16,0.5846799921865821
+ANN,多步直接预测,1,"{'alpha': 0.01, 'hidden_layer_sizes': (64, 32), 'learning_rate_init': 0.01}",0.07194318515297957,1,0.43764532112981697
+ANN,多步直接预测,1,"{'alpha': 1e-05, 'hidden_layer_sizes': (64, 32), 'learning_rate_init': 0.001}",0.06207014306374926,2,0.44318876815604175
+ANN,多步直接预测,1,"{'alpha': 0.01, 'hidden_layer_sizes': (64,), 'learning_rate_init': 0.001}",0.08242697224432045,3,0.4453462195192756
+ANN,多步直接预测,1,"{'alpha': 0.01, 'hidden_layer_sizes': (64, 32), 'learning_rate_init': 0.001}",0.062037016157233664,4,0.4468606963735644
+ANN,多步直接预测,1,"{'alpha': 0.01, 'hidden_layer_sizes': (128,), 'learning_rate_init': 0.001}",0.11087089047338698,5,0.4491072299060614
+ANN,多步直接预测,1,"{'alpha': 1e-05, 'hidden_layer_sizes': (128,), 'learning_rate_init': 0.001}",0.11107394869857697,6,0.4495468579145611
+ANN,多步直接预测,1,"{'alpha': 1e-05, 'hidden_layer_sizes': (64,), 'learning_rate_init': 0.001}",0.0847242348402886,7,0.44959761582497687
+ANN,多步直接预测,1,"{'alpha': 0.01, 'hidden_layer_sizes': (128,), 'learning_rate_init': 0.01}",0.1276274736273126,8,0.4619637114274711
+ANN,多步直接预测,1,"{'alpha': 1e-05, 'hidden_layer_sizes': (64,), 'learning_rate_init': 0.01}",0.11402557868394202,9,0.4641233896138495
+ANN,多步直接预测,1,"{'alpha': 1e-05, 'hidden_layer_sizes': (64, 32), 'learning_rate_init': 0.01}",0.07314875118571082,10,0.46475962884298805
+ANN,多步直接预测,1,"{'alpha': 0.01, 'hidden_layer_sizes': (64,), 'learning_rate_init': 0.01}",0.12869856167439864,11,0.4704299304904935
+ANN,多步直接预测,1,"{'alpha': 1e-05, 'hidden_layer_sizes': (128,), 'learning_rate_init': 0.01}",0.1342481637962374,12,0.4793902033106375
+ANN,多步直接预测,2,"{'alpha': 1e-05, 'hidden_layer_sizes': (128,), 'learning_rate_init': 0.01}",0.17064984558774238,1,0.6510778564955878
+ANN,多步直接预测,2,"{'alpha': 0.01, 'hidden_layer_sizes': (128,), 'learning_rate_init': 0.001}",0.14912738571531442,2,0.6550996987501604
+ANN,多步直接预测,2,"{'alpha': 0.01, 'hidden_layer_sizes': (64,), 'learning_rate_init': 0.001}",0.12558305955256618,3,0.6565715902387842
+ANN,多步直接预测,2,"{'alpha': 1e-05, 'hidden_layer_sizes': (64,), 'learning_rate_init': 0.001}",0.12586455966652318,4,0.6567046702181575
+ANN,多步直接预测,2,"{'alpha': 0.01, 'hidden_layer_sizes': (128,), 'learning_rate_init': 0.01}",0.18971464168691468,5,0.6744382319653187
+ANN,多步直接预测,2,"{'alpha': 1e-05, 'hidden_layer_sizes': (128,), 'learning_rate_init': 0.001}",0.17838093710230857,6,0.686318356205447
+ANN,多步直接预测,2,"{'alpha': 1e-05, 'hidden_layer_sizes': (64,), 'learning_rate_init': 0.01}",0.18574186622228356,7,0.6907190484947883
+ANN,多步直接预测,2,"{'alpha': 0.01, 'hidden_layer_sizes': (64, 32), 'learning_rate_init': 0.01}",0.21232527131329443,8,0.6928724473879897
+ANN,多步直接预测,2,"{'alpha': 0.01, 'hidden_layer_sizes': (64, 32), 'learning_rate_init': 0.001}",0.15423877293862825,9,0.7095152899303584
+ANN,多步直接预测,2,"{'alpha': 0.01, 'hidden_layer_sizes': (64,), 'learning_rate_init': 0.01}",0.16994328470085826,10,0.7099952852541889
+ANN,多步直接预测,2,"{'alpha': 1e-05, 'hidden_layer_sizes': (64, 32), 'learning_rate_init': 0.01}",0.22260539457215767,11,0.7148927539179564
+ANN,多步直接预测,2,"{'alpha': 1e-05, 'hidden_layer_sizes': (64, 32), 'learning_rate_init': 0.001}",0.14417427096998436,12,0.7176380455456134
+ANN,多步直接预测,3,"{'alpha': 0.01, 'hidden_layer_sizes': (128,), 'learning_rate_init': 0.01}",0.10255408771952763,1,0.7301770989451973
+ANN,多步直接预测,3,"{'alpha': 1e-05, 'hidden_layer_sizes': (64, 32), 'learning_rate_init': 0.001}",0.16064796133271303,2,0.7371614156492523
+ANN,多步直接预测,3,"{'alpha': 1e-05, 'hidden_layer_sizes': (128,), 'learning_rate_init': 0.01}",0.08913242829275334,3,0.7377476505852614
+ANN,多步直接预测,3,"{'alpha': 1e-05, 'hidden_layer_sizes': (64,), 'learning_rate_init': 0.01}",0.15304582637993733,4,0.7413867959249085
+ANN,多步直接预测,3,"{'alpha': 0.01, 'hidden_layer_sizes': (128,), 'learning_rate_init': 0.001}",0.12097266857470422,5,0.747725856490662
+ANN,多步直接预测,3,"{'alpha': 1e-05, 'hidden_layer_sizes': (64, 32), 'learning_rate_init': 0.01}",0.16278927035965718,6,0.7536985762115992
+ANN,多步直接预测,3,"{'alpha': 1e-05, 'hidden_layer_sizes': (128,), 'learning_rate_init': 0.001}",0.12299439944595983,7,0.7537065785900978
+ANN,多步直接预测,3,"{'alpha': 0.01, 'hidden_layer_sizes': (64, 32), 'learning_rate_init': 0.001}",0.15839269086720772,8,0.7651724621979269
+ANN,多步直接预测,3,"{'alpha': 1e-05, 'hidden_layer_sizes': (64,), 'learning_rate_init': 0.001}",0.15325812177569795,9,0.775498020711669
+ANN,多步直接预测,3,"{'alpha': 0.01, 'hidden_layer_sizes': (64,), 'learning_rate_init': 0.01}",0.21895383511796568,10,0.7771062970757997
+ANN,多步直接预测,3,"{'alpha': 0.01, 'hidden_layer_sizes': (64,), 'learning_rate_init': 0.001}",0.16015038394587258,11,0.782102178416506
+ANN,多步直接预测,3,"{'alpha': 0.01, 'hidden_layer_sizes': (64, 32), 'learning_rate_init': 0.01}",0.16406337064345353,12,0.8092299097236259
+ANN,多步直接预测,4,"{'alpha': 0.01, 'hidden_layer_sizes': (128,), 'learning_rate_init': 0.01}",0.08800604140266755,1,0.757742714238395
+ANN,多步直接预测,4,"{'alpha': 1e-05, 'hidden_layer_sizes': (64,), 'learning_rate_init': 0.01}",0.12094793031608497,2,0.7648244769612725
+ANN,多步直接预测,4,"{'alpha': 0.01, 'hidden_layer_sizes': (128,), 'learning_rate_init': 0.001}",0.12027834834451935,3,0.7651288364245518
+ANN,多步直接预测,4,"{'alpha': 1e-05, 'hidden_layer_sizes': (128,), 'learning_rate_init': 0.001}",0.12105741996612075,4,0.7685476458911514
+ANN,多步直接预测,4,"{'alpha': 0.01, 'hidden_layer_sizes': (64, 32), 'learning_rate_init': 0.001}",0.11843854159310792,5,0.7774635198742358
+ANN,多步直接预测,4,"{'alpha': 1e-05, 'hidden_layer_sizes': (64, 32), 'learning_rate_init': 0.001}",0.12159170025900287,6,0.7899764912248758
+ANN,多步直接预测,4,"{'alpha': 1e-05, 'hidden_layer_sizes': (128,), 'learning_rate_init': 0.01}",0.1327264505590042,7,0.7955849600270771
+ANN,多步直接预测,4,"{'alpha': 0.01, 'hidden_layer_sizes': (64, 32), 'learning_rate_init': 0.01}",0.12195892473453299,8,0.7969327509350994
+ANN,多步直接预测,4,"{'alpha': 0.01, 'hidden_layer_sizes': (64,), 'learning_rate_init': 0.01}",0.1407564862415594,9,0.8108543060222156
+ANN,多步直接预测,4,"{'alpha': 0.01, 'hidden_layer_sizes': (64,), 'learning_rate_init': 0.001}",0.14591809279857765,10,0.8164625139764712
+ANN,多步直接预测,4,"{'alpha': 1e-05, 'hidden_layer_sizes': (64, 32), 'learning_rate_init': 0.01}",0.1256838846599064,11,0.8233540249383079
+ANN,多步直接预测,4,"{'alpha': 1e-05, 'hidden_layer_sizes': (64,), 'learning_rate_init': 0.001}",0.15637993290759894,12,0.8311188846945171
+ANN,多步直接预测,5,"{'alpha': 0.01, 'hidden_layer_sizes': (128,), 'learning_rate_init': 0.01}",0.1519236649772413,1,0.789712212923258
+ANN,多步直接预测,5,"{'alpha': 0.01, 'hidden_layer_sizes': (64, 32), 'learning_rate_init': 0.001}",0.15093840470769143,2,0.7973358784712009
+ANN,多步直接预测,5,"{'alpha': 0.01, 'hidden_layer_sizes': (64, 32), 'learning_rate_init': 0.01}",0.13920226810577854,3,0.7986646528793653
+ANN,多步直接预测,5,"{'alpha': 1e-05, 'hidden_layer_sizes': (128,), 'learning_rate_init': 0.01}",0.14982930332025246,4,0.8063967250006198
+ANN,多步直接预测,5,"{'alpha': 1e-05, 'hidden_layer_sizes': (64, 32), 'learning_rate_init': 0.001}",0.16210187726651162,5,0.8075198928887569
+ANN,多步直接预测,5,"{'alpha': 1e-05, 'hidden_layer_sizes': (64,), 'learning_rate_init': 0.01}",0.14614462928676486,6,0.8165651536792136
+ANN,多步直接预测,5,"{'alpha': 0.01, 'hidden_layer_sizes': (64,), 'learning_rate_init': 0.001}",0.14704892737321365,7,0.8352047612747572
+ANN,多步直接预测,5,"{'alpha': 0.01, 'hidden_layer_sizes': (128,), 'learning_rate_init': 0.001}",0.16199610866812525,8,0.8362507430958753
+ANN,多步直接预测,5,"{'alpha': 1e-05, 'hidden_layer_sizes': (128,), 'learning_rate_init': 0.001}",0.16143658086765064,9,0.8391044796044783
+ANN,多步直接预测,5,"{'alpha': 1e-05, 'hidden_layer_sizes': (64,), 'learning_rate_init': 0.001}",0.15932370918241737,10,0.8564290151546929
+ANN,多步直接预测,5,"{'alpha': 0.01, 'hidden_layer_sizes': (64,), 'learning_rate_init': 0.01}",0.1641220400683922,11,0.8632014415351589
+ANN,多步直接预测,5,"{'alpha': 1e-05, 'hidden_layer_sizes': (64, 32), 'learning_rate_init': 0.01}",0.16958897787373894,12,0.8763902165753894
+ANN,多步直接预测,6,"{'alpha': 0.01, 'hidden_layer_sizes': (64, 32), 'learning_rate_init': 0.01}",0.1129511505453001,1,0.795141416385221
+ANN,多步直接预测,6,"{'alpha': 1e-05, 'hidden_layer_sizes': (64, 32), 'learning_rate_init': 0.001}",0.12887094115869832,2,0.8295445669680245
+ANN,多步直接预测,6,"{'alpha': 0.01, 'hidden_layer_sizes': (128,), 'learning_rate_init': 0.001}",0.16518216784374667,3,0.8297918516452004
+ANN,多步直接预测,6,"{'alpha': 1e-05, 'hidden_layer_sizes': (128,), 'learning_rate_init': 0.001}",0.16514294497019608,4,0.8305465313376273
+ANN,多步直接预测,6,"{'alpha': 0.01, 'hidden_layer_sizes': (64, 32), 'learning_rate_init': 0.001}",0.13583132933206454,5,0.8357005489453474
+ANN,多步直接预测,6,"{'alpha': 1e-05, 'hidden_layer_sizes': (64,), 'learning_rate_init': 0.001}",0.12602287782197744,6,0.8445528894684132
+ANN,多步直接预测,6,"{'alpha': 1e-05, 'hidden_layer_sizes': (64, 32), 'learning_rate_init': 0.01}",0.14426851357752085,7,0.845224557106771
+ANN,多步直接预测,6,"{'alpha': 0.01, 'hidden_layer_sizes': (64,), 'learning_rate_init': 0.001}",0.13455129294554147,8,0.8546422336857598
+ANN,多步直接预测,6,"{'alpha': 0.01, 'hidden_layer_sizes': (64,), 'learning_rate_init': 0.01}",0.177715849417479,9,0.8585813182627843
+ANN,多步直接预测,6,"{'alpha': 1e-05, 'hidden_layer_sizes': (64,), 'learning_rate_init': 0.01}",0.19392999098997565,10,0.8609887426991985
+ANN,多步直接预测,6,"{'alpha': 0.01, 'hidden_layer_sizes': (128,), 'learning_rate_init': 0.01}",0.17335534647127573,11,0.8647429556036762
+ANN,多步直接预测,6,"{'alpha': 1e-05, 'hidden_layer_sizes': (128,), 'learning_rate_init': 0.01}",0.180625194678365,12,0.8882000572840903
+ANN,多步直接预测,7,"{'alpha': 0.01, 'hidden_layer_sizes': (64, 32), 'learning_rate_init': 0.001}",0.09121835445696738,1,0.8075656113309075
+ANN,多步直接预测,7,"{'alpha': 1e-05, 'hidden_layer_sizes': (64, 32), 'learning_rate_init': 0.001}",0.09761301917883948,2,0.8164838510791492
+ANN,多步直接预测,7,"{'alpha': 0.01, 'hidden_layer_sizes': (128,), 'learning_rate_init': 0.01}",0.08631253735791254,3,0.8365571555722834
+ANN,多步直接预测,7,"{'alpha': 1e-05, 'hidden_layer_sizes': (128,), 'learning_rate_init': 0.01}",0.0879146601772665,4,0.8441001222624497
+ANN,多步直接预测,7,"{'alpha': 0.01, 'hidden_layer_sizes': (64,), 'learning_rate_init': 0.01}",0.13734925416755164,5,0.8668944379985319
+ANN,多步直接预测,7,"{'alpha': 1e-05, 'hidden_layer_sizes': (64, 32), 'learning_rate_init': 0.01}",0.12911279964819003,6,0.8726681755808846
+ANN,多步直接预测,7,"{'alpha': 0.01, 'hidden_layer_sizes': (64,), 'learning_rate_init': 0.001}",0.15132112150379773,7,0.8819660231898258
+ANN,多步直接预测,7,"{'alpha': 0.01, 'hidden_layer_sizes': (64, 32), 'learning_rate_init': 0.01}",0.16109192633182526,8,0.8825528796443475
+ANN,多步直接预测,7,"{'alpha': 1e-05, 'hidden_layer_sizes': (64,), 'learning_rate_init': 0.001}",0.1612169963590405,9,0.8825575288188547
+ANN,多步直接预测,7,"{'alpha': 1e-05, 'hidden_layer_sizes': (64,), 'learning_rate_init': 0.01}",0.1759393529013695,10,0.8990558124672304
+ANN,多步直接预测,7,"{'alpha': 1e-05, 'hidden_layer_sizes': (128,), 'learning_rate_init': 0.001}",0.14393405055264372,11,0.9207403214061648
+ANN,多步直接预测,7,"{'alpha': 0.01, 'hidden_layer_sizes': (128,), 'learning_rate_init': 0.001}",0.14506335742027865,12,0.9210380299791311

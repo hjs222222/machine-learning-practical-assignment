@@ -1,0 +1,29 @@
+﻿模型,策略,预见期,最优参数,CV均值RMSE(标准化目标),CV标准差
+ANN,多步直接预测,1,"{'alpha': 0.01, 'hidden_layer_sizes': (64, 32), 'learning_rate_init': 0.01}",0.43764532112981697,0.07194318515297957
+ANN,多步直接预测,2,"{'alpha': 1e-05, 'hidden_layer_sizes': (128,), 'learning_rate_init': 0.01}",0.6510778564955878,0.17064984558774238
+ANN,多步直接预测,3,"{'alpha': 0.01, 'hidden_layer_sizes': (128,), 'learning_rate_init': 0.01}",0.7301770989451973,0.10255408771952763
+ANN,多步直接预测,4,"{'alpha': 0.01, 'hidden_layer_sizes': (128,), 'learning_rate_init': 0.01}",0.757742714238395,0.08800604140266755
+ANN,多步直接预测,5,"{'alpha': 0.01, 'hidden_layer_sizes': (128,), 'learning_rate_init': 0.01}",0.789712212923258,0.1519236649772413
+ANN,多步直接预测,6,"{'alpha': 0.01, 'hidden_layer_sizes': (64, 32), 'learning_rate_init': 0.01}",0.795141416385221,0.1129511505453001
+ANN,多步直接预测,7,"{'alpha': 0.01, 'hidden_layer_sizes': (64, 32), 'learning_rate_init': 0.001}",0.8075656113309075,0.09121835445696738
+ANN,多输出预测,1,"{'alpha': 1e-05, 'hidden_layer_sizes': (128,), 'learning_rate_init': 0.0005}",0.6801791449249647,0.088762718371129
+ANN,多输出预测,2,"{'alpha': 1e-05, 'hidden_layer_sizes': (128,), 'learning_rate_init': 0.0005}",0.6801791449249647,0.088762718371129
+ANN,多输出预测,3,"{'alpha': 1e-05, 'hidden_layer_sizes': (128,), 'learning_rate_init': 0.0005}",0.6801791449249647,0.088762718371129
+ANN,多输出预测,4,"{'alpha': 1e-05, 'hidden_layer_sizes': (128,), 'learning_rate_init': 0.0005}",0.6801791449249647,0.088762718371129
+ANN,多输出预测,5,"{'alpha': 1e-05, 'hidden_layer_sizes': (128,), 'learning_rate_init': 0.0005}",0.6801791449249647,0.088762718371129
+ANN,多输出预测,6,"{'alpha': 1e-05, 'hidden_layer_sizes': (128,), 'learning_rate_init': 0.0005}",0.6801791449249647,0.088762718371129
+ANN,多输出预测,7,"{'alpha': 1e-05, 'hidden_layer_sizes': (128,), 'learning_rate_init': 0.0005}",0.6801791449249647,0.088762718371129
+RF,多步直接预测,1,"{'max_depth': 15, 'min_samples_leaf': 5, 'n_estimators': 500}",0.3136790782226019,0.0282540488310134
+RF,多步直接预测,2,"{'max_depth': 10, 'min_samples_leaf': 5, 'n_estimators': 300}",0.4471206614521803,0.0334217944400572
+RF,多步直接预测,3,"{'max_depth': 10, 'min_samples_leaf': 5, 'n_estimators': 300}",0.5247825505577787,0.0399301711657555
+RF,多步直接预测,4,"{'max_depth': 10, 'min_samples_leaf': 5, 'n_estimators': 500}",0.581109055151556,0.052781440916084
+RF,多步直接预测,5,"{'max_depth': None, 'min_samples_leaf': 5, 'n_estimators': 500}",0.6205967754735984,0.0692957408076075
+RF,多步直接预测,6,"{'max_depth': None, 'min_samples_leaf': 5, 'n_estimators': 500}",0.6596023392282705,0.0828839980851109
+RF,多步直接预测,7,"{'max_depth': None, 'min_samples_leaf': 5, 'n_estimators': 500}",0.6881348314839194,0.0867210294074448
+RF,多输出预测,1,"{'max_depth': 10, 'min_samples_leaf': 5, 'n_estimators': 300}",0.5538459882505778,0.0535830044611011
+RF,多输出预测,2,"{'max_depth': 10, 'min_samples_leaf': 5, 'n_estimators': 300}",0.5538459882505778,0.0535830044611011
+RF,多输出预测,3,"{'max_depth': 10, 'min_samples_leaf': 5, 'n_estimators': 300}",0.5538459882505778,0.0535830044611011
+RF,多输出预测,4,"{'max_depth': 10, 'min_samples_leaf': 5, 'n_estimators': 300}",0.5538459882505778,0.0535830044611011
+RF,多输出预测,5,"{'max_depth': 10, 'min_samples_leaf': 5, 'n_estimators': 300}",0.5538459882505778,0.0535830044611011
+RF,多输出预测,6,"{'max_depth': 10, 'min_samples_leaf': 5, 'n_estimators': 300}",0.5538459882505778,0.0535830044611011
+RF,多输出预测,7,"{'max_depth': 10, 'min_samples_leaf': 5, 'n_estimators': 300}",0.5538459882505778,0.0535830044611011
