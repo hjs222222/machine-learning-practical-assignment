@@ -1,0 +1,215 @@
+﻿
+##########################################################################
+#  《机器学习课程实践》基于机器学习的径流预测 —— 全流程运行
+##########################################################################
+数据文件：C:\Users\1\Desktop\machine-learning-practical-assignment\01047000.csv
+输出目录：C:\Users\1\Desktop\machine-learning-practical-assignment\output
+
+##########################################################################
+#  第一部分  数据分析
+##########################################################################
+======================================================================
+第一部分  数据分析
+======================================================================
+中文字体：Microsoft YaHei
+数据规模：1827 行 × 9 列，时间范围 2000-01-01 ~ 2004-12-31
+
+【数据概况】
+       字段   中文含义     单位        均值      标准差      最小值      最大值     偏度     峰度
+Discharge 径流（流量） ft^3/s   610.893 1058.836    29.00 13700.00  4.958 35.939
+     Dayl   日照时长  s/day 43186.740 8526.610 30791.53 55608.45  0.002 -1.452
+     Prcp    降水量 mm/day     2.857    6.243     0.00    64.12  3.542 16.989
+     Srad   短波辐射  W/m^2   316.161  141.349    37.00   698.35  0.328 -0.667
+      Swe   雪水当量 kg/m^2     0.000    0.000     0.00     0.00  0.000  0.000
+     Tmax   最高气温   degC    10.223   11.745   -25.38    34.07 -0.183 -0.932
+     Tmin   最低气温   degC    -1.636   10.994   -30.71    19.06 -0.423 -0.601
+       Vp    水汽压     Pa   693.915  472.816    40.00  2212.91  0.729 -0.271
+
+[注意] 常量列（无信息量，将在特征工程中剔除）：['Swe']
+
+【与径流的皮尔逊相关系数】
+Prcp    0.430596
+Dayl    0.041869
+Srad    0.037774
+Tmin   -0.006689
+Tmax   -0.039859
+Vp     -0.096974
+[figure] C:\Users\1\Desktop\machine-learning-practical-assignment\output\figures\fig1_时间序列.png
+[figure] C:\Users\1\Desktop\machine-learning-practical-assignment\output\figures\fig2_年内分布.png
+[figure] C:\Users\1\Desktop\machine-learning-practical-assignment\output\figures\fig3_直方图.png
+[figure] C:\Users\1\Desktop\machine-learning-practical-assignment\output\figures\fig4_箱型图.png
+[figure] C:\Users\1\Desktop\machine-learning-practical-assignment\output\figures\fig5_相关系数热力图.png
+[figure] C:\Users\1\Desktop\machine-learning-practical-assignment\output\figures\fig6_滞后相关.png
+
+第一部分完成，图表已保存至 output/figures/
+
+##########################################################################
+#  第二部分  特征工程
+##########################################################################
+
+======================================================================
+第二部分  特征工程
+======================================================================
+  特征构造：原始 1827 天 -> 有效 1797 天（前 30 天因滞后/窗口特征缺测被剔除）
+  自变量个数：81（剔除常量列 ['Swe']）
+
+【1. 时间序列特征提取】
+    季节/月份编码     :   8 个
+    滞后特征        :  36 个
+    窗口特征        :  25 个
+    派生气象特征      :   6 个
+    原始气象因子      :   6 个
+
+【2. 特征归一化】
+[figure] C:\Users\1\Desktop\machine-learning-practical-assignment\output\figures\fig7_归一化对比.png
+ 归一化方法   变换后最小值     变换后最大值    变换后均值    变换后标准差 是否受量纲影响         是否受异常值影响
+  原始数据 -30.0800 55608.4500 791.5170 4918.2520       是                是
+MinMax   0.0000     1.0000   0.2949    0.2926       否 是（min/max 由极值决定）
+ZScore  -2.7072    12.2824   0.0000    1.0000       否      较小（由均值方差决定）
+
+【3. 特征选择】
+  特征选择：共 81 个候选特征，按互信息法保留前 50 个
+  互信息 Top10：['Discharge_roll3_max', 'Discharge_roll3_mean', 'Discharge_lag1', 'Discharge_roll7_max', 'Discharge_lag2', 'Discharge_roll7_mean', 'Discharge_roll14_max', 'Discharge_lag3', 'Discharge_roll14_mean', 'Discharge_roll30_max']
+[figure] C:\Users\1\Desktop\machine-learning-practical-assignment\output\figures\fig8_特征选择.png
+[figure] C:\Users\1\Desktop\machine-learning-practical-assignment\output\figures\fig9_特征类别贡献.png
+[figure] C:\Users\1\Desktop\machine-learning-practical-assignment\output\figures\fig10_特征散点.png
+
+第二部分完成
+
+##########################################################################
+#  第三部分  径流多步预测
+##########################################################################
+
+======================================================================
+第三部分  径流多步预测
+======================================================================
+特征数：50   序列长度(LSTM)：30
+训练期：2000-02-29 ~ 2003-12-31（1402 天）
+测试期：2004-01-01 ~ 2004-12-31（366 天）
+评估起始日：359 天（2004-01-01 ~ 2004-12-24）
+
+【1. 个体模型训练（含 GridSearchCV 超参数寻优）】
+
+  --- 人工神经网络 (ANN/MLP) × 多步直接预测 ---
+    [直接] ANN   h=1  训练样本=1401  最优=alpha=1e-05, hidden_layer_sizes=(128,), lea...   用时   70.5s
+    [直接] ANN   h=2  训练样本=1400  最优=alpha=0.01, hidden_layer_sizes=(128,), lear...   用时   94.1s
+    [直接] ANN   h=3  训练样本=1399  最优=alpha=1e-05, hidden_layer_sizes=(128, 64), ...   用时   95.1s
+    [直接] ANN   h=4  训练样本=1398  最优=alpha=0.01, hidden_layer_sizes=(128,), lear...   用时   93.0s
+    [直接] ANN   h=5  训练样本=1397  最优=alpha=0.0001, hidden_layer_sizes=(128,), le...   用时   93.6s
+    [直接] ANN   h=6  训练样本=1396  最优=alpha=0.0001, hidden_layer_sizes=(128, 64),...   用时  104.9s
+    [直接] ANN   h=7  训练样本=1395  最优=alpha=0.01, hidden_layer_sizes=(128,), lear...   用时  106.6s
+
+  --- 人工神经网络 (ANN/MLP) × 多输出预测 ---
+    [多输出] ANN   训练样本=1395  最优=alpha=0.01, hidden_layer_sizes=(64,), learn...   用时  184.5s
+
+  --- 随机森林 (RF) × 多步直接预测 ---
+    [直接] RF    h=1  训练样本=1401  最优=max_depth=10, min_samples_leaf=5, n_estimat...   用时  120.3s
+    [直接] RF    h=2  训练样本=1400  最优=max_depth=12, min_samples_leaf=5, n_estimat...   用时  115.9s
+    [直接] RF    h=3  训练样本=1399  最优=max_depth=10, min_samples_leaf=5, n_estimat...   用时  118.4s
+    [直接] RF    h=4  训练样本=1398  最优=max_depth=None, min_samples_leaf=5, n_estim...   用时  114.1s
+    [直接] RF    h=5  训练样本=1397  最优=max_depth=15, min_samples_leaf=5, n_estimat...   用时  113.8s
+    [直接] RF    h=6  训练样本=1396  最优=max_depth=10, min_samples_leaf=5, n_estimat...   用时  113.1s
+    [直接] RF    h=7  训练样本=1395  最优=max_depth=10, min_samples_leaf=5, n_estimat...   用时  112.3s
+
+  --- 随机森林 (RF) × 多输出预测 ---
+    [多输出] RF    训练样本=1395  最优=max_depth=10, min_samples_leaf=5, n_estimat...   用时  115.7s
+D:\ml_venv\Scripts\python.exe : WARNING: All log messages before absl::InitializeLog() is called are written to STDERR
+所在位置 行:1 字符: 100
++ ... _LEVEL='3'; D:\ml_venv\Scripts\python.exe run_all.py *> "..\output\ru ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (WARNING: All lo...itten to STDERR:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+I0000 00:00:1789967791.336877   30792 port.cc:153] oneDNN custom operations are on. You may see slightly different nume
+rical results due to floating-point round-off errors from different computation orders. To turn them off, set the envir
+onment variable `TF_ENABLE_ONEDNN_OPTS=0`.
+WARNING: All log messages before absl::InitializeLog() is called are written to STDERR
+I0000 00:00:1789967800.037269   30792 port.cc:153] oneDNN custom operations are on. You may see slightly different nume
+rical results due to floating-point round-off errors from different computation orders. To turn them off, set the envir
+onment variable `TF_ENABLE_ONEDNN_OPTS=0`.
+
+  --- 长短期记忆网络 (LSTM) × 多步直接预测 ---
+WARNING:tensorflow:TensorFlow GPU support is not available on native Windows for TensorFlow >= 2.11. Even if CUDA/cuDNN
+ are installed, GPU will not be used. Please use WSL2 or the TensorFlow-DirectML plugin.
+    [直接] LSTM  h=1  训练样本=1401  最优=dropout=0.2, epochs=60, lr=0.001, units=(64,)    用时 1305.4s
+    [直接] LSTM  h=2  训练样本=1400  最优=dropout=0.3, epochs=60, lr=0.001, units=(32,)    用时 1290.0s
+    [直接] LSTM  h=3  训练样本=1399  最优=dropout=0.3, epochs=60, lr=0.001, units=(32,)    用时 1294.3s
+    [直接] LSTM  h=4  训练样本=1398  最优=dropout=0.2, epochs=60, lr=0.001, units=(32,)    用时 1372.1s
+    [直接] LSTM  h=5  训练样本=1397  最优=dropout=0.2, epochs=60, lr=0.001, units=(32,)    用时 1195.0s
+    [直接] LSTM  h=6  训练样本=1396  最优=dropout=0.3, epochs=60, lr=0.005, units=(64...   用时 1291.4s
+    [直接] LSTM  h=7  训练样本=1395  最优=dropout=0.3, epochs=60, lr=0.001, units=(64...   用时 1267.9s
+
+  --- 长短期记忆网络 (LSTM) × 多输出预测 ---
+    [多输出] LSTM  训练样本=1395  最优=dropout=0.3, epochs=60, lr=0.005, units=(32,)    用时 1455.1s
+
+【2. 集成学习模型】
+
+  --- 多步直接预测 ---
+    [集成] 简单平均 —— 对 3 个个体模型的预测取算术平均
+    [Stacking-direct] h=1 元学习器系数=[ 0.354  0.83  -0.139] 截距=-0.0410
+    [Stacking-direct] h=2 元学习器系数=[ 0.141  0.962 -0.063] 截距=-0.0849
+    [Stacking-direct] h=3 元学习器系数=[ 0.047  1.061 -0.039] 截距=-0.0951
+    [Stacking-direct] h=4 元学习器系数=[ 0.129  0.981 -0.043] 截距=-0.0929
+    [Stacking-direct] h=5 元学习器系数=[ 0.161  0.952 -0.067] 截距=-0.1056
+    [Stacking-direct] h=6 元学习器系数=[0.14  0.703 0.234] 截距=-0.0949
+    [Stacking-direct] h=7 元学习器系数=[0.116 0.803 0.105] 截距=-0.1029
+
+  --- 多输出预测 ---
+    [集成] 简单平均 —— 对 3 个个体模型的预测取算术平均
+    [Stacking-multi] h=1 元学习器系数=[ 0.466  0.826 -0.289] 截距=-0.0889
+    [Stacking-multi] h=2 元学习器系数=[ 0.309  0.95  -0.229] 截距=-0.0706
+    [Stacking-multi] h=3 元学习器系数=[ 0.212  1.087 -0.286] 截距=-0.0781
+    [Stacking-multi] h=4 元学习器系数=[ 0.17   1.183 -0.355] 截距=-0.0834
+    [Stacking-multi] h=5 元学习器系数=[ 0.169  1.024 -0.176] 截距=-0.1006
+    [Stacking-multi] h=6 元学习器系数=[ 0.181  1.107 -0.301] 截距=-0.1126
+    [Stacking-multi] h=7 元学习器系数=[ 0.173  1.078 -0.258] 截距=-0.1047
+
+【3. 模型精度评价】
+
+【多输出预测策略 · 汇总指标（1~7 天拼接）】
+              模型   RMSE    MAE     NSE     R2  PBIAS(%)                NSE等级
+人工神经网络 (ANN/MLP) 850.84 444.56 -0.0124 0.1149     -2.13 不满意 (Unsatisfactory)
+       随机森林 (RF) 767.24 371.97  0.1767 0.1960    -14.90 不满意 (Unsatisfactory)
+  长短期记忆网络 (LSTM) 854.40 405.38 -0.0209 0.0842    -38.97 不满意 (Unsatisfactory)
+          简单平均集成 787.39 381.48  0.1329 0.1609    -18.67 不满意 (Unsatisfactory)
+     Stacking 集成 764.91 374.81  0.1817 0.2061    -11.59 不满意 (Unsatisfactory)
+
+##########################################################################
+#  第四部分  结果可视化
+##########################################################################
+
+======================================================================
+第四部分  结果可视化与分析
+======================================================================
+[figure] C:\Users\1\Desktop\machine-learning-practical-assignment\output\figures\fig11_过程线_h1.png
+[figure] C:\Users\1\Desktop\machine-learning-practical-assignment\output\figures\fig11_过程线_h3.png
+[figure] C:\Users\1\Desktop\machine-learning-practical-assignment\output\figures\fig11_过程线_h7.png
+[figure] C:\Users\1\Desktop\machine-learning-practical-assignment\output\figures\fig12_多输出过程线_h1.png
+[figure] C:\Users\1\Desktop\machine-learning-practical-assignment\output\figures\fig12_多输出过程线_h7.png
+[figure] C:\Users\1\Desktop\machine-learning-practical-assignment\output\figures\fig13_散点_h1.png
+[figure] C:\Users\1\Desktop\machine-learning-practical-assignment\output\figures\fig13_散点_h3.png
+[figure] C:\Users\1\Desktop\machine-learning-practical-assignment\output\figures\fig13_散点_h7.png
+[figure] C:\Users\1\Desktop\machine-learning-practical-assignment\output\figures\fig14_NSE随预见期变化_直接.png
+[figure] C:\Users\1\Desktop\machine-learning-practical-assignment\output\figures\fig15_NSE随预见期变化_多输出.png
+[figure] C:\Users\1\Desktop\machine-learning-practical-assignment\output\figures\fig16_RMSE随预见期变化_直接.png
+[figure] C:\Users\1\Desktop\machine-learning-practical-assignment\output\figures\fig17_NSE对比_直接.png
+[figure] C:\Users\1\Desktop\machine-learning-practical-assignment\output\figures\fig18_RMSE对比_直接.png
+[figure] C:\Users\1\Desktop\machine-learning-practical-assignment\output\figures\fig17_NSE对比_多输出.png
+[figure] C:\Users\1\Desktop\machine-learning-practical-assignment\output\figures\fig18_RMSE对比_多输出.png
+[figure] C:\Users\1\Desktop\machine-learning-practical-assignment\output\figures\fig19_洪水事件放大.png
+[figure] C:\Users\1\Desktop\machine-learning-practical-assignment\output\figures\fig20_误差分析.png
+
+第四部分完成
+
+##########################################################################
+#  生成实验报告
+##########################################################################
+生成实验报告 ...
+报告已生成：C:\Users\1\Desktop\machine-learning-practical-assignment\实验报告-机器学习课程实践-径流预测.docx
+
+##########################################################################
+#  全部完成，总耗时 212.3 分钟
+##########################################################################
+图表：C:\Users\1\Desktop\machine-learning-practical-assignment\output\figures
+结果表：C:\Users\1\Desktop\machine-learning-practical-assignment\output\results
+报告：C:\Users\1\Desktop\machine-learning-practical-assignment\实验报告-机器学习课程实践-径流预测.docx

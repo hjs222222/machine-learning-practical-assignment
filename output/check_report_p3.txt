@@ -1,0 +1,467 @@
+# Dimension 3: inline run formatting
+source: C:\Users\1\Desktop\machine-learning-practical-assignment\机器学习课程实践_第一次阶段验收汇报.docx
+syntax: [P<n> ...] starts a paragraph; each <r i=<n> loc=<path> ...> element is one source Run.
+defaults: size=12pt
+run_location_base: /w:document/w:body/
+text_policy: full text is emitted without truncation.
+omitted: repeated source_path; font, size, and paragraph style equal to defaults; raw XML; empty runs without text or semantic objects.
+notes: paragraph layout belongs to dimension 3; tabs, breaks, and symbols are preserved; script-specific font declarations equal to the default font are normalized.
+
+[P1 section=1 loc="/word/document.xml/w:body/*[1]"]
+<r i=1 loc="w:p[1]/w:r[1]" size=28pt b color="#1F4E78">机器学习课程实践</r><r i=2 loc="w:p[1]/w:r[2]" size=28pt b color="#1F4E78">
+</r>
+
+[P2 section=1 loc="/word/document.xml/w:body/*[2]"]
+<r i=1 loc="w:p[2]/w:r[1]" size=22pt b color="#2E75B6">第一次阶段验收汇报</r><r i=2 loc="w:p[2]/w:r[2]" size=22pt b color="#2E75B6">
+</r><r i=3 loc="w:p[2]/w:r[3]" size=22pt b color="#2E75B6">
+</r>
+
+[P3 section=1 loc="/word/document.xml/w:body/*[3]"]
+<r i=1 loc="w:p[3]/w:r[1]" size=16pt color="#5B9BD5">数据分析 + 特征工程</r><r i=2 loc="w:p[3]/w:r[2]" size=16pt color="#5B9BD5">
+</r><r i=3 loc="w:p[3]/w:r[3]" size=16pt color="#5B9BD5">
+</r>
+
+[P4 section=1 loc="/word/document.xml/w:body/*[4]"]
+<r i=1 loc="w:p[4]/w:r[1]">数据集：USGS 01047000 径流预测</r><r i=2 loc="w:p[4]/w:r[2]">
+</r>
+
+[P5 section=1 loc="/word/document.xml/w:body/*[5]"]
+<r i=1 loc="w:p[5]/w:r[1]">验收日期：2024年10月8日</r><r i=2 loc="w:p[5]/w:r[2]">
+</r><r i=3 loc="w:p[5]/w:r[3]">
+</r>
+
+[P6 section=1 loc="/word/document.xml/w:body/*[6]"]
+<r i=1 loc="w:p[6]/w:r"><break type="page"/></r>
+
+[P7 section=1 loc="/word/document.xml/w:body/*[7]" style="3"]
+<r i=1 loc="w:p[7]/w:r" color="#1F4E78">一、验收完成情况总览</r>
+
+[P8 section=1 loc="/word/document.xml/w:body/*[8]"]
+<r i=1 loc="w:p[8]/w:r[1]">本次阶段验收要求完成数据分析和特征工程两大部分，共8个子任务。经检查，</r><r i=2 loc="w:p[8]/w:r[2]" b color="#00B050">全部8个子任务均已完成</r><r i=3 loc="w:p[8]/w:r[3]">，完成度100%。</r>
+
+[P10 section=1 table=1 row=1 cell=1 loc="/word/document.xml/w:body/*[10]/w:tr[1]/w:tc[1]/*[2]"]
+<r i=1 loc="w:tbl[1]/w:tr[1]/w:tc[1]/w:p/w:r" b color="#FFFFFF">编号</r>
+
+[P11 section=1 table=1 row=1 cell=2 loc="/word/document.xml/w:body/*[10]/w:tr[1]/w:tc[2]/*[2]"]
+<r i=1 loc="w:tbl[1]/w:tr[1]/w:tc[2]/w:p/w:r" b color="#FFFFFF">子任务</r>
+
+[P12 section=1 table=1 row=1 cell=3 loc="/word/document.xml/w:body/*[10]/w:tr[1]/w:tc[3]/*[2]"]
+<r i=1 loc="w:tbl[1]/w:tr[1]/w:tc[3]/w:p/w:r" b color="#FFFFFF">状态</r>
+
+[P13 section=1 table=1 row=1 cell=4 loc="/word/document.xml/w:body/*[10]/w:tr[1]/w:tc[4]/*[2]"]
+<r i=1 loc="w:tbl[1]/w:tr[1]/w:tc[4]/w:p/w:r" b color="#FFFFFF">得分</r>
+
+[P14 section=1 table=1 row=2 cell=1 loc="/word/document.xml/w:body/*[10]/w:tr[2]/w:tc[1]/*[2]"]
+<r i=1 loc="w:tbl[1]/w:tr[2]/w:tc[1]/w:p/w:r">子任务1</r>
+
+[P15 section=1 table=1 row=2 cell=2 loc="/word/document.xml/w:body/*[10]/w:tr[2]/w:tc[2]/*[2]"]
+<r i=1 loc="w:tbl[1]/w:tr[2]/w:tc[2]/w:p/w:r">理解数据集各字段的中文含义</r>
+
+[P16 section=1 table=1 row=2 cell=3 loc="/word/document.xml/w:body/*[10]/w:tr[2]/w:tc[3]/*[2]"]
+<r i=1 loc="w:tbl[1]/w:tr[2]/w:tc[3]/w:p/w:r" b color="#00B050">✅ 完成</r>
+
+[P17 section=1 table=1 row=2 cell=4 loc="/word/document.xml/w:body/*[10]/w:tr[2]/w:tc[4]/*[2]"]
+<r i=1 loc="w:tbl[1]/w:tr[2]/w:tc[4]/w:p/w:r" b>得分</r>
+
+[P18 section=1 table=1 row=3 cell=1 loc="/word/document.xml/w:body/*[10]/w:tr[3]/w:tc[1]/*[2]"]
+<r i=1 loc="w:tbl[1]/w:tr[3]/w:tc[1]/w:p/w:r">子任务2</r>
+
+[P19 section=1 table=1 row=3 cell=2 loc="/word/document.xml/w:body/*[10]/w:tr[3]/w:tc[2]/*[2]"]
+<r i=1 loc="w:tbl[1]/w:tr[3]/w:tc[2]/w:p/w:r">时间序列数据可视化（所有列）</r>
+
+[P20 section=1 table=1 row=3 cell=3 loc="/word/document.xml/w:body/*[10]/w:tr[3]/w:tc[3]/*[2]"]
+<r i=1 loc="w:tbl[1]/w:tr[3]/w:tc[3]/w:p/w:r" b color="#00B050">✅ 完成</r>
+
+[P21 section=1 table=1 row=3 cell=4 loc="/word/document.xml/w:body/*[10]/w:tr[3]/w:tc[4]/*[2]"]
+<r i=1 loc="w:tbl[1]/w:tr[3]/w:tc[4]/w:p/w:r" b>得分</r>
+
+[P22 section=1 table=1 row=4 cell=1 loc="/word/document.xml/w:body/*[10]/w:tr[4]/w:tc[1]/*[2]"]
+<r i=1 loc="w:tbl[1]/w:tr[4]/w:tc[1]/w:p/w:r">子任务3</r>
+
+[P23 section=1 table=1 row=4 cell=2 loc="/word/document.xml/w:body/*[10]/w:tr[4]/w:tc[2]/*[2]"]
+<r i=1 loc="w:tbl[1]/w:tr[4]/w:tc[2]/w:p/w:r">直方图（所有列）</r>
+
+[P24 section=1 table=1 row=4 cell=3 loc="/word/document.xml/w:body/*[10]/w:tr[4]/w:tc[3]/*[2]"]
+<r i=1 loc="w:tbl[1]/w:tr[4]/w:tc[3]/w:p/w:r" b color="#00B050">✅ 完成</r>
+
+[P25 section=1 table=1 row=4 cell=4 loc="/word/document.xml/w:body/*[10]/w:tr[4]/w:tc[4]/*[2]"]
+<r i=1 loc="w:tbl[1]/w:tr[4]/w:tc[4]/w:p/w:r" b>得分</r>
+
+[P26 section=1 table=1 row=5 cell=1 loc="/word/document.xml/w:body/*[10]/w:tr[5]/w:tc[1]/*[2]"]
+<r i=1 loc="w:tbl[1]/w:tr[5]/w:tc[1]/w:p/w:r">子任务4</r>
+
+[P27 section=1 table=1 row=5 cell=2 loc="/word/document.xml/w:body/*[10]/w:tr[5]/w:tc[2]/*[2]"]
+<r i=1 loc="w:tbl[1]/w:tr[5]/w:tc[2]/w:p/w:r">箱型图（所有列）</r>
+
+[P28 section=1 table=1 row=5 cell=3 loc="/word/document.xml/w:body/*[10]/w:tr[5]/w:tc[3]/*[2]"]
+<r i=1 loc="w:tbl[1]/w:tr[5]/w:tc[3]/w:p/w:r" b color="#00B050">✅ 完成</r>
+
+[P29 section=1 table=1 row=5 cell=4 loc="/word/document.xml/w:body/*[10]/w:tr[5]/w:tc[4]/*[2]"]
+<r i=1 loc="w:tbl[1]/w:tr[5]/w:tc[4]/w:p/w:r" b>得分</r>
+
+[P30 section=1 table=1 row=6 cell=1 loc="/word/document.xml/w:body/*[10]/w:tr[6]/w:tc[1]/*[2]"]
+<r i=1 loc="w:tbl[1]/w:tr[6]/w:tc[1]/w:p/w:r">子任务5</r>
+
+[P31 section=1 table=1 row=6 cell=2 loc="/word/document.xml/w:body/*[10]/w:tr[6]/w:tc[2]/*[2]"]
+<r i=1 loc="w:tbl[1]/w:tr[6]/w:tc[2]/w:p/w:r">皮尔逊相关系数热力图（含滞后）</r>
+
+[P32 section=1 table=1 row=6 cell=3 loc="/word/document.xml/w:body/*[10]/w:tr[6]/w:tc[3]/*[2]"]
+<r i=1 loc="w:tbl[1]/w:tr[6]/w:tc[3]/w:p/w:r" b color="#00B050">✅ 完成</r>
+
+[P33 section=1 table=1 row=6 cell=4 loc="/word/document.xml/w:body/*[10]/w:tr[6]/w:tc[4]/*[2]"]
+<r i=1 loc="w:tbl[1]/w:tr[6]/w:tc[4]/w:p/w:r" b>得分</r>
+
+[P34 section=1 table=1 row=7 cell=1 loc="/word/document.xml/w:body/*[10]/w:tr[7]/w:tc[1]/*[2]"]
+<r i=1 loc="w:tbl[1]/w:tr[7]/w:tc[1]/w:p/w:r">子任务6</r>
+
+[P35 section=1 table=1 row=7 cell=2 loc="/word/document.xml/w:body/*[10]/w:tr[7]/w:tc[2]/*[2]"]
+<r i=1 loc="w:tbl[1]/w:tr[7]/w:tc[2]/w:p/w:r">四季月份编码、滞后特征、窗口特征</r>
+
+[P36 section=1 table=1 row=7 cell=3 loc="/word/document.xml/w:body/*[10]/w:tr[7]/w:tc[3]/*[2]"]
+<r i=1 loc="w:tbl[1]/w:tr[7]/w:tc[3]/w:p/w:r" b color="#00B050">✅ 完成</r>
+
+[P37 section=1 table=1 row=7 cell=4 loc="/word/document.xml/w:body/*[10]/w:tr[7]/w:tc[4]/*[2]"]
+<r i=1 loc="w:tbl[1]/w:tr[7]/w:tc[4]/w:p/w:r" b>得分</r>
+
+[P38 section=1 table=1 row=8 cell=1 loc="/word/document.xml/w:body/*[10]/w:tr[8]/w:tc[1]/*[2]"]
+<r i=1 loc="w:tbl[1]/w:tr[8]/w:tc[1]/w:p/w:r">子任务7</r>
+
+[P39 section=1 table=1 row=8 cell=2 loc="/word/document.xml/w:body/*[10]/w:tr[8]/w:tc[2]/*[2]"]
+<r i=1 loc="w:tbl[1]/w:tr[8]/w:tc[2]/w:p/w:r">特征归一化（Min-Max或Z-score）</r>
+
+[P40 section=1 table=1 row=8 cell=3 loc="/word/document.xml/w:body/*[10]/w:tr[8]/w:tc[3]/*[2]"]
+<r i=1 loc="w:tbl[1]/w:tr[8]/w:tc[3]/w:p/w:r" b color="#00B050">✅ 完成</r>
+
+[P41 section=1 table=1 row=8 cell=4 loc="/word/document.xml/w:body/*[10]/w:tr[8]/w:tc[4]/*[2]"]
+<r i=1 loc="w:tbl[1]/w:tr[8]/w:tc[4]/w:p/w:r" b>得分</r>
+
+[P42 section=1 table=1 row=9 cell=1 loc="/word/document.xml/w:body/*[10]/w:tr[9]/w:tc[1]/*[2]"]
+<r i=1 loc="w:tbl[1]/w:tr[9]/w:tc[1]/w:p/w:r">子任务8</r>
+
+[P43 section=1 table=1 row=9 cell=2 loc="/word/document.xml/w:body/*[10]/w:tr[9]/w:tc[2]/*[2]"]
+<r i=1 loc="w:tbl[1]/w:tr[9]/w:tc[2]/w:p/w:r">特征选择（皮尔逊或互信息法）</r>
+
+[P44 section=1 table=1 row=9 cell=3 loc="/word/document.xml/w:body/*[10]/w:tr[9]/w:tc[3]/*[2]"]
+<r i=1 loc="w:tbl[1]/w:tr[9]/w:tc[3]/w:p/w:r" b color="#00B050">✅ 完成</r>
+
+[P45 section=1 table=1 row=9 cell=4 loc="/word/document.xml/w:body/*[10]/w:tr[9]/w:tc[4]/*[2]"]
+<r i=1 loc="w:tbl[1]/w:tr[9]/w:tc[4]/w:p/w:r" b>得分</r>
+
+[P47 section=1 loc="/word/document.xml/w:body/*[12]"]
+<r i=1 loc="w:p[11]/w:r" size=14pt b>总结：</r>
+
+[P48 section=1 loc="/word/document.xml/w:body/*[13]"]
+<r i=1 loc="w:p[12]/w:r">✓ 数据分析：5个子任务全部完成</r>
+
+[P49 section=1 loc="/word/document.xml/w:body/*[14]"]
+<r i=1 loc="w:p[13]/w:r">✓ 特征工程：3个子任务全部完成</r>
+
+[P50 section=1 loc="/word/document.xml/w:body/*[15]"]
+<r i=1 loc="w:p[14]/w:r">✓ 额外完成：滞后相关分析、多种方法对比、完整建模实验</r>
+
+[P51 section=1 loc="/word/document.xml/w:body/*[16]"]
+<r i=1 loc="w:p[15]/w:r"><break type="page"/></r>
+
+[P52 section=1 loc="/word/document.xml/w:body/*[17]" style="3"]
+<r i=1 loc="w:p[16]/w:r" color="#1F4E78">二、数据分析成果展示</r>
+
+[P53 section=1 loc="/word/document.xml/w:body/*[18]" style="4"]
+<r i=1 loc="w:p[17]/w:r" color="#2E75B6">子任务1：字段中文含义</r>
+
+[P54 section=1 loc="/word/document.xml/w:body/*[19]"]
+<r i=1 loc="w:p[18]/w:r">数据集包含1827天（2000-2004年）的逐日观测数据，共9个字段。所有字段的中文含义如下：</r>
+
+[P55 section=1 table=2 row=1 cell=1 loc="/word/document.xml/w:body/*[20]/w:tr[1]/w:tc[1]/*[2]"]
+<r i=1 loc="w:tbl[2]/w:tr[1]/w:tc[1]/w:p/w:r" b>英文字段</r>
+
+[P56 section=1 table=2 row=1 cell=2 loc="/word/document.xml/w:body/*[20]/w:tr[1]/w:tc[2]/*[2]"]
+<r i=1 loc="w:tbl[2]/w:tr[1]/w:tc[2]/w:p/w:r" b>中文含义</r>
+
+[P57 section=1 table=2 row=1 cell=3 loc="/word/document.xml/w:body/*[20]/w:tr[1]/w:tc[3]/*[2]"]
+<r i=1 loc="w:tbl[2]/w:tr[1]/w:tc[3]/w:p/w:r" b>单位</r>
+
+[P58 section=1 table=2 row=2 cell=1 loc="/word/document.xml/w:body/*[20]/w:tr[2]/w:tc[1]/*[2]"]
+<r i=1 loc="w:tbl[2]/w:tr[2]/w:tc[1]/w:p/w:r">Date</r>
+
+[P59 section=1 table=2 row=2 cell=2 loc="/word/document.xml/w:body/*[20]/w:tr[2]/w:tc[2]/*[2]"]
+<r i=1 loc="w:tbl[2]/w:tr[2]/w:tc[2]/w:p/w:r">日期</r>
+
+[P60 section=1 table=2 row=2 cell=3 loc="/word/document.xml/w:body/*[20]/w:tr[2]/w:tc[3]/*[2]"]
+<r i=1 loc="w:tbl[2]/w:tr[2]/w:tc[3]/w:p/w:r">-</r>
+
+[P61 section=1 table=2 row=3 cell=1 loc="/word/document.xml/w:body/*[20]/w:tr[3]/w:tc[1]/*[2]"]
+<r i=1 loc="w:tbl[2]/w:tr[3]/w:tc[1]/w:p/w:r">Discharge</r>
+
+[P62 section=1 table=2 row=3 cell=2 loc="/word/document.xml/w:body/*[20]/w:tr[3]/w:tc[2]/*[2]"]
+<r i=1 loc="w:tbl[2]/w:tr[3]/w:tc[2]/w:p/w:r">径流（流量）</r>
+
+[P63 section=1 table=2 row=3 cell=3 loc="/word/document.xml/w:body/*[20]/w:tr[3]/w:tc[3]/*[2]"]
+<r i=1 loc="w:tbl[2]/w:tr[3]/w:tc[3]/w:p/w:r">ft³/s</r>
+
+[P64 section=1 table=2 row=4 cell=1 loc="/word/document.xml/w:body/*[20]/w:tr[4]/w:tc[1]/*[2]"]
+<r i=1 loc="w:tbl[2]/w:tr[4]/w:tc[1]/w:p/w:r">Dayl</r>
+
+[P65 section=1 table=2 row=4 cell=2 loc="/word/document.xml/w:body/*[20]/w:tr[4]/w:tc[2]/*[2]"]
+<r i=1 loc="w:tbl[2]/w:tr[4]/w:tc[2]/w:p/w:r">日照时长</r>
+
+[P66 section=1 table=2 row=4 cell=3 loc="/word/document.xml/w:body/*[20]/w:tr[4]/w:tc[3]/*[2]"]
+<r i=1 loc="w:tbl[2]/w:tr[4]/w:tc[3]/w:p/w:r">s/day</r>
+
+[P67 section=1 table=2 row=5 cell=1 loc="/word/document.xml/w:body/*[20]/w:tr[5]/w:tc[1]/*[2]"]
+<r i=1 loc="w:tbl[2]/w:tr[5]/w:tc[1]/w:p/w:r">Prcp</r>
+
+[P68 section=1 table=2 row=5 cell=2 loc="/word/document.xml/w:body/*[20]/w:tr[5]/w:tc[2]/*[2]"]
+<r i=1 loc="w:tbl[2]/w:tr[5]/w:tc[2]/w:p/w:r">降水量</r>
+
+[P69 section=1 table=2 row=5 cell=3 loc="/word/document.xml/w:body/*[20]/w:tr[5]/w:tc[3]/*[2]"]
+<r i=1 loc="w:tbl[2]/w:tr[5]/w:tc[3]/w:p/w:r">mm/day</r>
+
+[P70 section=1 table=2 row=6 cell=1 loc="/word/document.xml/w:body/*[20]/w:tr[6]/w:tc[1]/*[2]"]
+<r i=1 loc="w:tbl[2]/w:tr[6]/w:tc[1]/w:p/w:r">Srad</r>
+
+[P71 section=1 table=2 row=6 cell=2 loc="/word/document.xml/w:body/*[20]/w:tr[6]/w:tc[2]/*[2]"]
+<r i=1 loc="w:tbl[2]/w:tr[6]/w:tc[2]/w:p/w:r">短波辐射</r>
+
+[P72 section=1 table=2 row=6 cell=3 loc="/word/document.xml/w:body/*[20]/w:tr[6]/w:tc[3]/*[2]"]
+<r i=1 loc="w:tbl[2]/w:tr[6]/w:tc[3]/w:p/w:r">W/m²</r>
+
+[P73 section=1 table=2 row=7 cell=1 loc="/word/document.xml/w:body/*[20]/w:tr[7]/w:tc[1]/*[2]"]
+<r i=1 loc="w:tbl[2]/w:tr[7]/w:tc[1]/w:p/w:r">Swe</r>
+
+[P74 section=1 table=2 row=7 cell=2 loc="/word/document.xml/w:body/*[20]/w:tr[7]/w:tc[2]/*[2]"]
+<r i=1 loc="w:tbl[2]/w:tr[7]/w:tc[2]/w:p/w:r">雪水当量</r>
+
+[P75 section=1 table=2 row=7 cell=3 loc="/word/document.xml/w:body/*[20]/w:tr[7]/w:tc[3]/*[2]"]
+<r i=1 loc="w:tbl[2]/w:tr[7]/w:tc[3]/w:p/w:r">kg/m²</r>
+
+[P76 section=1 table=2 row=8 cell=1 loc="/word/document.xml/w:body/*[20]/w:tr[8]/w:tc[1]/*[2]"]
+<r i=1 loc="w:tbl[2]/w:tr[8]/w:tc[1]/w:p/w:r">Tmax</r>
+
+[P77 section=1 table=2 row=8 cell=2 loc="/word/document.xml/w:body/*[20]/w:tr[8]/w:tc[2]/*[2]"]
+<r i=1 loc="w:tbl[2]/w:tr[8]/w:tc[2]/w:p/w:r">最高气温</r>
+
+[P78 section=1 table=2 row=8 cell=3 loc="/word/document.xml/w:body/*[20]/w:tr[8]/w:tc[3]/*[2]"]
+<r i=1 loc="w:tbl[2]/w:tr[8]/w:tc[3]/w:p/w:r">°C</r>
+
+[P79 section=1 table=2 row=9 cell=1 loc="/word/document.xml/w:body/*[20]/w:tr[9]/w:tc[1]/*[2]"]
+<r i=1 loc="w:tbl[2]/w:tr[9]/w:tc[1]/w:p/w:r">Tmin</r>
+
+[P80 section=1 table=2 row=9 cell=2 loc="/word/document.xml/w:body/*[20]/w:tr[9]/w:tc[2]/*[2]"]
+<r i=1 loc="w:tbl[2]/w:tr[9]/w:tc[2]/w:p/w:r">最低气温</r>
+
+[P81 section=1 table=2 row=9 cell=3 loc="/word/document.xml/w:body/*[20]/w:tr[9]/w:tc[3]/*[2]"]
+<r i=1 loc="w:tbl[2]/w:tr[9]/w:tc[3]/w:p/w:r">°C</r>
+
+[P82 section=1 loc="/word/document.xml/w:body/*[21]"]
+<r i=1 loc="w:p[19]/w:r"><break type="page"/></r>
+
+[P83 section=1 loc="/word/document.xml/w:body/*[22]" style="4"]
+<r i=1 loc="w:p[20]/w:r" color="#2E75B6">子任务2：时间序列可视化</r>
+
+[P84 section=1 loc="/word/document.xml/w:body/*[23]"]
+<r i=1 loc="w:p[21]/w:r">对流域数据集的所有列（日期除外）进行了时间序列可视化，包含径流、降水、气温、辐射等8个变量的完整时间序列。</r>
+
+[P85 section=1 loc="/word/document.xml/w:body/*[24]"]
+<r i=1 loc="w:p[22]/w:r" font_hint="eastAsia" font_eastAsia="微软雅黑" lang={"w:eastAsia":"zh-CN"} drawings=[{"relationship_id":"rId6","relationship_ids":["rId6"],"target":"media/image1.png","resolved_target":"word/media/image1.png","targets":[{"relationship_id":"rId6","target":"media/image1.png","resolved_target":"word/media/image1.png","target_mode":null}],"name":"图片 1","alt_text":"fig1_时间序列","size_emu":{"cx":"3912870","cy":"6687820"},"positioning":"wp:inline","location":"/w:document/w:body/w:p[22]/w:r/w:drawing","xml":"<w:drawing xmlns:w=\"http://schemas.openxmlformats.org/wordprocessingml/2006/main\" xmlns:wpc=\"http://schemas.microsoft.com/office/word/2010/wordprocessingCanvas\" xmlns:cx=\"http://schemas.microsoft.com/office/drawing/2014/chartex\" xmlns:cx1=\"http://schemas.microsoft.com/office/drawing/2015/9/8/chartex\" xmlns:cx2=\"http://schemas.microsoft.com/office/drawing/2015/10/21/chartex\" xmlns:cx3=\"http://schemas.microsoft.com/office/drawing/2016/5/9/chartex\" xmlns:cx4=\"http://schemas.microsoft.com/office/drawing/2016/5/10/chartex\" xmlns:cx5=\"http://schemas.microsoft.com/office/drawing/2016/5/11/chartex\" xmlns:cx6=\"http://schemas.microsoft.com/office/drawing/2016/5/12/chartex\" xmlns:cx7=\"http://schemas.microsoft.com/office/drawing/2016/5/13/chartex\" xmlns:cx8=\"http://schemas.microsoft.com/office/drawing/2016/5/14/chartex\" xmlns:mc=\"http://schemas.openxmlformats.org/markup-compatibility/2006\" xmlns:o=\"urn:schemas-microsoft-com:office:office\" xmlns:r=\"http://schemas.openxmlformats.org/officeDocument/2006/relationships\" xmlns:m=\"http://schemas.openxmlformats.org/officeDocument/2006/math\" xmlns:v=\"urn:schemas-microsoft-com:vml\" xmlns:wp14=\"http://schemas.microsoft.com/office/word/2010/wordprocessingDrawing\" xmlns:wp=\"http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing\" xmlns:w14=\"http://schemas.microsoft.com/office/word/2010/wordml\" xmlns:w10=\"urn:schemas-microsoft-com:office:word\" xmlns:w15=\"http://schemas.microsoft.com/office/word/2012/wordml\" xmlns:wpg=\"http://schemas.microsoft.com/office/word/2010/wordprocessingGroup\" xmlns:wpi=\"http://schemas.microsoft.com/office/word/2010/wordprocessingInk\" xmlns:wne=\"http://schemas.microsoft.com/office/word/2006/wordml\" xmlns:wps=\"http://schemas.microsoft.com/office/word/2010/wordprocessingShape\" xmlns:wpsCustomData=\"http://www.wps.cn/officeDocument/2013/wpsCustomData\"><wp:inline distT=\"0\" distB=\"0\" distL=\"114300\" distR=\"114300\"><wp:extent cx=\"3912870\" cy=\"6687820\"/><wp:effectExtent l=\"0\" t=\"0\" r=\"11430\" b=\"5080\"/><wp:docPr id=\"1\" name=\"图片 1\" descr=\"fig1_时间序列\"/><wp:cNvGraphicFramePr><a:graphicFrameLocks xmlns:a=\"http://schemas.openxmlformats.org/drawingml/2006/main\" noChangeAspect=\"1\"/></wp:cNvGraphicFramePr><a:graphic xmlns:a=\"http://schemas.openxmlformats.org/drawingml/2006/main\"><a:graphicData uri=\"http://schemas.openxmlformats.org/drawingml/2006/picture\"><pic:pic xmlns:pic=\"http://schemas.openxmlformats.org/drawingml/2006/picture\"><pic:nvPicPr><pic:cNvPr id=\"1\" name=\"图片 1\" descr=\"fig1_时间序列\"/><pic:cNvPicPr><a:picLocks noChangeAspect=\"1\"/></pic:cNvPicPr></pic:nvPicPr><pic:blipFill><a:blip r:embed=\"rId6\"/><a:stretch><a:fillRect/></a:stretch></pic:blipFill><pic:spPr><a:xfrm><a:off x=\"0\" y=\"0\"/><a:ext cx=\"3912870\" cy=\"6687820\"/></a:xfrm><a:prstGeom prst=\"rect\"><a:avLst/></a:prstGeom></pic:spPr></pic:pic></a:graphicData></a:graphic></wp:inline></w:drawing>"}]/>
+
+[P86 section=1 loc="/word/document.xml/w:body/*[25]" style="4"]
+<r i=1 loc="w:p[23]/w:r" color="#2E75B6">子任务3：直方图</r>
+
+[P87 section=1 loc="/word/document.xml/w:body/*[26]"]
+<r i=1 loc="w:p[24]/w:r">对所有变量绘制了分布直方图，展示各变量的统计分布特征。径流和降水呈明显右偏分布，气温类变量接近正态分布。</r>
+
+[P88 section=1 loc="/word/document.xml/w:body/*[27]" style="15"]
+<r i=1 loc="w:p[25]/w:r" drawings=[{"relationship_id":"rId7","relationship_ids":["rId7"],"target":"media/image2.png","resolved_target":"word/media/image2.png","targets":[{"relationship_id":"rId7","target":"media/image2.png","resolved_target":"word/media/image2.png","target_mode":null}],"name":"图片 2","alt_text":"fig3_直方图","size_emu":{"cx":"5477510","cy":"3851910"},"positioning":"wp:inline","location":"/w:document/w:body/w:p[25]/w:r/w:drawing","xml":"<w:drawing xmlns:w=\"http://schemas.openxmlformats.org/wordprocessingml/2006/main\" xmlns:wpc=\"http://schemas.microsoft.com/office/word/2010/wordprocessingCanvas\" xmlns:cx=\"http://schemas.microsoft.com/office/drawing/2014/chartex\" xmlns:cx1=\"http://schemas.microsoft.com/office/drawing/2015/9/8/chartex\" xmlns:cx2=\"http://schemas.microsoft.com/office/drawing/2015/10/21/chartex\" xmlns:cx3=\"http://schemas.microsoft.com/office/drawing/2016/5/9/chartex\" xmlns:cx4=\"http://schemas.microsoft.com/office/drawing/2016/5/10/chartex\" xmlns:cx5=\"http://schemas.microsoft.com/office/drawing/2016/5/11/chartex\" xmlns:cx6=\"http://schemas.microsoft.com/office/drawing/2016/5/12/chartex\" xmlns:cx7=\"http://schemas.microsoft.com/office/drawing/2016/5/13/chartex\" xmlns:cx8=\"http://schemas.microsoft.com/office/drawing/2016/5/14/chartex\" xmlns:mc=\"http://schemas.openxmlformats.org/markup-compatibility/2006\" xmlns:o=\"urn:schemas-microsoft-com:office:office\" xmlns:r=\"http://schemas.openxmlformats.org/officeDocument/2006/relationships\" xmlns:m=\"http://schemas.openxmlformats.org/officeDocument/2006/math\" xmlns:v=\"urn:schemas-microsoft-com:vml\" xmlns:wp14=\"http://schemas.microsoft.com/office/word/2010/wordprocessingDrawing\" xmlns:wp=\"http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing\" xmlns:w14=\"http://schemas.microsoft.com/office/word/2010/wordml\" xmlns:w10=\"urn:schemas-microsoft-com:office:word\" xmlns:w15=\"http://schemas.microsoft.com/office/word/2012/wordml\" xmlns:wpg=\"http://schemas.microsoft.com/office/word/2010/wordprocessingGroup\" xmlns:wpi=\"http://schemas.microsoft.com/office/word/2010/wordprocessingInk\" xmlns:wne=\"http://schemas.microsoft.com/office/word/2006/wordml\" xmlns:wps=\"http://schemas.microsoft.com/office/word/2010/wordprocessingShape\" xmlns:wpsCustomData=\"http://www.wps.cn/officeDocument/2013/wpsCustomData\"><wp:inline distT=\"0\" distB=\"0\" distL=\"114300\" distR=\"114300\"><wp:extent cx=\"5477510\" cy=\"3851910\"/><wp:effectExtent l=\"0\" t=\"0\" r=\"8890\" b=\"8890\"/><wp:docPr id=\"2\" name=\"图片 2\" descr=\"fig3_直方图\"/><wp:cNvGraphicFramePr><a:graphicFrameLocks xmlns:a=\"http://schemas.openxmlformats.org/drawingml/2006/main\" noChangeAspect=\"1\"/></wp:cNvGraphicFramePr><a:graphic xmlns:a=\"http://schemas.openxmlformats.org/drawingml/2006/main\"><a:graphicData uri=\"http://schemas.openxmlformats.org/drawingml/2006/picture\"><pic:pic xmlns:pic=\"http://schemas.openxmlformats.org/drawingml/2006/picture\"><pic:nvPicPr><pic:cNvPr id=\"2\" name=\"图片 2\" descr=\"fig3_直方图\"/><pic:cNvPicPr><a:picLocks noChangeAspect=\"1\"/></pic:cNvPicPr></pic:nvPicPr><pic:blipFill><a:blip r:embed=\"rId7\"/><a:stretch><a:fillRect/></a:stretch></pic:blipFill><pic:spPr><a:xfrm><a:off x=\"0\" y=\"0\"/><a:ext cx=\"5477510\" cy=\"3851910\"/></a:xfrm><a:prstGeom prst=\"rect\"><a:avLst/></a:prstGeom></pic:spPr></pic:pic></a:graphicData></a:graphic></wp:inline></w:drawing>"}]/>
+
+[P89 section=1 loc="/word/document.xml/w:body/*[28]"]
+<r i=1 loc="w:p[26]/w:r"><break type="page"/></r>
+
+[P90 section=1 loc="/word/document.xml/w:body/*[29]" style="4"]
+<r i=1 loc="w:p[27]/w:r" color="#2E75B6">子任务4：箱型图</r>
+
+[P91 section=1 loc="/word/document.xml/w:body/*[30]"]
+<r i=1 loc="w:p[28]/w:r">箱型图分析显示径流的离散程度最大，存在大量高值异常点（洪水事件）。按月分组的箱型图展示了明显的季节性特征。</r>
+
+[P92 section=1 loc="/word/document.xml/w:body/*[31]"]
+<r i=1 loc="w:p[29]/w:r[1]" drawings=[{"relationship_id":"rId8","relationship_ids":["rId8"],"target":"media/image3.png","resolved_target":"word/media/image3.png","targets":[{"relationship_id":"rId8","target":"media/image3.png","resolved_target":"word/media/image3.png","target_mode":null}],"name":"图片 3","alt_text":"fig4_箱型图","size_emu":{"cx":"5476875","cy":"2034540"},"positioning":"wp:inline","location":"/w:document/w:body/w:p[29]/w:r[1]/w:drawing","xml":"<w:drawing xmlns:w=\"http://schemas.openxmlformats.org/wordprocessingml/2006/main\" xmlns:wpc=\"http://schemas.microsoft.com/office/word/2010/wordprocessingCanvas\" xmlns:cx=\"http://schemas.microsoft.com/office/drawing/2014/chartex\" xmlns:cx1=\"http://schemas.microsoft.com/office/drawing/2015/9/8/chartex\" xmlns:cx2=\"http://schemas.microsoft.com/office/drawing/2015/10/21/chartex\" xmlns:cx3=\"http://schemas.microsoft.com/office/drawing/2016/5/9/chartex\" xmlns:cx4=\"http://schemas.microsoft.com/office/drawing/2016/5/10/chartex\" xmlns:cx5=\"http://schemas.microsoft.com/office/drawing/2016/5/11/chartex\" xmlns:cx6=\"http://schemas.microsoft.com/office/drawing/2016/5/12/chartex\" xmlns:cx7=\"http://schemas.microsoft.com/office/drawing/2016/5/13/chartex\" xmlns:cx8=\"http://schemas.microsoft.com/office/drawing/2016/5/14/chartex\" xmlns:mc=\"http://schemas.openxmlformats.org/markup-compatibility/2006\" xmlns:o=\"urn:schemas-microsoft-com:office:office\" xmlns:r=\"http://schemas.openxmlformats.org/officeDocument/2006/relationships\" xmlns:m=\"http://schemas.openxmlformats.org/officeDocument/2006/math\" xmlns:v=\"urn:schemas-microsoft-com:vml\" xmlns:wp14=\"http://schemas.microsoft.com/office/word/2010/wordprocessingDrawing\" xmlns:wp=\"http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing\" xmlns:w14=\"http://schemas.microsoft.com/office/word/2010/wordml\" xmlns:w10=\"urn:schemas-microsoft-com:office:word\" xmlns:w15=\"http://schemas.microsoft.com/office/word/2012/wordml\" xmlns:wpg=\"http://schemas.microsoft.com/office/word/2010/wordprocessingGroup\" xmlns:wpi=\"http://schemas.microsoft.com/office/word/2010/wordprocessingInk\" xmlns:wne=\"http://schemas.microsoft.com/office/word/2006/wordml\" xmlns:wps=\"http://schemas.microsoft.com/office/word/2010/wordprocessingShape\" xmlns:wpsCustomData=\"http://www.wps.cn/officeDocument/2013/wpsCustomData\"><wp:inline distT=\"0\" distB=\"0\" distL=\"114300\" distR=\"114300\"><wp:extent cx=\"5476875\" cy=\"2034540\"/><wp:effectExtent l=\"0\" t=\"0\" r=\"9525\" b=\"10160\"/><wp:docPr id=\"3\" name=\"图片 3\" descr=\"fig4_箱型图\"/><wp:cNvGraphicFramePr><a:graphicFrameLocks xmlns:a=\"http://schemas.openxmlformats.org/drawingml/2006/main\" noChangeAspect=\"1\"/></wp:cNvGraphicFramePr><a:graphic xmlns:a=\"http://schemas.openxmlformats.org/drawingml/2006/main\"><a:graphicData uri=\"http://schemas.openxmlformats.org/drawingml/2006/picture\"><pic:pic xmlns:pic=\"http://schemas.openxmlformats.org/drawingml/2006/picture\"><pic:nvPicPr><pic:cNvPr id=\"3\" name=\"图片 3\" descr=\"fig4_箱型图\"/><pic:cNvPicPr><a:picLocks noChangeAspect=\"1\"/></pic:cNvPicPr></pic:nvPicPr><pic:blipFill><a:blip r:embed=\"rId8\"/><a:stretch><a:fillRect/></a:stretch></pic:blipFill><pic:spPr><a:xfrm><a:off x=\"0\" y=\"0\"/><a:ext cx=\"5476875\" cy=\"2034540\"/></a:xfrm><a:prstGeom prst=\"rect\"><a:avLst/></a:prstGeom></pic:spPr></pic:pic></a:graphicData></a:graphic></wp:inline></w:drawing>"}]/><r i=2 loc="w:p[29]/w:r[2]"><break type="page"/></r>
+
+[P93 section=1 loc="/word/document.xml/w:body/*[32]" style="4"]
+<r i=1 loc="w:p[30]/w:r" color="#2E75B6">子任务5：皮尔逊相关系数热力图</r>
+
+[P94 section=1 loc="/word/document.xml/w:body/*[33]"]
+<r i=1 loc="w:p[31]/w:r">完成了三类相关性分析：</r>
+
+[P95 section=1 loc="/word/document.xml/w:body/*[34]" style="16"]
+<r i=1 loc="w:p[32]/w:r">1. 径流序列与其自身滞后序列的相关系数（自相关ACF）</r>
+
+[P96 section=1 loc="/word/document.xml/w:body/*[35]" style="16"]
+<r i=1 loc="w:p[33]/w:r">2. 径流序列与其他因子同期序列的相关系数</r>
+
+[P97 section=1 loc="/word/document.xml/w:body/*[36]" style="16"]
+<r i=1 loc="w:p[34]/w:r">3. 径流序列与其他因子滞后序列的相关系数（互相关CCF）</r>
+
+[P98 section=1 loc="/word/document.xml/w:body/*[37]"]
+<r i=1 loc="w:p[35]/w:r" font_hint="eastAsia" font_eastAsia="微软雅黑" lang={"w:eastAsia":"zh-CN"} drawings=[{"relationship_id":"rId9","relationship_ids":["rId9"],"target":"media/image4.png","resolved_target":"word/media/image4.png","targets":[{"relationship_id":"rId9","target":"media/image4.png","resolved_target":"word/media/image4.png","target_mode":null}],"name":"图片 4","alt_text":"fig5_相关系数热力图","size_emu":{"cx":"5483860","cy":"2455545"},"positioning":"wp:inline","location":"/w:document/w:body/w:p[35]/w:r/w:drawing","xml":"<w:drawing xmlns:w=\"http://schemas.openxmlformats.org/wordprocessingml/2006/main\" xmlns:wpc=\"http://schemas.microsoft.com/office/word/2010/wordprocessingCanvas\" xmlns:cx=\"http://schemas.microsoft.com/office/drawing/2014/chartex\" xmlns:cx1=\"http://schemas.microsoft.com/office/drawing/2015/9/8/chartex\" xmlns:cx2=\"http://schemas.microsoft.com/office/drawing/2015/10/21/chartex\" xmlns:cx3=\"http://schemas.microsoft.com/office/drawing/2016/5/9/chartex\" xmlns:cx4=\"http://schemas.microsoft.com/office/drawing/2016/5/10/chartex\" xmlns:cx5=\"http://schemas.microsoft.com/office/drawing/2016/5/11/chartex\" xmlns:cx6=\"http://schemas.microsoft.com/office/drawing/2016/5/12/chartex\" xmlns:cx7=\"http://schemas.microsoft.com/office/drawing/2016/5/13/chartex\" xmlns:cx8=\"http://schemas.microsoft.com/office/drawing/2016/5/14/chartex\" xmlns:mc=\"http://schemas.openxmlformats.org/markup-compatibility/2006\" xmlns:o=\"urn:schemas-microsoft-com:office:office\" xmlns:r=\"http://schemas.openxmlformats.org/officeDocument/2006/relationships\" xmlns:m=\"http://schemas.openxmlformats.org/officeDocument/2006/math\" xmlns:v=\"urn:schemas-microsoft-com:vml\" xmlns:wp14=\"http://schemas.microsoft.com/office/word/2010/wordprocessingDrawing\" xmlns:wp=\"http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing\" xmlns:w14=\"http://schemas.microsoft.com/office/word/2010/wordml\" xmlns:w10=\"urn:schemas-microsoft-com:office:word\" xmlns:w15=\"http://schemas.microsoft.com/office/word/2012/wordml\" xmlns:wpg=\"http://schemas.microsoft.com/office/word/2010/wordprocessingGroup\" xmlns:wpi=\"http://schemas.microsoft.com/office/word/2010/wordprocessingInk\" xmlns:wne=\"http://schemas.microsoft.com/office/word/2006/wordml\" xmlns:wps=\"http://schemas.microsoft.com/office/word/2010/wordprocessingShape\" xmlns:wpsCustomData=\"http://www.wps.cn/officeDocument/2013/wpsCustomData\"><wp:inline distT=\"0\" distB=\"0\" distL=\"114300\" distR=\"114300\"><wp:extent cx=\"5483860\" cy=\"2455545\"/><wp:effectExtent l=\"0\" t=\"0\" r=\"2540\" b=\"8255\"/><wp:docPr id=\"4\" name=\"图片 4\" descr=\"fig5_相关系数热力图\"/><wp:cNvGraphicFramePr><a:graphicFrameLocks xmlns:a=\"http://schemas.openxmlformats.org/drawingml/2006/main\" noChangeAspect=\"1\"/></wp:cNvGraphicFramePr><a:graphic xmlns:a=\"http://schemas.openxmlformats.org/drawingml/2006/main\"><a:graphicData uri=\"http://schemas.openxmlformats.org/drawingml/2006/picture\"><pic:pic xmlns:pic=\"http://schemas.openxmlformats.org/drawingml/2006/picture\"><pic:nvPicPr><pic:cNvPr id=\"4\" name=\"图片 4\" descr=\"fig5_相关系数热力图\"/><pic:cNvPicPr><a:picLocks noChangeAspect=\"1\"/></pic:cNvPicPr></pic:nvPicPr><pic:blipFill><a:blip r:embed=\"rId9\"/><a:stretch><a:fillRect/></a:stretch></pic:blipFill><pic:spPr><a:xfrm><a:off x=\"0\" y=\"0\"/><a:ext cx=\"5483860\" cy=\"2455545\"/></a:xfrm><a:prstGeom prst=\"rect\"><a:avLst/></a:prstGeom></pic:spPr></pic:pic></a:graphicData></a:graphic></wp:inline></w:drawing>"}]/>
+
+[P99 section=1 loc="/word/document.xml/w:body/*[38]"]
+<r i=1 loc="w:p[36]/w:r">降水（Prcp）与径流的同期相关性最强（r=0.43），其他气象因子与径流的线性相关性较弱，说明需要引入滞后特征。</r>
+
+[P100 section=1 loc="/word/document.xml/w:body/*[39]"]
+<r i=1 loc="w:p[37]/w:r" font_hint="eastAsia" font_eastAsia="微软雅黑" lang={"w:eastAsia":"zh-CN"} drawings=[{"relationship_id":"rId10","relationship_ids":["rId10"],"target":"media/image5.png","resolved_target":"word/media/image5.png","targets":[{"relationship_id":"rId10","target":"media/image5.png","resolved_target":"word/media/image5.png","target_mode":null}],"name":"图片 5","alt_text":"fig6_滞后相关","size_emu":{"cx":"5478780","cy":"1967230"},"positioning":"wp:inline","location":"/w:document/w:body/w:p[37]/w:r/w:drawing","xml":"<w:drawing xmlns:w=\"http://schemas.openxmlformats.org/wordprocessingml/2006/main\" xmlns:wpc=\"http://schemas.microsoft.com/office/word/2010/wordprocessingCanvas\" xmlns:cx=\"http://schemas.microsoft.com/office/drawing/2014/chartex\" xmlns:cx1=\"http://schemas.microsoft.com/office/drawing/2015/9/8/chartex\" xmlns:cx2=\"http://schemas.microsoft.com/office/drawing/2015/10/21/chartex\" xmlns:cx3=\"http://schemas.microsoft.com/office/drawing/2016/5/9/chartex\" xmlns:cx4=\"http://schemas.microsoft.com/office/drawing/2016/5/10/chartex\" xmlns:cx5=\"http://schemas.microsoft.com/office/drawing/2016/5/11/chartex\" xmlns:cx6=\"http://schemas.microsoft.com/office/drawing/2016/5/12/chartex\" xmlns:cx7=\"http://schemas.microsoft.com/office/drawing/2016/5/13/chartex\" xmlns:cx8=\"http://schemas.microsoft.com/office/drawing/2016/5/14/chartex\" xmlns:mc=\"http://schemas.openxmlformats.org/markup-compatibility/2006\" xmlns:o=\"urn:schemas-microsoft-com:office:office\" xmlns:r=\"http://schemas.openxmlformats.org/officeDocument/2006/relationships\" xmlns:m=\"http://schemas.openxmlformats.org/officeDocument/2006/math\" xmlns:v=\"urn:schemas-microsoft-com:vml\" xmlns:wp14=\"http://schemas.microsoft.com/office/word/2010/wordprocessingDrawing\" xmlns:wp=\"http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing\" xmlns:w14=\"http://schemas.microsoft.com/office/word/2010/wordml\" xmlns:w10=\"urn:schemas-microsoft-com:office:word\" xmlns:w15=\"http://schemas.microsoft.com/office/word/2012/wordml\" xmlns:wpg=\"http://schemas.microsoft.com/office/word/2010/wordprocessingGroup\" xmlns:wpi=\"http://schemas.microsoft.com/office/word/2010/wordprocessingInk\" xmlns:wne=\"http://schemas.microsoft.com/office/word/2006/wordml\" xmlns:wps=\"http://schemas.microsoft.com/office/word/2010/wordprocessingShape\" xmlns:wpsCustomData=\"http://www.wps.cn/officeDocument/2013/wpsCustomData\"><wp:inline distT=\"0\" distB=\"0\" distL=\"114300\" distR=\"114300\"><wp:extent cx=\"5478780\" cy=\"1967230\"/><wp:effectExtent l=\"0\" t=\"0\" r=\"7620\" b=\"1270\"/><wp:docPr id=\"5\" name=\"图片 5\" descr=\"fig6_滞后相关\"/><wp:cNvGraphicFramePr><a:graphicFrameLocks xmlns:a=\"http://schemas.openxmlformats.org/drawingml/2006/main\" noChangeAspect=\"1\"/></wp:cNvGraphicFramePr><a:graphic xmlns:a=\"http://schemas.openxmlformats.org/drawingml/2006/main\"><a:graphicData uri=\"http://schemas.openxmlformats.org/drawingml/2006/picture\"><pic:pic xmlns:pic=\"http://schemas.openxmlformats.org/drawingml/2006/picture\"><pic:nvPicPr><pic:cNvPr id=\"5\" name=\"图片 5\" descr=\"fig6_滞后相关\"/><pic:cNvPicPr><a:picLocks noChangeAspect=\"1\"/></pic:cNvPicPr></pic:nvPicPr><pic:blipFill><a:blip r:embed=\"rId10\"/><a:stretch><a:fillRect/></a:stretch></pic:blipFill><pic:spPr><a:xfrm><a:off x=\"0\" y=\"0\"/><a:ext cx=\"5478780\" cy=\"1967230\"/></a:xfrm><a:prstGeom prst=\"rect\"><a:avLst/></a:prstGeom></pic:spPr></pic:pic></a:graphicData></a:graphic></wp:inline></w:drawing>"}]/>
+
+[P101 section=1 loc="/word/document.xml/w:body/*[40]"]
+<r i=1 loc="w:p[38]/w:r">径流的自相关系数lag1为0.77，lag7为0.40，衰减较快但仍有明显记忆效应，为引入滞后特征提供了依据。</r>
+
+[P102 section=1 loc="/word/document.xml/w:body/*[41]"]
+<r i=1 loc="w:p[39]/w:r"><break type="page"/></r>
+
+[P103 section=1 loc="/word/document.xml/w:body/*[42]" style="3"]
+<r i=1 loc="w:p[40]/w:r" color="#1F4E78">三、特征工程成果展示</r>
+
+[P104 section=1 loc="/word/document.xml/w:body/*[43]" style="4"]
+<r i=1 loc="w:p[41]/w:r" color="#2E75B6">子任务6：时间序列特征提取</r>
+
+[P105 section=1 loc="/word/document.xml/w:body/*[44]"]
+<r i=1 loc="w:p[42]/w:r">完成了三类时间序列特征提取：</r>
+
+[P106 section=1 loc="/word/document.xml/w:body/*[45]"]
+<r i=1 loc="w:p[43]/w:r">1. 季节与月份编码</r>
+
+[P107 section=1 loc="/word/document.xml/w:body/*[46]"]
+<r i=1 loc="w:p[44]/w:r[1]">   • 四季编码：season_春/夏/秋/冬（one-hot编码）</r><r i=2 loc="w:p[44]/w:r[2]">
+</r><r i=3 loc="w:p[44]/w:r[3]">   • 月份编码：doy_sin, doy_cos, month_sin, month_cos（三角周期编码）</r><r i=4 loc="w:p[44]/w:r[4]">
+</r><r i=5 loc="w:p[44]/w:r[5]">   共8个特征</r>
+
+[P108 section=1 loc="/word/document.xml/w:body/*[47]"]
+<r i=1 loc="w:p[45]/w:r">2. 滞后特征（Lag Features）</r>
+
+[P109 section=1 loc="/word/document.xml/w:body/*[48]"]
+<r i=1 loc="w:p[46]/w:r[1]">   • 变量：Discharge, Prcp, Tmax, Tmin, Vp, Srad</r><r i=2 loc="w:p[46]/w:r[2]">
+</r><r i=3 loc="w:p[46]/w:r[3]">   • 滞后阶数：1, 2, 3, 7, 14, 30天</r><r i=4 loc="w:p[46]/w:r[4]">
+</r><r i=5 loc="w:p[46]/w:r[5]">   共36个特征</r>
+
+[P110 section=1 loc="/word/document.xml/w:body/*[49]"]
+<r i=1 loc="w:p[47]/w:r">3. 窗口特征（Rolling Features）</r>
+
+[P111 section=1 loc="/word/document.xml/w:body/*[50]"]
+<r i=1 loc="w:p[48]/w:r[1]">   • 变量：Discharge, Prcp</r><r i=2 loc="w:p[48]/w:r[2]">
+</r><r i=3 loc="w:p[48]/w:r[3]">   • 窗口长度：3, 7, 14, 30天</r><r i=4 loc="w:p[48]/w:r[4]">
+</r><r i=5 loc="w:p[48]/w:r[5]">   • 统计量：mean, std, max</r><r i=6 loc="w:p[48]/w:r[6]">
+</r><r i=7 loc="w:p[48]/w:r[7]">   共24个特征</r>
+
+[P112 section=1 loc="/word/document.xml/w:body/*[51]"]
+<r i=1 loc="w:p[49]/w:r" font_hint="eastAsia" font_eastAsia="微软雅黑" lang={"w:eastAsia":"zh-CN"} drawings=[{"relationship_id":"rId11","relationship_ids":["rId11"],"target":"media/image6.png","resolved_target":"word/media/image6.png","targets":[{"relationship_id":"rId11","target":"media/image6.png","resolved_target":"word/media/image6.png","target_mode":null}],"name":"图片 6","alt_text":"fig9_特征类别贡献","size_emu":{"cx":"4311015","cy":"2396490"},"positioning":"wp:inline","location":"/w:document/w:body/w:p[49]/w:r/w:drawing","xml":"<w:drawing xmlns:w=\"http://schemas.openxmlformats.org/wordprocessingml/2006/main\" xmlns:wpc=\"http://schemas.microsoft.com/office/word/2010/wordprocessingCanvas\" xmlns:cx=\"http://schemas.microsoft.com/office/drawing/2014/chartex\" xmlns:cx1=\"http://schemas.microsoft.com/office/drawing/2015/9/8/chartex\" xmlns:cx2=\"http://schemas.microsoft.com/office/drawing/2015/10/21/chartex\" xmlns:cx3=\"http://schemas.microsoft.com/office/drawing/2016/5/9/chartex\" xmlns:cx4=\"http://schemas.microsoft.com/office/drawing/2016/5/10/chartex\" xmlns:cx5=\"http://schemas.microsoft.com/office/drawing/2016/5/11/chartex\" xmlns:cx6=\"http://schemas.microsoft.com/office/drawing/2016/5/12/chartex\" xmlns:cx7=\"http://schemas.microsoft.com/office/drawing/2016/5/13/chartex\" xmlns:cx8=\"http://schemas.microsoft.com/office/drawing/2016/5/14/chartex\" xmlns:mc=\"http://schemas.openxmlformats.org/markup-compatibility/2006\" xmlns:o=\"urn:schemas-microsoft-com:office:office\" xmlns:r=\"http://schemas.openxmlformats.org/officeDocument/2006/relationships\" xmlns:m=\"http://schemas.openxmlformats.org/officeDocument/2006/math\" xmlns:v=\"urn:schemas-microsoft-com:vml\" xmlns:wp14=\"http://schemas.microsoft.com/office/word/2010/wordprocessingDrawing\" xmlns:wp=\"http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing\" xmlns:w14=\"http://schemas.microsoft.com/office/word/2010/wordml\" xmlns:w10=\"urn:schemas-microsoft-com:office:word\" xmlns:w15=\"http://schemas.microsoft.com/office/word/2012/wordml\" xmlns:wpg=\"http://schemas.microsoft.com/office/word/2010/wordprocessingGroup\" xmlns:wpi=\"http://schemas.microsoft.com/office/word/2010/wordprocessingInk\" xmlns:wne=\"http://schemas.microsoft.com/office/word/2006/wordml\" xmlns:wps=\"http://schemas.microsoft.com/office/word/2010/wordprocessingShape\" xmlns:wpsCustomData=\"http://www.wps.cn/officeDocument/2013/wpsCustomData\"><wp:inline distT=\"0\" distB=\"0\" distL=\"114300\" distR=\"114300\"><wp:extent cx=\"4311015\" cy=\"2396490\"/><wp:effectExtent l=\"0\" t=\"0\" r=\"6985\" b=\"3810\"/><wp:docPr id=\"6\" name=\"图片 6\" descr=\"fig9_特征类别贡献\"/><wp:cNvGraphicFramePr><a:graphicFrameLocks xmlns:a=\"http://schemas.openxmlformats.org/drawingml/2006/main\" noChangeAspect=\"1\"/></wp:cNvGraphicFramePr><a:graphic xmlns:a=\"http://schemas.openxmlformats.org/drawingml/2006/main\"><a:graphicData uri=\"http://schemas.openxmlformats.org/drawingml/2006/picture\"><pic:pic xmlns:pic=\"http://schemas.openxmlformats.org/drawingml/2006/picture\"><pic:nvPicPr><pic:cNvPr id=\"6\" name=\"图片 6\" descr=\"fig9_特征类别贡献\"/><pic:cNvPicPr><a:picLocks noChangeAspect=\"1\"/></pic:cNvPicPr></pic:nvPicPr><pic:blipFill><a:blip r:embed=\"rId11\"/><a:stretch><a:fillRect/></a:stretch></pic:blipFill><pic:spPr><a:xfrm><a:off x=\"0\" y=\"0\"/><a:ext cx=\"4311015\" cy=\"2396490\"/></a:xfrm><a:prstGeom prst=\"rect\"><a:avLst/></a:prstGeom></pic:spPr></pic:pic></a:graphicData></a:graphic></wp:inline></w:drawing>"}]/>
+
+[P113 section=1 loc="/word/document.xml/w:body/*[52]"]
+<r i=1 loc="w:p[50]/w:r[1]" b color="#0070C0">总计构造81个候选特征</r><r i=2 loc="w:p[50]/w:r[2]"><break type="page"/></r>
+
+[P114 section=1 loc="/word/document.xml/w:body/*[53]" style="4"]
+<r i=1 loc="w:p[51]/w:r" color="#2E75B6">子任务7：特征归一化</r>
+
+[P115 section=1 loc="/word/document.xml/w:body/*[54]"]
+<r i=1 loc="w:p[52]/w:r">实现并对比了两种归一化方法：</r>
+
+[P116 section=1 loc="/word/document.xml/w:body/*[55]" style="16"]
+<r i=1 loc="w:p[53]/w:r">• 最小-最大归一化（Min-Max Normalization）：将特征线性映射到[0,1]</r>
+
+[P117 section=1 loc="/word/document.xml/w:body/*[56]" style="16"]
+<r i=1 loc="w:p[54]/w:r">• Z-score标准化：将特征转换为均值0、方差1的分布</r>
+
+[P118 section=1 loc="/word/document.xml/w:body/*[57]"]
+<r i=1 loc="w:p[55]/w:r" font_hint="eastAsia" font_eastAsia="微软雅黑" lang={"w:eastAsia":"zh-CN"} drawings=[{"relationship_id":"rId12","relationship_ids":["rId12"],"target":"media/image7.png","resolved_target":"word/media/image7.png","targets":[{"relationship_id":"rId12","target":"media/image7.png","resolved_target":"word/media/image7.png","target_mode":null}],"name":"图片 7","alt_text":"fig7_归一化对比","size_emu":{"cx":"5475605","cy":"1532890"},"positioning":"wp:inline","location":"/w:document/w:body/w:p[55]/w:r/w:drawing","xml":"<w:drawing xmlns:w=\"http://schemas.openxmlformats.org/wordprocessingml/2006/main\" xmlns:wpc=\"http://schemas.microsoft.com/office/word/2010/wordprocessingCanvas\" xmlns:cx=\"http://schemas.microsoft.com/office/drawing/2014/chartex\" xmlns:cx1=\"http://schemas.microsoft.com/office/drawing/2015/9/8/chartex\" xmlns:cx2=\"http://schemas.microsoft.com/office/drawing/2015/10/21/chartex\" xmlns:cx3=\"http://schemas.microsoft.com/office/drawing/2016/5/9/chartex\" xmlns:cx4=\"http://schemas.microsoft.com/office/drawing/2016/5/10/chartex\" xmlns:cx5=\"http://schemas.microsoft.com/office/drawing/2016/5/11/chartex\" xmlns:cx6=\"http://schemas.microsoft.com/office/drawing/2016/5/12/chartex\" xmlns:cx7=\"http://schemas.microsoft.com/office/drawing/2016/5/13/chartex\" xmlns:cx8=\"http://schemas.microsoft.com/office/drawing/2016/5/14/chartex\" xmlns:mc=\"http://schemas.openxmlformats.org/markup-compatibility/2006\" xmlns:o=\"urn:schemas-microsoft-com:office:office\" xmlns:r=\"http://schemas.openxmlformats.org/officeDocument/2006/relationships\" xmlns:m=\"http://schemas.openxmlformats.org/officeDocument/2006/math\" xmlns:v=\"urn:schemas-microsoft-com:vml\" xmlns:wp14=\"http://schemas.microsoft.com/office/word/2010/wordprocessingDrawing\" xmlns:wp=\"http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing\" xmlns:w14=\"http://schemas.microsoft.com/office/word/2010/wordml\" xmlns:w10=\"urn:schemas-microsoft-com:office:word\" xmlns:w15=\"http://schemas.microsoft.com/office/word/2012/wordml\" xmlns:wpg=\"http://schemas.microsoft.com/office/word/2010/wordprocessingGroup\" xmlns:wpi=\"http://schemas.microsoft.com/office/word/2010/wordprocessingInk\" xmlns:wne=\"http://schemas.microsoft.com/office/word/2006/wordml\" xmlns:wps=\"http://schemas.microsoft.com/office/word/2010/wordprocessingShape\" xmlns:wpsCustomData=\"http://www.wps.cn/officeDocument/2013/wpsCustomData\"><wp:inline distT=\"0\" distB=\"0\" distL=\"114300\" distR=\"114300\"><wp:extent cx=\"5475605\" cy=\"1532890\"/><wp:effectExtent l=\"0\" t=\"0\" r=\"10795\" b=\"3810\"/><wp:docPr id=\"7\" name=\"图片 7\" descr=\"fig7_归一化对比\"/><wp:cNvGraphicFramePr><a:graphicFrameLocks xmlns:a=\"http://schemas.openxmlformats.org/drawingml/2006/main\" noChangeAspect=\"1\"/></wp:cNvGraphicFramePr><a:graphic xmlns:a=\"http://schemas.openxmlformats.org/drawingml/2006/main\"><a:graphicData uri=\"http://schemas.openxmlformats.org/drawingml/2006/picture\"><pic:pic xmlns:pic=\"http://schemas.openxmlformats.org/drawingml/2006/picture\"><pic:nvPicPr><pic:cNvPr id=\"7\" name=\"图片 7\" descr=\"fig7_归一化对比\"/><pic:cNvPicPr><a:picLocks noChangeAspect=\"1\"/></pic:cNvPicPr></pic:nvPicPr><pic:blipFill><a:blip r:embed=\"rId12\"/><a:stretch><a:fillRect/></a:stretch></pic:blipFill><pic:spPr><a:xfrm><a:off x=\"0\" y=\"0\"/><a:ext cx=\"5475605\" cy=\"1532890\"/></a:xfrm><a:prstGeom prst=\"rect\"><a:avLst/></a:prstGeom></pic:spPr></pic:pic></a:graphicData></a:graphic></wp:inline></w:drawing>"}]/>
+
+[P119 section=1 loc="/word/document.xml/w:body/*[58]"]
+<r i=1 loc="w:p[56]/w:r">经对比，Z-score标准化对异常值更稳健，更适合本数据集的强右偏分布特征，因此最终采用Z-score标准化方法。</r>
+
+[P120 section=1 loc="/word/document.xml/w:body/*[59]"]
+<r i=1 loc="w:p[57]/w:r"><break type="page"/></r>
+
+[P121 section=1 loc="/word/document.xml/w:body/*[60]" style="4"]
+<r i=1 loc="w:p[58]/w:r" color="#2E75B6">子任务8：特征选择</r>
+
+[P122 section=1 loc="/word/document.xml/w:body/*[61]"]
+<r i=1 loc="w:p[59]/w:r">实现并对比了两种特征选择方法：</r>
+
+[P123 section=1 loc="/word/document.xml/w:body/*[62]" style="16"]
+<r i=1 loc="w:p[60]/w:r">• 皮尔逊相关系数法：度量特征与目标的线性相关性</r>
+
+[P124 section=1 loc="/word/document.xml/w:body/*[63]" style="16"]
+<r i=1 loc="w:p[61]/w:r">• 互信息法：基于信息熵，能捕捉非线性依赖关系</r>
+
+[P125 section=1 loc="/word/document.xml/w:body/*[64]"]
+<r i=1 loc="w:p[62]/w:r[1]" drawings=[{"relationship_id":"rId13","relationship_ids":["rId13"],"target":"media/image8.png","resolved_target":"word/media/image8.png","targets":[{"relationship_id":"rId13","target":"media/image8.png","resolved_target":"word/media/image8.png","target_mode":null}],"name":"图片 8","alt_text":"fig8_特征选择","size_emu":{"cx":"5476875","cy":"2587625"},"positioning":"wp:inline","location":"/w:document/w:body/w:p[62]/w:r[1]/w:drawing","xml":"<w:drawing xmlns:w=\"http://schemas.openxmlformats.org/wordprocessingml/2006/main\" xmlns:wpc=\"http://schemas.microsoft.com/office/word/2010/wordprocessingCanvas\" xmlns:cx=\"http://schemas.microsoft.com/office/drawing/2014/chartex\" xmlns:cx1=\"http://schemas.microsoft.com/office/drawing/2015/9/8/chartex\" xmlns:cx2=\"http://schemas.microsoft.com/office/drawing/2015/10/21/chartex\" xmlns:cx3=\"http://schemas.microsoft.com/office/drawing/2016/5/9/chartex\" xmlns:cx4=\"http://schemas.microsoft.com/office/drawing/2016/5/10/chartex\" xmlns:cx5=\"http://schemas.microsoft.com/office/drawing/2016/5/11/chartex\" xmlns:cx6=\"http://schemas.microsoft.com/office/drawing/2016/5/12/chartex\" xmlns:cx7=\"http://schemas.microsoft.com/office/drawing/2016/5/13/chartex\" xmlns:cx8=\"http://schemas.microsoft.com/office/drawing/2016/5/14/chartex\" xmlns:mc=\"http://schemas.openxmlformats.org/markup-compatibility/2006\" xmlns:o=\"urn:schemas-microsoft-com:office:office\" xmlns:r=\"http://schemas.openxmlformats.org/officeDocument/2006/relationships\" xmlns:m=\"http://schemas.openxmlformats.org/officeDocument/2006/math\" xmlns:v=\"urn:schemas-microsoft-com:vml\" xmlns:wp14=\"http://schemas.microsoft.com/office/word/2010/wordprocessingDrawing\" xmlns:wp=\"http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing\" xmlns:w14=\"http://schemas.microsoft.com/office/word/2010/wordml\" xmlns:w10=\"urn:schemas-microsoft-com:office:word\" xmlns:w15=\"http://schemas.microsoft.com/office/word/2012/wordml\" xmlns:wpg=\"http://schemas.microsoft.com/office/word/2010/wordprocessingGroup\" xmlns:wpi=\"http://schemas.microsoft.com/office/word/2010/wordprocessingInk\" xmlns:wne=\"http://schemas.microsoft.com/office/word/2006/wordml\" xmlns:wps=\"http://schemas.microsoft.com/office/word/2010/wordprocessingShape\" xmlns:wpsCustomData=\"http://www.wps.cn/officeDocument/2013/wpsCustomData\"><wp:inline distT=\"0\" distB=\"0\" distL=\"114300\" distR=\"114300\"><wp:extent cx=\"5476875\" cy=\"2587625\"/><wp:effectExtent l=\"0\" t=\"0\" r=\"9525\" b=\"3175\"/><wp:docPr id=\"8\" name=\"图片 8\" descr=\"fig8_特征选择\"/><wp:cNvGraphicFramePr><a:graphicFrameLocks xmlns:a=\"http://schemas.openxmlformats.org/drawingml/2006/main\" noChangeAspect=\"1\"/></wp:cNvGraphicFramePr><a:graphic xmlns:a=\"http://schemas.openxmlformats.org/drawingml/2006/main\"><a:graphicData uri=\"http://schemas.openxmlformats.org/drawingml/2006/picture\"><pic:pic xmlns:pic=\"http://schemas.openxmlformats.org/drawingml/2006/picture\"><pic:nvPicPr><pic:cNvPr id=\"8\" name=\"图片 8\" descr=\"fig8_特征选择\"/><pic:cNvPicPr><a:picLocks noChangeAspect=\"1\"/></pic:cNvPicPr></pic:nvPicPr><pic:blipFill><a:blip r:embed=\"rId13\"/><a:stretch><a:fillRect/></a:stretch></pic:blipFill><pic:spPr><a:xfrm><a:off x=\"0\" y=\"0\"/><a:ext cx=\"5476875\" cy=\"2587625\"/></a:xfrm><a:prstGeom prst=\"rect\"><a:avLst/></a:prstGeom></pic:spPr></pic:pic></a:graphicData></a:graphic></wp:inline></w:drawing>"}]/><r i=2 loc="w:p[62]/w:r[2]" font_hint="eastAsia" font_eastAsia="微软雅黑" lang={"w:eastAsia":"zh-CN"} drawings=[{"relationship_id":"rId11","relationship_ids":["rId11"],"target":"media/image6.png","resolved_target":"word/media/image6.png","targets":[{"relationship_id":"rId11","target":"media/image6.png","resolved_target":"word/media/image6.png","target_mode":null}],"name":"图片 9","alt_text":"fig9_特征类别贡献","size_emu":{"cx":"5483860","cy":"3048635"},"positioning":"wp:inline","location":"/w:document/w:body/w:p[62]/w:r[2]/w:drawing","xml":"<w:drawing xmlns:w=\"http://schemas.openxmlformats.org/wordprocessingml/2006/main\" xmlns:wpc=\"http://schemas.microsoft.com/office/word/2010/wordprocessingCanvas\" xmlns:cx=\"http://schemas.microsoft.com/office/drawing/2014/chartex\" xmlns:cx1=\"http://schemas.microsoft.com/office/drawing/2015/9/8/chartex\" xmlns:cx2=\"http://schemas.microsoft.com/office/drawing/2015/10/21/chartex\" xmlns:cx3=\"http://schemas.microsoft.com/office/drawing/2016/5/9/chartex\" xmlns:cx4=\"http://schemas.microsoft.com/office/drawing/2016/5/10/chartex\" xmlns:cx5=\"http://schemas.microsoft.com/office/drawing/2016/5/11/chartex\" xmlns:cx6=\"http://schemas.microsoft.com/office/drawing/2016/5/12/chartex\" xmlns:cx7=\"http://schemas.microsoft.com/office/drawing/2016/5/13/chartex\" xmlns:cx8=\"http://schemas.microsoft.com/office/drawing/2016/5/14/chartex\" xmlns:mc=\"http://schemas.openxmlformats.org/markup-compatibility/2006\" xmlns:o=\"urn:schemas-microsoft-com:office:office\" xmlns:r=\"http://schemas.openxmlformats.org/officeDocument/2006/relationships\" xmlns:m=\"http://schemas.openxmlformats.org/officeDocument/2006/math\" xmlns:v=\"urn:schemas-microsoft-com:vml\" xmlns:wp14=\"http://schemas.microsoft.com/office/word/2010/wordprocessingDrawing\" xmlns:wp=\"http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing\" xmlns:w14=\"http://schemas.microsoft.com/office/word/2010/wordml\" xmlns:w10=\"urn:schemas-microsoft-com:office:word\" xmlns:w15=\"http://schemas.microsoft.com/office/word/2012/wordml\" xmlns:wpg=\"http://schemas.microsoft.com/office/word/2010/wordprocessingGroup\" xmlns:wpi=\"http://schemas.microsoft.com/office/word/2010/wordprocessingInk\" xmlns:wne=\"http://schemas.microsoft.com/office/word/2006/wordml\" xmlns:wps=\"http://schemas.microsoft.com/office/word/2010/wordprocessingShape\" xmlns:wpsCustomData=\"http://www.wps.cn/officeDocument/2013/wpsCustomData\"><wp:inline distT=\"0\" distB=\"0\" distL=\"114300\" distR=\"114300\"><wp:extent cx=\"5483860\" cy=\"3048635\"/><wp:effectExtent l=\"0\" t=\"0\" r=\"2540\" b=\"12065\"/><wp:docPr id=\"9\" name=\"图片 9\" descr=\"fig9_特征类别贡献\"/><wp:cNvGraphicFramePr><a:graphicFrameLocks xmlns:a=\"http://schemas.openxmlformats.org/drawingml/2006/main\" noChangeAspect=\"1\"/></wp:cNvGraphicFramePr><a:graphic xmlns:a=\"http://schemas.openxmlformats.org/drawingml/2006/main\"><a:graphicData uri=\"http://schemas.openxmlformats.org/drawingml/2006/picture\"><pic:pic xmlns:pic=\"http://schemas.openxmlformats.org/drawingml/2006/picture\"><pic:nvPicPr><pic:cNvPr id=\"9\" name=\"图片 9\" descr=\"fig9_特征类别贡献\"/><pic:cNvPicPr><a:picLocks noChangeAspect=\"1\"/></pic:cNvPicPr></pic:nvPicPr><pic:blipFill><a:blip r:embed=\"rId11\"/><a:stretch><a:fillRect/></a:stretch></pic:blipFill><pic:spPr><a:xfrm><a:off x=\"0\" y=\"0\"/><a:ext cx=\"5483860\" cy=\"3048635\"/></a:xfrm><a:prstGeom prst=\"rect\"><a:avLst/></a:prstGeom></pic:spPr></pic:pic></a:graphicData></a:graphic></wp:inline></w:drawing>"}]/><r i=3 loc="w:p[62]/w:r[3]">互信息得分最高的是径流自身的短窗口与滞后特征，说明径流的近期状态是最强的预测因子。最终按互信息得分保留TOP 50个特征。</r>
+
+[P126 section=1 loc="/word/document.xml/w:body/*[65]"]
+<r i=1 loc="w:p[63]/w:r"><break type="page"/></r>
+
+[P127 section=1 loc="/word/document.xml/w:body/*[66]" style="3"]
+<r i=1 loc="w:p[64]/w:r" color="#1F4E78">四、技术实现要点</r>
+
+[P128 section=1 loc="/word/document.xml/w:body/*[67]" style="14"]
+<r i=1 loc="w:p[65]/w:r">1. 代码组织</r>
+
+[P129 section=1 loc="/word/document.xml/w:body/*[68]"]
+<r i=1 loc="w:p[66]/w:r">   • 完整代码共8个模块，结构清晰，可读性强</r>
+
+[P130 section=1 loc="/word/document.xml/w:body/*[69]"]
+<r i=1 loc="w:p[67]/w:r">   • 通过run_all.py可一键复现全部结果</r>
+
+[P131 section=1 loc="/word/document.xml/w:body/*[70]" style="14"]
+<r i=1 loc="w:p[68]/w:r">2. 数据泄漏防护</r>
+
+[P132 section=1 loc="/word/document.xml/w:body/*[71]"]
+<r i=1 loc="w:p[69]/w:r">   • 所有归一化统计量（均值/方差）仅在训练集上估计</r>
+
+[P133 section=1 loc="/word/document.xml/w:body/*[72]"]
+<r i=1 loc="w:p[70]/w:r">   • 特征选择评分仅使用训练集数据</r>
+
+[P134 section=1 loc="/word/document.xml/w:body/*[73]"]
+<r i=1 loc="w:p[71]/w:r">   • 滞后与窗口特征严格只向过去取数，不使用未来信息</r>
+
+[P135 section=1 loc="/word/document.xml/w:body/*[74]" style="14"]
+<r i=1 loc="w:p[72]/w:r">3. 可视化规范</r>
+
+[P136 section=1 loc="/word/document.xml/w:body/*[75]"]
+<r i=1 loc="w:p[73]/w:r">   • 统一配色方案，图表美观专业</r>
+
+[P137 section=1 loc="/word/document.xml/w:body/*[76]"]
+<r i=1 loc="w:p[74]/w:r">   • 中文标签清晰，便于理解</r>
+
+[P138 section=1 loc="/word/document.xml/w:body/*[77]"]
+<r i=1 loc="w:p[75]/w:r">   • 所有图表均保存为高分辨率PNG格式</r>
+
+[P139 section=1 loc="/word/document.xml/w:body/*[78]" style="14"]
+<r i=1 loc="w:p[76]/w:r">4. 结果可追溯</r>
+
+[P140 section=1 loc="/word/document.xml/w:body/*[79]"]
+<r i=1 loc="w:p[77]/w:r">   • 所有数值结果保存为CSV格式</r>
+
+[P141 section=1 loc="/word/document.xml/w:body/*[80]"]
+<r i=1 loc="w:p[78]/w:r">   • 图表与数据完全对应，可验证</r>
+
+[P142 section=1 loc="/word/document.xml/w:body/*[81]"]
+<r i=1 loc="w:p[79]/w:r"><break type="page"/></r>
+
+[P143 section=1 loc="/word/document.xml/w:body/*[82]" style="3"]
+<r i=1 loc="w:p[80]/w:r" color="#1F4E78">五、总结</r>
+
+[P144 section=1 loc="/word/document.xml/w:body/*[83]"]
+<r i=1 loc="w:p[81]/w:r[1]" size=14pt b>本次阶段验收的8个子任务已全部完成</r><r i=2 loc="w:p[81]/w:r[2]">，达到验收要求。</r>
+
+[P146 section=1 loc="/word/document.xml/w:body/*[85]"]
+<r i=1 loc="w:p[83]/w:r">主要成果：</r>
+
+[P147 section=1 loc="/word/document.xml/w:body/*[86]" style="16"]
+<r i=1 loc="w:p[84]/w:r">✓ 数据分析：完成5类可视化分析，深入理解数据分布和相关性</r>
+
+[P148 section=1 loc="/word/document.xml/w:body/*[87]" style="16"]
+<r i=1 loc="w:p[85]/w:r">✓ 特征工程：构造81个候选特征，实现归一化和特征选择</r>
+
+[P149 section=1 loc="/word/document.xml/w:body/*[88]" style="16"]
+<r i=1 loc="w:p[86]/w:r">✓ 代码实现：8个模块，结构清晰，可完全复现</r>
+
+[P150 section=1 loc="/word/document.xml/w:body/*[89]" style="16"]
+<r i=1 loc="w:p[87]/w:r">✓ 额外工作：已完成建模实验（24个个体模型+16个集成模型）</r>
+
+[P152 section=1 loc="/word/document.xml/w:body/*[91]"]
+<r i=1 loc="w:p[89]/w:r">所有图表、数据和代码均已整理完毕，可随时展示。</r>
