@@ -1,0 +1,27 @@
+{
+  "run_id": "formal_20261031_v2",
+  "version": 2,
+  "status": "completed",
+  "smoke": false,
+  "started": "2026-10-31T20:17:59+0800",
+  "command": "code/acceptance3_v2_train.py --run-id formal_20261031_v2",
+  "data_sha256": "ab09410b23118510bb4e8787a62b97693336a1c46477a01329f587c64bc57151",
+  "device": "cpu",
+  "python": "3.12.3 | packaged by conda-forge | (main, Apr 15 2024, 18:20:11) [MSC v.1938 64 bit (AMD64)]",
+  "torch_build": "2.6.0+cpu",
+  "seeds": [
+    42,
+    43,
+    44
+  ],
+  "packages": {
+    "numpy": "2.5.3",
+    "pandas": "3.0.6",
+    "scikit-learn": "1.9.1",
+    "torch": "2.6.0",
+    "joblib": "1.6.0"
+  },
+  "git_commit": "2268fd6b3b6c8be1b9b4b6616d7d681d942536bb",
+  "seconds": 5526.240509000025,
+  "finished": "2026-10-31T21:50:05+0800"
+}

@@ -1,0 +1,10 @@
+{
+  "run_id": "formal_20261101_v3_stage_d",
+  "source_run": "formal_20261031_v3_stage_c",
+  "phase": "multi_frozen_evaluation",
+  "status": "completed",
+  "smoke": false,
+  "started": "2026-11-01T00:11:23+0800",
+  "seconds": 3.145296500006225,
+  "finished": "2026-11-01T00:11:26+0800"
+}

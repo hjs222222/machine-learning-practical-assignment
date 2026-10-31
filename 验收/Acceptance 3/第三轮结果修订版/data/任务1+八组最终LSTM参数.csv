@@ -1,0 +1,9 @@
+﻿策略,h,units,dropout,lr,目标,输入,λ,epoch
+direct,1,[64],0.2,0.001,log,plus_Q,0.0,18
+direct,2,"[64, 32]",0.2,0.001,log,plus_Q,0.0,11
+direct,3,[64],0.1,0.001,log,plus_Q,0.0,12
+direct,4,"[64, 32]",0.1,0.0005,log,plus_Q,0.0,10
+direct,5,[64],0.1,0.001,log,plus_Q,0.0,9
+direct,6,"[64, 32]",0.1,0.001,log,plus_Q,0.0,12
+direct,7,[32],0.1,0.001,log,plus_Q,0.0,32
+multi,1—7,[64],0.1,0.001,log,compact,0.0,10

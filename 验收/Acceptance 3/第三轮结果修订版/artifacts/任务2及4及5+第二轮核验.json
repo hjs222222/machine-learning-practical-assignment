@@ -1,0 +1,28 @@
+{
+  "run_id": "formal_20261031_v2",
+  "status": "passed",
+  "seeds": [
+    42,
+    43,
+    44
+  ],
+  "metric_rows": 210,
+  "required_rows_per_seed": 42,
+  "test_prediction_rows": 75390,
+  "oof_prediction_rows": 91098,
+  "cv_candidate_rows": 880,
+  "fit_records": 2048,
+  "final_restored_models": 72,
+  "checks": [
+    "逐样本重算指标",
+    "共同真值和目标日期",
+    "外层和内层时间净化",
+    "内部早停原尺度监控",
+    "全部最终模型恢复并重建359起报点预测",
+    "原尺度简单平均",
+    "落盘元层重建预测",
+    "原生多输出结构",
+    "完整候选表",
+    "冻结记录存在"
+  ]
+}

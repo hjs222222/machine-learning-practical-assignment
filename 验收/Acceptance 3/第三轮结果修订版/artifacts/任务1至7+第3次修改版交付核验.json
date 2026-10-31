@@ -1,0 +1,17 @@
+{
+  "status": "passed",
+  "required_metric_rows": 42,
+  "required_metric_values": 126,
+  "parameter_rows": 8,
+  "combined_all_model_metric_rows": 231,
+  "word_inline_images": 16,
+  "checked_relative_links": 56,
+  "word_metric_rounding": "passed",
+  "links": "passed",
+  "training_plan_included": false,
+  "word_desktop_visual_check": "not_performed",
+  "direct_source": "formal_20261031_v2",
+  "multi_source": "formal_20261101_v3_stage_d",
+  "comparison_endpoint_labels": "separated",
+  "strategy_protocol_limitation": "disclosed"
+}

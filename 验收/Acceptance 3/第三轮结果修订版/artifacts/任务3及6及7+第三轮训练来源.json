@@ -1,0 +1,22 @@
+{
+  "run_id": "formal_20261031_v3_stage_c",
+  "version": 3,
+  "phase": "multi_quarterly_oof",
+  "status": "stage_c_completed",
+  "smoke": false,
+  "started": "2026-10-31T23:53:56+0800",
+  "data_sha256": "ab09410b23118510bb4e8787a62b97693336a1c46477a01329f587c64bc57151",
+  "device": "cpu",
+  "torch_build": "2.6.0+cpu",
+  "packages": {
+    "numpy": "2.5.3",
+    "pandas": "3.0.6",
+    "scikit-learn": "1.9.1",
+    "torch": "2.6.0",
+    "scipy": "1.18.1"
+  },
+  "full_training_completed": false,
+  "test_2004_predicted": false,
+  "seconds": 1021.0731284000212,
+  "finished": "2026-11-01T00:10:58+0800"
+}

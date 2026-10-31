@@ -1,0 +1,12 @@
+{
+  "status": "passed",
+  "stage": "C",
+  "fit_records": 821,
+  "expected_fit_records": 821,
+  "retried_fit_records": 0,
+  "quarterly_blocks": 10,
+  "oof_samples": 907,
+  "all_selected_models_restored": true,
+  "test_2004_predicted": false,
+  "full_training_completed": false
+}

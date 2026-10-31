@@ -1,0 +1,1898 @@
+[
+  {
+    "stage": "oof0",
+    "role": "grid",
+    "strategy": "direct",
+    "model": "LSTM",
+    "h": 1,
+    "best_params": {
+      "dropout": 0.2,
+      "feature_mode": "plus_Q",
+      "lr": 0.001,
+      "mixed_weight": 0.0,
+      "target_transform": "log",
+      "units": [
+        64
+      ]
+    },
+    "fixed_epochs": 22,
+    "best_index": 7,
+    "best_score": -56.19658466055571,
+    "seconds": 105.05387970001902
+  },
+  {
+    "stage": "oof0",
+    "role": "grid",
+    "strategy": "direct",
+    "model": "ANN",
+    "h": 1,
+    "best_params": {
+      "alpha": 1.0,
+      "feature_mode": "plus_Q",
+      "hidden_layer_sizes": [
+        64
+      ],
+      "learning_rate_init": 0.001,
+      "target_transform": "log"
+    },
+    "fixed_epochs": null,
+    "best_index": 4,
+    "best_score": -53.61269446266407,
+    "seconds": 2.5398654000018723
+  },
+  {
+    "stage": "oof0",
+    "role": "grid",
+    "strategy": "direct",
+    "model": "RF",
+    "h": 1,
+    "best_params": {
+      "feature_mode": "plus_Q",
+      "max_depth": 10,
+      "min_samples_leaf": 5,
+      "n_estimators": 300,
+      "target_transform": "log"
+    },
+    "fixed_epochs": null,
+    "best_index": 2,
+    "best_score": -45.52454405187221,
+    "seconds": 3.427936399995815
+  },
+  {
+    "stage": "oof0",
+    "role": "grid",
+    "strategy": "direct",
+    "model": "LSTM",
+    "h": 2,
+    "best_params": {
+      "dropout": 0.1,
+      "feature_mode": "plus_Q",
+      "lr": 0.001,
+      "mixed_weight": 0.0,
+      "target_transform": "log",
+      "units": [
+        32
+      ]
+    },
+    "fixed_epochs": 14,
+    "best_index": 0,
+    "best_score": -89.78764806207518,
+    "seconds": 74.77693270001328
+  },
+  {
+    "stage": "oof0",
+    "role": "grid",
+    "strategy": "direct",
+    "model": "ANN",
+    "h": 2,
+    "best_params": {
+      "alpha": 1.0,
+      "feature_mode": "plus_Q",
+      "hidden_layer_sizes": [
+        64
+      ],
+      "learning_rate_init": 0.001,
+      "target_transform": "log"
+    },
+    "fixed_epochs": null,
+    "best_index": 4,
+    "best_score": -107.01142503251108,
+    "seconds": 3.261373999994248
+  },
+  {
+    "stage": "oof0",
+    "role": "grid",
+    "strategy": "direct",
+    "model": "RF",
+    "h": 2,
+    "best_params": {
+      "feature_mode": "plus_Q",
+      "max_depth": 20,
+      "min_samples_leaf": 5,
+      "n_estimators": 300,
+      "target_transform": "log"
+    },
+    "fixed_epochs": null,
+    "best_index": 6,
+    "best_score": -66.8429160966698,
+    "seconds": 3.4252094000112265
+  },
+  {
+    "stage": "oof0",
+    "role": "grid",
+    "strategy": "direct",
+    "model": "LSTM",
+    "h": 3,
+    "best_params": {
+      "dropout": 0.2,
+      "feature_mode": "plus_Q",
+      "lr": 0.001,
+      "mixed_weight": 0.0,
+      "target_transform": "log",
+      "units": [
+        64,
+        32
+      ]
+    },
+    "fixed_epochs": 14,
+    "best_index": 8,
+    "best_score": -112.37664376982511,
+    "seconds": 80.37188559997594
+  },
+  {
+    "stage": "oof0",
+    "role": "grid",
+    "strategy": "direct",
+    "model": "ANN",
+    "h": 3,
+    "best_params": {
+      "alpha": 1.0,
+      "feature_mode": "plus_Q",
+      "hidden_layer_sizes": [
+        64
+      ],
+      "learning_rate_init": 0.001,
+      "target_transform": "log"
+    },
+    "fixed_epochs": null,
+    "best_index": 4,
+    "best_score": -131.05814918302866,
+    "seconds": 3.5692608999670483
+  },
+  {
+    "stage": "oof0",
+    "role": "grid",
+    "strategy": "direct",
+    "model": "RF",
+    "h": 3,
+    "best_params": {
+      "feature_mode": "plus_Q",
+      "max_depth": 10,
+      "min_samples_leaf": 5,
+      "n_estimators": 300,
+      "target_transform": "log"
+    },
+    "fixed_epochs": null,
+    "best_index": 2,
+    "best_score": -81.1967978482183,
+    "seconds": 3.4891773999552242
+  },
+  {
+    "stage": "oof0",
+    "role": "grid",
+    "strategy": "direct",
+    "model": "LSTM",
+    "h": 4,
+    "best_params": {
+      "dropout": 0.2,
+      "feature_mode": "plus_Q",
+      "lr": 0.001,
+      "mixed_weight": 0.0,
+      "target_transform": "log",
+      "units": [
+        32
+      ]
+    },
+    "fixed_epochs": 15,
+    "best_index": 6,
+    "best_score": -146.19329638901522,
+    "seconds": 79.76704509998672
+  },
+  {
+    "stage": "oof0",
+    "role": "grid",
+    "strategy": "direct",
+    "model": "ANN",
+    "h": 4,
+    "best_params": {
+      "alpha": 1.0,
+      "feature_mode": "plus_Q",
+      "hidden_layer_sizes": [
+        64
+      ],
+      "learning_rate_init": 0.001,
+      "target_transform": "log"
+    },
+    "fixed_epochs": null,
+    "best_index": 4,
+    "best_score": -133.51454400576125,
+    "seconds": 3.3801259000319988
+  },
+  {
+    "stage": "oof0",
+    "role": "grid",
+    "strategy": "direct",
+    "model": "RF",
+    "h": 4,
+    "best_params": {
+      "feature_mode": "plus_Q",
+      "max_depth": 20,
+      "min_samples_leaf": 5,
+      "n_estimators": 300,
+      "target_transform": "log"
+    },
+    "fixed_epochs": null,
+    "best_index": 6,
+    "best_score": -91.62800953727375,
+    "seconds": 3.409058700024616
+  },
+  {
+    "stage": "oof0",
+    "role": "grid",
+    "strategy": "direct",
+    "model": "LSTM",
+    "h": 5,
+    "best_params": {
+      "dropout": 0.1,
+      "feature_mode": "plus_Q",
+      "lr": 0.0005,
+      "mixed_weight": 0.0,
+      "target_transform": "log",
+      "units": [
+        64
+      ]
+    },
+    "fixed_epochs": 21,
+    "best_index": 4,
+    "best_score": -142.44066992057404,
+    "seconds": 82.47789640002884
+  },
+  {
+    "stage": "oof0",
+    "role": "grid",
+    "strategy": "direct",
+    "model": "ANN",
+    "h": 5,
+    "best_params": {
+      "alpha": 1.0,
+      "feature_mode": "plus_Q",
+      "hidden_layer_sizes": [
+        64
+      ],
+      "learning_rate_init": 0.001,
+      "target_transform": "log"
+    },
+    "fixed_epochs": null,
+    "best_index": 4,
+    "best_score": -158.4387688673371,
+    "seconds": 3.8918579999590293
+  },
+  {
+    "stage": "oof0",
+    "role": "grid",
+    "strategy": "direct",
+    "model": "RF",
+    "h": 5,
+    "best_params": {
+      "feature_mode": "plus_Q",
+      "max_depth": 20,
+      "min_samples_leaf": 5,
+      "n_estimators": 300,
+      "target_transform": "log"
+    },
+    "fixed_epochs": null,
+    "best_index": 6,
+    "best_score": -112.35243431323326,
+    "seconds": 3.4162845999817364
+  },
+  {
+    "stage": "oof0",
+    "role": "grid",
+    "strategy": "direct",
+    "model": "LSTM",
+    "h": 6,
+    "best_params": {
+      "dropout": 0.1,
+      "feature_mode": "plus_Q",
+      "lr": 0.0005,
+      "mixed_weight": 0.0,
+      "target_transform": "log",
+      "units": [
+        64
+      ]
+    },
+    "fixed_epochs": 18,
+    "best_index": 4,
+    "best_score": -151.14271610904024,
+    "seconds": 71.42090769996867
+  },
+  {
+    "stage": "oof0",
+    "role": "grid",
+    "strategy": "direct",
+    "model": "ANN",
+    "h": 6,
+    "best_params": {
+      "alpha": 1.0,
+      "feature_mode": "plus_Q",
+      "hidden_layer_sizes": [
+        64
+      ],
+      "learning_rate_init": 0.001,
+      "target_transform": "log"
+    },
+    "fixed_epochs": null,
+    "best_index": 4,
+    "best_score": -158.17999638637522,
+    "seconds": 4.034607700014021
+  },
+  {
+    "stage": "oof0",
+    "role": "grid",
+    "strategy": "direct",
+    "model": "RF",
+    "h": 6,
+    "best_params": {
+      "feature_mode": "plus_Q",
+      "max_depth": 20,
+      "min_samples_leaf": 5,
+      "n_estimators": 300,
+      "target_transform": "log"
+    },
+    "fixed_epochs": null,
+    "best_index": 6,
+    "best_score": -130.2164784667085,
+    "seconds": 3.404935700003989
+  },
+  {
+    "stage": "oof0",
+    "role": "grid",
+    "strategy": "direct",
+    "model": "LSTM",
+    "h": 7,
+    "best_params": {
+      "dropout": 0.2,
+      "feature_mode": "plus_Q",
+      "lr": 0.001,
+      "mixed_weight": 0.0,
+      "target_transform": "log",
+      "units": [
+        32
+      ]
+    },
+    "fixed_epochs": 15,
+    "best_index": 6,
+    "best_score": -201.0082233940261,
+    "seconds": 76.41931550001027
+  },
+  {
+    "stage": "oof0",
+    "role": "grid",
+    "strategy": "direct",
+    "model": "ANN",
+    "h": 7,
+    "best_params": {
+      "alpha": 1.0,
+      "feature_mode": "plus_Q",
+      "hidden_layer_sizes": [
+        64
+      ],
+      "learning_rate_init": 0.001,
+      "target_transform": "log"
+    },
+    "fixed_epochs": null,
+    "best_index": 4,
+    "best_score": -167.6789703344419,
+    "seconds": 3.834291699982714
+  },
+  {
+    "stage": "oof0",
+    "role": "grid",
+    "strategy": "direct",
+    "model": "RF",
+    "h": 7,
+    "best_params": {
+      "feature_mode": "plus_Q",
+      "max_depth": 10,
+      "min_samples_leaf": 5,
+      "n_estimators": 300,
+      "target_transform": "log"
+    },
+    "fixed_epochs": null,
+    "best_index": 2,
+    "best_score": -148.23809868245846,
+    "seconds": 3.514213300019037
+  },
+  {
+    "stage": "oof0",
+    "role": "grid",
+    "strategy": "multi",
+    "model": "LSTM",
+    "h": 7,
+    "best_params": {
+      "dropout": 0.1,
+      "feature_mode": "compact",
+      "lr": 0.001,
+      "mixed_weight": 0.0,
+      "target_transform": "log",
+      "units": [
+        64
+      ]
+    },
+    "fixed_epochs": 16,
+    "best_index": 1,
+    "best_score": -99.9114551696682,
+    "seconds": 86.9221652999986
+  },
+  {
+    "stage": "oof0",
+    "role": "grid",
+    "strategy": "multi",
+    "model": "ANN",
+    "h": 7,
+    "best_params": {
+      "alpha": 0.1,
+      "feature_mode": "plus_Q",
+      "hidden_layer_sizes": [
+        64
+      ],
+      "learning_rate_init": 0.001,
+      "target_transform": "log"
+    },
+    "fixed_epochs": null,
+    "best_index": 2,
+    "best_score": -125.21076531097313,
+    "seconds": 3.813841000024695
+  },
+  {
+    "stage": "oof0",
+    "role": "grid",
+    "strategy": "multi",
+    "model": "RF",
+    "h": 7,
+    "best_params": {
+      "feature_mode": "plus_Q",
+      "max_depth": 10,
+      "min_samples_leaf": 5,
+      "n_estimators": 300,
+      "target_transform": "log"
+    },
+    "fixed_epochs": null,
+    "best_index": 2,
+    "best_score": -90.61960423300872,
+    "seconds": 3.6277875999803655
+  },
+  {
+    "stage": "oof1",
+    "role": "grid",
+    "strategy": "direct",
+    "model": "LSTM",
+    "h": 1,
+    "best_params": {
+      "dropout": 0.2,
+      "feature_mode": "plus_Q",
+      "lr": 0.001,
+      "mixed_weight": 0.0,
+      "target_transform": "sqrt",
+      "units": [
+        64
+      ]
+    },
+    "fixed_epochs": 29,
+    "best_index": 7,
+    "best_score": -237.39201700048073,
+    "seconds": 111.69565869995859
+  },
+  {
+    "stage": "oof1",
+    "role": "grid",
+    "strategy": "direct",
+    "model": "ANN",
+    "h": 1,
+    "best_params": {
+      "alpha": 1.0,
+      "feature_mode": "plus_Q",
+      "hidden_layer_sizes": [
+        64
+      ],
+      "learning_rate_init": 0.001,
+      "target_transform": "sqrt"
+    },
+    "fixed_epochs": null,
+    "best_index": 5,
+    "best_score": -265.3357608572804,
+    "seconds": 3.411352299968712
+  },
+  {
+    "stage": "oof1",
+    "role": "grid",
+    "strategy": "direct",
+    "model": "RF",
+    "h": 1,
+    "best_params": {
+      "feature_mode": "plus_Q",
+      "max_depth": 20,
+      "min_samples_leaf": 5,
+      "n_estimators": 300,
+      "target_transform": "log"
+    },
+    "fixed_epochs": null,
+    "best_index": 6,
+    "best_score": -230.6098812315299,
+    "seconds": 3.6580967000336386
+  },
+  {
+    "stage": "oof1",
+    "role": "grid",
+    "strategy": "direct",
+    "model": "LSTM",
+    "h": 2,
+    "best_params": {
+      "dropout": 0.1,
+      "feature_mode": "plus_Q",
+      "lr": 0.001,
+      "mixed_weight": 0.0,
+      "target_transform": "sqrt",
+      "units": [
+        64
+      ]
+    },
+    "fixed_epochs": 16,
+    "best_index": 1,
+    "best_score": -351.2299150535529,
+    "seconds": 90.36343470000429
+  },
+  {
+    "stage": "oof1",
+    "role": "grid",
+    "strategy": "direct",
+    "model": "ANN",
+    "h": 2,
+    "best_params": {
+      "alpha": 1.0,
+      "feature_mode": "plus_Q",
+      "hidden_layer_sizes": [
+        64
+      ],
+      "learning_rate_init": 0.001,
+      "target_transform": "sqrt"
+    },
+    "fixed_epochs": null,
+    "best_index": 5,
+    "best_score": -362.4774745580488,
+    "seconds": 3.9331281000049785
+  },
+  {
+    "stage": "oof1",
+    "role": "grid",
+    "strategy": "direct",
+    "model": "RF",
+    "h": 2,
+    "best_params": {
+      "feature_mode": "plus_Q",
+      "max_depth": 20,
+      "min_samples_leaf": 5,
+      "n_estimators": 300,
+      "target_transform": "log"
+    },
+    "fixed_epochs": null,
+    "best_index": 6,
+    "best_score": -336.80030270020654,
+    "seconds": 3.6450994999613613
+  },
+  {
+    "stage": "oof1",
+    "role": "grid",
+    "strategy": "direct",
+    "model": "LSTM",
+    "h": 3,
+    "best_params": {
+      "dropout": 0.1,
+      "feature_mode": "plus_Q",
+      "lr": 0.001,
+      "mixed_weight": 0.0,
+      "target_transform": "sqrt",
+      "units": [
+        32
+      ]
+    },
+    "fixed_epochs": 9,
+    "best_index": 0,
+    "best_score": -385.15465089522195,
+    "seconds": 78.98669220000738
+  },
+  {
+    "stage": "oof1",
+    "role": "grid",
+    "strategy": "direct",
+    "model": "ANN",
+    "h": 3,
+    "best_params": {
+      "alpha": 1.0,
+      "feature_mode": "plus_Q",
+      "hidden_layer_sizes": [
+        64
+      ],
+      "learning_rate_init": 0.001,
+      "target_transform": "log"
+    },
+    "fixed_epochs": null,
+    "best_index": 4,
+    "best_score": -422.99682648141277,
+    "seconds": 3.946964900009334
+  },
+  {
+    "stage": "oof1",
+    "role": "grid",
+    "strategy": "direct",
+    "model": "RF",
+    "h": 3,
+    "best_params": {
+      "feature_mode": "plus_Q",
+      "max_depth": 20,
+      "min_samples_leaf": 5,
+      "n_estimators": 300,
+      "target_transform": "log"
+    },
+    "fixed_epochs": null,
+    "best_index": 6,
+    "best_score": -378.03693136564505,
+    "seconds": 3.6204327999730594
+  },
+  {
+    "stage": "oof1",
+    "role": "grid",
+    "strategy": "direct",
+    "model": "LSTM",
+    "h": 4,
+    "best_params": {
+      "dropout": 0.2,
+      "feature_mode": "plus_Q",
+      "lr": 0.001,
+      "mixed_weight": 0.0,
+      "target_transform": "sqrt",
+      "units": [
+        64
+      ]
+    },
+    "fixed_epochs": 12,
+    "best_index": 7,
+    "best_score": -426.88829208532286,
+    "seconds": 73.82274019997567
+  },
+  {
+    "stage": "oof1",
+    "role": "grid",
+    "strategy": "direct",
+    "model": "ANN",
+    "h": 4,
+    "best_params": {
+      "alpha": 1.0,
+      "feature_mode": "plus_Q",
+      "hidden_layer_sizes": [
+        64
+      ],
+      "learning_rate_init": 0.001,
+      "target_transform": "log"
+    },
+    "fixed_epochs": null,
+    "best_index": 4,
+    "best_score": -438.43943738906694,
+    "seconds": 4.050810199987609
+  },
+  {
+    "stage": "oof1",
+    "role": "grid",
+    "strategy": "direct",
+    "model": "RF",
+    "h": 4,
+    "best_params": {
+      "feature_mode": "plus_Q",
+      "max_depth": 10,
+      "min_samples_leaf": 5,
+      "n_estimators": 300,
+      "target_transform": "log"
+    },
+    "fixed_epochs": null,
+    "best_index": 2,
+    "best_score": -409.4382277811223,
+    "seconds": 3.629538200038951
+  },
+  {
+    "stage": "oof1",
+    "role": "grid",
+    "strategy": "direct",
+    "model": "LSTM",
+    "h": 5,
+    "best_params": {
+      "dropout": 0.1,
+      "feature_mode": "plus_Q",
+      "lr": 0.001,
+      "mixed_weight": 0.0,
+      "target_transform": "sqrt",
+      "units": [
+        64
+      ]
+    },
+    "fixed_epochs": 8,
+    "best_index": 1,
+    "best_score": -426.37352278459184,
+    "seconds": 85.84242800000357
+  },
+  {
+    "stage": "oof1",
+    "role": "grid",
+    "strategy": "direct",
+    "model": "ANN",
+    "h": 5,
+    "best_params": {
+      "alpha": 1.0,
+      "feature_mode": "plus_Q",
+      "hidden_layer_sizes": [
+        64
+      ],
+      "learning_rate_init": 0.001,
+      "target_transform": "log"
+    },
+    "fixed_epochs": null,
+    "best_index": 4,
+    "best_score": -452.9367003996372,
+    "seconds": 4.258459199976642
+  },
+  {
+    "stage": "oof1",
+    "role": "grid",
+    "strategy": "direct",
+    "model": "RF",
+    "h": 5,
+    "best_params": {
+      "feature_mode": "plus_Q",
+      "max_depth": 20,
+      "min_samples_leaf": 5,
+      "n_estimators": 300,
+      "target_transform": "log"
+    },
+    "fixed_epochs": null,
+    "best_index": 6,
+    "best_score": -422.0702726804807,
+    "seconds": 3.653339500015136
+  },
+  {
+    "stage": "oof1",
+    "role": "grid",
+    "strategy": "direct",
+    "model": "LSTM",
+    "h": 6,
+    "best_params": {
+      "dropout": 0.1,
+      "feature_mode": "plus_Q",
+      "lr": 0.0005,
+      "mixed_weight": 0.0,
+      "target_transform": "sqrt",
+      "units": [
+        64
+      ]
+    },
+    "fixed_epochs": 10,
+    "best_index": 4,
+    "best_score": -454.36362062928566,
+    "seconds": 72.5090424999944
+  },
+  {
+    "stage": "oof1",
+    "role": "grid",
+    "strategy": "direct",
+    "model": "ANN",
+    "h": 6,
+    "best_params": {
+      "alpha": 1.0,
+      "feature_mode": "plus_Q",
+      "hidden_layer_sizes": [
+        64
+      ],
+      "learning_rate_init": 0.001,
+      "target_transform": "log"
+    },
+    "fixed_epochs": null,
+    "best_index": 4,
+    "best_score": -430.42051897175975,
+    "seconds": 4.031195500050671
+  },
+  {
+    "stage": "oof1",
+    "role": "grid",
+    "strategy": "direct",
+    "model": "RF",
+    "h": 6,
+    "best_params": {
+      "feature_mode": "plus_Q",
+      "max_depth": 10,
+      "min_samples_leaf": 5,
+      "n_estimators": 300,
+      "target_transform": "log"
+    },
+    "fixed_epochs": null,
+    "best_index": 2,
+    "best_score": -423.5903966797411,
+    "seconds": 3.6632607000065036
+  },
+  {
+    "stage": "oof1",
+    "role": "grid",
+    "strategy": "direct",
+    "model": "LSTM",
+    "h": 7,
+    "best_params": {
+      "dropout": 0.2,
+      "feature_mode": "plus_Q",
+      "lr": 0.001,
+      "mixed_weight": 0.0,
+      "target_transform": "sqrt",
+      "units": [
+        64
+      ]
+    },
+    "fixed_epochs": 9,
+    "best_index": 7,
+    "best_score": -473.81793817187815,
+    "seconds": 88.26102309999987
+  },
+  {
+    "stage": "oof1",
+    "role": "grid",
+    "strategy": "direct",
+    "model": "ANN",
+    "h": 7,
+    "best_params": {
+      "alpha": 1.0,
+      "feature_mode": "plus_Q",
+      "hidden_layer_sizes": [
+        64
+      ],
+      "learning_rate_init": 0.001,
+      "target_transform": "log"
+    },
+    "fixed_epochs": null,
+    "best_index": 4,
+    "best_score": -437.22910359784447,
+    "seconds": 4.181211699964479
+  },
+  {
+    "stage": "oof1",
+    "role": "grid",
+    "strategy": "direct",
+    "model": "RF",
+    "h": 7,
+    "best_params": {
+      "feature_mode": "plus_Q",
+      "max_depth": 10,
+      "min_samples_leaf": 5,
+      "n_estimators": 300,
+      "target_transform": "log"
+    },
+    "fixed_epochs": null,
+    "best_index": 2,
+    "best_score": -417.6619090078964,
+    "seconds": 3.698080600006506
+  },
+  {
+    "stage": "oof1",
+    "role": "grid",
+    "strategy": "multi",
+    "model": "LSTM",
+    "h": 7,
+    "best_params": {
+      "dropout": 0.1,
+      "feature_mode": "engineered",
+      "lr": 0.001,
+      "mixed_weight": 0.0,
+      "target_transform": "log",
+      "units": [
+        64
+      ]
+    },
+    "fixed_epochs": 14,
+    "best_index": 1,
+    "best_score": -386.210567162947,
+    "seconds": 98.25916439999128
+  },
+  {
+    "stage": "oof1",
+    "role": "grid",
+    "strategy": "multi",
+    "model": "ANN",
+    "h": 7,
+    "best_params": {
+      "alpha": 0.1,
+      "feature_mode": "plus_Q",
+      "hidden_layer_sizes": [
+        64
+      ],
+      "learning_rate_init": 0.001,
+      "target_transform": "log"
+    },
+    "fixed_epochs": null,
+    "best_index": 2,
+    "best_score": -415.52167529211073,
+    "seconds": 5.438459200027864
+  },
+  {
+    "stage": "oof1",
+    "role": "grid",
+    "strategy": "multi",
+    "model": "RF",
+    "h": 7,
+    "best_params": {
+      "feature_mode": "plus_Q",
+      "max_depth": 10,
+      "min_samples_leaf": 1,
+      "n_estimators": 300,
+      "target_transform": "log"
+    },
+    "fixed_epochs": null,
+    "best_index": 0,
+    "best_score": -384.75646172319364,
+    "seconds": 3.70338169997558
+  },
+  {
+    "stage": "oof2",
+    "role": "grid",
+    "strategy": "direct",
+    "model": "LSTM",
+    "h": 1,
+    "best_params": {
+      "dropout": 0.2,
+      "feature_mode": "compact",
+      "lr": 0.001,
+      "mixed_weight": 0.0,
+      "target_transform": "log",
+      "units": [
+        64
+      ]
+    },
+    "fixed_epochs": 27,
+    "best_index": 7,
+    "best_score": -225.01643223156833,
+    "seconds": 319.12647359998664
+  },
+  {
+    "stage": "oof2",
+    "role": "grid",
+    "strategy": "direct",
+    "model": "ANN",
+    "h": 1,
+    "best_params": {
+      "alpha": 1.0,
+      "feature_mode": "plus_Q",
+      "hidden_layer_sizes": [
+        64
+      ],
+      "learning_rate_init": 0.001,
+      "target_transform": "log"
+    },
+    "fixed_epochs": null,
+    "best_index": 4,
+    "best_score": -187.00883206108915,
+    "seconds": 3.5495261999894865
+  },
+  {
+    "stage": "oof2",
+    "role": "grid",
+    "strategy": "direct",
+    "model": "RF",
+    "h": 1,
+    "best_params": {
+      "feature_mode": "plus_Q",
+      "max_depth": 10,
+      "min_samples_leaf": 1,
+      "n_estimators": 300,
+      "target_transform": "log"
+    },
+    "fixed_epochs": null,
+    "best_index": 0,
+    "best_score": -194.22134768291014,
+    "seconds": 3.670320199977141
+  },
+  {
+    "stage": "oof2",
+    "role": "grid",
+    "strategy": "direct",
+    "model": "LSTM",
+    "h": 2,
+    "best_params": {
+      "dropout": 0.1,
+      "feature_mode": "compact",
+      "lr": 0.001,
+      "mixed_weight": 0.0,
+      "target_transform": "log",
+      "units": [
+        64,
+        32
+      ]
+    },
+    "fixed_epochs": 22,
+    "best_index": 2,
+    "best_score": -350.4893685294685,
+    "seconds": 239.49228879995644
+  },
+  {
+    "stage": "oof2",
+    "role": "grid",
+    "strategy": "direct",
+    "model": "ANN",
+    "h": 2,
+    "best_params": {
+      "alpha": 1.0,
+      "feature_mode": "plus_Q",
+      "hidden_layer_sizes": [
+        64
+      ],
+      "learning_rate_init": 0.001,
+      "target_transform": "log"
+    },
+    "fixed_epochs": null,
+    "best_index": 4,
+    "best_score": -270.4505384728742,
+    "seconds": 3.7190078999847174
+  },
+  {
+    "stage": "oof2",
+    "role": "grid",
+    "strategy": "direct",
+    "model": "RF",
+    "h": 2,
+    "best_params": {
+      "feature_mode": "plus_Q",
+      "max_depth": 20,
+      "min_samples_leaf": 5,
+      "n_estimators": 300,
+      "target_transform": "log"
+    },
+    "fixed_epochs": null,
+    "best_index": 6,
+    "best_score": -287.1341777630437,
+    "seconds": 3.4254960999824107
+  },
+  {
+    "stage": "oof2",
+    "role": "grid",
+    "strategy": "direct",
+    "model": "LSTM",
+    "h": 3,
+    "best_params": {
+      "dropout": 0.2,
+      "feature_mode": "compact",
+      "lr": 0.001,
+      "mixed_weight": 0.0,
+      "target_transform": "log",
+      "units": [
+        64,
+        32
+      ]
+    },
+    "fixed_epochs": 12,
+    "best_index": 8,
+    "best_score": -393.81769374415046,
+    "seconds": 239.41744669998297
+  },
+  {
+    "stage": "oof2",
+    "role": "grid",
+    "strategy": "direct",
+    "model": "ANN",
+    "h": 3,
+    "best_params": {
+      "alpha": 1.0,
+      "feature_mode": "plus_Q",
+      "hidden_layer_sizes": [
+        64
+      ],
+      "learning_rate_init": 0.001,
+      "target_transform": "log"
+    },
+    "fixed_epochs": null,
+    "best_index": 4,
+    "best_score": -305.29422114820784,
+    "seconds": 4.52947629999835
+  },
+  {
+    "stage": "oof2",
+    "role": "grid",
+    "strategy": "direct",
+    "model": "RF",
+    "h": 3,
+    "best_params": {
+      "feature_mode": "plus_Q",
+      "max_depth": 10,
+      "min_samples_leaf": 5,
+      "n_estimators": 300,
+      "target_transform": "log"
+    },
+    "fixed_epochs": null,
+    "best_index": 2,
+    "best_score": -323.30336263598133,
+    "seconds": 3.4155218999949284
+  },
+  {
+    "stage": "oof2",
+    "role": "grid",
+    "strategy": "direct",
+    "model": "LSTM",
+    "h": 4,
+    "best_params": {
+      "dropout": 0.2,
+      "feature_mode": "compact",
+      "lr": 0.001,
+      "mixed_weight": 0.0,
+      "target_transform": "log",
+      "units": [
+        64,
+        32
+      ]
+    },
+    "fixed_epochs": 11,
+    "best_index": 8,
+    "best_score": -393.0757510319362,
+    "seconds": 249.73521359998267
+  },
+  {
+    "stage": "oof2",
+    "role": "grid",
+    "strategy": "direct",
+    "model": "ANN",
+    "h": 4,
+    "best_params": {
+      "alpha": 1.0,
+      "feature_mode": "plus_Q",
+      "hidden_layer_sizes": [
+        64
+      ],
+      "learning_rate_init": 0.001,
+      "target_transform": "log"
+    },
+    "fixed_epochs": null,
+    "best_index": 4,
+    "best_score": -328.2192974202881,
+    "seconds": 3.837063400016632
+  },
+  {
+    "stage": "oof2",
+    "role": "grid",
+    "strategy": "direct",
+    "model": "RF",
+    "h": 4,
+    "best_params": {
+      "feature_mode": "plus_Q",
+      "max_depth": 10,
+      "min_samples_leaf": 5,
+      "n_estimators": 300,
+      "target_transform": "log"
+    },
+    "fixed_epochs": null,
+    "best_index": 2,
+    "best_score": -346.0589454233477,
+    "seconds": 3.417486499994993
+  },
+  {
+    "stage": "oof2",
+    "role": "grid",
+    "strategy": "direct",
+    "model": "LSTM",
+    "h": 5,
+    "best_params": {
+      "dropout": 0.2,
+      "feature_mode": "compact",
+      "lr": 0.0005,
+      "mixed_weight": 0.0,
+      "target_transform": "log",
+      "units": [
+        64,
+        32
+      ]
+    },
+    "fixed_epochs": 23,
+    "best_index": 11,
+    "best_score": -382.4389406050835,
+    "seconds": 232.09256249997998
+  },
+  {
+    "stage": "oof2",
+    "role": "grid",
+    "strategy": "direct",
+    "model": "ANN",
+    "h": 5,
+    "best_params": {
+      "alpha": 1.0,
+      "feature_mode": "plus_Q",
+      "hidden_layer_sizes": [
+        64
+      ],
+      "learning_rate_init": 0.001,
+      "target_transform": "log"
+    },
+    "fixed_epochs": null,
+    "best_index": 4,
+    "best_score": -339.02782341122304,
+    "seconds": 4.409921799961012
+  },
+  {
+    "stage": "oof2",
+    "role": "grid",
+    "strategy": "direct",
+    "model": "RF",
+    "h": 5,
+    "best_params": {
+      "feature_mode": "plus_Q",
+      "max_depth": 10,
+      "min_samples_leaf": 5,
+      "n_estimators": 300,
+      "target_transform": "log"
+    },
+    "fixed_epochs": null,
+    "best_index": 2,
+    "best_score": -365.9387367397686,
+    "seconds": 3.4242583999875933
+  },
+  {
+    "stage": "oof2",
+    "role": "grid",
+    "strategy": "direct",
+    "model": "LSTM",
+    "h": 6,
+    "best_params": {
+      "dropout": 0.1,
+      "feature_mode": "compact",
+      "lr": 0.0005,
+      "mixed_weight": 0.0,
+      "target_transform": "log",
+      "units": [
+        64
+      ]
+    },
+    "fixed_epochs": 33,
+    "best_index": 4,
+    "best_score": -323.5133390238236,
+    "seconds": 184.54925429995637
+  },
+  {
+    "stage": "oof2",
+    "role": "grid",
+    "strategy": "direct",
+    "model": "ANN",
+    "h": 6,
+    "best_params": {
+      "alpha": 1.0,
+      "feature_mode": "plus_Q",
+      "hidden_layer_sizes": [
+        64
+      ],
+      "learning_rate_init": 0.001,
+      "target_transform": "log"
+    },
+    "fixed_epochs": null,
+    "best_index": 4,
+    "best_score": -348.1224700391707,
+    "seconds": 5.016615399974398
+  },
+  {
+    "stage": "oof2",
+    "role": "grid",
+    "strategy": "direct",
+    "model": "RF",
+    "h": 6,
+    "best_params": {
+      "feature_mode": "plus_Q",
+      "max_depth": 20,
+      "min_samples_leaf": 5,
+      "n_estimators": 300,
+      "target_transform": "log"
+    },
+    "fixed_epochs": null,
+    "best_index": 6,
+    "best_score": -385.38768227949794,
+    "seconds": 3.4312217999831773
+  },
+  {
+    "stage": "oof2",
+    "role": "grid",
+    "strategy": "direct",
+    "model": "LSTM",
+    "h": 7,
+    "best_params": {
+      "dropout": 0.1,
+      "feature_mode": "compact",
+      "lr": 0.0005,
+      "mixed_weight": 0.0,
+      "target_transform": "log",
+      "units": [
+        64
+      ]
+    },
+    "fixed_epochs": 35,
+    "best_index": 4,
+    "best_score": -333.583148875114,
+    "seconds": 186.05260920000728
+  },
+  {
+    "stage": "oof2",
+    "role": "grid",
+    "strategy": "direct",
+    "model": "ANN",
+    "h": 7,
+    "best_params": {
+      "alpha": 1.0,
+      "feature_mode": "plus_Q",
+      "hidden_layer_sizes": [
+        64
+      ],
+      "learning_rate_init": 0.001,
+      "target_transform": "log"
+    },
+    "fixed_epochs": null,
+    "best_index": 4,
+    "best_score": -370.8670739170811,
+    "seconds": 4.511188500036951
+  },
+  {
+    "stage": "oof2",
+    "role": "grid",
+    "strategy": "direct",
+    "model": "RF",
+    "h": 7,
+    "best_params": {
+      "feature_mode": "plus_Q",
+      "max_depth": 10,
+      "min_samples_leaf": 5,
+      "n_estimators": 300,
+      "target_transform": "log"
+    },
+    "fixed_epochs": null,
+    "best_index": 2,
+    "best_score": -391.82303818669453,
+    "seconds": 3.3714488999685273
+  },
+  {
+    "stage": "oof2",
+    "role": "grid",
+    "strategy": "multi",
+    "model": "LSTM",
+    "h": 7,
+    "best_params": {
+      "dropout": 0.2,
+      "feature_mode": "plus_Q",
+      "lr": 0.001,
+      "mixed_weight": 0.0,
+      "target_transform": "sqrt",
+      "units": [
+        64
+      ]
+    },
+    "fixed_epochs": 15,
+    "best_index": 7,
+    "best_score": -316.7195125113252,
+    "seconds": 120.23081899998942
+  },
+  {
+    "stage": "oof2",
+    "role": "grid",
+    "strategy": "multi",
+    "model": "ANN",
+    "h": 7,
+    "best_params": {
+      "alpha": 1.0,
+      "feature_mode": "plus_Q",
+      "hidden_layer_sizes": [
+        64
+      ],
+      "learning_rate_init": 0.001,
+      "target_transform": "log"
+    },
+    "fixed_epochs": null,
+    "best_index": 4,
+    "best_score": -307.05515361344123,
+    "seconds": 6.996913500013761
+  },
+  {
+    "stage": "oof2",
+    "role": "grid",
+    "strategy": "multi",
+    "model": "RF",
+    "h": 7,
+    "best_params": {
+      "feature_mode": "plus_Q",
+      "max_depth": 20,
+      "min_samples_leaf": 5,
+      "n_estimators": 300,
+      "target_transform": "log"
+    },
+    "fixed_epochs": null,
+    "best_index": 6,
+    "best_score": -329.56590458907067,
+    "seconds": 3.5895873000263236
+  },
+  {
+    "stage": "final",
+    "role": "grid",
+    "strategy": "direct",
+    "model": "LSTM",
+    "h": 1,
+    "best_params": {
+      "dropout": 0.2,
+      "feature_mode": "plus_Q",
+      "lr": 0.001,
+      "mixed_weight": 0.0,
+      "target_transform": "log",
+      "units": [
+        64
+      ]
+    },
+    "fixed_epochs": 18,
+    "best_index": 7,
+    "best_score": -793.7313892331508,
+    "seconds": 212.40844149998156
+  },
+  {
+    "stage": "final",
+    "role": "grid",
+    "strategy": "direct",
+    "model": "ANN",
+    "h": 1,
+    "best_params": {
+      "alpha": 0.1,
+      "feature_mode": "plus_Q",
+      "hidden_layer_sizes": [
+        64
+      ],
+      "learning_rate_init": 0.001,
+      "target_transform": "sqrt"
+    },
+    "fixed_epochs": null,
+    "best_index": 3,
+    "best_score": -784.8766769505294,
+    "seconds": 4.081912999972701
+  },
+  {
+    "stage": "final",
+    "role": "grid",
+    "strategy": "direct",
+    "model": "RF",
+    "h": 1,
+    "best_params": {
+      "feature_mode": "plus_Q",
+      "max_depth": 10,
+      "min_samples_leaf": 1,
+      "n_estimators": 300,
+      "target_transform": "sqrt"
+    },
+    "fixed_epochs": null,
+    "best_index": 1,
+    "best_score": -750.0692132303741,
+    "seconds": 3.597929599985946
+  },
+  {
+    "stage": "final",
+    "role": "grid",
+    "strategy": "direct",
+    "model": "LSTM",
+    "h": 2,
+    "best_params": {
+      "dropout": 0.2,
+      "feature_mode": "plus_Q",
+      "lr": 0.001,
+      "mixed_weight": 0.0,
+      "target_transform": "log",
+      "units": [
+        64,
+        32
+      ]
+    },
+    "fixed_epochs": 11,
+    "best_index": 8,
+    "best_score": -1003.9162814543339,
+    "seconds": 144.49006450001616
+  },
+  {
+    "stage": "final",
+    "role": "grid",
+    "strategy": "direct",
+    "model": "ANN",
+    "h": 2,
+    "best_params": {
+      "alpha": 1.0,
+      "feature_mode": "plus_Q",
+      "hidden_layer_sizes": [
+        64
+      ],
+      "learning_rate_init": 0.001,
+      "target_transform": "sqrt"
+    },
+    "fixed_epochs": null,
+    "best_index": 5,
+    "best_score": -966.6187454388308,
+    "seconds": 3.7048104000277817
+  },
+  {
+    "stage": "final",
+    "role": "grid",
+    "strategy": "direct",
+    "model": "RF",
+    "h": 2,
+    "best_params": {
+      "feature_mode": "plus_Q",
+      "max_depth": 20,
+      "min_samples_leaf": 1,
+      "n_estimators": 300,
+      "target_transform": "sqrt"
+    },
+    "fixed_epochs": null,
+    "best_index": 5,
+    "best_score": -952.4934965786035,
+    "seconds": 3.6062040999531746
+  },
+  {
+    "stage": "final",
+    "role": "grid",
+    "strategy": "direct",
+    "model": "LSTM",
+    "h": 3,
+    "best_params": {
+      "dropout": 0.1,
+      "feature_mode": "plus_Q",
+      "lr": 0.001,
+      "mixed_weight": 0.0,
+      "target_transform": "log",
+      "units": [
+        64
+      ]
+    },
+    "fixed_epochs": 12,
+    "best_index": 1,
+    "best_score": -1083.9523096755615,
+    "seconds": 157.10189580003498
+  },
+  {
+    "stage": "final",
+    "role": "grid",
+    "strategy": "direct",
+    "model": "ANN",
+    "h": 3,
+    "best_params": {
+      "alpha": 1.0,
+      "feature_mode": "plus_Q",
+      "hidden_layer_sizes": [
+        64
+      ],
+      "learning_rate_init": 0.001,
+      "target_transform": "sqrt"
+    },
+    "fixed_epochs": null,
+    "best_index": 5,
+    "best_score": -1036.7913010283007,
+    "seconds": 4.906412000011187
+  },
+  {
+    "stage": "final",
+    "role": "grid",
+    "strategy": "direct",
+    "model": "RF",
+    "h": 3,
+    "best_params": {
+      "feature_mode": "plus_Q",
+      "max_depth": 20,
+      "min_samples_leaf": 5,
+      "n_estimators": 300,
+      "target_transform": "sqrt"
+    },
+    "fixed_epochs": null,
+    "best_index": 7,
+    "best_score": -1022.8108492775659,
+    "seconds": 3.540637500002049
+  },
+  {
+    "stage": "final",
+    "role": "grid",
+    "strategy": "direct",
+    "model": "LSTM",
+    "h": 4,
+    "best_params": {
+      "dropout": 0.1,
+      "feature_mode": "plus_Q",
+      "lr": 0.0005,
+      "mixed_weight": 0.0,
+      "target_transform": "log",
+      "units": [
+        64,
+        32
+      ]
+    },
+    "fixed_epochs": 10,
+    "best_index": 5,
+    "best_score": -1121.1486366930576,
+    "seconds": 144.85019090003334
+  },
+  {
+    "stage": "final",
+    "role": "grid",
+    "strategy": "direct",
+    "model": "ANN",
+    "h": 4,
+    "best_params": {
+      "alpha": 0.1,
+      "feature_mode": "plus_Q",
+      "hidden_layer_sizes": [
+        64
+      ],
+      "learning_rate_init": 0.001,
+      "target_transform": "sqrt"
+    },
+    "fixed_epochs": null,
+    "best_index": 3,
+    "best_score": -1061.1355640951754,
+    "seconds": 4.165829100005794
+  },
+  {
+    "stage": "final",
+    "role": "grid",
+    "strategy": "direct",
+    "model": "RF",
+    "h": 4,
+    "best_params": {
+      "feature_mode": "plus_Q",
+      "max_depth": 20,
+      "min_samples_leaf": 5,
+      "n_estimators": 300,
+      "target_transform": "sqrt"
+    },
+    "fixed_epochs": null,
+    "best_index": 7,
+    "best_score": -1062.8852807958501,
+    "seconds": 3.518545900005847
+  },
+  {
+    "stage": "final",
+    "role": "grid",
+    "strategy": "direct",
+    "model": "LSTM",
+    "h": 5,
+    "best_params": {
+      "dropout": 0.1,
+      "feature_mode": "plus_Q",
+      "lr": 0.001,
+      "mixed_weight": 0.0,
+      "target_transform": "log",
+      "units": [
+        64
+      ]
+    },
+    "fixed_epochs": 9,
+    "best_index": 1,
+    "best_score": -1135.776545427637,
+    "seconds": 137.89253020001343
+  },
+  {
+    "stage": "final",
+    "role": "grid",
+    "strategy": "direct",
+    "model": "ANN",
+    "h": 5,
+    "best_params": {
+      "alpha": 0.01,
+      "feature_mode": "plus_Q",
+      "hidden_layer_sizes": [
+        64
+      ],
+      "learning_rate_init": 0.001,
+      "target_transform": "log"
+    },
+    "fixed_epochs": null,
+    "best_index": 0,
+    "best_score": -1044.9193978173207,
+    "seconds": 4.4402097999700345
+  },
+  {
+    "stage": "final",
+    "role": "grid",
+    "strategy": "direct",
+    "model": "RF",
+    "h": 5,
+    "best_params": {
+      "feature_mode": "plus_Q",
+      "max_depth": 20,
+      "min_samples_leaf": 1,
+      "n_estimators": 300,
+      "target_transform": "sqrt"
+    },
+    "fixed_epochs": null,
+    "best_index": 5,
+    "best_score": -1101.5215192045112,
+    "seconds": 3.532589200010989
+  },
+  {
+    "stage": "final",
+    "role": "grid",
+    "strategy": "direct",
+    "model": "LSTM",
+    "h": 6,
+    "best_params": {
+      "dropout": 0.1,
+      "feature_mode": "plus_Q",
+      "lr": 0.001,
+      "mixed_weight": 0.0,
+      "target_transform": "log",
+      "units": [
+        64,
+        32
+      ]
+    },
+    "fixed_epochs": 12,
+    "best_index": 2,
+    "best_score": -1127.8676237981917,
+    "seconds": 183.3144460999756
+  },
+  {
+    "stage": "final",
+    "role": "grid",
+    "strategy": "direct",
+    "model": "ANN",
+    "h": 6,
+    "best_params": {
+      "alpha": 1.0,
+      "feature_mode": "plus_Q",
+      "hidden_layer_sizes": [
+        64
+      ],
+      "learning_rate_init": 0.001,
+      "target_transform": "sqrt"
+    },
+    "fixed_epochs": null,
+    "best_index": 5,
+    "best_score": -1139.0079479759304,
+    "seconds": 4.235976000025403
+  },
+  {
+    "stage": "final",
+    "role": "grid",
+    "strategy": "direct",
+    "model": "RF",
+    "h": 6,
+    "best_params": {
+      "feature_mode": "plus_Q",
+      "max_depth": 20,
+      "min_samples_leaf": 5,
+      "n_estimators": 300,
+      "target_transform": "log"
+    },
+    "fixed_epochs": null,
+    "best_index": 6,
+    "best_score": -1149.0150079487003,
+    "seconds": 3.5446079000248574
+  },
+  {
+    "stage": "final",
+    "role": "grid",
+    "strategy": "direct",
+    "model": "LSTM",
+    "h": 7,
+    "best_params": {
+      "dropout": 0.1,
+      "feature_mode": "plus_Q",
+      "lr": 0.001,
+      "mixed_weight": 0.0,
+      "target_transform": "log",
+      "units": [
+        32
+      ]
+    },
+    "fixed_epochs": 32,
+    "best_index": 0,
+    "best_score": -1167.606876495382,
+    "seconds": 144.90408850001404
+  },
+  {
+    "stage": "final",
+    "role": "grid",
+    "strategy": "direct",
+    "model": "ANN",
+    "h": 7,
+    "best_params": {
+      "alpha": 1.0,
+      "feature_mode": "plus_Q",
+      "hidden_layer_sizes": [
+        64
+      ],
+      "learning_rate_init": 0.001,
+      "target_transform": "log"
+    },
+    "fixed_epochs": null,
+    "best_index": 4,
+    "best_score": -1188.4088767810679,
+    "seconds": 4.381462200020906
+  },
+  {
+    "stage": "final",
+    "role": "grid",
+    "strategy": "direct",
+    "model": "RF",
+    "h": 7,
+    "best_params": {
+      "feature_mode": "plus_Q",
+      "max_depth": 10,
+      "min_samples_leaf": 5,
+      "n_estimators": 300,
+      "target_transform": "log"
+    },
+    "fixed_epochs": null,
+    "best_index": 2,
+    "best_score": -1172.607773244265,
+    "seconds": 3.5528288000496104
+  },
+  {
+    "stage": "final",
+    "role": "grid",
+    "strategy": "multi",
+    "model": "LSTM",
+    "h": 7,
+    "best_params": {
+      "dropout": 0.2,
+      "feature_mode": "plus_Q",
+      "lr": 0.0005,
+      "mixed_weight": 0.25,
+      "target_transform": "log",
+      "units": [
+        32
+      ]
+    },
+    "fixed_epochs": 11,
+    "best_index": 9,
+    "best_score": -1084.3689423750507,
+    "seconds": 147.54533699998865
+  },
+  {
+    "stage": "final",
+    "role": "grid",
+    "strategy": "multi",
+    "model": "ANN",
+    "h": 7,
+    "best_params": {
+      "alpha": 1.0,
+      "feature_mode": "plus_Q",
+      "hidden_layer_sizes": [
+        64
+      ],
+      "learning_rate_init": 0.001,
+      "target_transform": "sqrt"
+    },
+    "fixed_epochs": null,
+    "best_index": 5,
+    "best_score": -1027.0361351846907,
+    "seconds": 7.5456193999852985
+  },
+  {
+    "stage": "final",
+    "role": "grid",
+    "strategy": "multi",
+    "model": "RF",
+    "h": 7,
+    "best_params": {
+      "feature_mode": "plus_Q",
+      "max_depth": 10,
+      "min_samples_leaf": 5,
+      "n_estimators": 300,
+      "target_transform": "sqrt"
+    },
+    "fixed_epochs": null,
+    "best_index": 3,
+    "best_score": -1026.141783149251,
+    "seconds": 3.741403000021819
+  }
+]

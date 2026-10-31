@@ -62,6 +62,16 @@ python run_all.py --fast       # 小规模快速验证（缩小网格与训练�
 python run_all.py --skip-model # 跳过建模，仅基于已有结果重绘图表与报告
 ```
 
+## 第三次验收最新结果（2026-11-01）
+
+- [第3次修改版报告（Word）](验收/Acceptance%203/第三轮结果修订版/任务1至7+第三次阶段验收报告_第3次修改版.docx)
+- [第3次修改版报告（Markdown）](验收/Acceptance%203/第三轮结果修订版/任务1至7+第三次阶段验收报告_第3次修改版.md)
+- [完整交付包（ZIP）](验收/任务1至7+第三次阶段验收交付包_第3次修改版.zip)
+
+本版只包含已完成实验及结果，不包含后续训练方案。直接策略保留第二轮冻结结果，多输出采用第三轮冻结结果；2004年为回溯评估，不是独立盲测。报告及其图片、指标、逐日预测和来源附件完整存放于同一版本目录，前两版材料不覆盖。
+
+训练实现及测试位于 `code/acceptance3*.py` 与 `code/test_acceptance3*.py`，报告生成与复核代码位于 `验收/report code/report3/`。第三次验收新增链路使用 PyTorch 2.6.0+cpu，而非下文原始流程的 TensorFlow；训练包版本见报告来源附件。Git仅归档最新交付、相关代码和测试，体积较大的本地 `output/acceptance3_runs/` 模型及运行缓存未上传；当前归档不能直接恢复未上传的模型权重。
+
 ## 阶段验收交付
 
 每次阶段验收必须严格依据 `Teacher Resources & Requirements/` 中的《第 x 次阶段验收说明》完成；详细协作规则见 [AGENT.MD](AGENT.MD) 和 [验收/acceptance.md](验收/acceptance.md)。

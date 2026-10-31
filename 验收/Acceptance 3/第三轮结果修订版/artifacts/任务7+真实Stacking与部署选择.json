@@ -1,0 +1,142 @@
+{
+  "selected_index": 0,
+  "selected_params": {
+    "kind": "RF"
+  },
+  "candidates": [
+    {
+      "kind": "RF"
+    },
+    {
+      "kind": "Mean"
+    },
+    {
+      "kind": "convex"
+    },
+    {
+      "kind": "ridge_RF",
+      "alpha": 10.0,
+      "strength": 0.25
+    },
+    {
+      "kind": "ridge_RF",
+      "alpha": 10.0,
+      "strength": 0.5
+    },
+    {
+      "kind": "ridge_RF",
+      "alpha": 100.0,
+      "strength": 0.25
+    },
+    {
+      "kind": "ridge_RF",
+      "alpha": 100.0,
+      "strength": 0.5
+    },
+    {
+      "kind": "ridge_RF",
+      "alpha": 1000.0,
+      "strength": 0.25
+    },
+    {
+      "kind": "ridge_RF",
+      "alpha": 1000.0,
+      "strength": 0.5
+    },
+    {
+      "kind": "ridge_RF",
+      "alpha": 100.0,
+      "strength": 1.0
+    }
+  ],
+  "gates": [
+    {
+      "candidate": 1,
+      "RMSE_ratio": 0.971977904991031,
+      "MAE_ratio": 0.9725255808479055,
+      "worst_quarter_RMSE_ratio": 1.127948605422335,
+      "passed": false
+    },
+    {
+      "candidate": 2,
+      "RMSE_ratio": 1.0148977408152675,
+      "MAE_ratio": 1.0190945958197772,
+      "worst_quarter_RMSE_ratio": 1.22464234100514,
+      "passed": false
+    },
+    {
+      "candidate": 3,
+      "RMSE_ratio": 0.9687352695252782,
+      "MAE_ratio": 0.929610594894457,
+      "worst_quarter_RMSE_ratio": 1.026637739129143,
+      "passed": true
+    },
+    {
+      "candidate": 4,
+      "RMSE_ratio": 0.990972245609653,
+      "MAE_ratio": 0.9400436039823438,
+      "worst_quarter_RMSE_ratio": 1.0737805764440045,
+      "passed": false
+    },
+    {
+      "candidate": 5,
+      "RMSE_ratio": 0.9692214710418535,
+      "MAE_ratio": 0.9271204196358342,
+      "worst_quarter_RMSE_ratio": 1.0267095604876748,
+      "passed": true
+    },
+    {
+      "candidate": 6,
+      "RMSE_ratio": 0.9794549685832433,
+      "MAE_ratio": 0.9285673111212243,
+      "worst_quarter_RMSE_ratio": 1.0691993629087666,
+      "passed": true
+    },
+    {
+      "candidate": 7,
+      "RMSE_ratio": 0.9835122750344796,
+      "MAE_ratio": 0.9544581183948692,
+      "worst_quarter_RMSE_ratio": 1.0366440507970103,
+      "passed": true
+    },
+    {
+      "candidate": 8,
+      "RMSE_ratio": 0.9826021859894348,
+      "MAE_ratio": 0.9330000681945625,
+      "worst_quarter_RMSE_ratio": 1.099618090452085,
+      "passed": true
+    }
+  ],
+  "selection_seed": 42,
+  "RF_fallback": true,
+  "stacking_params": {
+    "kind": "ridge_RF",
+    "alpha": 100.0,
+    "strength": 1.0
+  },
+  "stacking_policy": "独立报告真正21→7原尺度Ridge；RF退路只列SelectedFusion，不冒充Stacking",
+  "input_columns": [
+    "ANN_h1",
+    "ANN_h2",
+    "ANN_h3",
+    "ANN_h4",
+    "ANN_h5",
+    "ANN_h6",
+    "ANN_h7",
+    "RF_h1",
+    "RF_h2",
+    "RF_h3",
+    "RF_h4",
+    "RF_h5",
+    "RF_h6",
+    "RF_h7",
+    "LSTM_h1",
+    "LSTM_h2",
+    "LSTM_h3",
+    "LSTM_h4",
+    "LSTM_h5",
+    "LSTM_h6",
+    "LSTM_h7"
+  ],
+  "limitation": "同一前向季度验证用于元层候选选择和准入，分数为开发选参成绩而非独立确认；2004未预测。"
+}

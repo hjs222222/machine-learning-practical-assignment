@@ -1,0 +1,392 @@
+[
+  {
+    "seed": 42,
+    "strategy": "direct",
+    "h": 1,
+    "kind": "log",
+    "alpha": 1.0,
+    "mean_validation_RMSE": 759.3062219866448,
+    "label": "stacking_direct_h1_seed42",
+    "input_cols": [
+      0,
+      7,
+      14
+    ]
+  },
+  {
+    "seed": 42,
+    "strategy": "direct",
+    "h": 2,
+    "kind": "log",
+    "alpha": 1.0,
+    "mean_validation_RMSE": 980.8168109997459,
+    "label": "stacking_direct_h2_seed42",
+    "input_cols": [
+      1,
+      8,
+      15
+    ]
+  },
+  {
+    "seed": 42,
+    "strategy": "direct",
+    "h": 3,
+    "kind": "raw",
+    "alpha": 100.0,
+    "mean_validation_RMSE": 1050.403923279123,
+    "label": "stacking_direct_h3_seed42",
+    "input_cols": [
+      2,
+      9,
+      16
+    ]
+  },
+  {
+    "seed": 42,
+    "strategy": "direct",
+    "h": 4,
+    "kind": "raw",
+    "alpha": 100.0,
+    "mean_validation_RMSE": 1092.086657682991,
+    "label": "stacking_direct_h4_seed42",
+    "input_cols": [
+      3,
+      10,
+      17
+    ]
+  },
+  {
+    "seed": 42,
+    "strategy": "direct",
+    "h": 5,
+    "kind": "raw",
+    "alpha": 100.0,
+    "mean_validation_RMSE": 1134.6069397245628,
+    "label": "stacking_direct_h5_seed42",
+    "input_cols": [
+      4,
+      11,
+      18
+    ]
+  },
+  {
+    "seed": 42,
+    "strategy": "direct",
+    "h": 6,
+    "kind": "raw",
+    "alpha": 100.0,
+    "mean_validation_RMSE": 1156.261318727113,
+    "label": "stacking_direct_h6_seed42",
+    "input_cols": [
+      5,
+      12,
+      19
+    ]
+  },
+  {
+    "seed": 42,
+    "strategy": "direct",
+    "h": 7,
+    "kind": "raw",
+    "alpha": 1000.0,
+    "mean_validation_RMSE": 1162.3913938667183,
+    "label": "stacking_direct_h7_seed42",
+    "input_cols": [
+      6,
+      13,
+      20
+    ]
+  },
+  {
+    "seed": 42,
+    "strategy": "multi",
+    "h": 7,
+    "kind": "raw",
+    "alpha": 1000.0,
+    "mean_validation_RMSE": 1040.7825121053122,
+    "label": "stacking_multi_h7_seed42",
+    "input_cols": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19,
+      20
+    ]
+  },
+  {
+    "seed": 43,
+    "strategy": "direct",
+    "h": 1,
+    "kind": "log",
+    "alpha": 1.0,
+    "mean_validation_RMSE": 771.7493366206804,
+    "label": "stacking_direct_h1_seed43",
+    "input_cols": [
+      0,
+      7,
+      14
+    ]
+  },
+  {
+    "seed": 43,
+    "strategy": "direct",
+    "h": 2,
+    "kind": "log",
+    "alpha": 1.0,
+    "mean_validation_RMSE": 983.7989656814101,
+    "label": "stacking_direct_h2_seed43",
+    "input_cols": [
+      1,
+      8,
+      15
+    ]
+  },
+  {
+    "seed": 43,
+    "strategy": "direct",
+    "h": 3,
+    "kind": "raw",
+    "alpha": 100.0,
+    "mean_validation_RMSE": 1055.4241029253221,
+    "label": "stacking_direct_h3_seed43",
+    "input_cols": [
+      2,
+      9,
+      16
+    ]
+  },
+  {
+    "seed": 43,
+    "strategy": "direct",
+    "h": 4,
+    "kind": "raw",
+    "alpha": 100.0,
+    "mean_validation_RMSE": 1106.3861965927815,
+    "label": "stacking_direct_h4_seed43",
+    "input_cols": [
+      3,
+      10,
+      17
+    ]
+  },
+  {
+    "seed": 43,
+    "strategy": "direct",
+    "h": 5,
+    "kind": "raw",
+    "alpha": 100.0,
+    "mean_validation_RMSE": 1124.9198935470677,
+    "label": "stacking_direct_h5_seed43",
+    "input_cols": [
+      4,
+      11,
+      18
+    ]
+  },
+  {
+    "seed": 43,
+    "strategy": "direct",
+    "h": 6,
+    "kind": "raw",
+    "alpha": 1000.0,
+    "mean_validation_RMSE": 1164.8749881803537,
+    "label": "stacking_direct_h6_seed43",
+    "input_cols": [
+      5,
+      12,
+      19
+    ]
+  },
+  {
+    "seed": 43,
+    "strategy": "direct",
+    "h": 7,
+    "kind": "raw",
+    "alpha": 1000.0,
+    "mean_validation_RMSE": 1171.918369224256,
+    "label": "stacking_direct_h7_seed43",
+    "input_cols": [
+      6,
+      13,
+      20
+    ]
+  },
+  {
+    "seed": 43,
+    "strategy": "multi",
+    "h": 7,
+    "kind": "raw",
+    "alpha": 1000.0,
+    "mean_validation_RMSE": 1065.6143684936512,
+    "label": "stacking_multi_h7_seed43",
+    "input_cols": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19,
+      20
+    ]
+  },
+  {
+    "seed": 44,
+    "strategy": "direct",
+    "h": 1,
+    "kind": "log",
+    "alpha": 1.0,
+    "mean_validation_RMSE": 769.7265649143551,
+    "label": "stacking_direct_h1_seed44",
+    "input_cols": [
+      0,
+      7,
+      14
+    ]
+  },
+  {
+    "seed": 44,
+    "strategy": "direct",
+    "h": 2,
+    "kind": "log",
+    "alpha": 1.0,
+    "mean_validation_RMSE": 990.555212907581,
+    "label": "stacking_direct_h2_seed44",
+    "input_cols": [
+      1,
+      8,
+      15
+    ]
+  },
+  {
+    "seed": 44,
+    "strategy": "direct",
+    "h": 3,
+    "kind": "raw",
+    "alpha": 100.0,
+    "mean_validation_RMSE": 1054.2908262686437,
+    "label": "stacking_direct_h3_seed44",
+    "input_cols": [
+      2,
+      9,
+      16
+    ]
+  },
+  {
+    "seed": 44,
+    "strategy": "direct",
+    "h": 4,
+    "kind": "raw",
+    "alpha": 100.0,
+    "mean_validation_RMSE": 1096.4960881302281,
+    "label": "stacking_direct_h4_seed44",
+    "input_cols": [
+      3,
+      10,
+      17
+    ]
+  },
+  {
+    "seed": 44,
+    "strategy": "direct",
+    "h": 5,
+    "kind": "raw",
+    "alpha": 100.0,
+    "mean_validation_RMSE": 1131.8797199024461,
+    "label": "stacking_direct_h5_seed44",
+    "input_cols": [
+      4,
+      11,
+      18
+    ]
+  },
+  {
+    "seed": 44,
+    "strategy": "direct",
+    "h": 6,
+    "kind": "raw",
+    "alpha": 1000.0,
+    "mean_validation_RMSE": 1166.7884643461623,
+    "label": "stacking_direct_h6_seed44",
+    "input_cols": [
+      5,
+      12,
+      19
+    ]
+  },
+  {
+    "seed": 44,
+    "strategy": "direct",
+    "h": 7,
+    "kind": "raw",
+    "alpha": 1000.0,
+    "mean_validation_RMSE": 1152.7027618535867,
+    "label": "stacking_direct_h7_seed44",
+    "input_cols": [
+      6,
+      13,
+      20
+    ]
+  },
+  {
+    "seed": 44,
+    "strategy": "multi",
+    "h": 7,
+    "kind": "raw",
+    "alpha": 1000.0,
+    "mean_validation_RMSE": 1049.0170563768786,
+    "label": "stacking_multi_h7_seed44",
+    "input_cols": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19,
+      20
+    ]
+  }
+]
