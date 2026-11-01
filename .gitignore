@@ -22,3 +22,8 @@ Thumbs.db
 .idea/
 *.swp
 *.swo
+
+# 训练运行产物：仅保留第三轮最终 run 的溯源（formal_20261101_v3_stage_d）
+# 其余各轮 formal/smoke/explore 产物体积大（共约 1.3G），不入库
+output/acceptance3_runs/*
+!output/acceptance3_runs/formal_20261101_v3_stage_d/
