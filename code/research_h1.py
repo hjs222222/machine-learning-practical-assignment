@@ -16,7 +16,7 @@ from features import build_features
 from models import RunoffRegressor
 
 DEFAULT_MODES = ('mi', 'forced', 'all', 'hydro')
-MODES = DEFAULT_MODES + ('compact',)
+MODES = DEFAULT_MODES + ('compact','target_mi')
 BASE = {'RF': dict(trees=120, leaf=1),
         'ANN': dict(hidden=64, iterations=350, alpha=.1),
         'LSTM': dict(hidden=32, seq_len=14, epochs=70, alpha=.1)}
@@ -142,9 +142,12 @@ def run_stage(stage, output, previous=None, seed=42, families=('RF','ANN','LSTM'
             else:
                 mode = candidate['mode']
                 forced = tuple(current['names'].index(n) for n in ('Discharge_lag0','Prcp_lag0','Prcp_lag1','Prcp_lag2','Prcp_lag3')) if mode == 'forced' else ()
+                if mode == 'target_mi':
+                    forced = (0,)
                 model = RunoffRegressor(family=candidate['family'],transform=candidate['transform'],
-                    residual=candidate['residual'],seed=seed,top_k=24 if mode in ('mi','forced') else None,
-                    forced_indices=forced,**candidate['params'])
+                    residual=candidate['residual'],seed=seed,top_k=24 if mode in ('mi','forced','target_mi') else None,
+                    forced_indices=forced,mi_target='model_target' if mode == 'target_mi' else 'raw',
+                    **candidate['params'])
                 with warnings.catch_warnings(record=True) as caught:
                     warnings.simplefilter('always')
                     model.fit(current['X'][tr],data['y'][tr])
@@ -153,6 +156,7 @@ def run_stage(stage, output, previous=None, seed=42, families=('RF','ANN','LSTM'
                     warnings=[dict(category=w.category.__name__,message=str(w.message)) for w in caught]))
                 fits.append(dict(candidate=candidate['id'],year=year,selected_indices=model.selected_.tolist(),
                     selected_names=[current['names'][i] for i in model.selected_],
+                    mi_target=model.mi_target,
                     threshold=threshold,n_iter=getattr(model.estimator_,'n_iter_',None),
                     convergence_warning=any(w.category.__name__=='ConvergenceWarning' for w in caught),
                     loss_history=getattr(model,'loss_history_',getattr(model.estimator_,'loss_curve_',[]))))

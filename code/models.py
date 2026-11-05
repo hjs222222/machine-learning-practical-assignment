@@ -59,8 +59,11 @@ class RunoffRegressor(RegressorMixin, BaseEstimator):
         if not np.isfinite(X).all() or not np.isfinite(y).all() or (y < 0).any():
             raise ValueError('模型输入/目标无效')
         self.outputs_ = y.shape[1]
+        target = self.target(y)
+        if self.residual:
+            target = target - self.target(X[:,-1,:1])
         # 多输出用逐 h MI 的均值，不偷用验证标签，也不只偏向单一输出。
-        if self.mi_target not in ('raw', 'transformed'):
+        if self.mi_target not in ('raw', 'transformed', 'model_target'):
             raise ValueError('未知 MI 目标')
         if any(i < 0 or i >= X.shape[-1] for i in self.forced_indices):
             raise ValueError('强制特征索引越界')
@@ -68,16 +71,13 @@ class RunoffRegressor(RegressorMixin, BaseEstimator):
             self.mi_ = None
             self.selected_ = np.arange(X.shape[-1])
         else:
-            mi_y = y if self.mi_target == 'raw' else self.target(y)
+            mi_y = y if self.mi_target == 'raw' else self.target(y) if self.mi_target == 'transformed' else target
             self.mi_ = np.mean([mutual_info_regression(X[:,-1], mi_y[:,h], random_state=self.seed)
                                 for h in range(y.shape[1])], axis=0)
             self.selected_ = np.union1d(np.argsort(self.mi_, kind='stable')[-min(self.top_k,X.shape[-1]):],
                                         self.forced_indices).astype(int)
         part = X[:,:,self.selected_]
         self.x_scaler_ = StandardScaler().fit(part.reshape(-1,len(self.selected_)))
-        target = self.target(y)
-        if self.residual:
-            target = target - self.target(X[:,-1,:1])
         self.y_scaler_ = StandardScaler().fit(target)
         x = self.x_scaler_.transform(part.reshape(-1,len(self.selected_))).reshape(part.shape).astype('float32')
         z = self.y_scaler_.transform(target).astype('float32')

@@ -58,6 +58,45 @@ def test_forced_selection_and_skip_mi(monkeypatch):
     assert len(RunoffRegressor(top_k=None, trees=2).fit(x,y).selected_) == 8
 
 
+@pytest.mark.parametrize('transform', ['raw','sqrt','log'])
+@pytest.mark.parametrize('residual', [False,True])
+@pytest.mark.parametrize('mi_target', ['raw','transformed','model_target'])
+def test_mi_receives_only_actual_fold_training_target(monkeypatch,transform,residual,mi_target):
+    x = np.random.default_rng(12).uniform(1,15,(38,3,8)).astype('float32')
+    y = np.column_stack([x[:,-1,0]*1.2+2,x[:,-1,0]*.7+1])
+    observed = []
+    def capture_mi(features,target,**kwargs):
+        observed.append((features.copy(),target.copy()))
+        return np.arange(features.shape[1])
+    monkeypatch.setattr('models.mutual_info_regression',capture_mi)
+    model = RunoffRegressor(trees=2,top_k=3,transform=transform,residual=residual,mi_target=mi_target)
+    model.fit(x[:25],y[:25])
+    target = model.target(y[:25])
+    learning_target = target-model.target(x[:25,-1,:1]) if residual else target
+    expected = y[:25] if mi_target=='raw' else target if mi_target=='transformed' else learning_target
+    assert len(observed)==2
+    for h,(features,label) in enumerate(observed):
+        np.testing.assert_array_equal(features,x[:25,-1])
+        np.testing.assert_allclose(label,expected[:,h],rtol=1e-6,atol=1e-6)
+    np.testing.assert_allclose(model.y_scaler_.mean_,learning_target.mean(axis=0),rtol=1e-6,atol=1e-6)
+    assert model.predict(x[25:]).shape==(13,2)
+
+
+def test_target_mi_research_mode_and_fit_metadata(tmp_path):
+    data = rh.prepare_data(raw_data())
+    np.testing.assert_array_equal(data['target_mi']['X'],data['mi']['X'])
+    assert len(rh.stage_candidates('features'))==12
+    candidates = rh.stage_candidates('features',families=['RF'],modes=['target_mi'])
+    candidates[0]['params']={'trees':2}
+    rh.run_stage('features',tmp_path/'target_mi',raw=raw_data(),candidates=candidates)
+    fits=json.loads((tmp_path/'target_mi'/'fits.json').read_text())
+    assert len(fits)==3
+    for fit in fits:
+        assert fit['mi_target']=='model_target'
+        assert fit['selected_names'][0]=='Discharge_lag0'
+        assert 24<=len(fit['selected_names'])<=25
+
+
 def test_compact_columns_values_and_explicit_modes():
     raw = raw_data()
     data = rh.prepare_data(raw)
