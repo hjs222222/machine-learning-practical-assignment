@@ -169,6 +169,7 @@ def run_stage(stage, output, previous=None, seed=42, families=('RF','ANN','LSTM'
                 fits.append(dict(candidate=candidate['id'],year=year,selected_indices=model.selected_.tolist(),
                     selected_names=[current['names'][i] for i in model.selected_],
                     mi_target=model.mi_target,
+                    peak_weight=model.peak_weight,peak_training_threshold=model.peak_threshold_,
                     threshold=threshold,n_iter=getattr(model.estimator_,'n_iter_',None),
                     convergence_warning=any(w.category.__name__=='ConvergenceWarning' for w in caught),
                     loss_history=getattr(model,'loss_history_',getattr(model.estimator_,'loss_curve_',[]))))

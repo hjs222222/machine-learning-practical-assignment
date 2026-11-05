@@ -27,7 +27,7 @@ class SequenceNet(nn.Module):
 class RunoffRegressor(RegressorMixin, BaseEstimator):
     def __init__(self, family='RF', transform='raw', top_k=24, hidden=32, epochs=40,
                  trees=120, leaf=2, iterations=300, alpha=0.1, seed=42, seq_len=14, residual=False,
-                 forced_indices=(), mi_target='raw', max_features=1.0):
+                 forced_indices=(), mi_target='raw', max_features=1.0, peak_weight=1.0):
         self.family = family
         self.transform = transform
         self.top_k = top_k
@@ -43,6 +43,7 @@ class RunoffRegressor(RegressorMixin, BaseEstimator):
         self.forced_indices = forced_indices
         self.mi_target = mi_target
         self.max_features = max_features
+        self.peak_weight = peak_weight
 
     def target(self, y):
         if self.transform == 'log':
@@ -59,6 +60,10 @@ class RunoffRegressor(RegressorMixin, BaseEstimator):
         if not np.isfinite(X).all() or not np.isfinite(y).all() or (y < 0).any():
             raise ValueError('模型输入/目标无效')
         self.outputs_ = y.shape[1]
+        if (not np.isfinite(self.peak_weight) or self.peak_weight < 1 or
+                (self.peak_weight != 1 and (self.family != 'RF' or self.outputs_ != 1))):
+            raise ValueError('peak_weight 必须有限且>=1；非1仅适用于单输出RF')
+        self.peak_threshold_ = None
         target = self.target(y)
         if self.residual:
             target = target - self.target(X[:,-1,:1])
@@ -84,7 +89,11 @@ class RunoffRegressor(RegressorMixin, BaseEstimator):
         if self.family == 'RF':
             self.estimator_ = RandomForestRegressor(n_estimators=self.trees, min_samples_leaf=self.leaf,
                 max_features=self.max_features, random_state=self.seed, n_jobs=4)
-            self.estimator_.fit(x[:,-1], z.ravel() if self.outputs_ == 1 else z)
+            weights = None
+            if self.peak_weight != 1:
+                self.peak_threshold_ = float(np.quantile(y[:,0],.95))
+                weights = np.where(y[:,0] > self.peak_threshold_,self.peak_weight,1.)
+            self.estimator_.fit(x[:,-1], z.ravel() if self.outputs_ == 1 else z,sample_weight=weights)
         elif self.family == 'ANN':
             self.estimator_ = MLPRegressor(hidden_layer_sizes=(self.hidden,), max_iter=self.iterations,
                 early_stopping=False, shuffle=False, alpha=self.alpha, random_state=self.seed,

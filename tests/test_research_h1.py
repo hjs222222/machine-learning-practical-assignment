@@ -97,6 +97,44 @@ def test_target_mi_research_mode_and_fit_metadata(tmp_path):
         assert 24<=len(fit['selected_names'])<=25
 
 
+@pytest.mark.parametrize('weight',[1.,3.,10.])
+def test_rf_peak_weights_use_only_training_labels(monkeypatch,weight):
+    from sklearn.ensemble import RandomForestRegressor
+    x=np.random.default_rng(71).uniform(1,10,(60,2,4)).astype('float32')
+    y=x[:,-1,:1].copy()
+    y[38:40]=100
+    y[40:]=10000
+    observed=[]
+    original=RandomForestRegressor.fit
+    def capture(self,X,target,sample_weight=None):
+        observed.append(sample_weight)
+        return original(self,X,target,sample_weight=sample_weight)
+    monkeypatch.setattr(RandomForestRegressor,'fit',capture)
+    model=RunoffRegressor(trees=2,top_k=None,peak_weight=weight).fit(x[:40],y[:40])
+    if weight==1:
+        assert observed==[None] and model.peak_threshold_ is None
+    else:
+        threshold=np.quantile(y[:40,0],.95)
+        assert model.peak_threshold_==threshold
+        np.testing.assert_array_equal(observed[0],np.where(y[:40,0]>threshold,weight,1.))
+    assert model.predict(x[40:]).shape==(20,1)
+
+
+@pytest.mark.parametrize('options',[
+    {'peak_weight':.5},{'peak_weight':float('inf')},
+    {'peak_weight':3,'family':'ANN'},{'peak_weight':3,'family':'LSTM'},
+])
+def test_invalid_peak_weight_contract(options):
+    x=np.ones((20,2,4));y=np.ones((20,1))
+    with pytest.raises(ValueError,match='peak_weight'):
+        RunoffRegressor(top_k=None,**options).fit(x,y)
+
+
+def test_peak_weight_is_h1_rf_only():
+    with pytest.raises(ValueError,match='peak_weight'):
+        RunoffRegressor(top_k=None,peak_weight=3).fit(np.ones((20,2,4)),np.ones((20,7)))
+
+
 def test_compact_columns_values_and_explicit_modes():
     raw = raw_data()
     data = rh.prepare_data(raw)
