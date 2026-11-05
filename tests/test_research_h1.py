@@ -117,6 +117,37 @@ def test_compact_columns_values_and_explicit_modes():
     assert len(candidates) == 3 and {c['mode'] for c in candidates} == {'compact'}
 
 
+def test_climate_features_are_observed_causal_derivatives():
+    raw = raw_data()
+    i=np.arange(len(raw))
+    raw['Tmax']=8*np.sin(i/5)+1
+    raw['Tmin']=4*np.sin(i/5)-3
+    raw['Prcp']=i%7+1.
+    data=rh.prepare_data(raw)
+    mode=data['climate']
+    avg=(raw.Tmax+raw.Tmin)/2
+    expected={'Tmax_lag0':raw.Tmax,'Tmin_lag0':raw.Tmin,'Tavg_lag0':avg}
+    for days in (1,3,7):
+        expected[f'Tavg_diff{days}']=avg-avg.shift(days)
+    for days in (3,7,14):
+        expected[f'Tavg_roll{days}_mean']=avg.rolling(days).mean()
+        expected[f'Tavg_positive_sum{days}']=np.maximum(avg,0).rolling(days).sum()
+    for days in (7,14,30):
+        expected[f'ColdPrcp_prior_sum{days}']=(raw.Prcp*(avg<0)).shift(1).rolling(days).sum()
+    expected['warming_wet7']=np.maximum(avg-avg.shift(3),0)*raw.Prcp.shift(1).rolling(7).sum()
+    expected['warm_rain0']=raw.Prcp*np.maximum(avg,0)
+    assert len(expected)==17 and len(mode['names'])==39
+    assert mode['names'][:22]==data['compact']['names']
+    np.testing.assert_array_equal(mode['X'][:,:,:22],data['compact']['X'])
+    for name,series in expected.items():
+        np.testing.assert_allclose(mode['X'][:,-1,mode['names'].index(name)],
+                                   series.reindex(data['dates']),rtol=1e-6,atol=1e-6)
+    assert np.isfinite(mode['X']).all()
+    assert (expected['ColdPrcp_prior_sum7'].dropna()>0).any()
+    assert (expected['warming_wet7'].dropna()>0).any()
+    assert {c['mode'] for c in rh.stage_candidates('features',modes=['climate'])}=={'climate'}
+
+
 @pytest.mark.parametrize('stage',['targets','tune'])
 def test_nonfeature_modes_rejected_before_output(stage,tmp_path):
     with pytest.raises(ValueError,match='modes.*features'):
