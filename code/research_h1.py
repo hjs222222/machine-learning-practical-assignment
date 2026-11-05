@@ -166,10 +166,18 @@ def run_stage(stage, output, previous=None, seed=42, families=('RF','ANN','LSTM'
                     pred = model.predict(current['X'][va])
                 warning_rows.append(dict(candidate=candidate['id'],year=year,
                     warnings=[dict(category=w.category.__name__,message=str(w.message)) for w in caught]))
+                ann_training = getattr(model,'ann_training_',None)
+                if ann_training:
+                    ann_training = dict(ann_training,
+                        inner_train_end=data['dates'][tr[ann_training['probe_train_count']-1]],
+                        inner_validation_start=data['dates'][tr[ann_training['validation_start']]],
+                        inner_validation_end=data['dates'][tr[-1]])
                 fits.append(dict(candidate=candidate['id'],year=year,selected_indices=model.selected_.tolist(),
                     selected_names=[current['names'][i] for i in model.selected_],
                     mi_target=model.mi_target,
                     peak_weight=model.peak_weight,peak_training_threshold=model.peak_threshold_,
+                    ann_solver=model.ann_solver,ann_learning_rate=model.ann_learning_rate,
+                    ann_training=ann_training,
                     threshold=threshold,n_iter=getattr(model.estimator_,'n_iter_',None),
                     convergence_warning=any(w.category.__name__=='ConvergenceWarning' for w in caught),
                     loss_history=getattr(model,'loss_history_',getattr(model.estimator_,'loss_curve_',[]))))

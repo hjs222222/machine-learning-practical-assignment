@@ -1,6 +1,7 @@
 """原生单/多输出模型；每次 fit 内重新做选择、缩放和训练。"""
 import numpy as np
-from sklearn.base import BaseEstimator, RegressorMixin
+from sklearn.base import BaseEstimator, RegressorMixin, clone
+from sklearn.metrics import r2_score
 from sklearn.preprocessing import StandardScaler
 from sklearn.feature_selection import mutual_info_regression
 from sklearn.ensemble import RandomForestRegressor
@@ -27,7 +28,8 @@ class SequenceNet(nn.Module):
 class RunoffRegressor(RegressorMixin, BaseEstimator):
     def __init__(self, family='RF', transform='raw', top_k=24, hidden=32, epochs=40,
                  trees=120, leaf=2, iterations=300, alpha=0.1, seed=42, seq_len=14, residual=False,
-                 forced_indices=(), mi_target='raw', max_features=1.0, peak_weight=1.0):
+                 forced_indices=(), mi_target='raw', max_features=1.0, peak_weight=1.0,
+                 ann_solver='adam', ann_learning_rate=0.003, ann_chrono_stop=False):
         self.family = family
         self.transform = transform
         self.top_k = top_k
@@ -44,6 +46,9 @@ class RunoffRegressor(RegressorMixin, BaseEstimator):
         self.mi_target = mi_target
         self.max_features = max_features
         self.peak_weight = peak_weight
+        self.ann_solver = ann_solver
+        self.ann_learning_rate = ann_learning_rate
+        self.ann_chrono_stop = ann_chrono_stop
 
     def target(self, y):
         if self.transform == 'log':
@@ -54,11 +59,7 @@ class RunoffRegressor(RegressorMixin, BaseEstimator):
             raise ValueError('未知目标变换')
         return y
 
-    def fit(self, X, y):
-        X = np.asarray(X, dtype=np.float32)[:, -self.seq_len:]
-        y = np.asarray(y).reshape(len(X), -1)
-        if not np.isfinite(X).all() or not np.isfinite(y).all() or (y < 0).any():
-            raise ValueError('模型输入/目标无效')
+    def _fit_preprocessing(self, X, y):
         self.outputs_ = y.shape[1]
         if (not np.isfinite(self.peak_weight) or self.peak_weight < 1 or
                 (self.peak_weight != 1 and (self.family != 'RF' or self.outputs_ != 1))):
@@ -86,6 +87,23 @@ class RunoffRegressor(RegressorMixin, BaseEstimator):
         self.y_scaler_ = StandardScaler().fit(target)
         x = self.x_scaler_.transform(part.reshape(-1,len(self.selected_))).reshape(part.shape).astype('float32')
         z = self.y_scaler_.transform(target).astype('float32')
+        return x,z
+
+    def fit(self, X, y):
+        X = np.asarray(X, dtype=np.float32)[:, -self.seq_len:]
+        y = np.asarray(y).reshape(len(X), -1)
+        if not np.isfinite(X).all() or not np.isfinite(y).all() or (y < 0).any():
+            raise ValueError('模型输入/目标无效')
+        if self.family == 'ANN' and (self.ann_solver not in ('adam','lbfgs') or
+                not np.isfinite(self.ann_learning_rate) or self.ann_learning_rate <= 0):
+            raise ValueError('ANN optimizer参数无效')
+        self.ann_training_ = None
+        if self.ann_chrono_stop:
+            if (self.family != 'ANN' or self.ann_solver != 'adam' or y.shape[1] != 1 or
+                    len(X) < 60 or not 5 <= self.iterations <= 400):
+                raise ValueError('ann_chrono_stop仅支持>=60行、5至400轮的单输出Adam ANN')
+            return self._fit_ann_chronological(X,y)
+        x,z = self._fit_preprocessing(X,y)
         if self.family == 'RF':
             self.estimator_ = RandomForestRegressor(n_estimators=self.trees, min_samples_leaf=self.leaf,
                 max_features=self.max_features, random_state=self.seed, n_jobs=4)
@@ -95,14 +113,49 @@ class RunoffRegressor(RegressorMixin, BaseEstimator):
                 weights = np.where(y[:,0] > self.peak_threshold_,self.peak_weight,1.)
             self.estimator_.fit(x[:,-1], z.ravel() if self.outputs_ == 1 else z,sample_weight=weights)
         elif self.family == 'ANN':
-            self.estimator_ = MLPRegressor(hidden_layer_sizes=(self.hidden,), max_iter=self.iterations,
-                early_stopping=False, shuffle=False, alpha=self.alpha, random_state=self.seed,
-                learning_rate_init=0.003, batch_size=min(64,len(x)), tol=1e-5)
+            self.estimator_ = self._ann_estimator(len(x))
             self.estimator_.fit(x[:,-1], z.ravel() if self.outputs_ == 1 else z)
         elif self.family == 'LSTM':
             self._fit_lstm(x,z)
         else:
             raise ValueError('未知模型家族')
+        return self
+
+    def _ann_estimator(self, samples):
+        return MLPRegressor(hidden_layer_sizes=(self.hidden,),max_iter=self.iterations,
+            early_stopping=False,shuffle=False,alpha=self.alpha,random_state=self.seed,
+            solver=self.ann_solver,learning_rate_init=self.ann_learning_rate,
+            batch_size=min(64,samples),tol=1e-5)
+
+    def _fit_ann_chronological(self, X, y):
+        start = len(X)-int(np.ceil(len(X)*.2))
+        count = start-7
+        probe = clone(self).set_params(ann_chrono_stop=False)
+        px,pz = probe._fit_preprocessing(X[:count],y[:count])
+        probe.estimator_ = probe._ann_estimator(count)
+        best_score,best_epoch,history = -np.inf,1,[]
+        for epoch in range(1,self.iterations+1):
+            probe.estimator_.partial_fit(px[:,-1],pz.ravel())
+            if epoch == 1 or epoch % 5 == 0:
+                score = float(r2_score(y[start:],probe.predict(X[start:])))
+                if not np.isfinite(score):
+                    raise ValueError('ANN内部时间验证分数无效')
+                history.append(dict(epoch=epoch,r2=score,training_loss=float(probe.estimator_.loss_)))
+                if score > best_score+1e-4:
+                    best_score,best_epoch = score,epoch
+                elif epoch-best_epoch >= 30:
+                    break
+        # epoch已冻结后才允许全部外层训练行进入MI和缩放。
+        full = clone(self).set_params(ann_chrono_stop=False)
+        fx,fz = full._fit_preprocessing(X,y)
+        full.estimator_ = full._ann_estimator(len(X))
+        for _ in range(best_epoch):
+            full.estimator_.partial_fit(fx[:,-1],fz.ravel())
+        self.__dict__.update({k:v for k,v in vars(full).items() if k.endswith('_')})
+        self.ann_training_ = dict(probe_train_count=count,validation_start=start,
+            validation_count=len(X)-start,gap=7,best_epoch=best_epoch,stopped_epoch=epoch,
+            best_inner_r2=best_score,history=history,probe_selected_indices=probe.selected_.tolist(),
+            probe_scaler_samples=int(probe.x_scaler_.n_samples_seen_))
         return self
 
     def _fit_lstm(self, x, z):
