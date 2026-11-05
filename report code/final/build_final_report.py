@@ -140,6 +140,8 @@ def build_word(run, destination):
     if len(doc.sections)!=3 or len(doc.tables)!=1 or not any(p.text=='一、任务要求' for p in doc.paragraphs):
         raise ValueError('模板副本的章节结构与教师模板不符')
     originals=doc.paragraphs[:]
+    for i in (6,9,12,15,18,21,30):
+        originals[i].paragraph_format.keep_with_next=True
     metrics=pd.read_csv(run/'metrics.csv')
     frozen=json.loads((run/'frozen.json').read_text(encoding='utf-8'))
     protocol=json.loads((run/'protocol.json').read_text(encoding='utf-8'))
@@ -150,7 +152,7 @@ def build_word(run, destination):
     def p(anchor,text,bold=False):
         para=anchor.insert_paragraph_before(text)
         para.paragraph_format.space_after=Pt(6)
-        para.paragraph_format.line_spacing=1.3
+        para.paragraph_format.line_spacing=1.2
         para.paragraph_format.keep_with_next=bold
         for r in para.runs:
             r.font.name='宋体';r._element.get_or_add_rPr().rFonts.set(qn('w:eastAsia'),'宋体')
@@ -164,7 +166,7 @@ def build_word(run, destination):
         for row in frame.itertuples(index=False,name=None):
             for c,v in zip(t.add_row().cells,row):c.text=f'{v:.4f}' if isinstance(v,float) else str(v)
         weights=[1]*len(frame.columns)
-        if len(frame.columns)==5:weights=[2.3,1.1,1.3,.6,3.0]
+        if len(frame.columns)==5 and '参数' in frame.columns:weights=[2.3,1.1,1.3,.6,3.0]
         if len(frame.columns)==3 and '处理目标' in frame.columns:weights=[1,2,3]
         for col,weight in zip(t.columns,weights):col.width=int(available*weight/sum(weights))
         for rownum,row in enumerate(t.rows):
@@ -173,6 +175,7 @@ def build_word(run, destination):
                 for para in cell.paragraphs:
                     para.paragraph_format.space_after=Pt(3)
                     para.paragraph_format.space_before=Pt(3)
+                    para.paragraph_format.keep_with_next=rownum==0
                     for r in para.runs:
                         r.font.size=Pt(9);r.font.name='宋体';r._element.get_or_add_rPr().rFonts.set(qn('w:eastAsia'),'宋体')
                         r.bold=rownum==0
@@ -187,6 +190,10 @@ def build_word(run, destination):
             cannot=OxmlElement('w:cantSplit');prop.append(cannot)
             if rownum==0:prop.append(OxmlElement('w:tblHeader'))
         anchor._p.addprevious(t._tbl)
+        spacer=p(anchor,'')
+        spacer.paragraph_format.space_after=Pt(0)
+        spacer.paragraph_format.space_before=Pt(0)
+        spacer.paragraph_format.line_spacing=Pt(4)
     def pic(anchor,name,caption):
         para=p(anchor,'')
         para.paragraph_format.keep_with_next=True
@@ -195,8 +202,13 @@ def build_word(run, destination):
     cover=doc.tables[0]
     for i,value in enumerate(('基于机器学习的径流预测','待填写','待填写（三名成员）','待填写（三名成员）','待填写','待填写')):
         cover.cell(i,1).text=value
+        for para in cover.cell(i,1).paragraphs:
+            for r in para.runs:
+                r.font.name='宋体';r._element.get_or_add_rPr().rFonts.set(qn('w:eastAsia'),'宋体')
+                r.font.size=Pt(12);r.font.color.rgb=RGBColor(0,0,0)
     # 只更改日期文本，保留该段末尾的分节属性。
     originals[5].text='二〇二六 年 十一 月 五 日'
+    for r in originals[5].runs:r.font.size=Pt(15);r.bold=True
     a=originals[7]
     p(a,'本课题根据流域逐日径流和气象观测，预测未来1—7天的径流，属于监督学习中的时间序列多步回归任务。输入为预测原点t当天已观测值及其历史，输出为t+1至t+7的流量。')
     p(a,'实验依次完成数据分析、因果特征工程、人工神经网络/随机森林/LSTM建模、简单平均与Stacking集成。三种基模型各构建七个直接模型与一个七输出模型，共24个；两类集成共16个。全程只使用教师CSV。')
@@ -261,6 +273,8 @@ def build_word(run, destination):
     p(a,'日期与多步标签边界：起初的实现需求只写按年份切分，不足以证明七步标签未跨界。先写因果与日期失败测试，再实现训练标签截止日断言、gap=7和359个共同测试原点，边界测试通过。')
     p(a,'输入/输出一致性：为ANN、RF、LSTM分别编写原生七输出、单输出列形状、训练折缩放和序列化恢复测试，确认预测矩阵与实测日期对应。残差扩展先由失败测试暴露不支持参数，再验证在零变化目标下能重构当天流量。')
     p(a,'ANN收敛：快速单元测试故意只运行10轮，会出现ConvergenceWarning；正式训练的警告数量记录在每个搜索JSON中，不隐藏为已完全收敛。网格预算固定，未在正式测试后追加轮次。')
+    verification=json.loads((run/'verification.json').read_text(encoding='utf-8'))
+    p(a,f'正式96组搜索累计记录{verification["formal_convergence_warnings"]}条收敛警告（含未胜出的候选和OOF内搜索），说明有限预算下部分ANN候选未充分收敛。它们是优化预算限制，不能据此把测试分数解释为理论上限。')
     p(a,'文档转换：打包渲染器缺少LibreOffice可执行文件，已记录错误。改用Microsoft Word转换教师.doc副本并导出PDF，通过逐页图像检查报告版面；没有改变教师原文件。')
     a=originals[22]
     p(a,'使用技术：pandas日期索引、numpy序列、matplotlib可视化、Pearson分析、月份正余弦/季节one-hot、滞后/滚动、互信息、Z-score、MLP、随机森林、PyTorch LSTM、GridSearchCV、purged TimeSeriesSplit、嵌套OOF、Ridge Stacking和Git版本记录。')
@@ -270,13 +284,21 @@ def build_word(run, destination):
     a=originals[31]
     originals[30].text='附录 代码提交说明'
     p(a,'本报告不粘贴源码。完整实现、自动测试、依赖清单、运行说明和配置/数据哈希通过同目录“机器学习课程实践代码.zip”提交。唯一运行入口：python code/run_all.py；验证入口：python -m pytest tests -q。')
-    p(a,'复现时需将教师原CSV置于 Teacher Resources & Requirements/01047000.csv。数据不随代码包重复分发，SHA-256：'+manifest['data_sha256']+'。')
-    p(a,'运行标识：'+run.name+'；训练源码提交：'+manifest['git_commit']+'。正式运行清单和冻结参数随阶段验收附件提供。整体提交压缩包需待真实组号、组长及两位组员姓名确认后按教师规则命名。')
-    for i in (7,10,13,16,19,22,25,26,27,28,31):
+    p(a,'复现时需将教师原CSV置于 Teacher Resources & Requirements/01047000.csv。数据不随代码包重复分发，SHA-256：'+manifest['data_sha256']+'。').alignment=0
+    p(a,'运行标识：'+run.name+'；训练源码提交：'+manifest['git_commit']+'。正式运行清单和冻结参数随阶段验收附件提供。整体提交压缩包需待真实组号、组长及两位组员姓名确认后按教师规则命名。').alignment=0
+    for i in (7,10,13,16,19,22,23,24,25,26,27,28,31):
         el=originals[i]._element;el.getparent().remove(el)
     doc.core_properties.title='机器学习课程实践 径流预测实验报告'
     doc.core_properties.author=''
+    setting=OxmlElement('w:updateFields');setting.set(qn('w:val'),'true');doc.settings.element.append(setting)
     doc.save(destination)
+    # 本次只扩展主文档；模板样式、主题、页眉页脚和编号保持原字节。
+    temporary=destination.with_suffix('.tmp.docx')
+    with zipfile.ZipFile(template) as ref,zipfile.ZipFile(destination) as generated,zipfile.ZipFile(temporary,'w',zipfile.ZIP_DEFLATED) as final:
+        for entry in generated.infolist():
+            preserve=entry.filename.startswith(('word/styles','word/numbering','word/theme','word/header','word/footer')) and entry.filename in ref.namelist()
+            final.writestr(entry,ref.read(entry.filename) if preserve else generated.read(entry.filename))
+    temporary.replace(destination)
     (Path(__file__).with_name('report_content.md')).write_text('\n\n'.join(paragraphs),encoding='utf-8')
 
 

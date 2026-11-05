@@ -1,0 +1,22 @@
+{
+  "status": "completed",
+  "created": "2026-11-05T21:15:31.894422+08:00",
+  "data_sha256": "ab09410b23118510bb4e8787a62b97693336a1c46477a01329f587c64bc57151",
+  "config_sha256": "818bea89995342ae73d53c8142bb475b0aebfc1beab7bf0ec4caa3cb86ed10e0",
+  "config": {
+    "benchmark": false,
+    "sequence_length": 14,
+    "gap_days": 7
+  },
+  "python": "3.13.5",
+  "git_commit": "d7d5f34d821d746cc622fe0bcc9178c2106db86f",
+  "seed": 42,
+  "expected_base_models": 24,
+  "expected_ensemble_models": 16,
+  "test_limitation": "2004已在旧项目中查看；本次为预注册配置后的回溯评估，不是全新盲测",
+  "n_test": 359,
+  "actual_base_models": 24,
+  "actual_ensemble_models": 16,
+  "best_h1_R2": 0.510330538628204,
+  "test_evaluated": true
+}

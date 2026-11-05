@@ -1,0 +1,426 @@
+{
+  "data_path": "Teacher Resources & Requirements/01047000.csv",
+  "data_sha256": "ab09410b23118510bb4e8787a62b97693336a1c46477a01329f587c64bc57151",
+  "run": "formal_20261105_clean",
+  "protocol": {
+    "grids": {
+      "RF": [
+        {
+          "transform": [
+            "raw"
+          ],
+          "leaf": [
+            1
+          ],
+          "trees": [
+            120
+          ],
+          "top_k": [
+            24
+          ]
+        },
+        {
+          "transform": [
+            "raw"
+          ],
+          "leaf": [
+            5
+          ],
+          "trees": [
+            120
+          ],
+          "top_k": [
+            24
+          ]
+        },
+        {
+          "transform": [
+            "sqrt"
+          ],
+          "leaf": [
+            1
+          ],
+          "trees": [
+            120
+          ],
+          "top_k": [
+            24
+          ]
+        },
+        {
+          "transform": [
+            "sqrt"
+          ],
+          "leaf": [
+            5
+          ],
+          "trees": [
+            120
+          ],
+          "top_k": [
+            24
+          ]
+        },
+        {
+          "transform": [
+            "log"
+          ],
+          "leaf": [
+            1
+          ],
+          "trees": [
+            120
+          ],
+          "top_k": [
+            24
+          ]
+        },
+        {
+          "transform": [
+            "log"
+          ],
+          "leaf": [
+            5
+          ],
+          "trees": [
+            120
+          ],
+          "top_k": [
+            24
+          ]
+        },
+        {
+          "transform": [
+            "sqrt"
+          ],
+          "leaf": [
+            1
+          ],
+          "trees": [
+            120
+          ],
+          "top_k": [
+            24
+          ],
+          "residual": [
+            true
+          ]
+        },
+        {
+          "transform": [
+            "log"
+          ],
+          "leaf": [
+            1
+          ],
+          "trees": [
+            120
+          ],
+          "top_k": [
+            24
+          ],
+          "residual": [
+            true
+          ]
+        }
+      ],
+      "ANN": [
+        {
+          "transform": [
+            "raw"
+          ],
+          "hidden": [
+            32
+          ],
+          "alpha": [
+            0.1
+          ],
+          "iterations": [
+            350
+          ],
+          "top_k": [
+            24
+          ]
+        },
+        {
+          "transform": [
+            "raw"
+          ],
+          "hidden": [
+            64
+          ],
+          "alpha": [
+            0.1
+          ],
+          "iterations": [
+            350
+          ],
+          "top_k": [
+            24
+          ]
+        },
+        {
+          "transform": [
+            "sqrt"
+          ],
+          "hidden": [
+            32
+          ],
+          "alpha": [
+            0.1
+          ],
+          "iterations": [
+            350
+          ],
+          "top_k": [
+            24
+          ]
+        },
+        {
+          "transform": [
+            "sqrt"
+          ],
+          "hidden": [
+            64
+          ],
+          "alpha": [
+            0.1
+          ],
+          "iterations": [
+            350
+          ],
+          "top_k": [
+            24
+          ]
+        },
+        {
+          "transform": [
+            "log"
+          ],
+          "hidden": [
+            32
+          ],
+          "alpha": [
+            0.1
+          ],
+          "iterations": [
+            350
+          ],
+          "top_k": [
+            24
+          ]
+        },
+        {
+          "transform": [
+            "log"
+          ],
+          "hidden": [
+            64
+          ],
+          "alpha": [
+            0.1
+          ],
+          "iterations": [
+            350
+          ],
+          "top_k": [
+            24
+          ]
+        },
+        {
+          "transform": [
+            "sqrt"
+          ],
+          "hidden": [
+            64
+          ],
+          "alpha": [
+            0.1
+          ],
+          "iterations": [
+            350
+          ],
+          "top_k": [
+            24
+          ],
+          "residual": [
+            true
+          ]
+        },
+        {
+          "transform": [
+            "log"
+          ],
+          "hidden": [
+            64
+          ],
+          "alpha": [
+            0.1
+          ],
+          "iterations": [
+            350
+          ],
+          "top_k": [
+            24
+          ],
+          "residual": [
+            true
+          ]
+        }
+      ],
+      "LSTM": [
+        {
+          "transform": [
+            "raw"
+          ],
+          "hidden": [
+            32
+          ],
+          "epochs": [
+            30
+          ],
+          "seq_len": [
+            7
+          ],
+          "alpha": [
+            0.1
+          ],
+          "top_k": [
+            16
+          ]
+        },
+        {
+          "transform": [
+            "raw"
+          ],
+          "hidden": [
+            32
+          ],
+          "epochs": [
+            70
+          ],
+          "seq_len": [
+            14
+          ],
+          "alpha": [
+            0.1
+          ],
+          "top_k": [
+            16
+          ]
+        },
+        {
+          "transform": [
+            "sqrt"
+          ],
+          "hidden": [
+            32
+          ],
+          "epochs": [
+            70
+          ],
+          "seq_len": [
+            14
+          ],
+          "alpha": [
+            0.1
+          ],
+          "top_k": [
+            16
+          ]
+        },
+        {
+          "transform": [
+            "log"
+          ],
+          "hidden": [
+            32
+          ],
+          "epochs": [
+            70
+          ],
+          "seq_len": [
+            14
+          ],
+          "alpha": [
+            0.1
+          ],
+          "top_k": [
+            16
+          ]
+        },
+        {
+          "transform": [
+            "sqrt"
+          ],
+          "hidden": [
+            32
+          ],
+          "epochs": [
+            70
+          ],
+          "seq_len": [
+            14
+          ],
+          "alpha": [
+            0.1
+          ],
+          "top_k": [
+            16
+          ],
+          "residual": [
+            true
+          ]
+        },
+        {
+          "transform": [
+            "log"
+          ],
+          "hidden": [
+            32
+          ],
+          "epochs": [
+            70
+          ],
+          "seq_len": [
+            14
+          ],
+          "alpha": [
+            0.1
+          ],
+          "top_k": [
+            16
+          ],
+          "residual": [
+            true
+          ]
+        }
+      ]
+    },
+    "seed": 42,
+    "cv": "TimeSeriesSplit n_splits=2 gap=7",
+    "oof": "3 expanding outer folds, each with independent 2-fold inner selection gap=7",
+    "selection": "mean validation R2; multi uniform average across 7 horizons",
+    "epochs": "LSTM fixed budget epochs selected by purged GridSearchCV, not random early-stopping",
+    "data_sha256": "ab09410b23118510bb4e8787a62b97693336a1c46477a01329f587c64bc57151",
+    "test_has_been_evaluated": false,
+    "versions": {
+      "numpy": "2.1.3",
+      "pandas": "2.2.3",
+      "scikit-learn": "1.6.1",
+      "torch": "2.7.1+cu118",
+      "matplotlib": "3.10.0",
+      "python-docx": "1.2.0"
+    }
+  },
+  "source_hashes": {
+    "config.py": "e119746e9d0e9717b10ce778c1cc748a3b77bc651218918c857df65d2777c63b",
+    "data.py": "0a5d3701debaf61db54979676ab204575f7d4a65b221327ee581213eec7c43f9",
+    "data_analysis.py": "435a08461fa1314bf405afec93bdc774477406ce09d523dfc6e2c3f716d02d45",
+    "evaluation.py": "282fc94c8abe135b3aefc2097e466af5c94b0a6ef5105f05c53b167c6ce5d075",
+    "experiment.py": "dca3f5c1df19aa6429c3f8f51fba79b8f6c39822d549872e7e3afd9f04735c49",
+    "features.py": "d3c7e9ceae98f5abecc5abcae5d0b71cd01695f14b0381d82441e24fcbf577b3",
+    "models.py": "d2adb0918edb6a85a17847f1eed4f17ec5b52d59cf2d7d2768a0fa2e3d5b5de9",
+    "run_all.py": "ff4e01b48925ea6b1e23db92c91c5dd6d68c2e2c2bc9d6ff06db0fd7b723b39b"
+  }
+}
