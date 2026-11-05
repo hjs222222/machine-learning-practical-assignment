@@ -2,6 +2,18 @@
 
 工作目录：`D:\machinelearning`。教师原始 CSV 是唯一数据来源，原始资料保持只读。
 
+## 当前工作：只提升一天预测精度
+
+暂不修改最终报告。先阅读`docs/一天预测精度提升记录.md`和`docs/superpowers/plans/2026-11-05-h1-accuracy-research.md`。研究入口`code/research_h1.py`在构造样本前切断2004，逐年验证2001/2002/2003；输出为训练期探索结果，不是新的独立测试成绩。原正式运行和交付文件保持不变。
+
+```powershell
+python code/research_h1.py --stage features --output output/新研究/features
+python code/research_h1.py --stage targets --previous output/新研究/features --output output/新研究/targets
+python code/research_h1.py --stage tune --previous output/新研究/targets --output output/新研究/tune
+```
+
+特征阶段默认比较原MI、强制保留近期降雨、全部91列、101列因果派生；显式`--modes compact`可单独测试22列紧凑输入。每一运行目录拒绝覆盖，候选协议在训练前写入。参数扩大前先做输入和目标对照；指标回到原始流量单位，汇总优先最差年R²，再看平均R²，同时检查洪峰误差。
+
 ## 旧项目警戒
 
 旧目录 `C:\Users\何\Desktop\机器学习课程实践` 未达到本次目标要求。其已核验的 v4 直接 RF h=1 R²为 0.5217；旧报告混合不同冻结轮次；2004 已被多次查看；主流程自动热启动、数据来源有路径回退；早期版本的调试文字提到预处理与时间切分问题；并行版本入口过多。以上用于警戒，禁止复用旧代码、指标、图表、文字或模型。

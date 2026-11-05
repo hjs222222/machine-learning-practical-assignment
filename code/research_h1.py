@@ -15,7 +15,8 @@ from data import load_raw
 from features import build_features
 from models import RunoffRegressor
 
-MODES = ('mi', 'forced', 'all', 'hydro')
+DEFAULT_MODES = ('mi', 'forced', 'all', 'hydro')
+MODES = DEFAULT_MODES + ('compact',)
 BASE = {'RF': dict(trees=120, leaf=1),
         'ANN': dict(hidden=64, iterations=350, alpha=.1),
         'LSTM': dict(hidden=32, seq_len=14, epochs=70, alpha=.1)}
@@ -29,13 +30,17 @@ def prepare_data(raw):
         hydro[f'Discharge_diff{days}'] = raw.Discharge.diff(days)
     for days in (2, 3, 5, 7, 14, 30):
         hydro[f'Prcp_prior_sum{days}'] = raw.Prcp.shift(1).rolling(days).sum()
+    compact_names = ([f'{col}_lag{lag}' for col in ('Discharge','Prcp') for lag in (0,1,2,3,7)]
+                     + [f'Discharge_diff{d}' for d in (1,2,3,7)]
+                     + [f'Prcp_prior_sum{d}' for d in (2,3,5,7,14,30)] + ['month_sin','month_cos'])
+    compact = hydro[compact_names]
     ready = hydro.notna().all(axis=1).to_numpy()
     ids = np.array([i for i in range(29, len(raw)-1) if ready[i-29:i+1].all()])
     dates = raw.index[ids]
     result = dict(dates=dates, y=raw.Discharge.shift(-1).iloc[ids].to_numpy()[:,None],
                   raw=raw)
     for mode in MODES:
-        frame = hydro if mode == 'hydro' else base
+        frame = compact if mode == 'compact' else hydro if mode == 'hydro' else base
         result[mode] = dict(X=np.stack([frame.iloc[i-29:i+1].to_numpy(np.float32) for i in ids]),
                             names=list(frame.columns), dates=dates)
     return result
@@ -60,11 +65,15 @@ def metrics(truth, prediction, threshold):
                 peak_bias=float(np.mean(peak)) if len(peak) else None, peak_count=int(len(peak)))
 
 
-def stage_candidates(stage, previous=None, families=('RF','ANN','LSTM')):
+def stage_candidates(stage, previous=None, families=('RF','ANN','LSTM'), modes=DEFAULT_MODES):
+    if stage != 'features' and tuple(modes) != DEFAULT_MODES:
+        raise ValueError('--modes is supported only for features')
     if stage == 'features':
+        if not modes or len(set(modes)) != len(modes) or any(mode not in MODES for mode in modes):
+            raise ValueError('Feature modes must be nonempty, unique and supported')
         return [dict(id=f'{family}_{mode}_log_delta', family=family, mode=mode,
                      transform='log', residual=True, params=BASE[family])
-                for family in families for mode in MODES]
+                for family in families for mode in modes]
     previous = Path(previous) if previous is not None else None
     if previous is None or not (previous/'complete.json').is_file():
         raise ValueError('Previous stage must be complete')
@@ -92,12 +101,14 @@ def stage_candidates(stage, previous=None, families=('RF','ANN','LSTM')):
 
 
 def run_stage(stage, output, previous=None, seed=42, families=('RF','ANN','LSTM'), limit=None,
-              raw=None, candidates=None):
+              raw=None, candidates=None, modes=DEFAULT_MODES):
+    if stage != 'features' and tuple(modes) != DEFAULT_MODES:
+        raise ValueError('--modes is supported only for features')
     output = Path(output)
     if output.exists():
         raise ValueError('Output exists; no overwrite or hot start')
     if candidates is None:
-        candidates = stage_candidates(stage,previous,families)
+        candidates = stage_candidates(stage,previous,families,modes)
     if limit is not None:
         if limit < 1:
             raise ValueError('limit must be positive')
@@ -172,6 +183,8 @@ def main():
     parser.add_argument('--output',required=True,type=Path)
     parser.add_argument('--previous',type=Path)
     parser.add_argument('--families',nargs='+',choices=('RF','ANN','LSTM'),default=['RF','ANN','LSTM'])
+    parser.add_argument('--modes',nargs='+',choices=MODES,default=DEFAULT_MODES,
+                        help='Feature-stage input modes; default keeps the original four')
     parser.add_argument('--seed',type=int,default=42)
     parser.add_argument('--limit',type=int,help='Maximum candidates per family, in predeclared grid order')
     args = parser.parse_args()

@@ -58,6 +58,35 @@ def test_forced_selection_and_skip_mi(monkeypatch):
     assert len(RunoffRegressor(top_k=None, trees=2).fit(x,y).selected_) == 8
 
 
+def test_compact_columns_values_and_explicit_modes():
+    raw = raw_data()
+    data = rh.prepare_data(raw)
+    compact = data['compact']
+    names = ([f'{col}_lag{lag}' for col in ('Discharge','Prcp') for lag in (0,1,2,3,7)]
+             + [f'Discharge_diff{d}' for d in (1,2,3,7)]
+             + [f'Prcp_prior_sum{d}' for d in (2,3,5,7,14,30)] + ['month_sin','month_cos'])
+    assert compact['names'] == names and len(names) == 22
+    assert np.array_equal(compact['dates'],data['dates'])
+    date = data['dates'][100]
+    expected = ([raw.loc[date-pd.Timedelta(days=lag),col] for col in ('Discharge','Prcp') for lag in (0,1,2,3,7)]
+                + [raw.Discharge.loc[date]-raw.Discharge.loc[date-pd.Timedelta(days=d)] for d in (1,2,3,7)]
+                + [raw.Prcp.loc[date-pd.Timedelta(days=d):date-pd.Timedelta(days=1)].sum() for d in (2,3,5,7,14,30)]
+                + [np.sin(2*np.pi*(date.month-1)/12),np.cos(2*np.pi*(date.month-1)/12)])
+    np.testing.assert_allclose(compact['X'][100,-1],expected,rtol=1e-6,atol=1e-6)
+    assert len(rh.stage_candidates('features')) == 12
+    candidates = rh.stage_candidates('features',modes=['compact'])
+    assert len(candidates) == 3 and {c['mode'] for c in candidates} == {'compact'}
+
+
+@pytest.mark.parametrize('stage',['targets','tune'])
+def test_nonfeature_modes_rejected_before_output(stage,tmp_path):
+    with pytest.raises(ValueError,match='modes.*features'):
+        rh.stage_candidates(stage,modes=['compact'])
+    with pytest.raises(ValueError,match='modes.*features'):
+        rh.run_stage(stage,tmp_path/'unused',modes=['compact'],candidates=[{}])
+    assert not (tmp_path/'unused').exists()
+
+
 @pytest.mark.parametrize('transform', ['raw','sqrt','log'])
 @pytest.mark.parametrize('residual', [False,True])
 def test_target_inverse(transform, residual):
