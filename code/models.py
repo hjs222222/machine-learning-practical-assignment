@@ -26,7 +26,8 @@ class SequenceNet(nn.Module):
 
 class RunoffRegressor(RegressorMixin, BaseEstimator):
     def __init__(self, family='RF', transform='raw', top_k=24, hidden=32, epochs=40,
-                 trees=120, leaf=2, iterations=300, alpha=0.1, seed=42, seq_len=14, residual=False):
+                 trees=120, leaf=2, iterations=300, alpha=0.1, seed=42, seq_len=14, residual=False,
+                 forced_indices=(), mi_target='raw', max_features=1.0):
         self.family = family
         self.transform = transform
         self.top_k = top_k
@@ -39,6 +40,9 @@ class RunoffRegressor(RegressorMixin, BaseEstimator):
         self.seed = seed
         self.seq_len = seq_len
         self.residual = residual
+        self.forced_indices = forced_indices
+        self.mi_target = mi_target
+        self.max_features = max_features
 
     def target(self, y):
         if self.transform == 'log':
@@ -56,9 +60,19 @@ class RunoffRegressor(RegressorMixin, BaseEstimator):
             raise ValueError('模型输入/目标无效')
         self.outputs_ = y.shape[1]
         # 多输出用逐 h MI 的均值，不偷用验证标签，也不只偏向单一输出。
-        self.mi_ = np.mean([mutual_info_regression(X[:,-1], y[:,h], random_state=self.seed)
-                            for h in range(y.shape[1])], axis=0)
-        self.selected_ = np.sort(np.argsort(self.mi_, kind='stable')[-min(self.top_k,X.shape[-1]):])
+        if self.mi_target not in ('raw', 'transformed'):
+            raise ValueError('未知 MI 目标')
+        if any(i < 0 or i >= X.shape[-1] for i in self.forced_indices):
+            raise ValueError('强制特征索引越界')
+        if self.top_k is None:
+            self.mi_ = None
+            self.selected_ = np.arange(X.shape[-1])
+        else:
+            mi_y = y if self.mi_target == 'raw' else self.target(y)
+            self.mi_ = np.mean([mutual_info_regression(X[:,-1], mi_y[:,h], random_state=self.seed)
+                                for h in range(y.shape[1])], axis=0)
+            self.selected_ = np.union1d(np.argsort(self.mi_, kind='stable')[-min(self.top_k,X.shape[-1]):],
+                                        self.forced_indices).astype(int)
         part = X[:,:,self.selected_]
         self.x_scaler_ = StandardScaler().fit(part.reshape(-1,len(self.selected_)))
         target = self.target(y)
@@ -69,7 +83,7 @@ class RunoffRegressor(RegressorMixin, BaseEstimator):
         z = self.y_scaler_.transform(target).astype('float32')
         if self.family == 'RF':
             self.estimator_ = RandomForestRegressor(n_estimators=self.trees, min_samples_leaf=self.leaf,
-                max_features=1.0, random_state=self.seed, n_jobs=4)
+                max_features=self.max_features, random_state=self.seed, n_jobs=4)
             self.estimator_.fit(x[:,-1], z.ravel() if self.outputs_ == 1 else z)
         elif self.family == 'ANN':
             self.estimator_ = MLPRegressor(hidden_layer_sizes=(self.hidden,), max_iter=self.iterations,
