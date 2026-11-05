@@ -1,0 +1,10 @@
+Teacher Resources & Requirements/
+output/
+__pycache__/
+.pytest_cache/
+*.pyc
+*.joblib
+*.pt
+.env
+report code/**/qa/
+report code/**/template.docx
