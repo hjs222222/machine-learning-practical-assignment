@@ -20,6 +20,15 @@ def test_ann_optimizer_parameters_are_used(solver,rate):
     assert model.predict(x).shape==(40,1)
 
 
+@pytest.mark.parametrize('activation',['relu','tanh','logistic'])
+def test_ann_hidden_activation_is_used(activation):
+    x=np.random.default_rng(35).uniform(1,5,(40,3,5)).astype('float32')
+    model=RunoffRegressor(family='ANN',top_k=None,hidden=4,iterations=5,
+                          ann_activation=activation).fit(x,x[:,-1,:1]+2)
+    assert model.estimator_.activation==activation
+    assert model.predict(x).shape==(40,1)
+
+
 def test_chrono_probe_is_fold_local_then_full_refit(monkeypatch,tmp_path):
     x=np.random.default_rng(19).uniform(1,8,(90,5,8)).astype('float32')
     y=x[:,-1,:1]*1.2+2

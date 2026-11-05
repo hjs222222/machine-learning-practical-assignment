@@ -177,6 +177,7 @@ def run_stage(stage, output, previous=None, seed=42, families=('RF','ANN','LSTM'
                     mi_target=model.mi_target,
                     peak_weight=model.peak_weight,peak_training_threshold=model.peak_threshold_,
                     ann_solver=model.ann_solver,ann_learning_rate=model.ann_learning_rate,
+                    ann_activation=model.ann_activation,
                     ann_training=ann_training,
                     threshold=threshold,n_iter=getattr(model.estimator_,'n_iter_',None),
                     convergence_warning=any(w.category.__name__=='ConvergenceWarning' for w in caught),

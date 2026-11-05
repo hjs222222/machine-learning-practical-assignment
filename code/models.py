@@ -29,7 +29,8 @@ class RunoffRegressor(RegressorMixin, BaseEstimator):
     def __init__(self, family='RF', transform='raw', top_k=24, hidden=32, epochs=40,
                  trees=120, leaf=2, iterations=300, alpha=0.1, seed=42, seq_len=14, residual=False,
                  forced_indices=(), mi_target='raw', max_features=1.0, peak_weight=1.0,
-                 ann_solver='adam', ann_learning_rate=0.003, ann_chrono_stop=False):
+                 ann_solver='adam', ann_learning_rate=0.003, ann_chrono_stop=False,
+                 ann_activation='relu'):
         self.family = family
         self.transform = transform
         self.top_k = top_k
@@ -49,6 +50,7 @@ class RunoffRegressor(RegressorMixin, BaseEstimator):
         self.ann_solver = ann_solver
         self.ann_learning_rate = ann_learning_rate
         self.ann_chrono_stop = ann_chrono_stop
+        self.ann_activation = ann_activation
 
     def target(self, y):
         if self.transform == 'log':
@@ -95,6 +97,7 @@ class RunoffRegressor(RegressorMixin, BaseEstimator):
         if not np.isfinite(X).all() or not np.isfinite(y).all() or (y < 0).any():
             raise ValueError('模型输入/目标无效')
         if self.family == 'ANN' and (self.ann_solver not in ('adam','lbfgs') or
+                self.ann_activation not in ('relu','tanh','logistic') or
                 not np.isfinite(self.ann_learning_rate) or self.ann_learning_rate <= 0):
             raise ValueError('ANN optimizer参数无效')
         self.ann_training_ = None
@@ -125,6 +128,7 @@ class RunoffRegressor(RegressorMixin, BaseEstimator):
         return MLPRegressor(hidden_layer_sizes=(self.hidden,),max_iter=self.iterations,
             early_stopping=False,shuffle=False,alpha=self.alpha,random_state=self.seed,
             solver=self.ann_solver,learning_rate_init=self.ann_learning_rate,
+            activation=self.ann_activation,
             batch_size=min(64,samples),tol=1e-5)
 
     def _fit_ann_chronological(self, X, y):
