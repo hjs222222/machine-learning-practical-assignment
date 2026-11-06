@@ -16,7 +16,7 @@ from features import build_features
 from models import RunoffRegressor
 
 DEFAULT_MODES = ('mi', 'forced', 'all', 'hydro')
-MODES = DEFAULT_MODES + ('compact','target_mi','climate','daily')
+MODES = DEFAULT_MODES + ('compact','target_mi','climate','daily','weather')
 BASE = {'RF': dict(trees=120, leaf=1),
         'ANN': dict(hidden=64, iterations=350, alpha=.1),
         'LSTM': dict(hidden=32, seq_len=14, epochs=70, alpha=.1)}
@@ -48,6 +48,14 @@ def prepare_data(raw, cutoff='2003-12-31', horizons=1):
     daily = base[[f'{col}_lag0' for col in ('Discharge','Dayl','Prcp','Srad','Tmax','Tmin','Vp')]]
     climate = compact.copy()
     avg = (raw.Tmax+raw.Tmin)/2
+    weather = daily.copy()
+    for col in ('Vp','Srad'):
+        for days in (1,3):
+            weather[f'{col}_diff{days}'] = raw[col].diff(days)
+    for days in (1,3):
+        weather[f'Tavg_diff{days}'] = avg.diff(days)
+    weather['Trange_lag0'] = raw.Tmax-raw.Tmin
+    weather['Trange_diff1'] = (raw.Tmax-raw.Tmin).diff(1)
     climate['Tmax_lag0'],climate['Tmin_lag0'],climate['Tavg_lag0'] = raw.Tmax,raw.Tmin,avg
     for days in (1,3,7):
         climate[f'Tavg_diff{days}'] = avg.diff(days)
@@ -64,7 +72,7 @@ def prepare_data(raw, cutoff='2003-12-31', horizons=1):
     result = dict(dates=dates, y=np.column_stack([raw.Discharge.shift(-h).iloc[ids].to_numpy() for h in range(1,horizons+1)]),
                   raw=raw)
     for mode in MODES:
-        frame = daily if mode == 'daily' else climate if mode == 'climate' else compact if mode == 'compact' else hydro if mode == 'hydro' else base
+        frame = weather if mode == 'weather' else daily if mode == 'daily' else climate if mode == 'climate' else compact if mode == 'compact' else hydro if mode == 'hydro' else base
         result[mode] = dict(X=np.stack([frame.iloc[i-29:i+1].to_numpy(np.float32) for i in ids]),
                             names=list(frame.columns), dates=dates)
     return result

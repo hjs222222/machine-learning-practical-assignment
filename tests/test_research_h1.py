@@ -116,6 +116,24 @@ def test_daily_mode_contains_only_observed_daily_values():
     np.testing.assert_allclose(data['daily']['X'][100],expected,rtol=1e-6)
 
 
+def test_weather_changes_are_exact_causal_derivatives_of_teacher_fields():
+    raw=raw_data();i=np.arange(len(raw))
+    raw['Vp']=500+30*np.sin(i/3)
+    raw['Srad']=200+20*np.cos(i/4)
+    raw['Tmax']=10+8*np.sin(i/5)
+    raw['Tmin']=3+4*np.cos(i/7)
+    data=rh.prepare_data(raw);mode=data['weather']
+    avg=(raw.Tmax+raw.Tmin)/2
+    expected={f'{col}_diff{days}':raw[col].diff(days) for col in ('Vp','Srad') for days in (1,3)}
+    expected.update({f'Tavg_diff{days}':avg.diff(days) for days in (1,3)})
+    expected['Trange_lag0']=raw.Tmax-raw.Tmin
+    expected['Trange_diff1']=(raw.Tmax-raw.Tmin).diff(1)
+    assert len(mode['names'])==15
+    np.testing.assert_array_equal(mode['X'][:,:,:7],data['daily']['X'])
+    for name,values in expected.items():
+        np.testing.assert_allclose(mode['X'][:,-1,mode['names'].index(name)],values.reindex(data['dates']),rtol=1e-6,atol=1e-6)
+
+
 def test_joint_labels_and_year_boundaries_keep_all_seven_targets_inside_year():
     raw=raw_data()
     data=rh.prepare_data(raw,horizons=7)
