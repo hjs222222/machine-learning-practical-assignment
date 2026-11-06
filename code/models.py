@@ -103,9 +103,14 @@ class RunoffRegressor(RegressorMixin, BaseEstimator):
     def _fit_preprocessing(self, X, y):
         self.outputs_ = y.shape[1]
         if (not np.isfinite(self.peak_weight) or self.peak_weight < 1 or
-                (self.peak_weight != 1 and (self.family != 'RF' or self.outputs_ != 1))):
-            raise ValueError('peak_weight 必须有限且>=1；非1仅适用于单输出RF')
+                (self.peak_weight != 1 and (self.outputs_ != 1 or not
+                 (self.family == 'RF' or (self.family == 'ANN' and self.ann_backend == 'torch'))))):
+            raise ValueError('peak_weight 必须有限且>=1；非1仅适用于单输出RF或torch ANN')
         self.peak_threshold_ = None
+        self.peak_weight_normalizer_ = None
+        if self.family == 'ANN' and self.peak_weight != 1:
+            self.peak_threshold_ = float(np.quantile(y[:,0],.95))
+            self.peak_weight_normalizer_ = float(np.where(y[:,0]>self.peak_threshold_,self.peak_weight,1.).mean())
         target = self.target(y)
         if self.residual:
             target = target - self.target(X[:,-1,:1])
@@ -238,11 +243,17 @@ class RunoffRegressor(RegressorMixin, BaseEstimator):
 
     def _torch_objective(self, pred, target, current, truth):
         transformed_loss = nn.functional.mse_loss(pred,target)
+        weights = None
+        if self.family == 'ANN' and self.peak_weight != 1:
+            weights = torch.where(truth>self.peak_threshold_,pred.new_tensor(self.peak_weight),pred.new_tensor(1.))/self.peak_weight_normalizer_
+            transformed_loss = (weights*(pred-target).square()).mean()
         mix = self.ann_raw_loss if self.family == 'ANN' else self.lstm_raw_loss
         if mix == 0:
             return transformed_loss
         flow = self._torch_decode(pred,current)
         raw_loss = (((flow-truth)/self.raw_loss_scale_)*pred.new_tensor(getattr(self,'output_scale_',1.))).square().mean()
+        if weights is not None:
+            raw_loss = (weights*(((flow-truth)/self.raw_loss_scale_)*pred.new_tensor(getattr(self,'output_scale_',1.))).square()).mean()
         return (1-mix)*transformed_loss+mix*raw_loss
 
     def _torch_decode(self, pred, current):
@@ -294,7 +305,8 @@ class RunoffRegressor(RegressorMixin, BaseEstimator):
             weight_decay=0. if is_ann else self.alpha*0.001)
         tx, ty = torch.tensor(x,device=device), torch.tensor(z,device=device)
         tq = torch.tensor(current,dtype=tx.dtype,device=device)
-        truth_tensor = torch.tensor(truth,dtype=tx.dtype,device=device)
+        # Weighted peak membership uses the original labels, not float32-rounded ties.
+        truth_tensor = torch.tensor(truth,dtype=torch.float64 if is_ann and self.peak_weight != 1 else tx.dtype,device=device)
         self.raw_loss_scale_ = max(float(np.std(truth)),1e-6)
         self.loss_history_ = []
         batch_size = 64 if is_ann else 128

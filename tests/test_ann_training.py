@@ -11,6 +11,76 @@ from models import RunoffRegressor, DenseNet
 pytestmark = pytest.mark.filterwarnings('ignore::sklearn.exceptions.ConvergenceWarning')
 
 
+@pytest.mark.parametrize('transform',['raw','sqrt','log','power025','power075'])
+@pytest.mark.parametrize('mix',[0.,.5,1.])
+def test_torch_ann_peak_loss_matches_independent_training_normalized_formula(transform,mix):
+    y=np.arange(1,21,dtype=float)[:,None];y[-1]=1000
+    current=.8*y+1
+    x=np.stack([current[:,0],np.ones(len(y))],axis=1)[:,None,:]
+    model=RunoffRegressor(family='ANN',ann_backend='torch',peak_weight=5,
+        ann_raw_loss=mix,transform=transform,residual=True,top_k=None,seq_len=1)
+    model._fit_preprocessing(x,y);model.raw_loss_scale_=float(y.std())
+    ids=[0,10,19];truth=y[ids];q=current[ids];delta=np.array([1.,2.,3.])[:,None]
+    target=model.y_scaler_.transform(model.target(truth)-model.target(q))
+    pp=model.y_scaler_.transform(model.target(truth+delta)-model.target(q))
+    threshold=np.quantile(y,.95);normalizer=np.where(y>threshold,5.,1.).mean()
+    weights=np.where(truth>threshold,5.,1.)/normalizer
+    expected=(1-mix)*np.mean(weights*(pp-target)**2)+mix*np.mean(weights*(delta/y.std())**2)
+    pred=torch.tensor(pp,dtype=torch.float64,requires_grad=True)
+    loss=model._torch_objective(pred,torch.tensor(target),torch.tensor(q),torch.tensor(truth))
+    assert model.peak_threshold_==pytest.approx(threshold)
+    assert model.peak_weight_normalizer_==pytest.approx(normalizer)
+    assert loss.item()==pytest.approx(expected,rel=1e-10,abs=1e-12)
+    loss.backward()
+    assert torch.isfinite(pred.grad).all() and torch.any(pred.grad!=0)
+
+
+@pytest.mark.parametrize('weight',[2.,5.])
+def test_torch_ann_peak_state_uses_fit_labels_only_and_survives_restore(weight,tmp_path):
+    x=np.random.default_rng(321).uniform(1,5,(25,3,4)).astype('float32')
+    y=np.arange(1,26,dtype=float)[:,None];y[20:]=1e9
+    model=RunoffRegressor(family='ANN',ann_backend='torch',peak_weight=weight,
+        transform='power025',hidden=3,iterations=2,top_k=None).fit(x[:20],y[:20])
+    threshold=np.quantile(y[:20],.95)
+    assert model.peak_threshold_==pytest.approx(threshold)
+    assert model.peak_weight_normalizer_==pytest.approx(np.where(y[:20]>threshold,weight,1).mean())
+    assert model.peak_threshold_!=np.quantile(y,.95)
+    assert model.y_scaler_.n_samples_seen_==20
+    assert clone(model).get_params()==model.get_params()
+    path=tmp_path/'peak_ann.joblib';joblib.dump(model,path);restored=joblib.load(path)
+    np.testing.assert_allclose(restored.predict(x[20:]),model.predict(x[20:]))
+    assert restored.peak_weight_normalizer_==model.peak_weight_normalizer_
+
+
+def test_torch_ann_peak_weight_rejects_seven_outputs():
+    with pytest.raises(ValueError,match='peak_weight'):
+        RunoffRegressor(family='ANN',ann_backend='torch',peak_weight=5,top_k=None).fit(
+            np.ones((20,2,4)),np.ones((20,7)))
+
+
+def test_torch_ann_peak_membership_keeps_original_label_precision(monkeypatch):
+    y=np.arange(1,21,dtype=float)[:,None];y[-2:,0]=[20.00000001,20.00000002]
+    original=RunoffRegressor._torch_objective;observed=[]
+    def capture(self,pred,target,current,truth):
+        observed.append(truth.detach().cpu().numpy())
+        return original(self,pred,target,current,truth)
+    monkeypatch.setattr(RunoffRegressor,'_torch_objective',capture)
+    model=RunoffRegressor(family='ANN',ann_backend='torch',peak_weight=5,
+        top_k=None,hidden=2,iterations=1).fit(np.ones((20,1,2)),y)
+    np.testing.assert_array_equal(observed[0],y)
+    assert int((observed[0]>model.peak_threshold_).sum())==1
+
+
+def test_torch_ann_peak_normalization_is_safe_without_strict_peak_rows():
+    model=RunoffRegressor(family='ANN',ann_backend='torch',peak_weight=5,top_k=None)
+    model._fit_preprocessing(np.ones((20,1,2)),np.ones((20,1)))
+    assert model.peak_threshold_==1 and model.peak_weight_normalizer_==1
+    pred=torch.full((20,1),.5,dtype=torch.float64,requires_grad=True)
+    loss=model._torch_objective(pred,torch.zeros_like(pred),torch.ones_like(pred),torch.ones_like(pred))
+    assert loss.item()==.25
+    loss.backward();assert torch.isfinite(pred.grad).all()
+
+
 @pytest.mark.parametrize('history',[False,True])
 @pytest.mark.parametrize('outputs',[1,7])
 def test_torch_ann_native_shapes_clone_and_serialization(history,outputs,tmp_path):

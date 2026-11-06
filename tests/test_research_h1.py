@@ -187,6 +187,23 @@ def test_rain_window_run_records_feature_names_and_keeps_default_modes(tmp_path)
     assert {c['mode'] for c in rh.stage_candidates('features',families=['RF'])}=={'mi','forced','all','hydro'}
 
 
+def test_weighted_ann_research_records_actual_fit_threshold_and_normalizer(tmp_path):
+    candidates=[dict(id=f'ANN_peak{w}',family='ANN',mode='weather',transform='power025',
+        residual=True,params=dict(ann_backend='torch',peak_weight=w,hidden=2,
+                                 iterations=1,seq_len=1)) for w in (1.,5.)]
+    raw=raw_data();out=tmp_path/'ann_peak'
+    rh.run_stage('features',out,raw=raw,candidates=candidates)
+    data=rh.prepare_data(raw);splits={year:tr for year,tr,_ in rh.annual_splits(data['dates'])}
+    fits=json.loads((out/'fits.json').read_text());assert len(fits)==6
+    for row in fits:
+        if row['peak_weight']==1:
+            assert row['peak_training_threshold'] is None and row['peak_weight_normalizer'] is None
+        else:
+            y=data['y'][splits[row['year']],0];q=np.quantile(y,.95)
+            assert row['peak_training_threshold']==pytest.approx(q)
+            assert row['peak_weight_normalizer']==pytest.approx(np.where(y>q,5.,1.).mean())
+
+
 def test_joint_labels_and_year_boundaries_keep_all_seven_targets_inside_year():
     raw=raw_data()
     data=rh.prepare_data(raw,horizons=7)
