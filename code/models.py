@@ -30,7 +30,8 @@ class RunoffRegressor(RegressorMixin, BaseEstimator):
                  trees=120, leaf=2, iterations=300, alpha=0.1, seed=42, seq_len=14, residual=False,
                  forced_indices=(), mi_target='raw', max_features=1.0, peak_weight=1.0,
                  ann_solver='adam', ann_learning_rate=0.003, ann_chrono_stop=False,
-                 ann_activation='relu', lstm_raw_loss=0.0, lstm_learning_rate=0.003):
+                 ann_activation='relu', lstm_raw_loss=0.0, lstm_learning_rate=0.003,
+                 lstm_chrono_stop=False):
         self.family = family
         self.transform = transform
         self.top_k = top_k
@@ -53,6 +54,7 @@ class RunoffRegressor(RegressorMixin, BaseEstimator):
         self.ann_activation = ann_activation
         self.lstm_raw_loss = lstm_raw_loss
         self.lstm_learning_rate = lstm_learning_rate
+        self.lstm_chrono_stop = lstm_chrono_stop
 
     def target(self, y):
         if self.transform == 'log':
@@ -108,6 +110,11 @@ class RunoffRegressor(RegressorMixin, BaseEstimator):
                 not np.isfinite(self.ann_learning_rate) or self.ann_learning_rate <= 0):
             raise ValueError('ANN optimizer参数无效')
         self.ann_training_ = None
+        self.lstm_training_ = None
+        if self.lstm_chrono_stop:
+            if self.family != 'LSTM' or len(X) < 60 or y.shape[1] != 1 or not 5 <= self.epochs <= 300:
+                raise ValueError('lstm_chrono_stop仅支持>=60行、5至300轮单输出LSTM')
+            return self._fit_lstm_chronological(X,y)
         if self.ann_chrono_stop:
             if (self.family != 'ANN' or self.ann_solver != 'adam' or y.shape[1] != 1 or
                     len(X) < 60 or not 5 <= self.iterations <= 400):
@@ -173,6 +180,11 @@ class RunoffRegressor(RegressorMixin, BaseEstimator):
         transformed_loss = nn.functional.mse_loss(pred,target)
         if self.lstm_raw_loss == 0:
             return transformed_loss
+        flow = self._lstm_decode(pred,current)
+        raw_loss = ((flow-truth)/self.raw_loss_scale_).square().mean()
+        return (1-self.lstm_raw_loss)*transformed_loss+self.lstm_raw_loss*raw_loss
+
+    def _lstm_decode(self, pred, current):
         flow = pred*pred.new_tensor(self.y_scaler_.scale_)+pred.new_tensor(self.y_scaler_.mean_)
         if self.residual:
             baseline = torch.log1p(current) if self.transform == 'log' else torch.sqrt(current) if self.transform == 'sqrt' else current
@@ -181,10 +193,24 @@ class RunoffRegressor(RegressorMixin, BaseEstimator):
             flow = torch.expm1(flow)
         elif self.transform == 'sqrt':
             flow = flow.clamp(min=0).square()
-        raw_loss = ((flow.clamp(min=0)-truth)/self.raw_loss_scale_).square().mean()
-        return (1-self.lstm_raw_loss)*transformed_loss+self.lstm_raw_loss*raw_loss
+        return flow.clamp(min=0)
 
-    def _fit_lstm(self, x, z, current, truth):
+    def _fit_lstm_chronological(self, X, y):
+        start = len(X)-int(np.ceil(len(X)*.2))
+        count = start-7
+        probe = clone(self).set_params(lstm_chrono_stop=False)
+        px,pz = probe._fit_preprocessing(X[:count],y[:count])
+        probe._fit_lstm(px,pz,X[:count,-1,:1],y[:count],validation=(X[start:],y[start:]))
+        info = dict(probe.lstm_training_,probe_train_count=count,validation_start=start,
+                    validation_count=len(X)-start,gap=7,probe_selected_indices=probe.selected_.tolist(),
+                    probe_scaler_samples=int(probe.x_scaler_.n_samples_seen_))
+        full = clone(self).set_params(lstm_chrono_stop=False,epochs=info['best_epoch'])
+        full.fit(X,y)
+        self.__dict__.update({key:value for key,value in vars(full).items() if key.endswith('_')})
+        self.lstm_training_ = info
+        return self
+
+    def _fit_lstm(self, x, z, current, truth, validation=None):
         torch.manual_seed(self.seed)
         if torch.cuda.is_available():
             torch.cuda.manual_seed_all(self.seed)
@@ -198,8 +224,15 @@ class RunoffRegressor(RegressorMixin, BaseEstimator):
         truth_tensor = torch.tensor(truth,dtype=tx.dtype,device=device)
         self.raw_loss_scale_ = max(float(np.std(truth)),1e-6)
         self.loss_history_ = []
+        if validation is not None:
+            vx,vy = validation
+            part = vx[:,:,self.selected_]
+            scaled = self.x_scaler_.transform(part.reshape(-1,len(self.selected_))).reshape(part.shape)
+            valid_x = torch.tensor(scaled,dtype=tx.dtype,device=device)
+            valid_q = torch.tensor(vx[:,-1,:1],dtype=tx.dtype,device=device)
+            best_score,best_epoch,history = -np.inf,1,[]
         # epochs 由外部 purged 时序 CV 选择；不启用 sklearn 的随机验证拆分。
-        for _ in range(self.epochs):
+        for epoch in range(1,self.epochs+1):
             net.train()
             loss_sum = 0.0
             for start in range(0,len(x),128):
@@ -213,6 +246,23 @@ class RunoffRegressor(RegressorMixin, BaseEstimator):
                 optimizer.step()
                 loss_sum += loss.item()*len(pred)
             self.loss_history_.append(loss_sum/len(x))
+            if validation is not None and (epoch == 1 or epoch % 5 == 0):
+                net.eval()
+                with torch.no_grad():
+                    prediction = self._lstm_decode(net(valid_x),valid_q).cpu().numpy()
+                if not np.isfinite(prediction).all():
+                    raise ValueError('LSTM内部时间验证预测非有限')
+                score = float(r2_score(vy,prediction))
+                if not np.isfinite(score):
+                    raise ValueError('LSTM内部时间验证R2非有限')
+                history.append(dict(epoch=epoch,r2=score,training_loss=self.loss_history_[-1]))
+                if score > best_score+1e-4:
+                    best_score,best_epoch = score,epoch
+                elif epoch-best_epoch >= 30:
+                    break
+        if validation is not None:
+            self.lstm_training_ = dict(best_epoch=best_epoch,stopped_epoch=epoch,
+                                       best_inner_r2=best_score,history=history)
         self.estimator_ = net.cpu().eval()
         self.device_used_ = device
 

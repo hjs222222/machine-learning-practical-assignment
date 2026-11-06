@@ -182,6 +182,12 @@ def run_stage(stage, output, previous=None, seed=42, families=('RF','ANN','LSTM'
                         inner_train_end=data['dates'][tr[ann_training['probe_train_count']-1]],
                         inner_validation_start=data['dates'][tr[ann_training['validation_start']]],
                         inner_validation_end=data['dates'][tr[-1]])
+                lstm_training = getattr(model,'lstm_training_',None)
+                if lstm_training:
+                    lstm_training = dict(lstm_training,
+                        inner_train_end=data['dates'][tr[lstm_training['probe_train_count']-1]],
+                        inner_validation_start=data['dates'][tr[lstm_training['validation_start']]],
+                        inner_validation_end=data['dates'][tr[-1]])
                 fits.append(dict(candidate=candidate['id'],year=year,selected_indices=model.selected_.tolist(),
                     selected_names=[current['names'][i] for i in model.selected_],
                     mi_target=model.mi_target,
@@ -190,7 +196,7 @@ def run_stage(stage, output, previous=None, seed=42, families=('RF','ANN','LSTM'
                     ann_activation=model.ann_activation,
                     lstm_raw_loss=model.lstm_raw_loss,lstm_learning_rate=model.lstm_learning_rate,
                     raw_loss_scale=getattr(model,'raw_loss_scale_',None),
-                    ann_training=ann_training,
+                    ann_training=ann_training,lstm_training=lstm_training,
                     threshold=threshold,n_iter=getattr(model.estimator_,'n_iter_',None),
                     convergence_warning=any(w.category.__name__=='ConvergenceWarning' for w in caught),
                     loss_history=getattr(model,'loss_history_',getattr(model.estimator_,'loss_curve_',[]))))

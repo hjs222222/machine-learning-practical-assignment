@@ -10,6 +10,52 @@ from models import RunoffRegressor
 pytestmark = pytest.mark.filterwarnings('ignore::sklearn.exceptions.ConvergenceWarning')
 
 
+def test_lstm_chrono_preprocessing_is_inner_only_then_full_refit(monkeypatch,tmp_path):
+    x=np.random.default_rng(90).uniform(1,8,(90,3,5)).astype('float32')
+    y=x[:,-1,:1]*1.2+2
+    calls=[]
+    original=RunoffRegressor._fit_preprocessing
+    def capture(self,X,Y):
+        calls.append((X.copy(),Y.copy()))
+        return original(self,X,Y)
+    monkeypatch.setattr(RunoffRegressor,'_fit_preprocessing',capture)
+    model=RunoffRegressor(family='LSTM',top_k=None,hidden=2,epochs=5,
+                          transform='log',lstm_chrono_stop=True)
+    params=model.get_params()
+    model.fit(x[:80],y[:80])
+    info=model.lstm_training_
+    assert [len(X) for X,Y in calls]==[57,80]
+    np.testing.assert_array_equal(calls[0][1],y[:57])
+    assert info['validation_start']==64 and info['gap']==7
+    assert info['probe_scaler_samples']==57*3
+    assert info['best_epoch'] in (1,5) and len(model.loss_history_)==info['best_epoch']
+    assert model.x_scaler_.n_samples_seen_==80*3
+    assert model.get_params()==params==clone(model).get_params()
+    path=tmp_path/'lstm.joblib';joblib.dump(model,path)
+    np.testing.assert_allclose(model.predict(x[80:]),joblib.load(path).predict(x[80:]))
+
+
+def test_lstm_chrono_patience_uses_raw_flow_r2():
+    model=RunoffRegressor(family='LSTM',top_k=None,hidden=2,epochs=100,
+        lstm_learning_rate=1e-30,lstm_chrono_stop=True).fit(np.ones((80,3,4)),np.ones((80,1)))
+    info=model.lstm_training_
+    assert info['best_epoch']==1 and info['stopped_epoch']==35
+    assert len(model.loss_history_)==1
+
+
+@pytest.mark.parametrize('changes',[{'family':'RF'},{'epochs':4},{'epochs':301}])
+def test_lstm_chrono_rejects_unsupported_settings(changes):
+    args=dict(family='LSTM',top_k=None,epochs=5,lstm_chrono_stop=True);args.update(changes)
+    with pytest.raises(ValueError,match='lstm_chrono_stop'):
+        RunoffRegressor(**args).fit(np.ones((80,3,4)),np.ones((80,1)))
+
+
+@pytest.mark.parametrize('n,outputs',[(40,1),(80,7)])
+def test_lstm_chrono_rejects_short_or_multioutput(n,outputs):
+    with pytest.raises(ValueError,match='lstm_chrono_stop'):
+        RunoffRegressor(family='LSTM',lstm_chrono_stop=True).fit(np.ones((n,3,4)),np.ones((n,outputs)))
+
+
 @pytest.mark.parametrize('rate',[.0003,.001,.003])
 def test_lstm_learning_rate_reaches_optimizer(monkeypatch,rate):
     observed=[]
