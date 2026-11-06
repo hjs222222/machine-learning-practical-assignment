@@ -30,7 +30,7 @@ class RunoffRegressor(RegressorMixin, BaseEstimator):
                  trees=120, leaf=2, iterations=300, alpha=0.1, seed=42, seq_len=14, residual=False,
                  forced_indices=(), mi_target='raw', max_features=1.0, peak_weight=1.0,
                  ann_solver='adam', ann_learning_rate=0.003, ann_chrono_stop=False,
-                 ann_activation='relu', lstm_raw_loss=0.0):
+                 ann_activation='relu', lstm_raw_loss=0.0, lstm_learning_rate=0.003):
         self.family = family
         self.transform = transform
         self.top_k = top_k
@@ -52,6 +52,7 @@ class RunoffRegressor(RegressorMixin, BaseEstimator):
         self.ann_chrono_stop = ann_chrono_stop
         self.ann_activation = ann_activation
         self.lstm_raw_loss = lstm_raw_loss
+        self.lstm_learning_rate = lstm_learning_rate
 
     def target(self, y):
         if self.transform == 'log':
@@ -97,6 +98,8 @@ class RunoffRegressor(RegressorMixin, BaseEstimator):
         y = np.asarray(y).reshape(len(X), -1)
         if not np.isfinite(X).all() or not np.isfinite(y).all() or (y < 0).any():
             raise ValueError('模型输入/目标无效')
+        if self.family == 'LSTM' and (not np.isfinite(self.lstm_learning_rate) or self.lstm_learning_rate <= 0):
+            raise ValueError('lstm_learning_rate必须为有限正数')
         if (not np.isfinite(self.lstm_raw_loss) or not 0 <= self.lstm_raw_loss <= 1 or
                 (self.lstm_raw_loss != 0 and self.family != 'LSTM')):
             raise ValueError('lstm_raw_loss须在0至1且非零仅适用于LSTM')
@@ -189,7 +192,7 @@ class RunoffRegressor(RegressorMixin, BaseEstimator):
         torch.backends.cudnn.benchmark = False
         device = 'cuda' if torch.cuda.is_available() else 'cpu'
         net = SequenceNet(x.shape[-1],self.hidden,z.shape[1]).to(device)
-        optimizer = torch.optim.Adam(net.parameters(),lr=0.003,weight_decay=self.alpha*0.001)
+        optimizer = torch.optim.Adam(net.parameters(),lr=self.lstm_learning_rate,weight_decay=self.alpha*0.001)
         tx, ty = torch.tensor(x,device=device), torch.tensor(z,device=device)
         tq = torch.tensor(current,dtype=tx.dtype,device=device)
         truth_tensor = torch.tensor(truth,dtype=tx.dtype,device=device)

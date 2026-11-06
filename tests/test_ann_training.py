@@ -10,6 +10,25 @@ from models import RunoffRegressor
 pytestmark = pytest.mark.filterwarnings('ignore::sklearn.exceptions.ConvergenceWarning')
 
 
+@pytest.mark.parametrize('rate',[.0003,.001,.003])
+def test_lstm_learning_rate_reaches_optimizer(monkeypatch,rate):
+    observed=[]
+    original=torch.optim.Adam
+    def capture(params,**kwargs):
+        observed.append(kwargs['lr'])
+        return original(params,**kwargs)
+    monkeypatch.setattr(torch.optim,'Adam',capture)
+    model=RunoffRegressor(family='LSTM',top_k=None,hidden=2,epochs=1,lstm_learning_rate=rate)
+    model.fit(np.ones((12,3,4)),np.ones((12,1)))
+    assert observed==[rate]
+
+
+@pytest.mark.parametrize('rate',[0,-.001,float('inf')])
+def test_lstm_learning_rate_rejects_invalid(rate):
+    with pytest.raises(ValueError,match='lstm_learning_rate'):
+        RunoffRegressor(family='LSTM',lstm_learning_rate=rate).fit(np.ones((12,3,4)),np.ones((12,1)))
+
+
 @pytest.mark.parametrize('transform',['raw','sqrt','log'])
 @pytest.mark.parametrize('residual',[False,True])
 def test_lstm_raw_loss_matches_original_flow_error_and_has_gradient(transform,residual):
