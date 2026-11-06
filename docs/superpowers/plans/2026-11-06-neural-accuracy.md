@@ -122,3 +122,11 @@ sqrt16/alpha1的seed13/2026最差年为0.541192/0.540520，平均0.766508/0.7663
 五条固定参照分别比较standard/minmax，共10候选30年度拟合：当天daily ANN sqrt增量/hidden16/alpha1；当天daily ANN log增量/hidden32/alpha1；compact ANN raw增量/hidden32/alpha1（均350轮）；daily7 LSTM log绝对/hidden32/70轮；all91/seq7 LSTM log增量/hidden64/150轮（LSTM alpha0.1）。模型及目标不跟随缩放方式重选。RF单调缩放本身不提供新的切分信息，故不扩大其参数对照。
 
 先失败测试覆盖minmax训练范围、验证极端值不clip、未知选项拒绝；ANN及LSTM内部时间早停测试同时覆盖两种缩放。只有逐年指标有依据才固定复核seed13/2026，不用2004选择归一化方式。
+
+第六阶段30拟合结束：五条参照minmax最差年均较低。当天sqrt ANN 0.544848→0.457558；当天log ANN 0.537901→0.432648；compact ANN 0.542615→0.509359（平均虽升，但不保留）；daily LSTM 0.508488→0.474270；all LSTM 0.506351→-0.928209。不扩MinMax网格。源码efe703d，全量129测试通过。
+
+## 第七阶段：输入有符号对数压缩
+
+假设：线性缩放未解决偏斜分布，非线性压缩输入的动态范围可能改善神经网络拟合。新参数input_transform默认raw，可选signed_log=sign(x)*log1p(abs(x))，只作用于选定特征、在折内输入缩放前执行。负温及负差分保留符号；不修改原CSV、不增加观测、不截峰。MI及目标/增量仍基于原输入，尤其Q(t)基准保持原流量。
+
+使用第六阶段完全相同五条参照，只比较raw/signed_log，输入缩放固定Z-score，共10候选30年度拟合。若有收益才固定跨seed复核，不同时调整网络和损失。训练、预测、LSTM内验证共享输入变换，测试额外复现内部probe最佳epoch的R²与记录一致。

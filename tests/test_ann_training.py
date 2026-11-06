@@ -5,13 +5,15 @@ import pytest
 import torch
 from sklearn.preprocessing import StandardScaler
 from sklearn.base import clone
+from sklearn.metrics import r2_score
 from models import RunoffRegressor
 
 pytestmark = pytest.mark.filterwarnings('ignore::sklearn.exceptions.ConvergenceWarning')
 
 
 @pytest.mark.parametrize('scaling',['standard','minmax'])
-def test_lstm_chrono_preprocessing_is_inner_only_then_full_refit(monkeypatch,tmp_path,scaling):
+@pytest.mark.parametrize('compression',['raw','signed_log'])
+def test_lstm_chrono_preprocessing_is_inner_only_then_full_refit(monkeypatch,tmp_path,scaling,compression):
     x=np.random.default_rng(90).uniform(1,8,(90,3,5)).astype('float32')
     y=x[:,-1,:1]*1.2+2
     calls=[]
@@ -21,7 +23,7 @@ def test_lstm_chrono_preprocessing_is_inner_only_then_full_refit(monkeypatch,tmp
         return original(self,X,Y)
     monkeypatch.setattr(RunoffRegressor,'_fit_preprocessing',capture)
     model=RunoffRegressor(family='LSTM',top_k=None,hidden=2,epochs=5,
-                          transform='log',lstm_chrono_stop=True,x_scaling=scaling)
+                          transform='log',lstm_chrono_stop=True,x_scaling=scaling,input_transform=compression)
     params=model.get_params()
     model.fit(x[:80],y[:80])
     info=model.lstm_training_
@@ -34,6 +36,9 @@ def test_lstm_chrono_preprocessing_is_inner_only_then_full_refit(monkeypatch,tmp
     assert model.get_params()==params==clone(model).get_params()
     path=tmp_path/'lstm.joblib';joblib.dump(model,path)
     np.testing.assert_allclose(model.predict(x[80:]),joblib.load(path).predict(x[80:]))
+    probe=clone(model).set_params(lstm_chrono_stop=False,epochs=info['best_epoch']).fit(x[:57],y[:57])
+    score=r2_score(y[64:80],probe.predict(x[64:80]))
+    assert score==pytest.approx(info['best_inner_r2'],abs=1e-5)
 
 
 def test_lstm_chrono_patience_uses_raw_flow_r2():

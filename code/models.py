@@ -32,7 +32,7 @@ class RunoffRegressor(RegressorMixin, BaseEstimator):
                  ann_solver='adam', ann_learning_rate=0.003, ann_chrono_stop=False,
                  ann_activation='relu', lstm_raw_loss=0.0, lstm_learning_rate=0.003,
                  lstm_chrono_stop=False, ann_history=False, first_day_weight=1.0,
-                 x_scaling='standard'):
+                 x_scaling='standard', input_transform='raw'):
         self.family = family
         self.transform = transform
         self.top_k = top_k
@@ -59,6 +59,7 @@ class RunoffRegressor(RegressorMixin, BaseEstimator):
         self.ann_history = ann_history
         self.first_day_weight = first_day_weight
         self.x_scaling = x_scaling
+        self.input_transform = input_transform
 
     def target(self, y):
         if self.transform == 'log':
@@ -92,7 +93,7 @@ class RunoffRegressor(RegressorMixin, BaseEstimator):
                                 for h in range(y.shape[1])], axis=0)
             self.selected_ = np.union1d(np.argsort(self.mi_, kind='stable')[-min(self.top_k,X.shape[-1]):],
                                         self.forced_indices).astype(int)
-        part = X[:,:,self.selected_]
+        part = self._transform_inputs(X[:,:,self.selected_])
         self.x_scaler_ = (StandardScaler() if self.x_scaling == 'standard' else MinMaxScaler()).fit(
             part.reshape(-1,len(self.selected_)))
         self.y_scaler_ = StandardScaler().fit(target)
@@ -103,6 +104,9 @@ class RunoffRegressor(RegressorMixin, BaseEstimator):
         z *= self.output_scale_
         return x,z
 
+    def _transform_inputs(self, values):
+        return np.sign(values)*np.log1p(np.abs(values)) if self.input_transform == 'signed_log' else values
+
     def fit(self, X, y):
         X = np.asarray(X, dtype=np.float32)[:, -self.seq_len:]
         y = np.asarray(y).reshape(len(X), -1)
@@ -110,6 +114,8 @@ class RunoffRegressor(RegressorMixin, BaseEstimator):
             raise ValueError('模型输入/目标无效')
         if self.x_scaling not in ('standard','minmax'):
             raise ValueError('x_scaling仅支持standard/minmax')
+        if self.input_transform not in ('raw','signed_log'):
+            raise ValueError('input_transform仅支持raw/signed_log')
         if (not np.isfinite(self.first_day_weight) or self.first_day_weight < 1 or
                 (self.first_day_weight != 1 and y.shape[1] != 7)):
             raise ValueError('first_day_weight须为有限且>=1，非1仅用于七输出')
@@ -245,7 +251,7 @@ class RunoffRegressor(RegressorMixin, BaseEstimator):
         self.loss_history_ = []
         if validation is not None:
             vx,vy = validation
-            part = vx[:,:,self.selected_]
+            part = self._transform_inputs(vx[:,:,self.selected_])
             scaled = self.x_scaler_.transform(part.reshape(-1,len(self.selected_))).reshape(part.shape)
             valid_x = torch.tensor(scaled,dtype=tx.dtype,device=device)
             valid_q = torch.tensor(vx[:,-1,:1],dtype=tx.dtype,device=device)
@@ -288,6 +294,7 @@ class RunoffRegressor(RegressorMixin, BaseEstimator):
     def predict(self, X):
         current = np.asarray(X)[:,-1,:1]
         X = np.asarray(X,dtype=np.float32)[:, -self.seq_len:, self.selected_]
+        X = self._transform_inputs(X)
         x = self.x_scaler_.transform(X.reshape(-1,len(self.selected_))).reshape(X.shape).astype('float32')
         if self.family == 'LSTM':
             with torch.no_grad():

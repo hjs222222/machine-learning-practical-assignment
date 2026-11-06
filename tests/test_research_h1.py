@@ -85,6 +85,27 @@ def test_unknown_input_scaling_rejected():
         RunoffRegressor(x_scaling='invalid').fit(np.ones((20,3,4)),np.ones((20,1)))
 
 
+def test_signed_log_inputs_preserve_raw_flow_residual_and_predict_layout():
+    x=np.random.default_rng(117).uniform(-10,10,(40,3,4)).astype('float32')
+    x[:,:,0]=abs(x[:,:,0])+1
+    y=x[:,-1,:1]*1.2+2
+    model=RunoffRegressor(trees=2,top_k=None,input_transform='signed_log',
+                          transform='sqrt',residual=True).fit(x[:30],y[:30])
+    compressed=np.sign(x)*np.log1p(abs(x))
+    np.testing.assert_allclose(model.x_scaler_.mean_,compressed[:30].reshape(-1,4).mean(axis=0),rtol=1e-6,atol=1e-6)
+    expected_target=np.sqrt(y[:30])-np.sqrt(x[:30,-1,:1])
+    np.testing.assert_allclose(model.y_scaler_.mean_,expected_target.mean(axis=0),rtol=1e-6)
+    scaled=model.x_scaler_.transform(compressed[30:].reshape(-1,4)).reshape(10,3,4).astype('float32')
+    z=model.y_scaler_.inverse_transform(model.estimator_.predict(scaled[:,-1]).reshape(-1,1))
+    expected=np.maximum(z+np.sqrt(x[30:,-1,:1]),0)**2
+    np.testing.assert_allclose(model.predict(x[30:]),expected,rtol=1e-6)
+
+
+def test_unknown_input_transform_rejected():
+    with pytest.raises(ValueError,match='input_transform'):
+        RunoffRegressor(input_transform='invalid').fit(np.ones((20,3,4)),np.ones((20,1)))
+
+
 def test_daily_mode_contains_only_observed_daily_values():
     raw=raw_data()
     data=rh.prepare_data(raw)
