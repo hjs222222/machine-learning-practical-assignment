@@ -202,6 +202,7 @@ def run_stage(stage, output, previous=None, seed=42, families=('RF','ANN','LSTM'
                     first_day_weight=model.first_day_weight,output_scale=model.output_scale_.tolist(),
                     peak_weight=model.peak_weight,peak_training_threshold=model.peak_threshold_,
                     ann_solver=model.ann_solver,ann_learning_rate=model.ann_learning_rate,
+                    ann_backend=model.ann_backend,ann_raw_loss=model.ann_raw_loss,
                     ann_activation=model.ann_activation,ann_history=model.ann_history,
                     input_width=getattr(model.estimator_,'n_features_in_',None),
                     lstm_raw_loss=model.lstm_raw_loss,lstm_learning_rate=model.lstm_learning_rate,

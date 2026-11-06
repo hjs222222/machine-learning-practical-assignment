@@ -6,9 +6,46 @@ import torch
 from sklearn.preprocessing import StandardScaler
 from sklearn.base import clone
 from sklearn.metrics import r2_score
-from models import RunoffRegressor
+from models import RunoffRegressor, DenseNet
 
 pytestmark = pytest.mark.filterwarnings('ignore::sklearn.exceptions.ConvergenceWarning')
+
+
+@pytest.mark.parametrize('history',[False,True])
+@pytest.mark.parametrize('outputs',[1,7])
+def test_torch_ann_native_shapes_clone_and_serialization(history,outputs,tmp_path):
+    x=np.random.default_rng(121).uniform(1,5,(35,3,4)).astype('float32')
+    y=x[:,-1,:1]*np.arange(1,outputs+1)[None,:]+1
+    model=RunoffRegressor(family='ANN',ann_backend='torch',ann_raw_loss=.25,
+        hidden=3,iterations=3,top_k=None,ann_history=history).fit(x,y)
+    assert model.predict(x).shape==(35,outputs)
+    assert model.estimator_.hidden.in_features==4*(3 if history else 1)
+    assert len(model.loss_history_)==3
+    assert model.raw_loss_scale_==pytest.approx(y.std())
+    assert model.get_params()==clone(model).get_params()
+    path=tmp_path/'torch_ann.joblib';joblib.dump(model,path)
+    np.testing.assert_allclose(model.predict(x),joblib.load(path).predict(x))
+
+
+@pytest.mark.parametrize('options',[{'ann_backend':'invalid'},
+    {'ann_raw_loss':.25},{'ann_backend':'torch','ann_raw_loss':1.1},
+    {'ann_backend':'torch','ann_solver':'lbfgs'},
+    {'ann_backend':'torch','ann_chrono_stop':True}])
+def test_torch_ann_rejects_unsupported_settings(options):
+    with pytest.raises(ValueError,match='ann_backend|ann_raw_loss'):
+        RunoffRegressor(family='ANN',top_k=None,**options).fit(np.ones((80,3,4)),np.ones((80,1)))
+
+
+@pytest.mark.parametrize('activation',['relu','tanh','logistic'])
+def test_torch_ann_initial_weights_match_untrained_sklearn(activation):
+    from sklearn.neural_network import MLPRegressor
+    reference=MLPRegressor(activation=activation)
+    reference._random_state=np.random.RandomState(42)
+    net=DenseNet(7,16,1,activation,False,42)
+    for layer,inputs,outputs in [(net.hidden,7,16),(net.head,16,1)]:
+        weights,bias=reference._init_coef(inputs,outputs,np.float32)
+        np.testing.assert_array_equal(layer.weight.detach().numpy(),weights.T)
+        np.testing.assert_array_equal(layer.bias.detach().numpy(),bias)
 
 
 @pytest.mark.parametrize('scaling',['standard','minmax'])
@@ -83,8 +120,11 @@ def test_lstm_learning_rate_rejects_invalid(rate):
 
 @pytest.mark.parametrize('transform',['raw','sqrt','log'])
 @pytest.mark.parametrize('residual',[False,True])
-def test_lstm_raw_loss_matches_original_flow_error_and_has_gradient(transform,residual):
-    model=RunoffRegressor(family='LSTM',transform=transform,residual=residual,lstm_raw_loss=.5)
+@pytest.mark.parametrize('family',['ANN','LSTM'])
+def test_torch_raw_loss_matches_original_flow_error_and_has_gradient(transform,residual,family):
+    model=RunoffRegressor(family=family,transform=transform,residual=residual,
+        ann_backend='torch' if family=='ANN' else 'sklearn',ann_raw_loss=.5 if family=='ANN' else 0.,
+        lstm_raw_loss=.5 if family=='LSTM' else 0.)
     truth=np.array([[10.],[20.],[40.]])
     current=np.array([[8.],[21.],[35.]])
     training_target=model.target(truth)-(model.target(current) if residual else 0)
@@ -94,7 +134,7 @@ def test_lstm_raw_loss_matches_original_flow_error_and_has_gradient(transform,re
     target_pred=model.target(pred_flow)-(model.target(current) if residual else 0)
     pred=torch.tensor(model.y_scaler_.transform(target_pred),dtype=torch.float64,requires_grad=True)
     z=torch.tensor(model.y_scaler_.transform(training_target),dtype=torch.float64)
-    loss=model._lstm_objective(pred,z,torch.tensor(current),torch.tensor(truth))
+    loss=model._torch_objective(pred,z,torch.tensor(current),torch.tensor(truth))
     expected=.5*np.mean((pred.detach().numpy()-z.numpy())**2)+.5*np.mean(((pred_flow-truth)/truth.std())**2)
     assert loss.item()==pytest.approx(expected)
     loss.backward()
@@ -121,7 +161,7 @@ def test_weighted_multioutput_lstm_raw_loss_matches_weighted_original_error():
     z=model.y_scaler_.transform(target)*model.output_scale_
     pp=model.y_scaler_.transform(model.target(truth+2)-model.target(current))*model.output_scale_
     prediction=torch.tensor(pp,requires_grad=True)
-    loss=model._lstm_objective(prediction,torch.tensor(z),torch.tensor(current),torch.tensor(truth))
+    loss=model._torch_objective(prediction,torch.tensor(z),torch.tensor(current),torch.tensor(truth))
     expected=.5*np.mean((pp-z)**2)+.5*np.mean(((2/model.raw_loss_scale_)*model.output_scale_)**2)
     assert loss.item()==pytest.approx(expected)
     loss.backward()

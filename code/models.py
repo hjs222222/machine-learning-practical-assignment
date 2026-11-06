@@ -1,7 +1,9 @@
 """原生单/多输出模型；每次 fit 内重新做选择、缩放和训练。"""
 import numpy as np
+import warnings
 from sklearn.base import BaseEstimator, RegressorMixin, clone
 from sklearn.metrics import r2_score
+from sklearn.exceptions import ConvergenceWarning
 from sklearn.preprocessing import StandardScaler, MinMaxScaler
 from sklearn.feature_selection import mutual_info_regression
 from sklearn.ensemble import RandomForestRegressor
@@ -25,6 +27,29 @@ class SequenceNet(nn.Module):
         return self.head(sequence[:, -1])
 
 
+class DenseNet(nn.Module):
+    def __init__(self, inputs, hidden, outputs, activation, history, seed):
+        super().__init__()
+        self.history = history
+        self.n_features_in_ = inputs
+        self.hidden = nn.Linear(inputs,hidden)
+        self.head = nn.Linear(hidden,outputs)
+        self.activation = {'relu':nn.ReLU,'tanh':nn.Tanh,'logistic':nn.Sigmoid}[activation]()
+        # Match sklearn's untrained Glorot initialization, never reuse trained weights.
+        rng = np.random.RandomState(seed)
+        with torch.no_grad():
+            for layer in (self.hidden,self.head):
+                bound = np.sqrt((2. if activation == 'logistic' else 6.)/(layer.in_features+layer.out_features))
+                weight = rng.uniform(-bound,bound,(layer.in_features,layer.out_features)).astype('float32')
+                bias = rng.uniform(-bound,bound,layer.out_features).astype('float32')
+                layer.weight.copy_(torch.from_numpy(weight.T))
+                layer.bias.copy_(torch.from_numpy(bias))
+
+    def forward(self,x):
+        x = x.flatten(1) if self.history else x[:,-1]
+        return self.head(self.activation(self.hidden(x)))
+
+
 class RunoffRegressor(RegressorMixin, BaseEstimator):
     def __init__(self, family='RF', transform='raw', top_k=24, hidden=32, epochs=40,
                  trees=120, leaf=2, iterations=300, alpha=0.1, seed=42, seq_len=14, residual=False,
@@ -32,7 +57,8 @@ class RunoffRegressor(RegressorMixin, BaseEstimator):
                  ann_solver='adam', ann_learning_rate=0.003, ann_chrono_stop=False,
                  ann_activation='relu', lstm_raw_loss=0.0, lstm_learning_rate=0.003,
                  lstm_chrono_stop=False, ann_history=False, first_day_weight=1.0,
-                 x_scaling='standard', input_transform='raw'):
+                 x_scaling='standard', input_transform='raw',
+                 ann_backend='sklearn', ann_raw_loss=0.0):
         self.family = family
         self.transform = transform
         self.top_k = top_k
@@ -60,6 +86,8 @@ class RunoffRegressor(RegressorMixin, BaseEstimator):
         self.first_day_weight = first_day_weight
         self.x_scaling = x_scaling
         self.input_transform = input_transform
+        self.ann_backend = ann_backend
+        self.ann_raw_loss = ann_raw_loss
 
     def target(self, y):
         if self.transform == 'log':
@@ -116,6 +144,12 @@ class RunoffRegressor(RegressorMixin, BaseEstimator):
             raise ValueError('x_scaling仅支持standard/minmax')
         if self.input_transform not in ('raw','signed_log'):
             raise ValueError('input_transform仅支持raw/signed_log')
+        if (self.ann_backend not in ('sklearn','torch') or
+                (self.ann_backend == 'torch' and (self.family != 'ANN' or self.ann_solver != 'adam' or self.ann_chrono_stop))):
+            raise ValueError('ann_backend torch仅支持无ann_chrono_stop的Adam ANN')
+        if (not np.isfinite(self.ann_raw_loss) or not 0 <= self.ann_raw_loss <= 1 or
+                (self.ann_raw_loss != 0 and (self.family != 'ANN' or self.ann_backend != 'torch'))):
+            raise ValueError('ann_raw_loss须为0至1，非零仅支持torch ANN')
         if (not np.isfinite(self.first_day_weight) or self.first_day_weight < 1 or
                 (self.first_day_weight != 1 and y.shape[1] != 7)):
             raise ValueError('first_day_weight须为有限且>=1，非1仅用于七输出')
@@ -150,11 +184,11 @@ class RunoffRegressor(RegressorMixin, BaseEstimator):
                 self.peak_threshold_ = float(np.quantile(y[:,0],.95))
                 weights = np.where(y[:,0] > self.peak_threshold_,self.peak_weight,1.)
             self.estimator_.fit(x[:,-1], z.ravel() if self.outputs_ == 1 else z,sample_weight=weights)
-        elif self.family == 'ANN':
+        elif self.family == 'ANN' and self.ann_backend == 'sklearn':
             self.estimator_ = self._ann_estimator(len(x))
             self.estimator_.fit(self._ann_inputs(x), z.ravel() if self.outputs_ == 1 else z)
-        elif self.family == 'LSTM':
-            self._fit_lstm(x,z,X[:,-1,:1],y)
+        elif self.family in ('ANN','LSTM'):
+            self._fit_torch(x,z,X[:,-1,:1],y)
         else:
             raise ValueError('未知模型家族')
         return self
@@ -200,15 +234,16 @@ class RunoffRegressor(RegressorMixin, BaseEstimator):
             probe_scaler_samples=int(probe.x_scaler_.n_samples_seen_))
         return self
 
-    def _lstm_objective(self, pred, target, current, truth):
+    def _torch_objective(self, pred, target, current, truth):
         transformed_loss = nn.functional.mse_loss(pred,target)
-        if self.lstm_raw_loss == 0:
+        mix = self.ann_raw_loss if self.family == 'ANN' else self.lstm_raw_loss
+        if mix == 0:
             return transformed_loss
-        flow = self._lstm_decode(pred,current)
+        flow = self._torch_decode(pred,current)
         raw_loss = (((flow-truth)/self.raw_loss_scale_)*pred.new_tensor(getattr(self,'output_scale_',1.))).square().mean()
-        return (1-self.lstm_raw_loss)*transformed_loss+self.lstm_raw_loss*raw_loss
+        return (1-mix)*transformed_loss+mix*raw_loss
 
-    def _lstm_decode(self, pred, current):
+    def _torch_decode(self, pred, current):
         unweighted = pred/pred.new_tensor(getattr(self,'output_scale_',1.))
         flow = unweighted*pred.new_tensor(self.y_scaler_.scale_)+pred.new_tensor(self.y_scaler_.mean_)
         if self.residual:
@@ -225,7 +260,7 @@ class RunoffRegressor(RegressorMixin, BaseEstimator):
         count = start-7
         probe = clone(self).set_params(lstm_chrono_stop=False)
         px,pz = probe._fit_preprocessing(X[:count],y[:count])
-        probe._fit_lstm(px,pz,X[:count,-1,:1],y[:count],validation=(X[start:],y[start:]))
+        probe._fit_torch(px,pz,X[:count,-1,:1],y[:count],validation=(X[start:],y[start:]))
         info = dict(probe.lstm_training_,probe_train_count=count,validation_start=start,
                     validation_count=len(X)-start,gap=7,probe_selected_indices=probe.selected_.tolist(),
                     probe_scaler_samples=int(probe.x_scaler_.n_samples_seen_))
@@ -235,20 +270,30 @@ class RunoffRegressor(RegressorMixin, BaseEstimator):
         self.lstm_training_ = info
         return self
 
-    def _fit_lstm(self, x, z, current, truth, validation=None):
+    def _fit_torch(self, x, z, current, truth, validation=None):
         torch.manual_seed(self.seed)
         if torch.cuda.is_available():
             torch.cuda.manual_seed_all(self.seed)
         torch.backends.cudnn.deterministic = True
         torch.backends.cudnn.benchmark = False
         device = 'cuda' if torch.cuda.is_available() else 'cpu'
-        net = SequenceNet(x.shape[-1],self.hidden,z.shape[1]).to(device)
-        optimizer = torch.optim.Adam(net.parameters(),lr=self.lstm_learning_rate,weight_decay=self.alpha*0.001)
+        is_ann = self.family == 'ANN'
+        if is_ann:
+            inputs = x.shape[-1]*(x.shape[1] if self.ann_history else 1)
+            net = DenseNet(inputs,self.hidden,z.shape[1],self.ann_activation,self.ann_history,self.seed).to(device)
+        else:
+            net = SequenceNet(x.shape[-1],self.hidden,z.shape[1]).to(device)
+        optimizer = torch.optim.Adam(net.parameters(),
+            lr=self.ann_learning_rate if is_ann else self.lstm_learning_rate,
+            weight_decay=0. if is_ann else self.alpha*0.001)
         tx, ty = torch.tensor(x,device=device), torch.tensor(z,device=device)
         tq = torch.tensor(current,dtype=tx.dtype,device=device)
         truth_tensor = torch.tensor(truth,dtype=tx.dtype,device=device)
         self.raw_loss_scale_ = max(float(np.std(truth)),1e-6)
         self.loss_history_ = []
+        batch_size = 64 if is_ann else 128
+        max_epochs = self.iterations if is_ann else self.epochs
+        best_loss,stale_epochs = np.inf,0
         if validation is not None:
             vx,vy = validation
             part = self._transform_inputs(vx[:,:,self.selected_])
@@ -257,24 +302,33 @@ class RunoffRegressor(RegressorMixin, BaseEstimator):
             valid_q = torch.tensor(vx[:,-1,:1],dtype=tx.dtype,device=device)
             best_score,best_epoch,history = -np.inf,1,[]
         # epochs 由外部 purged 时序 CV 选择；不启用 sklearn 的随机验证拆分。
-        for epoch in range(1,self.epochs+1):
+        for epoch in range(1,max_epochs+1):
             net.train()
             loss_sum = 0.0
-            for start in range(0,len(x),128):
+            for start in range(0,len(x),batch_size):
                 optimizer.zero_grad()
-                pred = net(tx[start:start+128])
-                loss = self._lstm_objective(pred,ty[start:start+128],tq[start:start+128],truth_tensor[start:start+128])
+                pred = net(tx[start:start+batch_size])
+                loss = self._torch_objective(pred,ty[start:start+batch_size],tq[start:start+batch_size],truth_tensor[start:start+batch_size])
+                if is_ann:
+                    penalty = sum(parameter.square().sum() for name,parameter in net.named_parameters() if name.endswith('weight'))
+                    loss = .5*loss+self.alpha*penalty/(2*len(pred))
                 if not torch.isfinite(loss):
-                    raise ValueError('LSTM训练损失出现非有限值')
+                    raise ValueError('神经网络训练损失出现非有限值')
                 loss.backward()
                 nn.utils.clip_grad_norm_(net.parameters(),1.0)
                 optimizer.step()
                 loss_sum += loss.item()*len(pred)
             self.loss_history_.append(loss_sum/len(x))
+            if is_ann:
+                current_loss = self.loss_history_[-1]
+                stale_epochs = stale_epochs+1 if current_loss > best_loss-1e-5 else 0
+                best_loss = min(best_loss,current_loss)
+                if stale_epochs > 10:
+                    break
             if validation is not None and (epoch == 1 or epoch % 5 == 0):
                 net.eval()
                 with torch.no_grad():
-                    prediction = self._lstm_decode(net(valid_x),valid_q).cpu().numpy()
+                    prediction = self._torch_decode(net(valid_x),valid_q).cpu().numpy()
                 if not np.isfinite(prediction).all():
                     raise ValueError('LSTM内部时间验证预测非有限')
                 score = float(r2_score(vy,prediction))
@@ -288,7 +342,11 @@ class RunoffRegressor(RegressorMixin, BaseEstimator):
         if validation is not None:
             self.lstm_training_ = dict(best_epoch=best_epoch,stopped_epoch=epoch,
                                        best_inner_r2=best_score,history=history)
+        if is_ann and epoch == max_epochs and stale_epochs <= 10:
+            warnings.warn('Torch ANN reached its iteration budget without training-loss convergence',ConvergenceWarning)
         self.estimator_ = net.cpu().eval()
+        if is_ann:
+            self.estimator_.n_iter_ = len(self.loss_history_)
         self.device_used_ = device
 
     def predict(self, X):
@@ -296,7 +354,7 @@ class RunoffRegressor(RegressorMixin, BaseEstimator):
         X = np.asarray(X,dtype=np.float32)[:, -self.seq_len:, self.selected_]
         X = self._transform_inputs(X)
         x = self.x_scaler_.transform(X.reshape(-1,len(self.selected_))).reshape(X.shape).astype('float32')
-        if self.family == 'LSTM':
+        if self.family == 'LSTM' or (self.family == 'ANN' and self.ann_backend == 'torch'):
             with torch.no_grad():
                 prediction = self.estimator_(torch.from_numpy(x)).numpy()
         elif self.family == 'ANN':
