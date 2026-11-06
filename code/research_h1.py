@@ -16,7 +16,10 @@ from features import build_features
 from models import RunoffRegressor
 
 DEFAULT_MODES = ('mi', 'forced', 'all', 'hydro')
-MODES = DEFAULT_MODES + ('compact','target_mi','climate','daily','weather')
+WEATHER_ABLATIONS = {'weather_no_vp':('Vp_diff1','Vp_diff3'),
+                    'weather_no_srad':('Srad_diff1','Srad_diff3'),
+                    'weather_no_temp':('Tavg_diff1','Tavg_diff3','Trange_lag0','Trange_diff1')}
+MODES = DEFAULT_MODES + ('compact','target_mi','climate','daily','weather') + tuple(WEATHER_ABLATIONS)
 BASE = {'RF': dict(trees=120, leaf=1),
         'ANN': dict(hidden=64, iterations=350, alpha=.1),
         'LSTM': dict(hidden=32, seq_len=14, epochs=70, alpha=.1)}
@@ -71,8 +74,10 @@ def prepare_data(raw, cutoff='2003-12-31', horizons=1):
     dates = raw.index[ids]
     result = dict(dates=dates, y=np.column_stack([raw.Discharge.shift(-h).iloc[ids].to_numpy() for h in range(1,horizons+1)]),
                   raw=raw)
+    frames = dict(hydro=hydro,compact=compact,climate=climate,daily=daily,weather=weather)
+    frames.update({mode:weather.drop(columns=list(removed)) for mode,removed in WEATHER_ABLATIONS.items()})
     for mode in MODES:
-        frame = weather if mode == 'weather' else daily if mode == 'daily' else climate if mode == 'climate' else compact if mode == 'compact' else hydro if mode == 'hydro' else base
+        frame = frames.get(mode,base)
         result[mode] = dict(X=np.stack([frame.iloc[i-29:i+1].to_numpy(np.float32) for i in ids]),
                             names=list(frame.columns), dates=dates)
     return result

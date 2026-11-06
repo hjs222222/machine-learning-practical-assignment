@@ -134,6 +134,18 @@ def test_weather_changes_are_exact_causal_derivatives_of_teacher_fields():
         np.testing.assert_allclose(mode['X'][:,-1,mode['names'].index(name)],values.reindex(data['dates']),rtol=1e-6,atol=1e-6)
 
 
+def test_weather_ablation_removes_only_named_derivative_group():
+    data=rh.prepare_data(raw_data())
+    groups={'vp':['Vp_diff1','Vp_diff3'],'srad':['Srad_diff1','Srad_diff3'],
+            'temp':['Tavg_diff1','Tavg_diff3','Trange_lag0','Trange_diff1']}
+    for group,removed in groups.items():
+        mode=data[f'weather_no_{group}']
+        names=[name for name in data['weather']['names'] if name not in removed]
+        assert mode['names']==names and names[0]=='Discharge_lag0'
+        ids=[data['weather']['names'].index(name) for name in names]
+        np.testing.assert_array_equal(mode['X'],data['weather']['X'][:,:,ids])
+
+
 def test_joint_labels_and_year_boundaries_keep_all_seven_targets_inside_year():
     raw=raw_data()
     data=rh.prepare_data(raw,horizons=7)
