@@ -6,7 +6,7 @@ from evaluation import metric_rows
 
 
 @pytest.mark.parametrize('family',['ANN','RF','LSTM'])
-@pytest.mark.parametrize('transform',['raw','sqrt','log'])
+@pytest.mark.parametrize('transform',['raw','sqrt','log','power025','power075'])
 def test_native_output_scaling_and_restore(family, transform, tmp_path):
     import joblib
     rng = np.random.default_rng(1)

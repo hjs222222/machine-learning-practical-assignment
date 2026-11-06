@@ -383,7 +383,7 @@ def test_nonfeature_modes_rejected_before_output(stage,tmp_path):
     assert not (tmp_path/'unused').exists()
 
 
-@pytest.mark.parametrize('transform', ['raw','sqrt','log'])
+@pytest.mark.parametrize('transform', ['raw','sqrt','log','power025','power075'])
 @pytest.mark.parametrize('residual', [False,True])
 def test_target_inverse(transform, residual):
     x = np.random.default_rng(7).uniform(1,10,(24,2,4))

@@ -94,6 +94,8 @@ class RunoffRegressor(RegressorMixin, BaseEstimator):
             return np.log1p(y)
         if self.transform == 'sqrt':
             return np.sqrt(y)
+        if self.transform in ('power025','power075'):
+            return np.power(y,.25 if self.transform == 'power025' else .75)
         if self.transform != 'raw':
             raise ValueError('未知目标变换')
         return y
@@ -248,11 +250,15 @@ class RunoffRegressor(RegressorMixin, BaseEstimator):
         flow = unweighted*pred.new_tensor(self.y_scaler_.scale_)+pred.new_tensor(self.y_scaler_.mean_)
         if self.residual:
             baseline = torch.log1p(current) if self.transform == 'log' else torch.sqrt(current) if self.transform == 'sqrt' else current
+            if self.transform in ('power025','power075'):
+                baseline = current.pow(.25 if self.transform == 'power025' else .75)
             flow = flow+baseline
         if self.transform == 'log':
             flow = torch.expm1(flow)
         elif self.transform == 'sqrt':
             flow = flow.clamp(min=0).square()
+        elif self.transform in ('power025','power075'):
+            flow = flow.clamp(min=0).pow(4. if self.transform == 'power025' else 4./3)
         return flow.clamp(min=0)
 
     def _fit_lstm_chronological(self, X, y):
@@ -369,6 +375,8 @@ class RunoffRegressor(RegressorMixin, BaseEstimator):
             z = np.expm1(z)
         elif self.transform == 'sqrt':
             z = np.maximum(z,0)**2
+        elif self.transform in ('power025','power075'):
+            z = np.maximum(z,0)**(4. if self.transform == 'power025' else 4./3)
         return np.maximum(z,0)
 
 

@@ -118,7 +118,7 @@ def test_lstm_learning_rate_rejects_invalid(rate):
         RunoffRegressor(family='LSTM',lstm_learning_rate=rate).fit(np.ones((12,3,4)),np.ones((12,1)))
 
 
-@pytest.mark.parametrize('transform',['raw','sqrt','log'])
+@pytest.mark.parametrize('transform',['raw','sqrt','log','power025','power075'])
 @pytest.mark.parametrize('residual',[False,True])
 @pytest.mark.parametrize('family',['ANN','LSTM'])
 def test_torch_raw_loss_matches_original_flow_error_and_has_gradient(transform,residual,family):
@@ -149,8 +149,9 @@ def test_lstm_raw_loss_scale_uses_fit_labels_only():
     assert np.isfinite(model.predict(x[20:])).all()
 
 
-def test_weighted_multioutput_lstm_raw_loss_matches_weighted_original_error():
-    model=RunoffRegressor(family='LSTM',transform='sqrt',residual=True,
+@pytest.mark.parametrize('transform',['sqrt','power025','power075'])
+def test_weighted_multioutput_lstm_raw_loss_matches_weighted_original_error(transform):
+    model=RunoffRegressor(family='LSTM',transform=transform,residual=True,
                           first_day_weight=4,lstm_raw_loss=.5)
     truth=np.array([[10.],[20.],[40.]])*np.arange(1,8)[None,:]
     current=np.array([[8.],[21.],[35.]])
@@ -166,6 +167,33 @@ def test_weighted_multioutput_lstm_raw_loss_matches_weighted_original_error():
     assert loss.item()==pytest.approx(expected)
     loss.backward()
     assert torch.isfinite(prediction.grad).all()
+
+
+@pytest.mark.parametrize('transform,power',[('power025',.25),('power075',.75)])
+@pytest.mark.parametrize('residual',[False,True])
+def test_power_decoders_preserve_zero_floods_and_nonnegative_boundary(transform,power,residual):
+    current=np.array([0.,1.,2.,20.,1210.,6000.])[:,None]
+    wanted=np.array([0.,1e-6,1.,10.,13700.,20000.])[:,None]
+    x=np.stack([current[:,0],np.ones(len(current))],axis=1)[:,None,:]
+    model=RunoffRegressor(transform=transform,residual=residual,top_k=None,seq_len=1)
+    model._fit_preprocessing(x,wanted)
+    np.testing.assert_allclose(model.target(wanted),np.power(wanted,power),rtol=1e-12)
+    baseline=np.power(current,power) if residual else 0
+    scaled=model.y_scaler_.transform(np.power(wanted,power)-baseline)
+    class Exact:
+        def predict(self,values):
+            return scaled
+    model.estimator_=Exact()
+    np.testing.assert_allclose(model.predict(x),wanted,rtol=1e-10,atol=1e-7)
+    prediction=torch.tensor(scaled,dtype=torch.float64,requires_grad=True)
+    decoded=model._torch_decode(prediction,torch.tensor(current))
+    np.testing.assert_allclose(decoded.detach().numpy(),wanted,rtol=1e-10,atol=1e-7)
+    decoded.sum().backward()
+    assert torch.isfinite(prediction.grad).all()
+    scaled=model.y_scaler_.transform(np.full_like(wanted,-1)-baseline)
+    np.testing.assert_array_equal(model.predict(x),np.zeros_like(wanted))
+    negative=model._torch_decode(torch.tensor(scaled),torch.tensor(current))
+    np.testing.assert_array_equal(negative.numpy(),np.zeros_like(wanted))
 
 
 @pytest.mark.parametrize('options',[{'lstm_raw_loss':-1},{'lstm_raw_loss':1.1},
