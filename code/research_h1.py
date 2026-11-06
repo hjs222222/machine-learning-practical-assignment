@@ -197,6 +197,7 @@ def run_stage(stage, output, previous=None, seed=42, families=('RF','ANN','LSTM'
                 fits.append(dict(candidate=candidate['id'],year=year,outputs=outputs,selected_indices=model.selected_.tolist(),
                     selected_names=[current['names'][i] for i in model.selected_],
                     mi_target=model.mi_target,
+                    x_scaling=model.x_scaling,
                     first_day_weight=model.first_day_weight,output_scale=model.output_scale_.tolist(),
                     peak_weight=model.peak_weight,peak_training_threshold=model.peak_threshold_,
                     ann_solver=model.ann_solver,ann_learning_rate=model.ann_learning_rate,

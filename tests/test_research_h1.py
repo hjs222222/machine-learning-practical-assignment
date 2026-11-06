@@ -70,6 +70,21 @@ def test_forced_selection_and_skip_mi(monkeypatch):
     assert len(RunoffRegressor(top_k=None, trees=2).fit(x,y).selected_) == 8
 
 
+def test_minmax_only_fits_training_rows_and_does_not_clip_future_extremes():
+    x=np.random.default_rng(106).uniform(1,10,(40,3,4)).astype('float32')
+    x[30:]=1e5
+    model=RunoffRegressor(trees=2,top_k=None,x_scaling='minmax').fit(x[:30],x[:30,-1,:1])
+    np.testing.assert_allclose(model.x_scaler_.data_max_,x[:30].reshape(-1,4).max(axis=0))
+    assert model.x_scaler_.n_samples_seen_==90
+    assert (model.x_scaler_.transform(x[30:,-1])>1).all()
+    assert np.isfinite(model.predict(x[30:])).all()
+
+
+def test_unknown_input_scaling_rejected():
+    with pytest.raises(ValueError,match='x_scaling'):
+        RunoffRegressor(x_scaling='invalid').fit(np.ones((20,3,4)),np.ones((20,1)))
+
+
 def test_daily_mode_contains_only_observed_daily_values():
     raw=raw_data()
     data=rh.prepare_data(raw)

@@ -10,7 +10,8 @@ from models import RunoffRegressor
 pytestmark = pytest.mark.filterwarnings('ignore::sklearn.exceptions.ConvergenceWarning')
 
 
-def test_lstm_chrono_preprocessing_is_inner_only_then_full_refit(monkeypatch,tmp_path):
+@pytest.mark.parametrize('scaling',['standard','minmax'])
+def test_lstm_chrono_preprocessing_is_inner_only_then_full_refit(monkeypatch,tmp_path,scaling):
     x=np.random.default_rng(90).uniform(1,8,(90,3,5)).astype('float32')
     y=x[:,-1,:1]*1.2+2
     calls=[]
@@ -20,7 +21,7 @@ def test_lstm_chrono_preprocessing_is_inner_only_then_full_refit(monkeypatch,tmp
         return original(self,X,Y)
     monkeypatch.setattr(RunoffRegressor,'_fit_preprocessing',capture)
     model=RunoffRegressor(family='LSTM',top_k=None,hidden=2,epochs=5,
-                          transform='log',lstm_chrono_stop=True)
+                          transform='log',lstm_chrono_stop=True,x_scaling=scaling)
     params=model.get_params()
     model.fit(x[:80],y[:80])
     info=model.lstm_training_
@@ -152,7 +153,8 @@ def test_ann_hidden_activation_is_used(activation):
 
 
 @pytest.mark.parametrize('history',[False,True])
-def test_chrono_probe_is_fold_local_then_full_refit(monkeypatch,tmp_path,history):
+@pytest.mark.parametrize('scaling',['standard','minmax'])
+def test_chrono_probe_is_fold_local_then_full_refit(monkeypatch,tmp_path,history,scaling):
     x=np.random.default_rng(19).uniform(1,8,(90,5,8)).astype('float32')
     y=x[:,-1,:1]*1.2+2
     y[80:]=100000
@@ -163,7 +165,7 @@ def test_chrono_probe_is_fold_local_then_full_refit(monkeypatch,tmp_path,history
     monkeypatch.setattr('models.mutual_info_regression',capture)
     model=RunoffRegressor(family='ANN',hidden=4,iterations=10,top_k=3,
                           transform='log',residual=True,mi_target='model_target',
-                          ann_chrono_stop=True,ann_history=history)
+                          ann_chrono_stop=True,ann_history=history,x_scaling=scaling)
     parameters=model.get_params()
     model.fit(x[:80],y[:80])
     info=model.ann_training_

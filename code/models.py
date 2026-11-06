@@ -2,7 +2,7 @@
 import numpy as np
 from sklearn.base import BaseEstimator, RegressorMixin, clone
 from sklearn.metrics import r2_score
-from sklearn.preprocessing import StandardScaler
+from sklearn.preprocessing import StandardScaler, MinMaxScaler
 from sklearn.feature_selection import mutual_info_regression
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.neural_network import MLPRegressor
@@ -31,7 +31,8 @@ class RunoffRegressor(RegressorMixin, BaseEstimator):
                  forced_indices=(), mi_target='raw', max_features=1.0, peak_weight=1.0,
                  ann_solver='adam', ann_learning_rate=0.003, ann_chrono_stop=False,
                  ann_activation='relu', lstm_raw_loss=0.0, lstm_learning_rate=0.003,
-                 lstm_chrono_stop=False, ann_history=False, first_day_weight=1.0):
+                 lstm_chrono_stop=False, ann_history=False, first_day_weight=1.0,
+                 x_scaling='standard'):
         self.family = family
         self.transform = transform
         self.top_k = top_k
@@ -57,6 +58,7 @@ class RunoffRegressor(RegressorMixin, BaseEstimator):
         self.lstm_chrono_stop = lstm_chrono_stop
         self.ann_history = ann_history
         self.first_day_weight = first_day_weight
+        self.x_scaling = x_scaling
 
     def target(self, y):
         if self.transform == 'log':
@@ -91,7 +93,8 @@ class RunoffRegressor(RegressorMixin, BaseEstimator):
             self.selected_ = np.union1d(np.argsort(self.mi_, kind='stable')[-min(self.top_k,X.shape[-1]):],
                                         self.forced_indices).astype(int)
         part = X[:,:,self.selected_]
-        self.x_scaler_ = StandardScaler().fit(part.reshape(-1,len(self.selected_)))
+        self.x_scaler_ = (StandardScaler() if self.x_scaling == 'standard' else MinMaxScaler()).fit(
+            part.reshape(-1,len(self.selected_)))
         self.y_scaler_ = StandardScaler().fit(target)
         x = self.x_scaler_.transform(part.reshape(-1,len(self.selected_))).reshape(part.shape).astype('float32')
         z = self.y_scaler_.transform(target).astype('float32')
@@ -105,6 +108,8 @@ class RunoffRegressor(RegressorMixin, BaseEstimator):
         y = np.asarray(y).reshape(len(X), -1)
         if not np.isfinite(X).all() or not np.isfinite(y).all() or (y < 0).any():
             raise ValueError('模型输入/目标无效')
+        if self.x_scaling not in ('standard','minmax'):
+            raise ValueError('x_scaling仅支持standard/minmax')
         if (not np.isfinite(self.first_day_weight) or self.first_day_weight < 1 or
                 (self.first_day_weight != 1 and y.shape[1] != 7)):
             raise ValueError('first_day_weight须为有限且>=1，非1仅用于七输出')
