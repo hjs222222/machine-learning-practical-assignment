@@ -31,7 +31,7 @@ class RunoffRegressor(RegressorMixin, BaseEstimator):
                  forced_indices=(), mi_target='raw', max_features=1.0, peak_weight=1.0,
                  ann_solver='adam', ann_learning_rate=0.003, ann_chrono_stop=False,
                  ann_activation='relu', lstm_raw_loss=0.0, lstm_learning_rate=0.003,
-                 lstm_chrono_stop=False):
+                 lstm_chrono_stop=False, ann_history=False):
         self.family = family
         self.transform = transform
         self.top_k = top_k
@@ -55,6 +55,7 @@ class RunoffRegressor(RegressorMixin, BaseEstimator):
         self.lstm_raw_loss = lstm_raw_loss
         self.lstm_learning_rate = lstm_learning_rate
         self.lstm_chrono_stop = lstm_chrono_stop
+        self.ann_history = ann_history
 
     def target(self, y):
         if self.transform == 'log':
@@ -100,6 +101,8 @@ class RunoffRegressor(RegressorMixin, BaseEstimator):
         y = np.asarray(y).reshape(len(X), -1)
         if not np.isfinite(X).all() or not np.isfinite(y).all() or (y < 0).any():
             raise ValueError('模型输入/目标无效')
+        if self.ann_history and self.family != 'ANN':
+            raise ValueError('ann_history仅适用于ANN')
         if self.family == 'LSTM' and (not np.isfinite(self.lstm_learning_rate) or self.lstm_learning_rate <= 0):
             raise ValueError('lstm_learning_rate必须为有限正数')
         if (not np.isfinite(self.lstm_raw_loss) or not 0 <= self.lstm_raw_loss <= 1 or
@@ -131,12 +134,15 @@ class RunoffRegressor(RegressorMixin, BaseEstimator):
             self.estimator_.fit(x[:,-1], z.ravel() if self.outputs_ == 1 else z,sample_weight=weights)
         elif self.family == 'ANN':
             self.estimator_ = self._ann_estimator(len(x))
-            self.estimator_.fit(x[:,-1], z.ravel() if self.outputs_ == 1 else z)
+            self.estimator_.fit(self._ann_inputs(x), z.ravel() if self.outputs_ == 1 else z)
         elif self.family == 'LSTM':
             self._fit_lstm(x,z,X[:,-1,:1],y)
         else:
             raise ValueError('未知模型家族')
         return self
+
+    def _ann_inputs(self, x):
+        return x.reshape(len(x),-1) if self.ann_history else x[:,-1]
 
     def _ann_estimator(self, samples):
         return MLPRegressor(hidden_layer_sizes=(self.hidden,),max_iter=self.iterations,
@@ -153,7 +159,7 @@ class RunoffRegressor(RegressorMixin, BaseEstimator):
         probe.estimator_ = probe._ann_estimator(count)
         best_score,best_epoch,history = -np.inf,1,[]
         for epoch in range(1,self.iterations+1):
-            probe.estimator_.partial_fit(px[:,-1],pz.ravel())
+            probe.estimator_.partial_fit(probe._ann_inputs(px),pz.ravel())
             if epoch == 1 or epoch % 5 == 0:
                 score = float(r2_score(y[start:],probe.predict(X[start:])))
                 if not np.isfinite(score):
@@ -168,7 +174,7 @@ class RunoffRegressor(RegressorMixin, BaseEstimator):
         fx,fz = full._fit_preprocessing(X,y)
         full.estimator_ = full._ann_estimator(len(X))
         for _ in range(best_epoch):
-            full.estimator_.partial_fit(fx[:,-1],fz.ravel())
+            full.estimator_.partial_fit(full._ann_inputs(fx),fz.ravel())
         self.__dict__.update({k:v for k,v in vars(full).items() if k.endswith('_')})
         self.ann_training_ = dict(probe_train_count=count,validation_start=start,
             validation_count=len(X)-start,gap=7,best_epoch=best_epoch,stopped_epoch=epoch,
@@ -273,6 +279,8 @@ class RunoffRegressor(RegressorMixin, BaseEstimator):
         if self.family == 'LSTM':
             with torch.no_grad():
                 prediction = self.estimator_(torch.from_numpy(x)).numpy()
+        elif self.family == 'ANN':
+            prediction = self.estimator_.predict(self._ann_inputs(x))
         else:
             prediction = self.estimator_.predict(x[:,-1])
         z = self.y_scaler_.inverse_transform(np.asarray(prediction).reshape(len(X),-1))

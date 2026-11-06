@@ -132,7 +132,8 @@ def test_ann_hidden_activation_is_used(activation):
     assert model.predict(x).shape==(40,1)
 
 
-def test_chrono_probe_is_fold_local_then_full_refit(monkeypatch,tmp_path):
+@pytest.mark.parametrize('history',[False,True])
+def test_chrono_probe_is_fold_local_then_full_refit(monkeypatch,tmp_path,history):
     x=np.random.default_rng(19).uniform(1,8,(90,5,8)).astype('float32')
     y=x[:,-1,:1]*1.2+2
     y[80:]=100000
@@ -143,7 +144,7 @@ def test_chrono_probe_is_fold_local_then_full_refit(monkeypatch,tmp_path):
     monkeypatch.setattr('models.mutual_info_regression',capture)
     model=RunoffRegressor(family='ANN',hidden=4,iterations=10,top_k=3,
                           transform='log',residual=True,mi_target='model_target',
-                          ann_chrono_stop=True)
+                          ann_chrono_stop=True,ann_history=history)
     parameters=model.get_params()
     model.fit(x[:80],y[:80])
     info=model.ann_training_
@@ -158,8 +159,25 @@ def test_chrono_probe_is_fold_local_then_full_refit(monkeypatch,tmp_path):
     assert info['best_epoch'] in [1,5,10]
     assert 1<=info['best_epoch']<=info['stopped_epoch']<=10
     assert len(model.estimator_.loss_curve_)==info['best_epoch']
+    assert model.estimator_.n_features_in_==len(model.selected_)*(5 if history else 1)
     path=tmp_path/'ann.joblib';joblib.dump(model,path)
     np.testing.assert_allclose(model.predict(x[80:]),joblib.load(path).predict(x[80:]))
+
+
+def test_ann_history_fit_and_predict_share_time_major_layout():
+    x=np.random.default_rng(27).uniform(1,5,(35,5,4)).astype('float32')
+    y=x[:,-1,:1]+x[:,2,:1]
+    model=RunoffRegressor(family='ANN',top_k=None,hidden=4,iterations=5,
+                         ann_history=True,seq_len=3).fit(x,y)
+    assert model.estimator_.n_features_in_==3*4
+    scaled=model.x_scaler_.transform(x[:,-3:].reshape(-1,4)).reshape(35,-1).astype('float32')
+    expected=model.y_scaler_.inverse_transform(model.estimator_.predict(scaled).reshape(-1,1))
+    np.testing.assert_allclose(model.predict(x),np.maximum(expected,0))
+
+
+def test_ann_history_rejects_other_families():
+    with pytest.raises(ValueError,match='ann_history'):
+        RunoffRegressor(family='RF',ann_history=True).fit(np.ones((20,3,4)),np.ones((20,1)))
 
 
 def test_chrono_patience_stops_without_random_split():
