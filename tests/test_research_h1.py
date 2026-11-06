@@ -70,6 +70,16 @@ def test_forced_selection_and_skip_mi(monkeypatch):
     assert len(RunoffRegressor(top_k=None, trees=2).fit(x,y).selected_) == 8
 
 
+def test_daily_mode_contains_only_observed_daily_values():
+    raw=raw_data()
+    data=rh.prepare_data(raw)
+    cols=['Discharge','Dayl','Prcp','Srad','Tmax','Tmin','Vp']
+    assert data['daily']['names']==[f'{col}_lag0' for col in cols]
+    date=data['dates'][100]
+    expected=raw.loc[date-pd.Timedelta(days=29):date,cols].to_numpy()
+    np.testing.assert_allclose(data['daily']['X'][100],expected,rtol=1e-6)
+
+
 @pytest.mark.parametrize('transform', ['raw','sqrt','log'])
 @pytest.mark.parametrize('residual', [False,True])
 @pytest.mark.parametrize('mi_target', ['raw','transformed','model_target'])
