@@ -80,6 +80,35 @@ def test_daily_mode_contains_only_observed_daily_values():
     np.testing.assert_allclose(data['daily']['X'][100],expected,rtol=1e-6)
 
 
+def test_joint_labels_and_year_boundaries_keep_all_seven_targets_inside_year():
+    raw=raw_data()
+    data=rh.prepare_data(raw,horizons=7)
+    assert data['dates'].max()==pd.Timestamp('2003-12-24')
+    date=data['dates'][90]
+    np.testing.assert_allclose(data['y'][90],raw.Discharge.loc[date+pd.Timedelta(days=1):date+pd.Timedelta(days=7)])
+    changed=raw.copy();changed.loc['2004-01-01':]=1e9
+    np.testing.assert_array_equal(data['y'],rh.prepare_data(changed,horizons=7)['y'])
+    for year,tr,va in rh.annual_splits(data['dates'],horizons=7):
+        assert len(va)==358
+        assert data['dates'][tr[-1]]+pd.Timedelta(days=7)<data['dates'][va[0]]
+        assert ((data['dates'][va]+pd.Timedelta(days=7)).year==year).all()
+
+
+def test_direct_and_joint_run_share_dates_and_score_first_day(tmp_path):
+    candidates=[dict(id=f'RF_outputs{outputs}',family='RF',mode='daily',transform='sqrt',
+        residual=True,outputs=outputs,params=dict(trees=2,seq_len=1)) for outputs in (1,7)]
+    out=tmp_path/'joint'
+    rh.run_stage('features',out,raw=raw_data(),candidates=candidates)
+    protocol=json.loads((out/'protocol.json').read_text())
+    assert protocol['label_horizon']==7 and protocol['horizon']==1
+    p=pd.read_csv(out/'predictions.csv');m=pd.read_csv(out/'horizon_metrics.csv')
+    a=p[p.candidate.eq('RF_outputs1')];b=p[p.candidate.eq('RF_outputs7')]
+    np.testing.assert_array_equal(a.origin.to_numpy(),b.origin.to_numpy())
+    assert len(a)==len(b)==3*358
+    assert set(m[m.candidate.eq('RF_outputs7')].horizon)==set(range(1,8))
+    assert b.prediction_h7.notna().all() and b.truth_h7.notna().all()
+
+
 @pytest.mark.parametrize('transform', ['raw','sqrt','log'])
 @pytest.mark.parametrize('residual', [False,True])
 @pytest.mark.parametrize('mi_target', ['raw','transformed','model_target'])

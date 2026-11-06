@@ -83,3 +83,11 @@ sqrt16/alpha1的seed13/2026最差年为0.541192/0.540520，平均0.766508/0.7663
 本阶段6运行150拟合、61152预测已独立按公式复算R²/RMSE/MAE/洪峰指标、真值/日期、原始历史Q95门槛、fold gap及ANN输入宽度。证据output/h1_neural_20261106/ann_history_verification.json，暂定配置provisional_ann_daily_config.json。代码45af3c0，全量112测试通过；2004未新评估。
 
 研究候选为当天7字段→sqrt(Q(t+1))-sqrt(Q(t))、hidden16、alpha1、最多350轮、Adam0.003、无时间早停。可以从各目录protocol.json的candidates和seed重新调用research_h1.run_stage，必须使用新输出目录。该配置仍约0.54困难年，目标未完成；重复使用2000--2003的选择偏差仍需披露。
+
+## 第五阶段：原生七输出是否帮助h1
+
+保持教师要求的原生多输出（不包装7个独立模型）。同次研究中直接h1与原生h1--h7使用相同输入、训练原点、验证原点，训练前截断2004，再构造全部标签。所有验证原点+7天仍在同年，因此每年358原点；训练末原点+7天必须早于验证首原点。不能把此共同日期分数与此前364天分数直接作提升比较。
+
+研究工具按候选outputs=1或7自动取共同最大标签跨度；fold_metrics和summary仍只评分h1，额外horizon_metrics以及prediction_h2..7/truth_h2..7保留各步证据。
+
+固定四条参照，每条直接/七输出各3年度，共8候选24拟合：ANN daily1 sqrt增量/hidden16/alpha1/350轮；ANN daily1 log增量/hidden32/alpha1/350轮；RF climate39 sqrt绝对/leaf5/max_features0.5/120树；LSTM daily7 log绝对/hidden32/alpha0.1/70轮。无额外早停、无加权。只有匹配日期上h1与洪峰结果有依据才复核seed13/2026。

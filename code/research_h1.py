@@ -31,7 +31,9 @@ def fixed_h1_ensemble_members():
     ]
 
 
-def prepare_data(raw, cutoff='2003-12-31'):
+def prepare_data(raw, cutoff='2003-12-31', horizons=1):
+    if horizons not in (1,7):
+        raise ValueError('horizons仅支持1或7')
     raw = raw.loc[:cutoff].copy()
     base, _ = build_features(raw)
     hydro = base.copy()
@@ -57,9 +59,9 @@ def prepare_data(raw, cutoff='2003-12-31'):
     climate['warming_wet7'] = avg.diff(3).clip(lower=0)*hydro.Prcp_prior_sum7
     climate['warm_rain0'] = raw.Prcp*avg.clip(lower=0)
     ready = hydro.notna().all(axis=1).to_numpy()
-    ids = np.array([i for i in range(29, len(raw)-1) if ready[i-29:i+1].all()])
+    ids = np.array([i for i in range(29, len(raw)-horizons) if ready[i-29:i+1].all()])
     dates = raw.index[ids]
-    result = dict(dates=dates, y=raw.Discharge.shift(-1).iloc[ids].to_numpy()[:,None],
+    result = dict(dates=dates, y=np.column_stack([raw.Discharge.shift(-h).iloc[ids].to_numpy() for h in range(1,horizons+1)]),
                   raw=raw)
     for mode in MODES:
         frame = daily if mode == 'daily' else climate if mode == 'climate' else compact if mode == 'compact' else hydro if mode == 'hydro' else base
@@ -68,12 +70,12 @@ def prepare_data(raw, cutoff='2003-12-31'):
     return result
 
 
-def annual_splits(dates):
+def annual_splits(dates, horizons=1):
     dates = pd.DatetimeIndex(dates)
     for year in (2001, 2002, 2003):
-        va = np.flatnonzero((dates.year == year) & ((dates + pd.Timedelta(days=1)).year == year))
+        va = np.flatnonzero((dates.year == year) & ((dates + pd.Timedelta(days=horizons)).year == year))
         tr = np.flatnonzero(dates < dates[va[0]] - pd.Timedelta(days=7))
-        if not len(tr) or dates[tr[-1]] + pd.Timedelta(days=1) >= dates[va[0]]:
+        if not len(tr) or dates[tr[-1]] + pd.Timedelta(days=horizons) >= dates[va[0]]:
             raise ValueError('Invalid annual temporal boundary')
         yield year, tr, va
 
@@ -137,10 +139,13 @@ def run_stage(stage, output, previous=None, seed=42, families=('RF','ANN','LSTM'
         candidates = [c for family in families for c in [v for v in candidates if v['family']==family][:limit]]
     if not candidates or len({c['id'] for c in candidates}) != len(candidates):
         raise ValueError('Candidates must be nonempty and unique')
-    data = prepare_data(load_raw() if raw is None else raw)
-    splits = list(annual_splits(data['dates']))
+    if any(candidate.get('outputs',1) not in (1,7) for candidate in candidates):
+        raise ValueError('outputs仅支持1或7')
+    label_horizon = max(candidate.get('outputs',1) for candidate in candidates)
+    data = prepare_data(load_raw() if raw is None else raw,horizons=label_horizon)
+    splits = list(annual_splits(data['dates'],horizons=label_horizon))
     output.mkdir(parents=True)
-    protocol = dict(stage=stage,seed=seed,data_cutoff='2003-12-31',horizon=1,gap=7,
+    protocol = dict(stage=stage,seed=seed,data_cutoff='2003-12-31',horizon=1,label_horizon=label_horizon,gap=7,
                     sequence_length=30,selection='worst annual R2, then mean annual R2',
                     limitation='Training-period selection is biased; no independent generalization claim',
                     sample_note='Common 30-day sequences for new annual comparisons; not reproduction of old formal folds',
@@ -148,17 +153,18 @@ def run_stage(stage, output, previous=None, seed=42, families=('RF','ANN','LSTM'
                     code_hashes={str(p.relative_to(ROOT)):digest(p) for p in (ROOT/'code').glob('*.py')},
                     previous=str(Path(previous).resolve()) if previous else None,candidates=candidates,
                     folds=[dict(year=year,train_start=data['dates'][tr[0]],train_end=data['dates'][tr[-1]],
-                                train_label_end=data['dates'][tr[-1]]+pd.Timedelta(days=1),
+                                train_label_end=data['dates'][tr[-1]]+pd.Timedelta(days=label_horizon),
                                 valid_start=data['dates'][va[0]],valid_end=data['dates'][va[-1]],
-                                valid_label_end=data['dates'][va[-1]]+pd.Timedelta(days=1),
+                                valid_label_end=data['dates'][va[-1]]+pd.Timedelta(days=label_horizon),
                                 train_count=len(tr),valid_count=len(va)) for year,tr,va in splits])
     save_json(output/'protocol.json',protocol)
-    rows, predictions, warning_rows, fits = [], [], [], []
+    rows, predictions, warning_rows, fits, horizon_rows = [], [], [], [], []
     for candidate in [dict(id='persistence',family='persistence',mode='all')] + candidates:
         for year,tr,va in splits:
             print(f"[{stage}] {candidate['id']} year={year} train={len(tr)} valid={len(va)}",flush=True)
             threshold = float(np.quantile(data['raw'].Discharge.loc[:data['dates'][tr[-1]]],.95))
             current = data[candidate['mode']]
+            outputs = candidate.get('outputs',1)
             if candidate['family'] == 'persistence':
                 pred = current['X'][va,-1,:1]
             else:
@@ -172,7 +178,7 @@ def run_stage(stage, output, previous=None, seed=42, families=('RF','ANN','LSTM'
                     **candidate['params'])
                 with warnings.catch_warnings(record=True) as caught:
                     warnings.simplefilter('always')
-                    model.fit(current['X'][tr],data['y'][tr])
+                    model.fit(current['X'][tr],data['y'][tr,:outputs])
                     pred = model.predict(current['X'][va])
                 warning_rows.append(dict(candidate=candidate['id'],year=year,
                     warnings=[dict(category=w.category.__name__,message=str(w.message)) for w in caught]))
@@ -188,7 +194,7 @@ def run_stage(stage, output, previous=None, seed=42, families=('RF','ANN','LSTM'
                         inner_train_end=data['dates'][tr[lstm_training['probe_train_count']-1]],
                         inner_validation_start=data['dates'][tr[lstm_training['validation_start']]],
                         inner_validation_end=data['dates'][tr[-1]])
-                fits.append(dict(candidate=candidate['id'],year=year,selected_indices=model.selected_.tolist(),
+                fits.append(dict(candidate=candidate['id'],year=year,outputs=outputs,selected_indices=model.selected_.tolist(),
                     selected_names=[current['names'][i] for i in model.selected_],
                     mi_target=model.mi_target,
                     peak_weight=model.peak_weight,peak_training_threshold=model.peak_threshold_,
@@ -201,16 +207,23 @@ def run_stage(stage, output, previous=None, seed=42, families=('RF','ANN','LSTM'
                     threshold=threshold,n_iter=getattr(model.estimator_,'n_iter_',None),
                     convergence_warning=any(w.category.__name__=='ConvergenceWarning' for w in caught),
                     loss_history=getattr(model,'loss_history_',getattr(model.estimator_,'loss_curve_',[]))))
-            if pred.shape != data['y'][va].shape or not np.isfinite(pred).all():
+            if pred.shape != (len(va),outputs) or not np.isfinite(pred).all():
                 raise ValueError('Nonfinite or misaligned prediction')
             rows.append(dict(candidate=candidate['id'],family=candidate['family'],year=year,
-                             threshold=threshold,**metrics(data['y'][va],pred,threshold)))
+                             threshold=threshold,**metrics(data['y'][va,0],pred[:,0],threshold)))
+            for h in range(outputs):
+                horizon_rows.append(dict(candidate=candidate['id'],family=candidate['family'],year=year,
+                    horizon=h+1,threshold=threshold,**metrics(data['y'][va,h],pred[:,h],threshold)))
             predictions.extend(dict(candidate=candidate['id'],year=year,origin=str(date.date()),
                 target_date=str((date+pd.Timedelta(days=1)).date()),truth=float(y),prediction=float(p),
-                threshold=threshold,peak=bool(y>=threshold))
-                for date,y,p in zip(data['dates'][va],data['y'][va,0],pred[:,0]))
+                threshold=threshold,peak=bool(y>=threshold),
+                **{f'prediction_h{h+1}':float(vector[h]) for h in range(1,outputs)},
+                **{f'truth_h{h+1}':float(truth[h]) for h in range(1,outputs)})
+                for date,y,p,vector,truth in zip(data['dates'][va],data['y'][va,0],pred[:,0],pred,data['y'][va]))
             pd.DataFrame(rows).to_csv(output/'fold_metrics.csv',index=False)
             pd.DataFrame(predictions).to_csv(output/'predictions.csv',index=False)
+            if label_horizon > 1:
+                pd.DataFrame(horizon_rows).to_csv(output/'horizon_metrics.csv',index=False)
             save_json(output/'warnings.json',warning_rows)
             save_json(output/'fits.json',fits)
     frame = pd.DataFrame(rows)
