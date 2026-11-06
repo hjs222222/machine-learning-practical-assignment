@@ -146,6 +146,47 @@ def test_weather_ablation_removes_only_named_derivative_group():
         np.testing.assert_array_equal(mode['X'],data['weather']['X'][:,:,ids])
 
 
+def test_rain_windows_are_exact_prior_only_weighted_sums():
+    raw=raw_data()
+    raw['Prcp']=np.random.default_rng(218).uniform(0,30,len(raw))
+    data=rh.prepare_data(raw)
+    modes={'weather_rain_sum30':1.,'weather_rain_decay05':.5,
+           'weather_rain_decay08':.8,'weather_rain_decay095':.95}
+    for mode,decay in modes.items():
+        part=data[mode]
+        assert len(part['names'])==16 and part['names'][:15]==data['weather']['names']
+        np.testing.assert_array_equal(part['X'][:,:,:15],data['weather']['X'])
+        for sample in (0,100,len(data['dates'])-1):
+            end=raw.index.get_loc(data['dates'][sample])
+            expected=[np.dot(raw.Prcp.iloc[i-30:i].to_numpy()[::-1],decay**np.arange(30))
+                      for i in range(end-29,end+1)]
+            np.testing.assert_allclose(part['X'][sample,:,-1],expected,rtol=1e-6,atol=1e-6)
+    origin=data['dates'][100]
+    changed=raw.copy();changed.loc[origin,'Prcp']+=1e5
+    other=rh.prepare_data(changed)
+    for mode in modes:
+        assert other[mode]['X'][100,-1,-1]==data[mode]['X'][100,-1,-1]
+    candidates=rh.stage_candidates('features',families=['RF'],modes=list(modes))
+    assert {candidate['mode'] for candidate in candidates}==set(modes)
+
+
+def test_rain_window_run_records_feature_names_and_keeps_default_modes(tmp_path):
+    modes=['weather_rain_sum30','weather_rain_decay05','weather_rain_decay08','weather_rain_decay095']
+    candidates=[dict(id=mode,family='RF',mode=mode,transform='sqrt',residual=True,
+                     params=dict(trees=2,seq_len=1)) for mode in modes]
+    out=tmp_path/'rain'
+    rh.run_stage('features',out,raw=raw_data(),candidates=candidates)
+    protocol=json.loads((out/'protocol.json').read_text())
+    fits=json.loads((out/'fits.json').read_text())
+    assert [c['mode'] for c in protocol['candidates']]==modes
+    assert len(fits)==12
+    for fit in fits:
+        assert len(fit['selected_names'])==fit['input_width']==16
+        assert fit['selected_names'][0]=='Discharge_lag0'
+        assert fit['selected_names'][-1].startswith('Prcp_prior_')
+    assert {c['mode'] for c in rh.stage_candidates('features',families=['RF'])}=={'mi','forced','all','hydro'}
+
+
 def test_joint_labels_and_year_boundaries_keep_all_seven_targets_inside_year():
     raw=raw_data()
     data=rh.prepare_data(raw,horizons=7)

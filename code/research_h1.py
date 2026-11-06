@@ -19,7 +19,9 @@ DEFAULT_MODES = ('mi', 'forced', 'all', 'hydro')
 WEATHER_ABLATIONS = {'weather_no_vp':('Vp_diff1','Vp_diff3'),
                     'weather_no_srad':('Srad_diff1','Srad_diff3'),
                     'weather_no_temp':('Tavg_diff1','Tavg_diff3','Trange_lag0','Trange_diff1')}
-MODES = DEFAULT_MODES + ('compact','target_mi','climate','daily','weather') + tuple(WEATHER_ABLATIONS)
+RAIN_WINDOWS = {'weather_rain_sum30':1.,'weather_rain_decay05':.5,
+                'weather_rain_decay08':.8,'weather_rain_decay095':.95}
+MODES = DEFAULT_MODES + ('compact','target_mi','climate','daily','weather') + tuple(WEATHER_ABLATIONS) + tuple(RAIN_WINDOWS)
 BASE = {'RF': dict(trees=120, leaf=1),
         'ANN': dict(hidden=64, iterations=350, alpha=.1),
         'LSTM': dict(hidden=32, seq_len=14, epochs=70, alpha=.1)}
@@ -76,6 +78,9 @@ def prepare_data(raw, cutoff='2003-12-31', horizons=1):
                   raw=raw)
     frames = dict(hydro=hydro,compact=compact,climate=climate,daily=daily,weather=weather)
     frames.update({mode:weather.drop(columns=list(removed)) for mode,removed in WEATHER_ABLATIONS.items()})
+    for mode,decay in RAIN_WINDOWS.items():
+        name = 'Prcp_prior_sum30' if decay == 1 else f'Prcp_prior_decay30_{decay:g}'
+        frames[mode] = weather.assign(**{name:sum(decay**(k-1)*raw.Prcp.shift(k) for k in range(1,31))})
     for mode in MODES:
         frame = frames.get(mode,base)
         result[mode] = dict(X=np.stack([frame.iloc[i-29:i+1].to_numpy(np.float32) for i in ids]),
