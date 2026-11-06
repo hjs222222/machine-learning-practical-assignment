@@ -1,4 +1,4 @@
-"""Training-only, pre-registered h=1 annual comparisons. Never consumes 2004 labels."""
+"""Pre-registered h=1 research; only the explicit frozen backtest consumes 2004 labels."""
 import argparse
 import hashlib
 import itertools
@@ -31,8 +31,8 @@ def fixed_h1_ensemble_members():
     ]
 
 
-def prepare_data(raw):
-    raw = raw.loc[:'2003-12-31'].copy()
+def prepare_data(raw, cutoff='2003-12-31'):
+    raw = raw.loc[:cutoff].copy()
     base, _ = build_features(raw)
     hydro = base.copy()
     for days in (1, 2, 3, 7):
@@ -266,6 +266,63 @@ def run_fixed_h1_ensemble(output, climate_source, ann_source, ann_candidate='ANN
     pd.DataFrame(rows).to_csv(output/'fold_metrics.csv',index=False)
     summary.to_csv(output/'summary.csv',index=False)
     save_json(output/'complete.json',dict(stage='fixed_h1_ensemble',candidates=1,fits=0,status='complete'))
+    return summary
+
+
+def run_h1_2004_backtest(output, raw=None, seed=42):
+    """One retrospective evaluation of the frozen h=1 equal-weight ensemble."""
+    output = Path(output)
+    if output.exists():
+        raise ValueError('Output exists; no overwrite or hot start')
+    source = load_raw() if raw is None else raw
+    data = prepare_data(source, cutoff='2004-12-31')
+    train = np.flatnonzero(data['dates'] <= pd.Timestamp('2003-12-30'))
+    test = np.flatnonzero((data['dates'].year == 2004) &
+                          ((data['dates'] + pd.Timedelta(days=1)).year == 2004))
+    if not len(train) or not len(test) or data['dates'][train[-1]] + pd.Timedelta(days=1) > data['dates'][test[0]]:
+        raise ValueError('Invalid frozen train/test boundary')
+    specs = [
+        ('climate_rf', 'climate', dict(family='RF', transform='sqrt', residual=False, top_k=None,
+                                       trees=120, leaf=5, max_features=.5)),
+        ('compact_ann', 'compact', dict(family='ANN', transform='raw', residual=True, top_k=None,
+                                        hidden=32, iterations=350, alpha=1.0)),
+    ]
+    members, warnings_by_member = {}, {}
+    for name, mode, params in specs:
+        model = RunoffRegressor(seed=seed, **params)
+        with warnings.catch_warnings(record=True) as caught:
+            warnings.simplefilter('always')
+            model.fit(data[mode]['X'][train], data['y'][train])
+            members[name] = model.predict(data[mode]['X'][test]).ravel().astype(np.float64)
+        warnings_by_member[name] = [dict(category=item.category.__name__, message=str(item.message)) for item in caught]
+    members['persistence'] = data['compact']['X'][test,-1,0].astype(np.float64)
+    prediction = np.mean(np.column_stack([members['climate_rf'],members['compact_ann'],members['persistence']]),axis=1)
+    threshold = float(np.quantile(data['raw'].Discharge.loc[:data['dates'][train[-1]]],.95))
+    output.mkdir(parents=True)
+    protocol = dict(stage='frozen_h1_2004_backtest', seed=seed, train_end=str(data['dates'][train[-1]].date()),
+                    test_start=str(data['dates'][test[0]].date()), test_end=str(data['dates'][test[-1]].date()),
+                    horizon=1, selection='Frozen before reading 2004 labels; no 2004 tuning',
+                    members=fixed_h1_ensemble_members(), data_sha256=digest(DATA_PATH) if raw is None else
+                    hashlib.sha256(source.to_csv().encode()).hexdigest(),
+                    code_hashes={str(p.relative_to(ROOT)):digest(p) for p in (ROOT/'code').glob('*.py')})
+    save_json(output/'protocol.json',protocol)
+    frame = pd.DataFrame(dict(candidate='fixed_equal_rf_ann_persistence', year=2004,
+        origin=[str(value.date()) for value in data['dates'][test]],
+        target_date=[str((value+pd.Timedelta(days=1)).date()) for value in data['dates'][test]],
+        truth=data['y'][test,0], prediction=prediction, threshold=threshold,
+        peak=data['y'][test,0] >= threshold, **members))
+    frame.to_csv(output/'predictions.csv',index=False,float_format='%.17g')
+    row = dict(candidate='fixed_equal_rf_ann_persistence', family='fixed_equal_ensemble', year=2004,
+               threshold=threshold, **metrics(frame.truth,frame.prediction,threshold))
+    pd.DataFrame([row]).to_csv(output/'fold_metrics.csv',index=False)
+    summary = pd.DataFrame([row]).drop(columns=['year','threshold'])
+    summary.rename(columns={'r2':'mean_r2','rmse':'mean_rmse','mae':'mean_mae',
+                            'peak_rmse':'mean_peak_rmse','peak_bias':'mean_peak_bias'},inplace=True)
+    summary['worst_r2'] = summary['mean_r2']
+    summary = summary[['candidate','family','mean_r2','worst_r2','mean_rmse','mean_mae','mean_peak_rmse','mean_peak_bias']]
+    summary.to_csv(output/'summary.csv',index=False)
+    save_json(output/'warnings.json',warnings_by_member)
+    save_json(output/'complete.json',dict(stage='frozen_h1_2004_backtest',candidates=1,fits=2,status='complete'))
     return summary
 
 

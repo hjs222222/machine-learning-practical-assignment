@@ -48,6 +48,18 @@ def test_cutoff_causality_and_common_origins():
         assert ((a['dates'][va] + pd.Timedelta(days=1)).year == year).all()
 
 
+def test_optional_cutoff_exposes_test_origins_without_changing_training_rows():
+    raw = raw_data()
+    train = rh.prepare_data(raw)
+    full = rh.prepare_data(raw, cutoff='2004-12-31')
+    keep = full['dates'] <= pd.Timestamp('2003-12-30')
+    assert full['dates'].max() == pd.Timestamp('2004-12-30')
+    np.testing.assert_array_equal(full['dates'][keep], train['dates'])
+    np.testing.assert_array_equal(full['y'][keep], train['y'])
+    for mode in rh.MODES:
+        np.testing.assert_array_equal(full[mode]['X'][keep], train[mode]['X'])
+
+
 def test_forced_selection_and_skip_mi(monkeypatch):
     x = np.random.default_rng(4).uniform(1, 10, (40, 3, 8))
     y = x[:, -1, :1]
@@ -248,6 +260,23 @@ def test_fixed_h1_ensemble_requires_aligned_recorded_predictions(tmp_path):
     predictions=pd.read_csv(tmp_path/'fused'/'predictions.csv')
     assert len(predictions)==9 and result.iloc[0].candidate=='fixed_equal_rf_ann_persistence'
     np.testing.assert_allclose(predictions.prediction,[5/3,8/3,11/3]*3)
+
+
+def test_frozen_h1_backtest_writes_only_2004_predictions(tmp_path):
+    out = tmp_path/'backtest'
+    summary = rh.run_h1_2004_backtest(out, raw=raw_data(), seed=9)
+    protocol = json.loads((out/'protocol.json').read_text(encoding='utf-8'))
+    predictions = pd.read_csv(out/'predictions.csv')
+    assert protocol['stage'] == 'frozen_h1_2004_backtest'
+    assert protocol['selection'] == 'Frozen before reading 2004 labels; no 2004 tuning'
+    assert protocol['train_end'] == '2003-12-30'
+    assert protocol['test_start'] == '2004-01-01'
+    assert set(pd.to_datetime(predictions.origin).dt.year) == {2004}
+    assert pd.to_datetime(predictions.target_date).max() == pd.Timestamp('2004-12-31')
+    np.testing.assert_allclose(predictions.prediction,
+                               predictions[['climate_rf','compact_ann','persistence']].mean(axis=1))
+    assert (predictions.prediction - predictions[['climate_rf','compact_ann','persistence']].mean(axis=1)).abs().max() < 1e-10
+    assert summary.iloc[0].candidate == 'fixed_equal_rf_ann_persistence'
 
 
 def test_small_real_run_artifacts_and_stage_contract(tmp_path):
