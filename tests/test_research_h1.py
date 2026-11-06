@@ -218,6 +218,38 @@ def test_metrics_independently():
     assert m['peak_rmse'] == 2 and m['peak_bias'] == -2
 
 
+def test_fixed_h1_ensemble_is_predeclared_and_equal_weighted():
+    members = rh.fixed_h1_ensemble_members()
+    assert [member['id'] for member in members] == ['climate_rf', 'compact_ann', 'persistence']
+    assert sum(member['weight'] for member in members) == pytest.approx(1.0)
+    assert all(member['weight'] == pytest.approx(1 / 3) for member in members)
+    assert members[0]['mode'] == 'climate' and members[0]['family'] == 'RF'
+    assert members[1]['mode'] == 'compact' and members[1]['family'] == 'ANN'
+
+
+def test_fixed_h1_ensemble_requires_aligned_recorded_predictions(tmp_path):
+    def source(name, ann=False):
+        path=tmp_path/name;path.mkdir()
+        (path/'protocol.json').write_text(json.dumps({'data_cutoff':'2003-12-31','horizon':1,'gap':7,'seed':9}),encoding='utf-8')
+        rows=[]
+        for year in (2001,2002,2003):
+            for day in (1,2,3):
+                rows.append(dict(candidate='ANN_tune_01' if ann else 'RF_tune_05',year=year,
+                    origin=f'{year}-01-0{day}',target_date=f'{year}-01-0{day+1}',truth=float(day),
+                    threshold=.5,peak=True,prediction=float(day+1)))
+            if not ann:
+                rows.extend(dict(candidate='persistence',year=year,origin=f'{year}-01-0{day}',
+                    target_date=f'{year}-01-0{day+1}',truth=float(day),threshold=.5,peak=True,prediction=float(day))
+                    for day in (1,2,3))
+        pd.DataFrame(rows).to_csv(path/'predictions.csv',index=False)
+        return path
+    climate,ann=source('climate'),source('ann',ann=True)
+    result=rh.run_fixed_h1_ensemble(tmp_path/'fused',climate,ann)
+    predictions=pd.read_csv(tmp_path/'fused'/'predictions.csv')
+    assert len(predictions)==9 and result.iloc[0].candidate=='fixed_equal_rf_ann_persistence'
+    np.testing.assert_allclose(predictions.prediction,[5/3,8/3,11/3]*3)
+
+
 def test_small_real_run_artifacts_and_stage_contract(tmp_path):
     candidate = dict(id='RF_all_raw',family='RF',mode='all',transform='raw',residual=False,params={'trees':2})
     out = tmp_path/'run'

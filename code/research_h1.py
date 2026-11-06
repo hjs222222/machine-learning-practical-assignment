@@ -22,6 +22,15 @@ BASE = {'RF': dict(trees=120, leaf=1),
         'LSTM': dict(hidden=32, seq_len=14, epochs=70, alpha=.1)}
 
 
+def fixed_h1_ensemble_members():
+    """Predeclared members; weights are never selected on a validation year."""
+    return [
+        dict(id='climate_rf', candidate='RF_tune_05', family='RF', mode='climate', weight=1 / 3),
+        dict(id='compact_ann', candidate='ANN_tune_01', family='ANN', mode='compact', weight=1 / 3),
+        dict(id='persistence', candidate='persistence', family='persistence', mode='all', weight=1 / 3),
+    ]
+
+
 def prepare_data(raw):
     raw = raw.loc[:'2003-12-31'].copy()
     base, _ = build_features(raw)
@@ -200,6 +209,63 @@ def run_stage(stage, output, previous=None, seed=42, families=('RF','ANN','LSTM'
         mean_mae=('mae','mean'),mean_peak_rmse=('peak_rmse','mean'),mean_peak_bias=('peak_bias','mean'))
     summary.sort_values(['worst_r2','mean_r2'],ascending=False).to_csv(output/'summary.csv',index=False)
     save_json(output/'complete.json',dict(stage=stage,candidates=len(candidates),fits=len(fits),status='complete'))
+    return summary
+
+
+def run_fixed_h1_ensemble(output, climate_source, ann_source, ann_candidate='ANN_tune_01'):
+    """Fuse already-recorded annual predictions with predeclared equal weights."""
+    output = Path(output)
+    if output.exists():
+        raise ValueError('Output exists; no overwrite or hot start')
+    sources = {'climate_rf': Path(climate_source), 'compact_ann': Path(ann_source),
+               'persistence': Path(climate_source)}
+    frames, protocols = [], {}
+    keys = ['year','origin','target_date','truth','threshold','peak']
+    for member in fixed_h1_ensemble_members():
+        source = sources[member['id']]
+        protocol_path, prediction_path = source/'protocol.json', source/'predictions.csv'
+        if not protocol_path.is_file() or not prediction_path.is_file():
+            raise ValueError(f"Missing recorded source for {member['id']}")
+        protocol = json.loads(protocol_path.read_text(encoding='utf-8'))
+        if protocol['data_cutoff'] != '2003-12-31' or protocol['horizon'] != 1 or protocol['gap'] != 7:
+            raise ValueError(f"Incompatible source protocol for {member['id']}")
+        protocols[member['id']] = dict(path=str(source.resolve()), protocol_sha256=digest(protocol_path),
+                                       seed=protocol['seed'])
+        candidate = ann_candidate if member['id'] == 'compact_ann' else member['candidate']
+        rows = pd.read_csv(prediction_path)
+        rows = rows[rows.candidate.eq(candidate)][keys+['prediction']].copy()
+        if rows.empty or rows.duplicated(keys).any():
+            raise ValueError(f"Invalid source predictions for {member['id']}")
+        frames.append(rows.rename(columns={'prediction':member['id']}))
+    merged = frames[0]
+    for frame in frames[1:]:
+        merged = merged.merge(frame, on=keys, how='inner', validate='one_to_one')
+    if len(merged) != len(frames[0]) or not np.isfinite(merged[['climate_rf','compact_ann','persistence']]).all().all():
+        raise ValueError('Component predictions are not exactly aligned')
+    if len({record['seed'] for record in protocols.values()}) != 1:
+        raise ValueError('Component sources must use the same seed')
+    merged['prediction'] = merged[['climate_rf','compact_ann','persistence']].mean(axis=1)
+    rows = []
+    for year, frame in merged.groupby('year', sort=True):
+        threshold = float(frame.threshold.iloc[0])
+        rows.append(dict(candidate='fixed_equal_rf_ann_persistence', family='fixed_equal_ensemble',
+                         year=int(year), threshold=threshold, **metrics(frame.truth, frame.prediction, threshold)))
+    summary = pd.DataFrame(rows).groupby(['candidate','family'],as_index=False).agg(
+        mean_r2=('r2','mean'),worst_r2=('r2','min'),mean_rmse=('rmse','mean'),
+        mean_mae=('mae','mean'),mean_peak_rmse=('peak_rmse','mean'),mean_peak_bias=('peak_bias','mean'))
+    output.mkdir(parents=True)
+    protocol = dict(stage='fixed_h1_ensemble', seed=next(iter(protocols.values()))['seed'],
+                    data_cutoff='2003-12-31', horizon=1, gap=7,
+                    selection='Predeclared equal 1/3 weights; no yearly weight fitting',
+                    limitation='Training-period comparison is not an independent generalization claim',
+                    members=fixed_h1_ensemble_members(), ann_source_candidate=ann_candidate, sources=protocols,
+                    code_hashes={str(p.relative_to(ROOT)):digest(p) for p in (ROOT/'code').glob('*.py')})
+    save_json(output/'protocol.json', protocol)
+    merged.assign(candidate='fixed_equal_rf_ann_persistence')[
+        ['candidate']+keys+['prediction','climate_rf','compact_ann','persistence']].to_csv(output/'predictions.csv',index=False)
+    pd.DataFrame(rows).to_csv(output/'fold_metrics.csv',index=False)
+    summary.to_csv(output/'summary.csv',index=False)
+    save_json(output/'complete.json',dict(stage='fixed_h1_ensemble',candidates=1,fits=0,status='complete'))
     return summary
 
 
