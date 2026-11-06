@@ -30,7 +30,7 @@ class RunoffRegressor(RegressorMixin, BaseEstimator):
                  trees=120, leaf=2, iterations=300, alpha=0.1, seed=42, seq_len=14, residual=False,
                  forced_indices=(), mi_target='raw', max_features=1.0, peak_weight=1.0,
                  ann_solver='adam', ann_learning_rate=0.003, ann_chrono_stop=False,
-                 ann_activation='relu'):
+                 ann_activation='relu', lstm_raw_loss=0.0):
         self.family = family
         self.transform = transform
         self.top_k = top_k
@@ -51,6 +51,7 @@ class RunoffRegressor(RegressorMixin, BaseEstimator):
         self.ann_learning_rate = ann_learning_rate
         self.ann_chrono_stop = ann_chrono_stop
         self.ann_activation = ann_activation
+        self.lstm_raw_loss = lstm_raw_loss
 
     def target(self, y):
         if self.transform == 'log':
@@ -96,6 +97,9 @@ class RunoffRegressor(RegressorMixin, BaseEstimator):
         y = np.asarray(y).reshape(len(X), -1)
         if not np.isfinite(X).all() or not np.isfinite(y).all() or (y < 0).any():
             raise ValueError('模型输入/目标无效')
+        if (not np.isfinite(self.lstm_raw_loss) or not 0 <= self.lstm_raw_loss <= 1 or
+                (self.lstm_raw_loss != 0 and self.family != 'LSTM')):
+            raise ValueError('lstm_raw_loss须在0至1且非零仅适用于LSTM')
         if self.family == 'ANN' and (self.ann_solver not in ('adam','lbfgs') or
                 self.ann_activation not in ('relu','tanh','logistic') or
                 not np.isfinite(self.ann_learning_rate) or self.ann_learning_rate <= 0):
@@ -119,7 +123,7 @@ class RunoffRegressor(RegressorMixin, BaseEstimator):
             self.estimator_ = self._ann_estimator(len(x))
             self.estimator_.fit(x[:,-1], z.ravel() if self.outputs_ == 1 else z)
         elif self.family == 'LSTM':
-            self._fit_lstm(x,z)
+            self._fit_lstm(x,z,X[:,-1,:1],y)
         else:
             raise ValueError('未知模型家族')
         return self
@@ -162,7 +166,22 @@ class RunoffRegressor(RegressorMixin, BaseEstimator):
             probe_scaler_samples=int(probe.x_scaler_.n_samples_seen_))
         return self
 
-    def _fit_lstm(self, x, z):
+    def _lstm_objective(self, pred, target, current, truth):
+        transformed_loss = nn.functional.mse_loss(pred,target)
+        if self.lstm_raw_loss == 0:
+            return transformed_loss
+        flow = pred*pred.new_tensor(self.y_scaler_.scale_)+pred.new_tensor(self.y_scaler_.mean_)
+        if self.residual:
+            baseline = torch.log1p(current) if self.transform == 'log' else torch.sqrt(current) if self.transform == 'sqrt' else current
+            flow = flow+baseline
+        if self.transform == 'log':
+            flow = torch.expm1(flow)
+        elif self.transform == 'sqrt':
+            flow = flow.clamp(min=0).square()
+        raw_loss = ((flow.clamp(min=0)-truth)/self.raw_loss_scale_).square().mean()
+        return (1-self.lstm_raw_loss)*transformed_loss+self.lstm_raw_loss*raw_loss
+
+    def _fit_lstm(self, x, z, current, truth):
         torch.manual_seed(self.seed)
         if torch.cuda.is_available():
             torch.cuda.manual_seed_all(self.seed)
@@ -172,6 +191,9 @@ class RunoffRegressor(RegressorMixin, BaseEstimator):
         net = SequenceNet(x.shape[-1],self.hidden,z.shape[1]).to(device)
         optimizer = torch.optim.Adam(net.parameters(),lr=0.003,weight_decay=self.alpha*0.001)
         tx, ty = torch.tensor(x,device=device), torch.tensor(z,device=device)
+        tq = torch.tensor(current,dtype=tx.dtype,device=device)
+        truth_tensor = torch.tensor(truth,dtype=tx.dtype,device=device)
+        self.raw_loss_scale_ = max(float(np.std(truth)),1e-6)
         self.loss_history_ = []
         # epochs 由外部 purged 时序 CV 选择；不启用 sklearn 的随机验证拆分。
         for _ in range(self.epochs):
@@ -180,7 +202,9 @@ class RunoffRegressor(RegressorMixin, BaseEstimator):
             for start in range(0,len(x),128):
                 optimizer.zero_grad()
                 pred = net(tx[start:start+128])
-                loss = nn.functional.mse_loss(pred,ty[start:start+128])
+                loss = self._lstm_objective(pred,ty[start:start+128],tq[start:start+128],truth_tensor[start:start+128])
+                if not torch.isfinite(loss):
+                    raise ValueError('LSTM训练损失出现非有限值')
                 loss.backward()
                 nn.utils.clip_grad_norm_(net.parameters(),1.0)
                 optimizer.step()

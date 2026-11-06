@@ -2,10 +2,48 @@
 import joblib
 import numpy as np
 import pytest
+import torch
+from sklearn.preprocessing import StandardScaler
 from sklearn.base import clone
 from models import RunoffRegressor
 
 pytestmark = pytest.mark.filterwarnings('ignore::sklearn.exceptions.ConvergenceWarning')
+
+
+@pytest.mark.parametrize('transform',['raw','sqrt','log'])
+@pytest.mark.parametrize('residual',[False,True])
+def test_lstm_raw_loss_matches_original_flow_error_and_has_gradient(transform,residual):
+    model=RunoffRegressor(family='LSTM',transform=transform,residual=residual,lstm_raw_loss=.5)
+    truth=np.array([[10.],[20.],[40.]])
+    current=np.array([[8.],[21.],[35.]])
+    training_target=model.target(truth)-(model.target(current) if residual else 0)
+    model.y_scaler_=StandardScaler().fit(training_target)
+    model.raw_loss_scale_=float(truth.std())
+    pred_flow=truth+2
+    target_pred=model.target(pred_flow)-(model.target(current) if residual else 0)
+    pred=torch.tensor(model.y_scaler_.transform(target_pred),dtype=torch.float64,requires_grad=True)
+    z=torch.tensor(model.y_scaler_.transform(training_target),dtype=torch.float64)
+    loss=model._lstm_objective(pred,z,torch.tensor(current),torch.tensor(truth))
+    expected=.5*np.mean((pred.detach().numpy()-z.numpy())**2)+.5*np.mean(((pred_flow-truth)/truth.std())**2)
+    assert loss.item()==pytest.approx(expected)
+    loss.backward()
+    assert torch.isfinite(pred.grad).all() and pred.grad.abs().sum()>0
+
+
+def test_lstm_raw_loss_scale_uses_fit_labels_only():
+    x=np.random.default_rng(18).uniform(1,5,(30,3,4)).astype('float32')
+    y=np.arange(30,dtype=float)[:,None]+1
+    model=RunoffRegressor(family='LSTM',top_k=None,epochs=1,hidden=3,lstm_raw_loss=.5).fit(x[:20],y[:20])
+    assert model.raw_loss_scale_==pytest.approx(y[:20].std())
+    assert np.isfinite(model.predict(x[20:])).all()
+
+
+@pytest.mark.parametrize('options',[{'lstm_raw_loss':-1},{'lstm_raw_loss':1.1},
+    {'lstm_raw_loss':float('nan')},{'lstm_raw_loss':.5,'family':'ANN'}])
+def test_lstm_raw_loss_rejects_invalid_settings(options):
+    args=dict(family='LSTM',top_k=None,epochs=1);args.update(options)
+    with pytest.raises(ValueError,match='lstm_raw_loss'):
+        RunoffRegressor(**args).fit(np.ones((20,3,4)),np.ones((20,1)))
 
 
 @pytest.mark.parametrize('solver',['adam','lbfgs'])
