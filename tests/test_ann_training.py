@@ -103,6 +103,25 @@ def test_lstm_raw_loss_scale_uses_fit_labels_only():
     assert np.isfinite(model.predict(x[20:])).all()
 
 
+def test_weighted_multioutput_lstm_raw_loss_matches_weighted_original_error():
+    model=RunoffRegressor(family='LSTM',transform='sqrt',residual=True,
+                          first_day_weight=4,lstm_raw_loss=.5)
+    truth=np.array([[10.],[20.],[40.]])*np.arange(1,8)[None,:]
+    current=np.array([[8.],[21.],[35.]])
+    target=model.target(truth)-model.target(current)
+    model.y_scaler_=StandardScaler().fit(target)
+    model.output_scale_=np.array([2.,1.,1.,1.,1.,1.,1.])
+    model.raw_loss_scale_=float(truth.std())
+    z=model.y_scaler_.transform(target)*model.output_scale_
+    pp=model.y_scaler_.transform(model.target(truth+2)-model.target(current))*model.output_scale_
+    prediction=torch.tensor(pp,requires_grad=True)
+    loss=model._lstm_objective(prediction,torch.tensor(z),torch.tensor(current),torch.tensor(truth))
+    expected=.5*np.mean((pp-z)**2)+.5*np.mean(((2/model.raw_loss_scale_)*model.output_scale_)**2)
+    assert loss.item()==pytest.approx(expected)
+    loss.backward()
+    assert torch.isfinite(prediction.grad).all()
+
+
 @pytest.mark.parametrize('options',[{'lstm_raw_loss':-1},{'lstm_raw_loss':1.1},
     {'lstm_raw_loss':float('nan')},{'lstm_raw_loss':.5,'family':'ANN'}])
 def test_lstm_raw_loss_rejects_invalid_settings(options):

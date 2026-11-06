@@ -31,7 +31,7 @@ class RunoffRegressor(RegressorMixin, BaseEstimator):
                  forced_indices=(), mi_target='raw', max_features=1.0, peak_weight=1.0,
                  ann_solver='adam', ann_learning_rate=0.003, ann_chrono_stop=False,
                  ann_activation='relu', lstm_raw_loss=0.0, lstm_learning_rate=0.003,
-                 lstm_chrono_stop=False, ann_history=False):
+                 lstm_chrono_stop=False, ann_history=False, first_day_weight=1.0):
         self.family = family
         self.transform = transform
         self.top_k = top_k
@@ -56,6 +56,7 @@ class RunoffRegressor(RegressorMixin, BaseEstimator):
         self.lstm_learning_rate = lstm_learning_rate
         self.lstm_chrono_stop = lstm_chrono_stop
         self.ann_history = ann_history
+        self.first_day_weight = first_day_weight
 
     def target(self, y):
         if self.transform == 'log':
@@ -94,6 +95,9 @@ class RunoffRegressor(RegressorMixin, BaseEstimator):
         self.y_scaler_ = StandardScaler().fit(target)
         x = self.x_scaler_.transform(part.reshape(-1,len(self.selected_))).reshape(part.shape).astype('float32')
         z = self.y_scaler_.transform(target).astype('float32')
+        self.output_scale_ = np.ones(self.outputs_,dtype=np.float32)
+        self.output_scale_[0] = np.sqrt(self.first_day_weight)
+        z *= self.output_scale_
         return x,z
 
     def fit(self, X, y):
@@ -101,6 +105,9 @@ class RunoffRegressor(RegressorMixin, BaseEstimator):
         y = np.asarray(y).reshape(len(X), -1)
         if not np.isfinite(X).all() or not np.isfinite(y).all() or (y < 0).any():
             raise ValueError('模型输入/目标无效')
+        if (not np.isfinite(self.first_day_weight) or self.first_day_weight < 1 or
+                (self.first_day_weight != 1 and y.shape[1] != 7)):
+            raise ValueError('first_day_weight须为有限且>=1，非1仅用于七输出')
         if self.ann_history and self.family != 'ANN':
             raise ValueError('ann_history仅适用于ANN')
         if self.family == 'LSTM' and (not np.isfinite(self.lstm_learning_rate) or self.lstm_learning_rate <= 0):
@@ -187,11 +194,12 @@ class RunoffRegressor(RegressorMixin, BaseEstimator):
         if self.lstm_raw_loss == 0:
             return transformed_loss
         flow = self._lstm_decode(pred,current)
-        raw_loss = ((flow-truth)/self.raw_loss_scale_).square().mean()
+        raw_loss = (((flow-truth)/self.raw_loss_scale_)*pred.new_tensor(getattr(self,'output_scale_',1.))).square().mean()
         return (1-self.lstm_raw_loss)*transformed_loss+self.lstm_raw_loss*raw_loss
 
     def _lstm_decode(self, pred, current):
-        flow = pred*pred.new_tensor(self.y_scaler_.scale_)+pred.new_tensor(self.y_scaler_.mean_)
+        unweighted = pred/pred.new_tensor(getattr(self,'output_scale_',1.))
+        flow = unweighted*pred.new_tensor(self.y_scaler_.scale_)+pred.new_tensor(self.y_scaler_.mean_)
         if self.residual:
             baseline = torch.log1p(current) if self.transform == 'log' else torch.sqrt(current) if self.transform == 'sqrt' else current
             flow = flow+baseline
@@ -283,7 +291,8 @@ class RunoffRegressor(RegressorMixin, BaseEstimator):
             prediction = self.estimator_.predict(self._ann_inputs(x))
         else:
             prediction = self.estimator_.predict(x[:,-1])
-        z = self.y_scaler_.inverse_transform(np.asarray(prediction).reshape(len(X),-1))
+        prediction = np.asarray(prediction).reshape(len(X),-1)/getattr(self,'output_scale_',1.)
+        z = self.y_scaler_.inverse_transform(prediction)
         if self.residual:
             z += self.target(current)
         if self.transform == 'log':

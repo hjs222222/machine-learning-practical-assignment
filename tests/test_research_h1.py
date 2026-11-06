@@ -109,6 +109,36 @@ def test_direct_and_joint_run_share_dates_and_score_first_day(tmp_path):
     assert b.prediction_h7.notna().all() and b.truth_h7.notna().all()
 
 
+@pytest.mark.parametrize('transform',['raw','sqrt','log'])
+@pytest.mark.parametrize('residual',[False,True])
+def test_first_day_weight_scales_training_and_is_reversed_in_prediction(transform,residual,monkeypatch):
+    from sklearn.ensemble import RandomForestRegressor
+    observed=[]
+    original=RandomForestRegressor.fit
+    def capture(self,X,z,**kwargs):
+        observed.append(z.copy())
+        return original(self,X,z,**kwargs)
+    monkeypatch.setattr(RandomForestRegressor,'fit',capture)
+    x=np.random.default_rng(102).uniform(1,8,(30,3,4)).astype('float32')
+    y=x[:,-1,:1]*np.arange(1,8)[None,:]+1
+    model=RunoffRegressor(trees=2,top_k=None,transform=transform,residual=residual,
+                          first_day_weight=4.).fit(x,y)
+    target=model.target(y)-(model.target(x[:,-1,:1]) if residual else 0)
+    z=model.y_scaler_.transform(target)*np.array([2.,1.,1.,1.,1.,1.,1.])
+    np.testing.assert_allclose(observed[0],z,rtol=1e-6,atol=1e-6)
+    np.testing.assert_array_equal(model.output_scale_,[2,1,1,1,1,1,1])
+    class Exact:
+        def predict(self,X):return z
+    model.estimator_=Exact()
+    np.testing.assert_allclose(model.predict(x),y,rtol=1e-6)
+
+
+@pytest.mark.parametrize('weight,outputs',[(0,7),(float('nan'),7),(4.,1)])
+def test_first_day_weight_rejects_invalid_or_single_output(weight,outputs):
+    with pytest.raises(ValueError,match='first_day_weight'):
+        RunoffRegressor(first_day_weight=weight).fit(np.ones((20,3,4)),np.ones((20,outputs)))
+
+
 @pytest.mark.parametrize('transform', ['raw','sqrt','log'])
 @pytest.mark.parametrize('residual', [False,True])
 @pytest.mark.parametrize('mi_target', ['raw','transformed','model_target'])
