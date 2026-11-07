@@ -655,7 +655,19 @@ ann_training_selection_groupb_policy/verification.json独立核验9新增拟合�
 
 - [x] 先失败测试：三个activation×history×1/7输出的非线性参数/初始输出相同、零skip与精确梯度；active1/7输出/历史展开训练/克隆/恢复；默认/显式False预测和loss相同、旧无新属性状态能推理；不支持家族/后端/非bool拒绝。独立手算受控首批loss验证skip权重包含L2、偏置不包含；小预算研究确认真实参数量/范数写入。
 - [x] 最小实现、相关及全量回归，diff/Git保存后才真实训练；实际默认参照数值仍需研究复现，不只凭单测宣布兼容。
-- [ ] ann_linear_skip_seed42：weather15/hidden16/alpha1/350上限/seq1/Z-score/批64/peak_weight1/ann_raw_loss0/common原点，sqrt增量lr0.001、power025增量lr0.001、log增量lr0.003各比较sklearn原参照、torch原参照、torch+skip，共9候选27年度拟合。旧两后端参照从ann_peak_loss_seed42三目标权重1原配置复制（仅新增显式batch64和skip False字段），18个年度参照须逐条复现；新结构只改变torch skip False/True。验证364日/年、gap7、原流量/峰评分不变。
+- [x] ann_linear_skip_seed42：weather15/hidden16/alpha1/350上限/seq1/Z-score/批64/peak_weight1/ann_raw_loss0/common原点，sqrt增量lr0.001、power025增量lr0.001、log增量lr0.003各比较sklearn原参照、torch原参照、torch+skip，共9候选27年度拟合。旧两后端参照从ann_peak_loss_seed42三目标权重1原配置复制（仅新增显式batch64和skip False字段），18个年度参照须逐条复现；新结构只改变torch skip False/True。验证364日/年、gap7、原流量/峰评分不变。
 - [ ] 独立核验原始真值/日期/Q95/gap、所有指标与汇总、固定参数/损失预算和范数/参数数量、源码哈希。若相对同torch原结构有可保留最差年或平均分收益且其他误差可接受，最多冻结两目标，seed13/2026各配对torch False/True（每seed最多4候选12拟合），旧sklearn匹配预测可明确来源复用；若仍未及较强sklearn必须说明。无收益不扩大skip系数/网络/损失混合/预算或种子组。不新评价2004，不改正式报告/验收/ZIP，不将研究h1缩成最终全部要求。
 
 新27项测试先因缺linear_skip/ann_linear_skip参数失败，再全部通过；全量305测试通过，10条既有ANN10轮预算警告。独立受控首批loss为6，验证含skip权重L2但不含偏置；12个初始化/梯度组合、4个实际训练/原生输出/恢复组合、8个非法设置、默认False/旧缺属性推理和研究元数据均覆盖。只改可选DenseNet与参数守卫/记录，不改LSTM或正式sklearn默认。保存Git后执行已登记27拟合，尚无精度收益结论。
+
+源码e884cce首轮27拟合已完成，独立核验10920预测通过，22条真实警告保留；18个sklearn/torch原参照的逐条预测和完整loss轨迹均复现，最大差0。新结构每个h1网络仅增加16个参数，范数由运行时记录并核对有限/结构数量，不冒称从保存权重独立恢复。每格最差年/平均R²：
+
+|结构|sqrt lr0.001|power025 lr0.001|log lr0.003|
+|---|---|---|---|
+|sklearn原参照|0.562421 / 0.774084|0.555943 / 0.781640|0.544841 / 0.776070|
+|torch原参照|0.562953 / 0.768831|0.556298 / 0.779094|0.541857 / 0.771333|
+|torch加线性跳连|0.564748 / 0.770537|0.560414 / 0.778207|0.548718 / 0.769483|
+
+sqrt同后端困难年/均值/MAE均改善，MAE174.098降至173.195，但平均峰RMSE1692.828升至1694.069（约0.073%），只是有代价的局部收益；均值仍未超过sklearn0.774084，不称整体升级。另两目标均值下降、平均峰RMSE分别1679.751→1730.058及1762.804→1804.608，困难年收益不足以掩盖退步，停止这两路线，不扩大其他设置。
+
+按已登记最多两路线规则，仅冻结sqrt一条。ann_linear_skip_paired_seed13/2026各torch原结构/加跳连两候选6年度拟合，共12新增拟合，参数/共同原点/验证日期完全不变；候选/源哈希另保存ann_linear_skip_paired_plan.json后才训练。配对torch原结构是本轮新拟合，不冒称历史复现；sklearn对应旧power_targets_paired_seed13/2026可明确来源只读比较，不计新增拟合。先重跑27项相关测试，再执行配对；不新评价2004、不改变默认。
