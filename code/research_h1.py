@@ -284,6 +284,7 @@ def run_stage(stage, output, previous=None, seed=42, families=('RF','ANN','LSTM'
                         inner_train_end=data['dates'][tr[lstm_training['probe_train_count']-1]],
                         inner_validation_start=data['dates'][tr[lstm_training['validation_start']]],
                         inner_validation_end=data['dates'][tr[-1]])
+                linear_skip = getattr(model.estimator_,'skip',None)
                 batch_size = (min(model.ann_batch_size,len(tr)) if model.family == 'ANN' and model.ann_solver == 'adam' else
                               min(128,len(tr)) if model.family == 'LSTM' else None)
                 fits.append(dict(candidate=candidate['id'],year=year,outputs=outputs,selected_indices=model.selected_.tolist(),
@@ -296,6 +297,10 @@ def run_stage(stage, output, previous=None, seed=42, families=('RF','ANN','LSTM'
                     peak_weight_normalizer=model.peak_weight_normalizer_,
                     ann_solver=model.ann_solver,ann_learning_rate=model.ann_learning_rate,
                     ann_backend=model.ann_backend,ann_raw_loss=model.ann_raw_loss,
+                    ann_linear_skip=model.ann_linear_skip,
+                    linear_skip_parameters=sum(p.numel() for p in linear_skip.parameters()) if linear_skip is not None else 0,
+                    linear_skip_weight_norm=float(linear_skip.weight.detach().norm().item()) if linear_skip is not None else None,
+                    linear_skip_bias_norm=float(linear_skip.bias.detach().norm().item()) if linear_skip is not None else None,
                     ann_batch_size=model.ann_batch_size,batch_size=batch_size,
                     batches_per_epoch=(len(tr)+batch_size-1)//batch_size if batch_size else None,
                     last_batch_size=(len(tr)-1)%batch_size+1 if batch_size else None,

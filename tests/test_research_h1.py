@@ -470,6 +470,21 @@ def test_rain_window_run_records_feature_names_and_keeps_default_modes(tmp_path)
     assert {c['mode'] for c in rh.stage_candidates('features',families=['RF'])}=={'mi','forced','all','hydro'}
 
 
+def test_ann_research_records_actual_linear_skip_parameters(tmp_path):
+    candidates=[dict(id=f'ANN_skip{skip}',family='ANN',mode='weather',transform='sqrt',residual=True,
+        params=dict(ann_backend='torch',ann_linear_skip=skip,hidden=2,iterations=1,seq_len=1)) for skip in (False,True)]
+    out=tmp_path/'linear_skip';rh.run_stage('features',out,raw=raw_data(),candidates=candidates)
+    protocol=json.loads((out/'protocol.json').read_text());fits=json.loads((out/'fits.json').read_text())
+    assert len(fits)==6 and [c['params']['ann_linear_skip'] for c in protocol['candidates']]==[False,True]
+    for row in fits:
+        assert row['ann_linear_skip']==row['candidate'].endswith('True')
+        if row['ann_linear_skip']:
+            assert row['linear_skip_parameters']==16 and row['linear_skip_weight_norm']>0
+            assert np.isfinite(row['linear_skip_bias_norm'])
+        else:
+            assert row['linear_skip_parameters']==0 and row['linear_skip_weight_norm'] is row['linear_skip_bias_norm'] is None
+
+
 def test_ann_research_records_actual_batch_geometry(tmp_path):
     candidates=[dict(id=f'ANN_{backend}',family='ANN',mode='weather',transform='sqrt',
         residual=True,params=dict(ann_backend=backend,ann_batch_size=62,hidden=2,

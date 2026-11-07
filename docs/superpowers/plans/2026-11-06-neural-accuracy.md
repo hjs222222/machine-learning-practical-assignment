@@ -646,3 +646,16 @@ ann_training_selection_policy/verification.json独立核验全部27拟合、1795
 ann_training_selection_groupb_policy/verification.json独立核验9新增拟合、5985训练/6552验证记录及1092派生政策记录，3条真实预算警告保留；原始真值、训练/验证完整日期、Q95/gap7、完整训练MSE及所有年度/峰指标/汇总、拟合轨迹/固定参数/源码哈希通过。A组只读复用1092条log政策预测并重新核对原始真值/指标，默认9选择重放不变，不计新增拟合；原A选择/预测/核验文件未覆盖，仅候选说明增加后续否定性审查。两组共用三个验证年，不声称独立新数据泛化。所有训练/核验句柄已明确终止，源码fd57a6b、全量278测试通过；无新2004评分、正式产物和模型默认不变。
 
 下一项尚未设计/实现/训练：停止初始化组搜索后，可先审查教师ANN范围内的一个有限结构假设——在现有torch ANN原输入上增加零初始化的可学习线性跳连，与同后端原网络对照；仍为一个ANN、不新增观测或三家族外的集成。须先读现有DenseNet/训练损失和教师边界，明确默认/初始化兼容、原生输出/保存测试与固定预算，再登记真实训练；不将其当作已有改进，也不继续重复日历/轮数网格。整体0.8目标仍未完成。
+
+## 第二十九阶段：同输入torch ANN零初始化线性跳连（设计与实施/训练前登记）
+
+教师指导书要求ANN预测与Grid Search CV，未限定ANN库/内部连接；本项仍是单个联合训练的ANN，不新增模型家族/观测或将双通路冒称教师三家族集成。比较方案：继续堆隐藏宽度/轮数（已有失败证据，不采用）；另训线性模型再与ANN融合（新流程/难隔离，不采用）；原网络内加零初始化直接线性通路（采用有限结构研究）。输出坐标为原head(activation(hidden(x)))+skip(x)，skip权重/偏置初始0，非线性初始权重和初始预测与同后端原网络一致。增加参数/梯度路径仍改变容量和优化，不宣称纯信息或单独机制因果。
+
+最小改动：DenseNet尾参数linear_skip=False，仅True时建立nn.Linear(inputs,outputs)并归零，默认不产生新层/随机初始化调用；forward以getattr兼容旧无skip属性对象。RunoffRegressor尾参数ann_linear_skip=False并记录，非bool或True且非torch ANN拒绝；原ann_backend的Adam/无时间早停限制不变。_fit_torch传标志，既有按weight名计算的L2自然包括skip.weight、不惩罚skip.bias；其余损失、Adam、梯度裁剪、batch64/350预算/训练损失早停不改。原生1/7输出、ann_history布局和保存恢复必须保留。models.py之外只改research_h1.py的fits结构记录flag、实际额外参数数目、末态权重/偏置范数及tests/MD，不改正式网格/CLI/默认sklearn。
+
+- [x] 先失败测试：三个activation×history×1/7输出的非线性参数/初始输出相同、零skip与精确梯度；active1/7输出/历史展开训练/克隆/恢复；默认/显式False预测和loss相同、旧无新属性状态能推理；不支持家族/后端/非bool拒绝。独立手算受控首批loss验证skip权重包含L2、偏置不包含；小预算研究确认真实参数量/范数写入。
+- [x] 最小实现、相关及全量回归，diff/Git保存后才真实训练；实际默认参照数值仍需研究复现，不只凭单测宣布兼容。
+- [ ] ann_linear_skip_seed42：weather15/hidden16/alpha1/350上限/seq1/Z-score/批64/peak_weight1/ann_raw_loss0/common原点，sqrt增量lr0.001、power025增量lr0.001、log增量lr0.003各比较sklearn原参照、torch原参照、torch+skip，共9候选27年度拟合。旧两后端参照从ann_peak_loss_seed42三目标权重1原配置复制（仅新增显式batch64和skip False字段），18个年度参照须逐条复现；新结构只改变torch skip False/True。验证364日/年、gap7、原流量/峰评分不变。
+- [ ] 独立核验原始真值/日期/Q95/gap、所有指标与汇总、固定参数/损失预算和范数/参数数量、源码哈希。若相对同torch原结构有可保留最差年或平均分收益且其他误差可接受，最多冻结两目标，seed13/2026各配对torch False/True（每seed最多4候选12拟合），旧sklearn匹配预测可明确来源复用；若仍未及较强sklearn必须说明。无收益不扩大skip系数/网络/损失混合/预算或种子组。不新评价2004，不改正式报告/验收/ZIP，不将研究h1缩成最终全部要求。
+
+新27项测试先因缺linear_skip/ann_linear_skip参数失败，再全部通过；全量305测试通过，10条既有ANN10轮预算警告。独立受控首批loss为6，验证含skip权重L2但不含偏置；12个初始化/梯度组合、4个实际训练/原生输出/恢复组合、8个非法设置、默认False/旧缺属性推理和研究元数据均覆盖。只改可选DenseNet与参数守卫/记录，不改LSTM或正式sklearn默认。保存Git后执行已登记27拟合，尚无精度收益结论。

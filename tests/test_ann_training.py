@@ -11,6 +11,77 @@ from models import RunoffRegressor, DenseNet
 pytestmark = pytest.mark.filterwarnings('ignore::sklearn.exceptions.ConvergenceWarning')
 
 
+@pytest.mark.parametrize('activation',['relu','tanh','logistic'])
+@pytest.mark.parametrize('history',[False,True])
+@pytest.mark.parametrize('outputs',[1,7])
+def test_linear_skip_preserves_initial_function_and_has_exact_gradients(activation,history,outputs):
+    x=torch.arange(72,dtype=torch.float32).reshape(6,3,4)/10+1
+    inputs=12 if history else 4
+    plain=DenseNet(inputs,3,outputs,activation,history,42)
+    skipped=DenseNet(inputs,3,outputs,activation,history,42,linear_skip=True)
+    for name,value in plain.state_dict().items():
+        torch.testing.assert_close(value,skipped.state_dict()[name],rtol=0,atol=0)
+    assert torch.count_nonzero(skipped.skip.weight)==0 and torch.count_nonzero(skipped.skip.bias)==0
+    torch.testing.assert_close(plain(x),skipped(x),rtol=0,atol=0)
+    skipped(x).sum().backward();flat=x.flatten(1) if history else x[:,-1]
+    torch.testing.assert_close(skipped.skip.weight.grad,flat.sum(0).repeat(outputs,1))
+    torch.testing.assert_close(skipped.skip.bias.grad,torch.full((outputs,),6.))
+
+
+@pytest.mark.parametrize('history',[False,True])
+@pytest.mark.parametrize('outputs',[1,7])
+def test_linear_skip_trains_native_outputs_and_survives_clone_restore(history,outputs,tmp_path):
+    x=np.random.default_rng(717).uniform(1,5,(35,3,4)).astype('float32')
+    y=x[:,-1,:1]*np.arange(1,outputs+1)[None,:]+1
+    model=RunoffRegressor(family='ANN',ann_backend='torch',ann_linear_skip=True,ann_raw_loss=.25,
+        transform='log',residual=True,hidden=3,iterations=3,top_k=None,ann_history=history,
+        first_day_weight=4 if outputs==7 else 1,ann_batch_size=7).fit(x,y)
+    assert model.estimator_.skip.in_features==4*(3 if history else 1) and model.estimator_.skip.out_features==outputs
+    assert model.estimator_.skip.weight.detach().abs().sum()>0 and len(model.loss_history_)==3
+    assert model.predict(x).shape==(35,outputs) and np.isfinite(model.predict(x)).all()
+    assert clone(model).get_params()==model.get_params()
+    path=tmp_path/'linear_skip.joblib';joblib.dump(model,path)
+    np.testing.assert_array_equal(joblib.load(path).predict(x),model.predict(x))
+
+
+@pytest.mark.parametrize('options',[{'family':'RF'},{'family':'LSTM'},{'ann_backend':'sklearn'},
+    {'ann_linear_skip':1},{'ann_linear_skip':0.0},{'ann_linear_skip':'yes'},
+    {'ann_linear_skip':None},{'ann_linear_skip':np.bool_(True)}])
+def test_linear_skip_rejects_unsupported_settings(options):
+    args=dict(family='ANN',ann_backend='torch',ann_linear_skip=True,top_k=None);args.update(options)
+    with pytest.raises(ValueError,match='ann_linear_skip'):
+        RunoffRegressor(**args).fit(np.ones((20,1,2)),np.ones((20,1)))
+
+
+def test_linear_skip_l2_includes_weights_but_not_bias(monkeypatch):
+    original=DenseNet
+    def controlled(*args,**kwargs):
+        net=original(*args,**kwargs)
+        with torch.no_grad():
+            for parameter in net.parameters():parameter.zero_()
+            net.skip.weight.fill_(2.);net.skip.bias.fill_(3.)
+        return net
+    monkeypatch.setattr('models.DenseNet',controlled)
+    y=np.arange(1,5,dtype=float)[:,None]
+    model=RunoffRegressor(family='ANN',ann_backend='torch',ann_linear_skip=True,ann_learning_rate=1e-30,
+        alpha=1,hidden=2,iterations=1,top_k=None,seq_len=1).fit(np.ones((4,1,2)),y)
+    z=model.y_scaler_.transform(y).astype('float32')
+    expected=.5*np.mean((3-z)**2)+1.*(2*2**2)/(2*4)
+    assert model.loss_history_[0]==pytest.approx(float(expected),abs=1e-6)
+
+
+def test_linear_skip_default_false_and_legacy_inference_are_compatible(tmp_path):
+    x=np.random.default_rng(718).uniform(1,5,(25,1,3)).astype('float32');y=x[:,-1,:1]+1
+    args=dict(family='ANN',ann_backend='torch',hidden=2,iterations=2,top_k=None,seq_len=1)
+    default=RunoffRegressor(**args).fit(x,y);explicit=RunoffRegressor(**args,ann_linear_skip=False).fit(x,y)
+    np.testing.assert_array_equal(default.predict(x),explicit.predict(x))
+    np.testing.assert_array_equal(default.loss_history_,explicit.loss_history_)
+    assert not hasattr(default.estimator_,'skip')
+    del default.ann_linear_skip
+    path=tmp_path/'legacy_no_skip.joblib';joblib.dump(default,path)
+    np.testing.assert_array_equal(joblib.load(path).predict(x),explicit.predict(x))
+
+
 @pytest.mark.parametrize('batch',[0,-1,1.5,64.,True,np.bool_(True),None,float('inf'),float('nan'),'62'])
 def test_ann_batch_size_rejects_nonpositive_or_noninteger_values(batch):
     with pytest.raises(ValueError,match='ann_batch_size'):

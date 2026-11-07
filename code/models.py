@@ -28,7 +28,7 @@ class SequenceNet(nn.Module):
 
 
 class DenseNet(nn.Module):
-    def __init__(self, inputs, hidden, outputs, activation, history, seed):
+    def __init__(self, inputs, hidden, outputs, activation, history, seed, linear_skip=False):
         super().__init__()
         self.history = history
         self.n_features_in_ = inputs
@@ -44,10 +44,16 @@ class DenseNet(nn.Module):
                 bias = rng.uniform(-bound,bound,layer.out_features).astype('float32')
                 layer.weight.copy_(torch.from_numpy(weight.T))
                 layer.bias.copy_(torch.from_numpy(bias))
+        if linear_skip:
+            self.skip = nn.Linear(inputs,outputs)
+            nn.init.zeros_(self.skip.weight)
+            nn.init.zeros_(self.skip.bias)
 
     def forward(self,x):
         x = x.flatten(1) if self.history else x[:,-1]
-        return self.head(self.activation(self.hidden(x)))
+        prediction = self.head(self.activation(self.hidden(x)))
+        skip = getattr(self,'skip',None)
+        return prediction if skip is None else prediction+skip(x)
 
 
 class RunoffRegressor(RegressorMixin, BaseEstimator):
@@ -58,7 +64,7 @@ class RunoffRegressor(RegressorMixin, BaseEstimator):
                  ann_activation='relu', lstm_raw_loss=0.0, lstm_learning_rate=0.003,
                  lstm_chrono_stop=False, ann_history=False, first_day_weight=1.0,
                  x_scaling='standard', input_transform='raw',
-                 ann_backend='sklearn', ann_raw_loss=0.0, ann_batch_size=64):
+                 ann_backend='sklearn', ann_raw_loss=0.0, ann_batch_size=64, ann_linear_skip=False):
         self.family = family
         self.transform = transform
         self.top_k = top_k
@@ -89,6 +95,7 @@ class RunoffRegressor(RegressorMixin, BaseEstimator):
         self.ann_backend = ann_backend
         self.ann_raw_loss = ann_raw_loss
         self.ann_batch_size = ann_batch_size
+        self.ann_linear_skip = ann_linear_skip
 
     def target(self, y):
         if self.transform == 'log':
@@ -156,6 +163,9 @@ class RunoffRegressor(RegressorMixin, BaseEstimator):
                 not isinstance(self.ann_batch_size,(int,np.integer)) or self.ann_batch_size < 1 or
                 (self.family != 'ANN' and self.ann_batch_size != 64)):
             raise ValueError('ann_batch_size须为非bool正整数；非64仅适用于ANN')
+        if (not isinstance(self.ann_linear_skip,bool) or
+                (self.ann_linear_skip and (self.family != 'ANN' or self.ann_backend != 'torch'))):
+            raise ValueError('ann_linear_skip须为bool，True仅适用于torch ANN')
         if (self.ann_backend not in ('sklearn','torch') or
                 (self.ann_backend == 'torch' and (self.family != 'ANN' or self.ann_solver != 'adam' or self.ann_chrono_stop))):
             raise ValueError('ann_backend torch仅支持无ann_chrono_stop的Adam ANN')
@@ -302,7 +312,8 @@ class RunoffRegressor(RegressorMixin, BaseEstimator):
         is_ann = self.family == 'ANN'
         if is_ann:
             inputs = x.shape[-1]*(x.shape[1] if self.ann_history else 1)
-            net = DenseNet(inputs,self.hidden,z.shape[1],self.ann_activation,self.ann_history,self.seed).to(device)
+            net = DenseNet(inputs,self.hidden,z.shape[1],self.ann_activation,self.ann_history,self.seed,
+                           linear_skip=self.ann_linear_skip).to(device)
         else:
             net = SequenceNet(x.shape[-1],self.hidden,z.shape[1]).to(device)
         optimizer = torch.optim.Adam(net.parameters(),
