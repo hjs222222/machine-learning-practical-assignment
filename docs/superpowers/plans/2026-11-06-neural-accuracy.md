@@ -867,3 +867,16 @@ ann_refinement_verification.json已独立恢复本轮9模型、逐项复现3276�
 全量393测试实际通过（10条既有测试预算警告）；全部训练/核验/测试句柄结束，完整目录不得重启/覆盖。QA模型仅新研究output/Git忽略，不加入正式ZIP；无新2004评分、报告/验收/正式产物改动，整体目标仍未完成。
 
 下一项转到教师已有气象资料明确给出的派生量，停止精修网格扩张。已核对Teacher Resources & Requirements/md/Daymet_Daily_V4R1.md表1：Srad为白昼平均W/m²，Dayl为秒/日，文档明确日总短波辐射=Srad*Dayl/1,000,000（MJ/m²/日）。当前features.py/research_h1.py尚无该乘积特征；只按原CSV2000--2003检查单位/有限性，1461行派生范围约1.14651--37.16785，证据teacher_radiation_formula_readiness.json，0新增观测/拟合/2004评价。特征接口/实现/训练尚未开始，须先设计仅t及历史、旧模式数值/日期兼容的有限对照与TDD；它是教师公式的确定性表示，不可称新增实测辐射、土壤湿度或补造数据。
+
+## 第三十六阶段：教师公式日总辐射输入（设计与训练前登记）
+
+直接采用教师Daymet资料表1的确定性单位公式，而非引入新物理模型或外部气象：E(t)=Srad(t)*Dayl(t)/1,000,000，MJ/m²/日。比较保持原独立Srad/Dayl输入、增加一个公式列、另造蒸散/土壤状态三方案；仅选择原weather15加一个公式列，不生成额外观测/样本，不改原Srad/Dayl、不插补、不使用未来天气。输入维数变16也增加ANN输入权重，整体效果包括表示与参数数改变，不宣称纯新增信息。
+
+仅research_h1.py的MODES末尾增加weather_radiation，frames用weather.assign(Srad_energy_MJ_m2_lag0=raw.Srad*raw.Dayl/1_000_000)。原default四模式/模型/正式网格/CLI流程不变；研究CLI的显式可选mode自然支持新值。原available_weather早返回不变，本轮不组合有效原点/批62/精修/调度等改动。公共30步窗口每步只用该步当天字段，支持h1/原生h7标签，日期/预热/样本由原hydro规则决定，不额外删除记录。
+
+- [x] 改动前保存实际教师数据旧MODES全部数组/列名/形状/dtype/日期/标签哈希，覆盖h1/h7×common/available四种情形（radiation_old_modes_before.json）。TDD先失败：独立NumPy全30步公式与15原列完全相同、h1/h7对齐、已知100W/m²×36000秒=3.6MJ、未来/2004扰动无泄漏、显式mode/默认不扩展、研究smoke日志列名和16维。现有全模式因果/2004截断/原生标签测试同时覆盖新mode。
+- [x] 最小实现后独立重放所有旧哈希逐项相同，再相关与全量回归/diff/Git保存；不改models.py或旧训练输出，不拿新列冒充新增实测数据。
+- [ ] teacher_radiation_seed42固定ANN hidden16/alpha1/350上限/seq1/批64/sklearn/原点common/Z-score/原始输入，sqrt增量lr0.001、power025增量lr0.001、log增量lr0.003，各比较weather15/weather_radiation16，两模式×三目标×三年度=18拟合。从第29阶段对应原sklearn权重1参照复制，不同时调网络/优化器。训练前冻结候选/源码/教师资料/原CSV/参考协议哈希；9个旧weather年度预测/完整loss须逐项复现。验证364日/年/gap7、原流量/峰评分不变。
+- [ ] 每目标辐射输入相对对应weather门槛固定：最差年/平均R²均不下降（1e-10）、至少一项>1e-6，MAE/平均峰RMSE各最多+1%。最多一个目标按最差年、再均值排序进入seed13/2026配对，各2候选6拟合；失败不扩特征公式/滞后/目标/lr/种子。任一配对seed困难年/均值退步不称稳定升级/替换默认，完整展示取舍与已有较强候选。独立原始公式/真值/日期/gap/Q95/所有原流量指标及预算/源码哈希核验。不新评估2004或修改最终报告/验收/ZIP，最终24+16要求保留。
+
+5项新测试先因缺weather_radiation全部失败，最小两行生产改动后全部通过；实际原CSV旧21模式的全部值/列顺序/形状/dtype、h1/h7×common/available四种情况日期/标签哈希逐项复现，证据radiation_old_modes_compatibility.json。全量398测试实际通过，10条既有ANN10轮测试预算警告。仅显式新研究mode增加16维表示，models.py及旧默认/可用原点分支不变。Git保存后执行已登记18拟合，尚无精度收益结论。

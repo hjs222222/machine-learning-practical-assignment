@@ -13,6 +13,51 @@ def raw_data():
                          for c in ['Discharge','Dayl','Prcp','Srad','Swe','Tmax','Tmin','Vp']}, index=dates)
 
 
+@pytest.mark.parametrize('horizons',[1,7])
+def test_teacher_radiation_formula_matches_all_sequence_steps(horizons):
+    raw=raw_data();raw['Srad']=100+np.arange(len(raw))*.1;raw['Dayl']=36000+np.arange(len(raw))*5
+    data=rh.prepare_data(raw,horizons=horizons);radiation=data['weather_radiation']
+    assert radiation['names']==data['weather']['names']+['Srad_energy_MJ_m2_lag0']
+    assert radiation['X'].shape==(len(data['dates']),30,16)
+    np.testing.assert_array_equal(radiation['dates'],data['dates'])
+    np.testing.assert_array_equal(radiation['X'][:,:,:15],data['weather']['X'])
+    end=raw.index.get_indexer(data['dates']);indices=end[:,None]+np.arange(-29,1)[None,:]
+    expected=(raw.Srad.to_numpy()[indices]*raw.Dayl.to_numpy()[indices]/1_000_000).astype('float32')
+    np.testing.assert_array_equal(radiation['X'][:,:,-1],expected)
+    np.testing.assert_array_equal(data['y'],np.column_stack([raw.Discharge.shift(-h).reindex(data['dates']) for h in range(1,horizons+1)]))
+
+
+def test_teacher_radiation_known_units_and_explicit_scope():
+    raw=raw_data();raw['Srad']=100.;raw['Dayl']=36000.
+    data=rh.prepare_data(raw)
+    np.testing.assert_array_equal(data['weather_radiation']['X'][:,:,-1],np.full((len(data['dates']),30),3.6,dtype='float32'))
+    assert {c['mode'] for c in rh.stage_candidates('features',families=['RF'])}==set(rh.DEFAULT_MODES)
+    explicit=rh.stage_candidates('features',families=['RF'],modes=('weather_radiation',))
+    assert explicit and {c['mode'] for c in explicit}=={'weather_radiation'}
+    assert 'weather_radiation' in rh.MODES
+
+
+def test_teacher_radiation_stays_causal_and_excludes_2004():
+    raw=raw_data();a=rh.prepare_data(raw)
+    changed=raw.copy();changed.loc['2003-06-01':,['Srad','Dayl']]*=99
+    b=rh.prepare_data(changed);before=a['dates']<'2003-06-01'
+    np.testing.assert_array_equal(a['weather_radiation']['X'][before],b['weather_radiation']['X'][before])
+    changed=raw.copy();changed.loc['2004-01-01':,['Srad','Dayl']]=1e9
+    c=rh.prepare_data(changed)
+    np.testing.assert_array_equal(a['weather_radiation']['X'],c['weather_radiation']['X'])
+    np.testing.assert_array_equal(a['dates'],c['dates']);np.testing.assert_array_equal(a['y'],c['y'])
+
+
+def test_teacher_radiation_smoke_records_formula_column(tmp_path):
+    candidates=[dict(id='radiation',family='RF',mode='weather_radiation',transform='sqrt',residual=True,params=dict(trees=2,seq_len=1))]
+    out=tmp_path/'radiation';rh.run_stage('features',out,raw=raw_data(),candidates=candidates)
+    protocol=json.loads((out/'protocol.json').read_text());fits=json.loads((out/'fits.json').read_text())
+    assert protocol['candidates']==candidates and len(fits)==3
+    for row in fits:
+        assert row['input_width']==16 and row['selected_names'][-1]=='Srad_energy_MJ_m2_lag0'
+        assert row['selected_indices']==list(range(16))
+
+
 def test_cutoff_causality_and_common_origins():
     raw = raw_data()
     a = rh.prepare_data(raw)
