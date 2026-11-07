@@ -220,6 +220,48 @@ def test_weather_ablation_removes_only_named_derivative_group():
 
 
 @pytest.mark.parametrize('horizons',[1,7])
+@pytest.mark.parametrize('mode',['weather_month','weather_season'])
+def test_calendar_inputs_match_independent_month_and_season_tables(horizons,mode):
+    raw=raw_data();data=rh.prepare_data(raw,horizons=horizons);part=data[mode]
+    columns=['month_sin','month_cos'] if mode=='weather_month' else [f'season_{s}' for s in ('winter','spring','summer','autumn')]
+    assert part['names']==data['weather']['names']+columns
+    assert part['X'].shape==(len(data['dates']),30,15+len(columns))
+    np.testing.assert_array_equal(part['dates'],data['dates'])
+    np.testing.assert_array_equal(part['X'][:,:,:15],data['weather']['X'])
+    root3=np.sqrt(3)/2
+    sine=np.array([0,.5,root3,1,root3,.5,0,-.5,-root3,-1,-root3,-.5])
+    cosine=np.array([1,root3,.5,0,-.5,-root3,-1,-root3,-.5,0,.5,root3])
+    months=raw.index.month.to_numpy()
+    expected=np.column_stack([sine[months-1],cosine[months-1]]) if mode=='weather_month' else np.column_stack([
+        np.isin(months,m) for m in ((12,1,2),(3,4,5),(6,7,8),(9,10,11))])
+    ends=raw.index.get_indexer(data['dates']);steps=ends[:,None]+np.arange(-29,1)[None,:]
+    np.testing.assert_allclose(part['X'][:,:,15:],expected[steps].astype('float32'),rtol=1e-6,atol=1e-7)
+    if mode=='weather_season':
+        assert np.all(part['X'][:,:,15:].sum(axis=-1)==1)
+        for date,wanted in [('2000-03-01',[0,1,0,0]),('2000-12-01',[1,0,0,0])]:
+            np.testing.assert_array_equal(part['X'][data['dates'].get_loc(date),-1,15:],wanted)
+    np.testing.assert_array_equal(data['y'],np.column_stack([
+        raw.Discharge.shift(-h).reindex(data['dates']) for h in range(1,horizons+1)]))
+
+
+def test_calendar_run_records_columns_native_outputs_and_default_modes(tmp_path):
+    modes=['weather_month','weather_season']
+    candidates=[dict(id=m,family='RF',mode=m,transform='sqrt',residual=True,outputs=7,
+        params=dict(trees=2,seq_len=1)) for m in modes]
+    out=tmp_path/'calendar';rh.run_stage('features',out,raw=raw_data(),candidates=candidates)
+    protocol=json.loads((out/'protocol.json').read_text());fits=json.loads((out/'fits.json').read_text())
+    assert [c['mode'] for c in protocol['candidates']]==modes and protocol['label_horizon']==7
+    assert not protocol['available_weather'] and len(fits)==6
+    for row in fits:
+        columns=['month_sin','month_cos'] if row['candidate']=='weather_month' else [f'season_{s}' for s in ('winter','spring','summer','autumn')]
+        assert row['outputs']==7 and row['input_width']==len(row['selected_names'])==15+len(columns)
+        assert row['selected_names'][15:]==columns and row['selected_names'][0]=='Discharge_lag0'
+    assert {c['mode'] for c in rh.stage_candidates('features',families=['RF'])}=={'mi','forced','all','hydro'}
+    assert {c['mode'] for c in rh.stage_candidates('features',families=['RF'],modes=modes)}==set(modes)
+    assert json.loads((out/'complete.json').read_text())['status']=='complete'
+
+
+@pytest.mark.parametrize('horizons',[1,7])
 @pytest.mark.parametrize('mode,column',[
     ('weather_qdiff1','Discharge_diff1'),
     ('weather_rain_q','Prcp_times_Discharge'),

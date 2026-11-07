@@ -506,3 +506,16 @@ weather_batch_interaction_verification.json独立核验通过：全部四格36�
 flow_interactions_verification.json独立核验全部60拟合/25116预测，44条真实研究警告完整保留。独立重建教师原字段的weather15及三新列的全部30步位置、共同日期/原始标签；原流量R²/RMSE/MAE/训练Q95峰误差、年度汇总、输入维度、批次、轮数/loss、固定参数及源码哈希均通过。三seed对应weather控制（共21年度拟合）逐条复现旧预测，最大差0。源码4fc8cc9，全量240测试通过（10条为既有小预算ANN测试警告），训练进程已明确终止，不需重启；无新2004评分或正式产物变更。
 
 flow_interactions_peak_case.json还保留原误差预算事件的训练期观察：针对2003-12-18真实13700的突涨，这些weather与加Qdiff1模型仍预测约1069--1164，新增趋势未纠正该事件。仅作已知单例诊断，不证明理论上限，不删点/改评分，也不使用2004解释失败。下一项应先审查weather15是否缺失教师明确要求的月/季节编码：原base/compact/climate已有编码，但未与weather15孤立对照；不把已存在公式称新发明。该日历上下文假设尚未设计/实现/训练，整体0.8目标仍未完成。
+
+## 第二十五阶段：固定天气输入的月份/四季上下文（设计与实施/训练前登记）
+
+依据教师特征工程要求，复用base已有日历列，不发明新的日期/观测。比较三输入：原weather15，weather_month=weather15+month_sin/month_cos（17列），weather_season=weather15+season_winter/spring/summer/autumn（19列）。月份角度仍2π(month-1)/12；冬季12/1/2、春季3/4/5、夏季6/7/8、秋季9/10/11，绝非季度分组。只使用原点t的日历及原有30步历史，不使用未来天气。相比另两方案（两种编码同时叠加、为每月训练子模型），当前方案最少、能分别检查编码方式，不拆分样本或扩大模型家族。
+
+改动面仅code/research_h1.py的CALENDAR_INPUTS映射、MODES及prepare_data中两个frame，tests/test_research_h1.py和MD。用`pd.concat([weather,base[list(columns)]],axis=1)`复用已有列；原特征代码、models.py/默认四模式/正式网格/available_weather守卫不改。CLI的已有choices与程序candidates共用MODES。available_weather仍只允许weather/ANN/seq1，不在本轮同时改训练起点。日历编码是确定性派生、无全数据拟合统计，但增加输入维数/初始化，效果须称整个输入方案，不作独立因果推断。
+
+- [x] 新测试先失败：1/7标签下独立用12个月值表与四季月份集合检查完整30步日历、15列旧天气逐项一致及共同标签；检查3月/12月边界、冬季不等于第一季度。小预算RF原生七输出确认17/19维及协议列名，默认四模式不变；原未来扰动/2004截断遍历自动覆盖两模式。命令`D:\anaconda3\python.exe -m pytest tests/test_research_h1.py -q -k calendar`，预期模式缺失KeyError。
+- [x] 最小实现、研究文件及全量pytest回归；实际教师数据与4fc8cc9旧prepare_data的所有既有模式/两训练起点逐项相同。检查diff并Git保存，才训练。
+- [ ] 首轮weather_calendar_seed42：三输入×三固定ANN目标（sqrt增量lr0.001、power025增量lr0.001、log增量lr0.003）×三年=27拟合。固定hidden16/alpha1/350上限/seq1/Z-score/批量64/无峰权重/common训练300/665/1030，验证364日/年及gap7。weather旧三参照须逐条复现weather_origins_common_seed42。protocol先落盘，不改原流量评分。
+- [ ] 从教师原日期独立重建日历及原字段天气，核验原始真值/日期/Q95/全年度与洪峰指标、汇总、输入列/实际轮数/loss/批次与源码哈希。最多冻结两条可保留收益且其他误差可接受的新输入/目标组合，在seed13/2026和对应weather参照复核；每seed最多4候选12拟合，若共享同目标参照只训练一次，数量在运行前明确登记。无收益停止，不扩月分组/组合/网络/学习率。研究仍只到2003，不新评估2004、不改正式报告/验收/ZIP。
+
+5项新测试先因weather_month/weather_season缺失KeyError失败；最小实现后研究相关95项通过，全量245测试通过（10条为既有10轮ANN测试预算警告）。真实教师数据上的所有既有模式及available_weather两分支与4fc8cc9旧准备函数的日期/标签/名称/输入逐项相同。只增加日历映射和两个frame，models.py及原编码公式未改；Git保存后执行已登记27拟合。

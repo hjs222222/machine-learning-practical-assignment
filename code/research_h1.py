@@ -22,7 +22,9 @@ WEATHER_ABLATIONS = {'weather_no_vp':('Vp_diff1','Vp_diff3'),
 RAIN_WINDOWS = {'weather_rain_sum30':1.,'weather_rain_decay05':.5,
                 'weather_rain_decay08':.8,'weather_rain_decay095':.95}
 FLOW_INTERACTIONS = ('weather_qdiff1','weather_rain_q','weather_rain_qdiff1')
-MODES = DEFAULT_MODES + ('compact','target_mi','climate','daily','weather') + tuple(WEATHER_ABLATIONS) + tuple(RAIN_WINDOWS) + FLOW_INTERACTIONS
+CALENDAR_INPUTS = {'weather_month':('month_sin','month_cos'),
+                   'weather_season':('season_winter','season_spring','season_summer','season_autumn')}
+MODES = DEFAULT_MODES + ('compact','target_mi','climate','daily','weather') + tuple(WEATHER_ABLATIONS) + tuple(RAIN_WINDOWS) + FLOW_INTERACTIONS + tuple(CALENDAR_INPUTS)
 BASE = {'RF': dict(trees=120, leaf=1),
         'ANN': dict(hidden=64, iterations=350, alpha=.1),
         'LSTM': dict(hidden=32, seq_len=14, epochs=70, alpha=.1)}
@@ -85,6 +87,7 @@ def prepare_data(raw, cutoff='2003-12-31', horizons=1, available_weather=False):
     result = dict(dates=dates, y=np.column_stack([raw.Discharge.shift(-h).iloc[ids].to_numpy() for h in range(1,horizons+1)]),
                   raw=raw)
     frames = dict(hydro=hydro,compact=compact,climate=climate,daily=daily,weather=weather)
+    frames.update({mode:pd.concat([weather,base[list(columns)]],axis=1) for mode,columns in CALENDAR_INPUTS.items()})
     frames.update(dict(weather_qdiff1=weather.assign(Discharge_diff1=raw.Discharge.diff(1)),
         weather_rain_q=weather.assign(Prcp_times_Discharge=raw.Prcp*raw.Discharge),
         weather_rain_qdiff1=weather.assign(Prcp_times_Discharge_diff1=raw.Prcp*raw.Discharge.diff(1))))
