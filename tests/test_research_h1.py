@@ -515,6 +515,21 @@ def test_ann_research_records_actual_learning_rate_schedule(tmp_path):
         else:assert row['ann_lr_schedule']=='constant' and row['learning_rate_history'] is None
 
 
+def test_lstm_research_records_actual_readout_head(tmp_path):
+    candidates=[dict(id=readout,family='LSTM',mode='daily',transform='log',residual=False,
+        params=dict(lstm_readout=readout,hidden=2,epochs=1,seq_len=3)) for readout in ('last','last_mean')]
+    candidates.append(dict(id='RF',family='RF',mode='daily',transform='sqrt',residual=False,params=dict(trees=2)))
+    out=tmp_path/'readout';rh.run_stage('features',out,raw=raw_data(),candidates=candidates)
+    fits=json.loads((out/'fits.json').read_text());assert len(fits)==9
+    for row in fits:
+        if row['candidate']=='RF':
+            assert row['lstm_readout']=='last' and row['lstm_readout_width'] is row['lstm_head_parameters'] is None
+        else:
+            assert row['lstm_readout']==row['candidate']
+            assert row['lstm_readout_width']==(4 if row['candidate']=='last_mean' else 2)
+            assert row['lstm_head_parameters']==row['lstm_readout_width']+1
+
+
 def test_ann_research_records_actual_batch_geometry(tmp_path):
     candidates=[dict(id=f'ANN_{backend}',family='ANN',mode='weather',transform='sqrt',
         residual=True,params=dict(ann_backend=backend,ann_batch_size=62,hidden=2,

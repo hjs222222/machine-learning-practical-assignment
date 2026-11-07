@@ -17,14 +17,18 @@ torch.set_num_threads(2)
 
 
 class SequenceNet(nn.Module):
-    def __init__(self, inputs, hidden, outputs):
+    def __init__(self, inputs, hidden, outputs, readout='last'):
         super().__init__()
+        if not isinstance(readout,str) or readout not in ('last','last_mean'):
+            raise ValueError('readout仅支持last/last_mean')
+        self.readout = readout
         self.lstm = nn.LSTM(inputs, hidden, batch_first=True)
-        self.head = nn.Linear(hidden, outputs)
+        self.head = nn.Linear(hidden*(2 if readout == 'last_mean' else 1), outputs)
 
     def forward(self, x):
         sequence, _ = self.lstm(x)
-        return self.head(sequence[:, -1])
+        last = sequence[:, -1]
+        return self.head(torch.cat((last,sequence.mean(dim=1)),dim=1) if getattr(self,'readout','last') == 'last_mean' else last)
 
 
 class DenseNet(nn.Module):
@@ -65,7 +69,7 @@ class RunoffRegressor(RegressorMixin, BaseEstimator):
                  lstm_chrono_stop=False, ann_history=False, first_day_weight=1.0,
                  x_scaling='standard', input_transform='raw',
                  ann_backend='sklearn', ann_raw_loss=0.0, ann_batch_size=64, ann_linear_skip=False,
-                 ann_grad_clip=1.0, ann_lr_schedule='constant'):
+                 ann_grad_clip=1.0, ann_lr_schedule='constant', lstm_readout='last'):
         self.family = family
         self.transform = transform
         self.top_k = top_k
@@ -99,6 +103,7 @@ class RunoffRegressor(RegressorMixin, BaseEstimator):
         self.ann_linear_skip = ann_linear_skip
         self.ann_grad_clip = ann_grad_clip
         self.ann_lr_schedule = ann_lr_schedule
+        self.lstm_readout = lstm_readout
 
     def target(self, y):
         if self.transform == 'log':
@@ -177,6 +182,9 @@ class RunoffRegressor(RegressorMixin, BaseEstimator):
         if (not isinstance(self.ann_lr_schedule,str) or self.ann_lr_schedule not in ('constant','half_linear') or
                 (self.ann_lr_schedule != 'constant' and (self.family != 'ANN' or self.ann_backend != 'torch'))):
             raise ValueError('ann_lr_schedule仅支持constant/half_linear；非constant仅适用于torch ANN')
+        if (not isinstance(self.lstm_readout,str) or self.lstm_readout not in ('last','last_mean') or
+                (self.lstm_readout != 'last' and self.family != 'LSTM')):
+            raise ValueError('lstm_readout仅支持last/last_mean，非last仅适用于LSTM')
         if (self.ann_backend not in ('sklearn','torch') or
                 (self.ann_backend == 'torch' and (self.family != 'ANN' or self.ann_solver != 'adam' or self.ann_chrono_stop))):
             raise ValueError('ann_backend torch仅支持无ann_chrono_stop的Adam ANN')
@@ -326,7 +334,7 @@ class RunoffRegressor(RegressorMixin, BaseEstimator):
             net = DenseNet(inputs,self.hidden,z.shape[1],self.ann_activation,self.ann_history,self.seed,
                            linear_skip=self.ann_linear_skip).to(device)
         else:
-            net = SequenceNet(x.shape[-1],self.hidden,z.shape[1]).to(device)
+            net = SequenceNet(x.shape[-1],self.hidden,z.shape[1],readout=self.lstm_readout).to(device)
         optimizer = torch.optim.Adam(net.parameters(),
             lr=self.ann_learning_rate if is_ann else self.lstm_learning_rate,
             weight_decay=0. if is_ann else self.alpha*0.001)

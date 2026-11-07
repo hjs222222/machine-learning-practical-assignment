@@ -285,6 +285,7 @@ def run_stage(stage, output, previous=None, seed=42, families=('RF','ANN','LSTM'
                         inner_validation_start=data['dates'][tr[lstm_training['validation_start']]],
                         inner_validation_end=data['dates'][tr[-1]])
                 linear_skip = getattr(model.estimator_,'skip',None)
+                lstm_head = model.estimator_.head if model.family == 'LSTM' else None
                 batch_size = (min(model.ann_batch_size,len(tr)) if model.family == 'ANN' and model.ann_solver == 'adam' else
                               min(128,len(tr)) if model.family == 'LSTM' else None)
                 fits.append(dict(candidate=candidate['id'],year=year,outputs=outputs,selected_indices=model.selected_.tolist(),
@@ -312,6 +313,9 @@ def run_stage(stage, output, previous=None, seed=42, families=('RF','ANN','LSTM'
                     ann_activation=model.ann_activation,ann_history=model.ann_history,
                     input_width=getattr(model.estimator_,'n_features_in_',None),
                     lstm_raw_loss=model.lstm_raw_loss,lstm_learning_rate=model.lstm_learning_rate,
+                    lstm_readout=model.lstm_readout,
+                    lstm_readout_width=lstm_head.in_features if lstm_head is not None else None,
+                    lstm_head_parameters=sum(p.numel() for p in lstm_head.parameters()) if lstm_head is not None else None,
                     raw_loss_scale=getattr(model,'raw_loss_scale_',None),
                     training_mse=float(np.mean((train_pred-data['y'][tr,:1])**2)) if record_training else None,
                     ann_training=ann_training,lstm_training=lstm_training,
