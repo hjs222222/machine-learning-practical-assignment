@@ -260,6 +260,24 @@ def test_rain_window_run_records_feature_names_and_keeps_default_modes(tmp_path)
     assert {c['mode'] for c in rh.stage_candidates('features',families=['RF'])}=={'mi','forced','all','hydro'}
 
 
+def test_ann_research_records_actual_batch_geometry(tmp_path):
+    candidates=[dict(id=f'ANN_{backend}',family='ANN',mode='weather',transform='sqrt',
+        residual=True,params=dict(ann_backend=backend,ann_batch_size=62,hidden=2,
+                                 iterations=1,seq_len=1)) for backend in ('sklearn','torch')]
+    candidates.append(dict(id='ANN_lbfgs',family='ANN',mode='weather',transform='sqrt',residual=True,
+        params=dict(ann_solver='lbfgs',ann_batch_size=62,hidden=2,iterations=1,seq_len=1)))
+    out=tmp_path/'ann_batch';raw=raw_data()
+    rh.run_stage('features',out,raw=raw,candidates=candidates)
+    splits={year:len(tr) for year,tr,_ in rh.annual_splits(rh.prepare_data(raw)['dates'])}
+    for row in json.loads((out/'fits.json').read_text()):
+        assert row['ann_batch_size']==62
+        if row['ann_solver']=='lbfgs':
+            assert row['batch_size'] is row['batches_per_epoch'] is row['last_batch_size'] is None
+        else:
+            n=splits[row['year']];b=min(62,n)
+            assert (row['batch_size'],row['batches_per_epoch'],row['last_batch_size'])==(b,(n+b-1)//b,(n-1)%b+1)
+
+
 def test_weighted_ann_research_records_actual_fit_threshold_and_normalizer(tmp_path):
     candidates=[dict(id=f'ANN_peak{w}',family='ANN',mode='weather',transform='power025',
         residual=True,params=dict(ann_backend='torch',peak_weight=w,hidden=2,

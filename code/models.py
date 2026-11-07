@@ -58,7 +58,7 @@ class RunoffRegressor(RegressorMixin, BaseEstimator):
                  ann_activation='relu', lstm_raw_loss=0.0, lstm_learning_rate=0.003,
                  lstm_chrono_stop=False, ann_history=False, first_day_weight=1.0,
                  x_scaling='standard', input_transform='raw',
-                 ann_backend='sklearn', ann_raw_loss=0.0):
+                 ann_backend='sklearn', ann_raw_loss=0.0, ann_batch_size=64):
         self.family = family
         self.transform = transform
         self.top_k = top_k
@@ -88,6 +88,7 @@ class RunoffRegressor(RegressorMixin, BaseEstimator):
         self.input_transform = input_transform
         self.ann_backend = ann_backend
         self.ann_raw_loss = ann_raw_loss
+        self.ann_batch_size = ann_batch_size
 
     def target(self, y):
         if self.transform == 'log':
@@ -151,6 +152,10 @@ class RunoffRegressor(RegressorMixin, BaseEstimator):
             raise ValueError('x_scaling仅支持standard/minmax')
         if self.input_transform not in ('raw','signed_log'):
             raise ValueError('input_transform仅支持raw/signed_log')
+        if (isinstance(self.ann_batch_size,(bool,np.bool_)) or
+                not isinstance(self.ann_batch_size,(int,np.integer)) or self.ann_batch_size < 1 or
+                (self.family != 'ANN' and self.ann_batch_size != 64)):
+            raise ValueError('ann_batch_size须为非bool正整数；非64仅适用于ANN')
         if (self.ann_backend not in ('sklearn','torch') or
                 (self.ann_backend == 'torch' and (self.family != 'ANN' or self.ann_solver != 'adam' or self.ann_chrono_stop))):
             raise ValueError('ann_backend torch仅支持无ann_chrono_stop的Adam ANN')
@@ -208,7 +213,7 @@ class RunoffRegressor(RegressorMixin, BaseEstimator):
             early_stopping=False,shuffle=False,alpha=self.alpha,random_state=self.seed,
             solver=self.ann_solver,learning_rate_init=self.ann_learning_rate,
             activation=self.ann_activation,
-            batch_size=min(64,samples),tol=1e-5)
+            batch_size=min(self.ann_batch_size,samples),tol=1e-5)
 
     def _fit_ann_chronological(self, X, y):
         start = len(X)-int(np.ceil(len(X)*.2))
@@ -309,7 +314,7 @@ class RunoffRegressor(RegressorMixin, BaseEstimator):
         truth_tensor = torch.tensor(truth,dtype=torch.float64 if is_ann and self.peak_weight != 1 else tx.dtype,device=device)
         self.raw_loss_scale_ = max(float(np.std(truth)),1e-6)
         self.loss_history_ = []
-        batch_size = 64 if is_ann else 128
+        batch_size = self.ann_batch_size if is_ann else 128
         max_epochs = self.iterations if is_ann else self.epochs
         best_loss,stale_epochs = np.inf,0
         if validation is not None:

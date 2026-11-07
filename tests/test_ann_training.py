@@ -11,6 +11,84 @@ from models import RunoffRegressor, DenseNet
 pytestmark = pytest.mark.filterwarnings('ignore::sklearn.exceptions.ConvergenceWarning')
 
 
+@pytest.mark.parametrize('batch',[0,-1,1.5,64.,True,np.bool_(True),None,float('inf'),float('nan'),'62'])
+def test_ann_batch_size_rejects_nonpositive_or_noninteger_values(batch):
+    with pytest.raises(ValueError,match='ann_batch_size'):
+        RunoffRegressor(family='ANN',ann_batch_size=batch).fit(np.ones((10,1,2)),np.ones((10,1)))
+
+
+@pytest.mark.parametrize('family',['RF','LSTM'])
+def test_nondefault_ann_batch_size_rejects_other_families(family):
+    with pytest.raises(ValueError,match='ann_batch_size'):
+        RunoffRegressor(family=family,ann_batch_size=62).fit(np.ones((10,1,2)),np.ones((10,1)))
+
+
+@pytest.mark.parametrize('backend',['sklearn','torch'])
+@pytest.mark.parametrize('outputs',[1,7])
+def test_ann_batch_size_uses_every_row_in_order_and_survives_restore(backend,outputs,monkeypatch,tmp_path):
+    from sklearn.neural_network import MLPRegressor
+    x=np.random.default_rng(812).uniform(1,5,(130,1,3)).astype('float32')
+    y=(np.arange(130,dtype=float)+1)[:,None]*np.arange(1,outputs+1)[None,:]
+    seen=[]
+    if backend=='sklearn':
+        original=MLPRegressor._backprop
+        def capture(self,X,Y,*args,**kwargs):
+            seen.append(X.copy())
+            return original(self,X,Y,*args,**kwargs)
+        monkeypatch.setattr(MLPRegressor,'_backprop',capture)
+    else:
+        original=RunoffRegressor._torch_objective
+        def capture(self,pred,target,current,truth):
+            seen.append(current.detach().cpu().numpy())
+            return original(self,pred,target,current,truth)
+        monkeypatch.setattr(RunoffRegressor,'_torch_objective',capture)
+    model=RunoffRegressor(family='ANN',ann_backend=backend,ann_batch_size=np.int64(62),
+        hidden=2,iterations=1,top_k=None,seq_len=1).fit(x,y)
+    assert [len(a) for a in seen]==[62,62,6]
+    expected=model.x_scaler_.transform(x[:,-1]).astype('float32') if backend=='sklearn' else x[:,-1,:1]
+    np.testing.assert_array_equal(np.concatenate(seen),expected)
+    assert model.predict(x).shape==(130,outputs)
+    assert clone(model).get_params()==model.get_params()
+    path=tmp_path/'batch.joblib';joblib.dump(model,path)
+    np.testing.assert_array_equal(joblib.load(path).predict(x),model.predict(x))
+
+
+@pytest.mark.parametrize('backend',['sklearn','torch'])
+def test_ann_default_and_explicit_batch64_are_identical(backend):
+    x=np.random.default_rng(813).uniform(1,5,(70,1,3)).astype('float32');y=x[:,-1,:1]+1
+    args=dict(family='ANN',ann_backend=backend,hidden=2,iterations=2,top_k=None,seq_len=1)
+    default=RunoffRegressor(**args).fit(x,y)
+    explicit=RunoffRegressor(**args,ann_batch_size=64).fit(x,y)
+    np.testing.assert_array_equal(default.predict(x),explicit.predict(x))
+    assert default.get_params()['ann_batch_size']==64
+    np.testing.assert_array_equal(getattr(default,'loss_history_',getattr(default.estimator_,'loss_curve_',[])),
+                                  getattr(explicit,'loss_history_',getattr(explicit.estimator_,'loss_curve_',[])))
+
+
+def test_ann_batch_size_reaches_chronological_probe_and_full_refit(monkeypatch):
+    seen=[];original=RunoffRegressor._ann_estimator
+    def capture(self,samples):
+        estimator=original(self,samples);seen.append((samples,estimator.batch_size));return estimator
+    monkeypatch.setattr(RunoffRegressor,'_ann_estimator',capture)
+    x=np.random.default_rng(814).uniform(1,5,(80,1,3)).astype('float32')
+    model=RunoffRegressor(family='ANN',ann_batch_size=62,hidden=2,iterations=5,
+        top_k=None,seq_len=1,ann_chrono_stop=True).fit(x,x[:,-1,:1]+1)
+    assert seen==[(57,57),(80,62)]
+    assert model.x_scaler_.n_samples_seen_==80
+
+
+def test_lstm_keeps_batch128_with_default_ann_setting(monkeypatch):
+    seen=[];original=RunoffRegressor._torch_objective
+    def capture(self,pred,target,current,truth):
+        seen.append(current.detach().cpu().numpy())
+        return original(self,pred,target,current,truth)
+    monkeypatch.setattr(RunoffRegressor,'_torch_objective',capture)
+    x=np.random.default_rng(815).uniform(1,5,(257,1,2)).astype('float32')
+    RunoffRegressor(family='LSTM',hidden=2,epochs=1,top_k=None,seq_len=1).fit(x,x[:,-1,:1]+1)
+    assert [len(a) for a in seen]==[128,128,1]
+    np.testing.assert_array_equal(np.concatenate(seen),x[:,-1,:1])
+
+
 @pytest.mark.parametrize('transform',['raw','sqrt','log','power025','power075'])
 @pytest.mark.parametrize('mix',[0.,.5,1.])
 def test_torch_ann_peak_loss_matches_independent_training_normalized_formula(transform,mix):

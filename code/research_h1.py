@@ -224,6 +224,8 @@ def run_stage(stage, output, previous=None, seed=42, families=('RF','ANN','LSTM'
                         inner_train_end=data['dates'][tr[lstm_training['probe_train_count']-1]],
                         inner_validation_start=data['dates'][tr[lstm_training['validation_start']]],
                         inner_validation_end=data['dates'][tr[-1]])
+                batch_size = (min(model.ann_batch_size,len(tr)) if model.family == 'ANN' and model.ann_solver == 'adam' else
+                              min(128,len(tr)) if model.family == 'LSTM' else None)
                 fits.append(dict(candidate=candidate['id'],year=year,outputs=outputs,selected_indices=model.selected_.tolist(),
                     selected_names=[current['names'][i] for i in model.selected_],
                     mi_target=model.mi_target,
@@ -234,6 +236,9 @@ def run_stage(stage, output, previous=None, seed=42, families=('RF','ANN','LSTM'
                     peak_weight_normalizer=model.peak_weight_normalizer_,
                     ann_solver=model.ann_solver,ann_learning_rate=model.ann_learning_rate,
                     ann_backend=model.ann_backend,ann_raw_loss=model.ann_raw_loss,
+                    ann_batch_size=model.ann_batch_size,batch_size=batch_size,
+                    batches_per_epoch=(len(tr)+batch_size-1)//batch_size if batch_size else None,
+                    last_batch_size=(len(tr)-1)%batch_size+1 if batch_size else None,
                     ann_activation=model.ann_activation,ann_history=model.ann_history,
                     input_width=getattr(model.estimator_,'n_features_in_',None),
                     lstm_raw_loss=model.lstm_raw_loss,lstm_learning_rate=model.lstm_learning_rate,
