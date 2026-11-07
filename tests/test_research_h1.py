@@ -499,6 +499,22 @@ def test_ann_research_records_effective_gradient_clip(tmp_path):
         assert row['gradient_clip']==dict(torch5=5.,LSTM=1.,sklearn=None,RF=None)[row['candidate']]
 
 
+def test_ann_research_records_actual_learning_rate_schedule(tmp_path):
+    candidates=[dict(id='scheduled',family='ANN',mode='weather',transform='sqrt',residual=True,
+        params=dict(ann_backend='torch',ann_lr_schedule='half_linear',hidden=2,iterations=4,seq_len=1)),
+        dict(id='sklearn',family='ANN',mode='weather',transform='sqrt',residual=True,params=dict(hidden=2,iterations=1,seq_len=1)),
+        dict(id='LSTM',family='LSTM',mode='weather',transform='sqrt',residual=True,params=dict(hidden=2,epochs=2,seq_len=1))]
+    out=tmp_path/'lr_schedule';rh.run_stage('features',out,raw=raw_data(),candidates=candidates)
+    fits=json.loads((out/'fits.json').read_text());assert len(fits)==9
+    for row in fits:
+        if row['candidate']=='scheduled':
+            assert row['ann_lr_schedule']=='half_linear'
+            np.testing.assert_allclose(row['learning_rate_history'],[.003,.003,.00165,.0003],rtol=1e-12)
+        elif row['candidate']=='LSTM':
+            assert row['ann_lr_schedule']=='constant' and row['learning_rate_history']==[.003,.003]
+        else:assert row['ann_lr_schedule']=='constant' and row['learning_rate_history'] is None
+
+
 def test_ann_research_records_actual_batch_geometry(tmp_path):
     candidates=[dict(id=f'ANN_{backend}',family='ANN',mode='weather',transform='sqrt',
         residual=True,params=dict(ann_backend=backend,ann_batch_size=62,hidden=2,

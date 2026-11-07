@@ -736,3 +736,18 @@ audit_ann_gradients.py已完成9重放拟合、4368验证记录（含持久性�
 阈值5相对同torch均值+0.004275、MAE减少2.951694，但困难年下降0.000540658、平均峰RMSE增加2.876270。promotion_gate.json按训练前冻结门槛复算：平均/存在收益/MAE1%/峰误差1%通过，困难年非退步失败；status=passed仅指门槛核验正确，promotion_gate_passed=false才是研究决策。严格按预登记停止，不追加seed13/2026或其他阈值，不存晋级候选，不改默认。相对较强sklearn均值/MAE/峰误差也未胜；不能把梯度诊断的关联称已解决瓶颈。只读sklearn来源ann_linear_skip_historical_sklearn_comparison.json，未计新增拟合。
 
 全量328测试已实际重跑通过（10条既有测试预算警告），全部训练/核验/测试句柄终止，完整目录不得重启。无新2004评价或报告/验收/ZIP改动，0.8目标仍未达成。下一项仅提出训练后期学习率递减假设（不是再扫固定学习率或单纯加轮数）；尚未设计/实现/训练，须先审查现有训练loss停止规则，明确相同总预算下调度与早停如何协调、默认不变及有限事前门槛，再TDD/Git保存后训练。停止裁剪/skip/初始化/日历网格扩张。
+
+## 第三十二阶段：固定预算后半程线性学习率递减（设计与训练前登记）
+
+沿用用户自主决策授权及brainstorming/writing-plans/TDD/核验流程。比较三个方案：训练平台期动态降lr并重置早停（同时改变两项策略，不采用）；反复扫描固定lr或增加350上限（已测试，不采用）；固定最大预算后半程线性降lr、保留原早停（采用单个有限策略）。不改模型家族/观测/样本/目标损失/裁剪/批次和L2，不叠加skip或上一轮阈值5。
+
+接口仅RunoffRegressor末尾ann_lr_schedule='constant'，可选'half_linear'，非constant仅torch ANN可用；RF/LSTM/sklearn保持constant，非法非字符串/未知值拒绝。设最大预算M=iterations、H=max(1,M//2)，epoch e<=H使用初始lr；e>H使用lr0*(1-0.9*(e-H)/(M-H))。M=1无递减；奇数预算前floor(M/2)轮恒定。每轮训练前设置lr，当轮所有有序批次相同，按最大预算而非事后实际停止轮数计算，末轮若执行到M才恰为lr0/10。constant分支不写optimizer.lr，保证原行为。记录实际每轮lr为learning_rate_history_并写研究fits，长度须等于实际loss轮数；无torch训练的模型记None。
+
+原ANN训练loss的tol1e-5/stale>10停止逻辑不改、不重置或强制跑到递减区间。若提前停止未触发递减，明确记录“不曾生效”，不临时延长预算/改patience。LSTM的lr/固定epoch与内部验证不受新选项影响。改动仅models.py、research_h1.py的fits日志、tests/test_ann_lr_schedule.py及研究日志测试与MD；调用者都用默认/关键字，正式网格/CLI/导出不变。
+
+- [x] TDD先失败：非法设置/非默认后端，实际Adam.step观察偶数/奇数/单轮每批lr及顺序、早停先于递减仍12轮不重置、原生单/七输出/历史/混合损失/克隆保存、四种默认后端预测/loss和旧状态推理。研究日志覆盖实际lr轨迹及非torch None。
+- [x] 最小实现、相关与全量回归/diff检查并Git保存，之后才真实训练。默认原torch的实际历史预测/loss仍需真实对照精确复现，不用单测替代。
+- [ ] ann_lr_schedule_seed42：从第31阶段clip1配置复制，sqrt/weather15/lr0.001/hidden16/alpha1/最多350轮/批64/seq1/公共原点、skipFalse/peak1/rawloss0/clip1固定，constant/half_linear两个候选6年度拟合。验证364日/年、gap7；训练前冻结候选/源码/旧参照哈希。constant3年度预测/loss须与第31阶段clip1逐条一致。独立核对原CSV真值/完整日期/Q95/gap/天气公式、所有原流量指标/汇总/实际lr公式及停止轮数。
+- [ ] 首轮门槛事前固定：最差年和平均R²均不下降（1e-10容差）、至少一项+1e-6以上，MAE及平均峰RMSE各最多增加1%。通过才冻结两候选到seed13/2026，各6年度拟合；失败不扩调度/末lr/预算/种子。配对后若任一seed困难年或均值下降，不称稳定综合升级或替换默认；同时列较强历史sklearn。无新2004评价，不改正式报告/验收/ZIP，目标不缩减。
+
+22项新测试先因缺ann_lr_schedule参数全部失败，最小实现后全部通过；全量350测试实际通过，10条既有ANN10轮测试警告。实际Adam.step逐批lr、奇偶/单轮边界、提前平台仍12轮停止、默认/显式constant预测与loss完全相同及旧缺属性推理、原生1/7输出/历史与混合损失/克隆恢复、研究真实lr记录均覆盖。仅增加可选调度和lr轨迹记录，不改原停止计数或LSTM/default学习率；Git保存后执行已登记6拟合，尚无精度收益结论。

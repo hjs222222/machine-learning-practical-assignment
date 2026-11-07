@@ -297,6 +297,8 @@ def run_stage(stage, output, previous=None, seed=42, families=('RF','ANN','LSTM'
                     peak_weight_normalizer=model.peak_weight_normalizer_,
                     ann_solver=model.ann_solver,ann_learning_rate=model.ann_learning_rate,
                     ann_backend=model.ann_backend,ann_raw_loss=model.ann_raw_loss,
+                    ann_lr_schedule=model.ann_lr_schedule,
+                    learning_rate_history=getattr(model,'learning_rate_history_',None),
                     ann_grad_clip=model.ann_grad_clip,
                     gradient_clip=(model.ann_grad_clip if model.family == 'ANN' and model.ann_backend == 'torch' else
                                    1.0 if model.family == 'LSTM' else None),

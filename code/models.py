@@ -65,7 +65,7 @@ class RunoffRegressor(RegressorMixin, BaseEstimator):
                  lstm_chrono_stop=False, ann_history=False, first_day_weight=1.0,
                  x_scaling='standard', input_transform='raw',
                  ann_backend='sklearn', ann_raw_loss=0.0, ann_batch_size=64, ann_linear_skip=False,
-                 ann_grad_clip=1.0):
+                 ann_grad_clip=1.0, ann_lr_schedule='constant'):
         self.family = family
         self.transform = transform
         self.top_k = top_k
@@ -98,6 +98,7 @@ class RunoffRegressor(RegressorMixin, BaseEstimator):
         self.ann_batch_size = ann_batch_size
         self.ann_linear_skip = ann_linear_skip
         self.ann_grad_clip = ann_grad_clip
+        self.ann_lr_schedule = ann_lr_schedule
 
     def target(self, y):
         if self.transform == 'log':
@@ -173,6 +174,9 @@ class RunoffRegressor(RegressorMixin, BaseEstimator):
                 not np.isfinite(self.ann_grad_clip) or self.ann_grad_clip <= 0 or
                 (self.ann_grad_clip != 1 and (self.family != 'ANN' or self.ann_backend != 'torch'))):
             raise ValueError('ann_grad_clip须为有限非bool正实数，非1仅适用于torch ANN')
+        if (not isinstance(self.ann_lr_schedule,str) or self.ann_lr_schedule not in ('constant','half_linear') or
+                (self.ann_lr_schedule != 'constant' and (self.family != 'ANN' or self.ann_backend != 'torch'))):
+            raise ValueError('ann_lr_schedule仅支持constant/half_linear；非constant仅适用于torch ANN')
         if (self.ann_backend not in ('sklearn','torch') or
                 (self.ann_backend == 'torch' and (self.family != 'ANN' or self.ann_solver != 'adam' or self.ann_chrono_stop))):
             raise ValueError('ann_backend torch仅支持无ann_chrono_stop的Adam ANN')
@@ -332,8 +336,10 @@ class RunoffRegressor(RegressorMixin, BaseEstimator):
         truth_tensor = torch.tensor(truth,dtype=torch.float64 if is_ann and self.peak_weight != 1 else tx.dtype,device=device)
         self.raw_loss_scale_ = max(float(np.std(truth)),1e-6)
         self.loss_history_ = []
+        self.learning_rate_history_ = []
         batch_size = self.ann_batch_size if is_ann else 128
         max_epochs = self.iterations if is_ann else self.epochs
+        half = max(1,max_epochs//2)
         best_loss,stale_epochs = np.inf,0
         if validation is not None:
             vx,vy = validation
@@ -344,6 +350,9 @@ class RunoffRegressor(RegressorMixin, BaseEstimator):
             best_score,best_epoch,history = -np.inf,1,[]
         # epochs 由外部 purged 时序 CV 选择；不启用 sklearn 的随机验证拆分。
         for epoch in range(1,max_epochs+1):
+            if is_ann and self.ann_lr_schedule == 'half_linear' and epoch > half:
+                optimizer.param_groups[0]['lr'] = self.ann_learning_rate*(1-.9*(epoch-half)/(max_epochs-half))
+            self.learning_rate_history_.append(float(optimizer.param_groups[0]['lr']))
             net.train()
             loss_sum = 0.0
             for start in range(0,len(x),batch_size):
