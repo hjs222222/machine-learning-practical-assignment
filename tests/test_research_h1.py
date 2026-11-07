@@ -151,6 +151,25 @@ def initialization_training_table():
         for seed in (13,42,2026) for i,date in enumerate(dates)])
 
 
+@pytest.mark.parametrize('seeds',[(7,101,2027),(0,101,2**32-1),(np.int64(7),101,2027)])
+def test_select_initializations_accepts_explicit_group_and_preserves_default(seeds):
+    original=initialization_training_table()
+    pd.testing.assert_frame_equal(rh.select_initializations(original),
+        rh.select_initializations(original,seeds=(13,42,2026)))
+    other=original.copy();other['seed']=other.seed.map({13:seeds[2],42:seeds[1],2026:seeds[0]})
+    result=rh.select_initializations(other,seeds=seeds)
+    assert result.to_dict('records')==[dict(candidate='A',year=2001,seed=int(seeds[0]),training_mse=.25)]
+    pd.testing.assert_frame_equal(result,rh.select_initializations(other,seeds=list(reversed(seeds))))
+    with pytest.raises(ValueError):rh.select_initializations(other)
+
+
+@pytest.mark.parametrize('seeds',[None,'7,101,2027',[],[7,101],[7,101,101],[7,101,True],
+                                  [7,101,-1],[7,101,2**32],[7,101,1.5],[7,101,2027.0]])
+def test_select_initializations_rejects_invalid_declared_seed_groups(seeds):
+    with pytest.raises(ValueError,match='seeds'):
+        rh.select_initializations(initialization_training_table(),seeds=seeds)
+
+
 def test_select_initializations_uses_raw_training_mse_ties_and_independent_groups():
     a=initialization_training_table();b=a.copy();b['candidate']='B'
     b['prediction']=b.truth+np.where(b.seed==13,0.,2.)

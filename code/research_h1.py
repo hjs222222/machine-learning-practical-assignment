@@ -121,8 +121,12 @@ def metrics(truth, prediction, threshold):
                 peak_bias=float(np.mean(peak)) if len(peak) else None, peak_count=int(len(peak)))
 
 
-def select_initializations(training_predictions):
+def select_initializations(training_predictions, seeds=(13,42,2026)):
     """Choose one seed per configuration/year using only final raw-flow training MSE."""
+    if (not isinstance(seeds,(tuple,list)) or len(seeds) != 3 or
+            any(isinstance(s,(bool,np.bool_)) or not isinstance(s,(int,np.integer)) or not 0 <= s < 2**32 for s in seeds) or
+            len(set(seeds)) != 3):
+        raise ValueError('seeds须为三个不同的非bool整数，范围0..2^32-1')
     columns = ['candidate','year','seed','origin','target_date','truth','prediction']
     if (not isinstance(training_predictions,pd.DataFrame) or training_predictions.empty or
             not set(columns).issubset(training_predictions.columns)):
@@ -134,8 +138,8 @@ def select_initializations(training_predictions):
         raise ValueError('Duplicate training origins')
     chosen = []
     for (candidate,year),part in frame.groupby(['candidate','year'],sort=True):
-        if set(part.seed) != {13,42,2026}:
-            raise ValueError('Expected training predictions for seeds 13/42/2026')
+        if set(part.seed) != set(seeds):
+            raise ValueError('Expected training predictions for declared seeds')
         origin,target = pd.to_datetime(part.origin),pd.to_datetime(part.target_date)
         if not (target == origin+pd.Timedelta(days=1)).all() or (target >= pd.Timestamp(int(year),1,1)).any():
             raise ValueError('Training target dates cross validation boundary or are misaligned')
