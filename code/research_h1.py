@@ -36,7 +36,7 @@ def fixed_h1_ensemble_members():
     ]
 
 
-def prepare_data(raw, cutoff='2003-12-31', horizons=1):
+def prepare_data(raw, cutoff='2003-12-31', horizons=1, available_weather=False):
     if horizons not in (1,7):
         raise ValueError('horizons仅支持1或7')
     raw = raw.loc[:cutoff].copy()
@@ -61,6 +61,13 @@ def prepare_data(raw, cutoff='2003-12-31', horizons=1):
         weather[f'Tavg_diff{days}'] = avg.diff(days)
     weather['Trange_lag0'] = raw.Tmax-raw.Tmin
     weather['Trange_diff1'] = (raw.Tmax-raw.Tmin).diff(1)
+    if available_weather:
+        ids = np.flatnonzero(weather.notna().all(axis=1).to_numpy())
+        ids = ids[ids < len(raw)-horizons]
+        dates = raw.index[ids]
+        return dict(dates=dates,raw=raw,
+            y=np.column_stack([raw.Discharge.shift(-h).iloc[ids].to_numpy() for h in range(1,horizons+1)]),
+            weather=dict(X=weather.iloc[ids].to_numpy(np.float32)[:,None,:],names=list(weather.columns),dates=dates))
     climate['Tmax_lag0'],climate['Tmin_lag0'],climate['Tavg_lag0'] = raw.Tmax,raw.Tmin,avg
     for days in (1,3,7):
         climate[f'Tavg_diff{days}'] = avg.diff(days)
@@ -143,7 +150,7 @@ def stage_candidates(stage, previous=None, families=('RF','ANN','LSTM'), modes=D
 
 
 def run_stage(stage, output, previous=None, seed=42, families=('RF','ANN','LSTM'), limit=None,
-              raw=None, candidates=None, modes=DEFAULT_MODES):
+              raw=None, candidates=None, modes=DEFAULT_MODES, available_weather=False):
     if stage != 'features' and tuple(modes) != DEFAULT_MODES:
         raise ValueError('--modes is supported only for features')
     output = Path(output)
@@ -159,14 +166,19 @@ def run_stage(stage, output, previous=None, seed=42, families=('RF','ANN','LSTM'
         raise ValueError('Candidates must be nonempty and unique')
     if any(candidate.get('outputs',1) not in (1,7) for candidate in candidates):
         raise ValueError('outputs仅支持1或7')
+    if available_weather and any(c.get('family') != 'ANN' or c.get('mode') != 'weather' or
+            c.get('params',{}).get('seq_len') != 1 for c in candidates):
+        raise ValueError('available_weather仅支持显式seq_len=1的weather ANN候选')
     label_horizon = max(candidate.get('outputs',1) for candidate in candidates)
-    data = prepare_data(load_raw() if raw is None else raw,horizons=label_horizon)
+    data = prepare_data(load_raw() if raw is None else raw,horizons=label_horizon,available_weather=available_weather)
     splits = list(annual_splits(data['dates'],horizons=label_horizon))
     output.mkdir(parents=True)
     protocol = dict(stage=stage,seed=seed,data_cutoff='2003-12-31',horizon=1,label_horizon=label_horizon,gap=7,
-                    sequence_length=30,selection='worst annual R2, then mean annual R2',
+                    sequence_length=1 if available_weather else 30,available_weather=available_weather,
+                    selection='worst annual R2, then mean annual R2',
                     limitation='Training-period selection is biased; no independent generalization claim',
-                    sample_note='Common 30-day sequences for new annual comparisons; not reproduction of old formal folds',
+                    sample_note=('Available original weather origins, one-step ANN; same annual validation dates' if available_weather else
+                                 'Common 30-day sequences for new annual comparisons; not reproduction of old formal folds'),
                     data_sha256=digest(DATA_PATH) if raw is None else hashlib.sha256(raw.loc[:'2003-12-31'].to_csv().encode()).hexdigest(),
                     code_hashes={str(p.relative_to(ROOT)):digest(p) for p in (ROOT/'code').glob('*.py')},
                     previous=str(Path(previous).resolve()) if previous else None,candidates=candidates,
@@ -177,7 +189,7 @@ def run_stage(stage, output, previous=None, seed=42, families=('RF','ANN','LSTM'
                                 train_count=len(tr),valid_count=len(va)) for year,tr,va in splits])
     save_json(output/'protocol.json',protocol)
     rows, predictions, warning_rows, fits, horizon_rows = [], [], [], [], []
-    for candidate in [dict(id='persistence',family='persistence',mode='all')] + candidates:
+    for candidate in [dict(id='persistence',family='persistence',mode='weather' if available_weather else 'all')] + candidates:
         for year,tr,va in splits:
             print(f"[{stage}] {candidate['id']} year={year} train={len(tr)} valid={len(va)}",flush=True)
             threshold = float(np.quantile(data['raw'].Discharge.loc[:data['dates'][tr[-1]]],.95))

@@ -60,6 +60,79 @@ def test_optional_cutoff_exposes_test_origins_without_changing_training_rows():
         np.testing.assert_array_equal(full[mode]['X'][keep], train[mode]['X'])
 
 
+@pytest.mark.parametrize('horizons',[1,7])
+def test_available_weather_uses_original_valid_origins_and_preserves_overlap(horizons):
+    raw=raw_data();common=rh.prepare_data(raw,horizons=horizons)
+    explicit=rh.prepare_data(raw,horizons=horizons,available_weather=False)
+    available=rh.prepare_data(raw,horizons=horizons,available_weather=True)
+    assert common['dates'][0]==pd.Timestamp('2000-02-29')
+    for mode in rh.MODES:
+        np.testing.assert_array_equal(common[mode]['X'],explicit[mode]['X'])
+    assert available['dates'][0]==pd.Timestamp('2000-01-04')
+    assert available['dates'][-1]==pd.Timestamp('2003-12-31')-pd.Timedelta(days=horizons)
+    assert available['weather']['X'].shape==(len(available['dates']),1,15)
+    assert np.isfinite(available['weather']['X']).all()
+    assert available['weather']['names']==common['weather']['names']
+    ids=available['dates'].get_indexer(common['dates']);assert (ids>=0).all()
+    np.testing.assert_array_equal(available['weather']['X'][ids,0],common['weather']['X'][:,-1])
+    np.testing.assert_array_equal(available['y'][ids],common['y'])
+    expected=np.column_stack([raw.Discharge.shift(-h).reindex(available['dates']) for h in range(1,horizons+1)])
+    np.testing.assert_array_equal(available['y'],expected)
+    for (year,tr,va),(_,ctr,cva) in zip(rh.annual_splits(available['dates'],horizons),rh.annual_splits(common['dates'],horizons)):
+        assert len(tr)=={2001:356,2002:721,2003:1086}[year] and len(tr)==len(ctr)+56
+        np.testing.assert_array_equal(available['dates'][va],common['dates'][cva])
+        assert available['dates'][tr[-1]]+pd.Timedelta(days=7)<available['dates'][va[0]]
+
+
+@pytest.mark.parametrize('horizons',[1,7])
+def test_available_weather_keeps_future_and_2004_out_of_features(horizons):
+    raw=raw_data();a=rh.prepare_data(raw,horizons=horizons,available_weather=True)
+    future=raw.copy();future.loc['2003-06-01':]*=99
+    b=rh.prepare_data(future,horizons=horizons,available_weather=True)
+    before=a['dates']<'2003-06-01'
+    np.testing.assert_array_equal(a['weather']['X'][before],b['weather']['X'][before])
+    heldout=raw.copy();heldout.loc['2004-01-01':]=1e9
+    c=rh.prepare_data(heldout,horizons=horizons,available_weather=True)
+    np.testing.assert_array_equal(a['dates'],c['dates'])
+    np.testing.assert_array_equal(a['y'],c['y'])
+    np.testing.assert_array_equal(a['weather']['X'],c['weather']['X'])
+
+
+@pytest.mark.parametrize('family,mode,params',[
+    ('RF','weather',dict(seq_len=1)),('ANN','climate',dict(seq_len=1)),
+    ('ANN','weather',dict(seq_len=7)),('ANN','weather',{})])
+def test_available_weather_rejects_unsupported_candidate_before_output(family,mode,params,tmp_path):
+    c=dict(id='invalid',family=family,mode=mode,transform='sqrt',residual=True,params=params)
+    out=tmp_path/'invalid'
+    with pytest.raises(ValueError,match='available_weather'):
+        rh.run_stage('features',out,raw=raw_data(),candidates=[c],available_weather=True)
+    assert not out.exists()
+
+
+@pytest.mark.parametrize('available',[False,True])
+@pytest.mark.parametrize('outputs',[1,7])
+def test_available_weather_stage_records_true_dates_and_persistence(available,outputs,tmp_path):
+    raw=raw_data();out=tmp_path/f'weather_{available}_{outputs}'
+    c=dict(id='ANN',family='ANN',mode='weather',transform='power025',residual=True,
+           outputs=outputs,params=dict(hidden=2,iterations=1,seq_len=1))
+    rh.run_stage('features',out,raw=raw,candidates=[c],available_weather=available)
+    protocol=json.loads((out/'protocol.json').read_text());p=pd.read_csv(out/'predictions.csv')
+    assert protocol['available_weather']==available
+    assert protocol['sequence_length']==(1 if available else 30)
+    assert protocol['folds'][0]['train_start'].startswith('2000-01-04' if available else '2000-02-29')
+    assert [f['train_count'] for f in protocol['folds']]==([356,721,1086] if available else [300,665,1030])
+    count=364 if outputs==1 else 358
+    assert len(p)==2*3*count
+    baseline=p[p.candidate=='persistence']
+    expected=raw.Discharge.reindex(pd.to_datetime(baseline.origin)).to_numpy().astype('float32')
+    np.testing.assert_array_equal(baseline.prediction.to_numpy().astype('float32'),expected)
+    np.testing.assert_allclose(p.truth,raw.Discharge.reindex(pd.to_datetime(p.target_date)),rtol=1e-12)
+    if outputs==7:
+        ann=p[p.candidate=='ANN'];last=pd.to_datetime(ann.origin)+pd.Timedelta(days=7)
+        assert last.max()<=pd.Timestamp('2003-12-31')
+        np.testing.assert_allclose(ann.truth_h7,raw.Discharge.reindex(last),rtol=1e-12)
+
+
 def test_forced_selection_and_skip_mi(monkeypatch):
     x = np.random.default_rng(4).uniform(1, 10, (40, 3, 8))
     y = x[:, -1, :1]
