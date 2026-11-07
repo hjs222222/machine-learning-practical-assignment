@@ -544,3 +544,16 @@ flow_interactions_peak_case.json还保留原误差预算事件的训练期观察
 weather_calendar_verification.json独立核验3运行39拟合/17472预测，23条真实研究警告保留；verify_weather_calendar.py从原字段重建weather15、用月份值表/四季月份集合重建日历的全部30步位置，核对共同原点/原始真值、训练Q95/gap7、原流量和洪峰指标/年度汇总、17/19实际输入及轮数/loss/批次、固定配置和源码哈希。15个年度weather参照全部逐条复现旧预测，最大差0。源码afe57ac，全量245测试通过（10条既有小预算ANN测试警告）；训练和独立核验句柄均已明确终止，无需重启，无新2004评价或正式产物改写。
 
 下一项尚未登记/训练：这次ANN失败不能外推到RF或LSTM，可用已实现的weather日历模式在两家族的固定既有参数下迁移，保留原weather及各自已验证较强climate/daily参照，再决定是否值得跨seed。先核对旧protocol的目标、seq_len和参数，不能混用ANN的seq1/批大小设置或把未测试迁移称改进。无需为迁移新增模型库/数据或更改日历公式；仍在2000--2003研究、保持2004禁调参，整体0.8目标未完成。
+
+## 第二十六阶段：固定RF/LSTM的天气日历迁移（训练前登记）
+
+不新增生产代码，复用afe57ac实现的weather15/month17/season19。核对旧protocol后冻结以下八候选，在weather_calendar_transfer_seed42共24年度拟合：
+
+1. RF三天气输入保持weather_targets_seed42的RF_weather_sqrt_delta1配置：sqrt增量、120树、leaf5、max_features0.5、seq_len1。旧weather须复现该预测；新增两输入不更改RF参数。另保留power_transfer_seed42的RF_climate_sqrt_abs参照（同树/叶/特征比例，sqrt绝对，保留未显式设置seq_len的原默认14），不把不同seq_len/目标的climate当成相同结构的单因素对照。
+2. LSTM三天气输入保持lstm_weather_seed42的LSTM_weather_log_w7_h32_e70：log绝对、hidden32、seq7、70轮、alpha0.1、lr默认0.003、原损失/无内部早停。另保留同文件daily7/log绝对参照。两原LSTM参照必须在原float32精度逐条复现；不得把ANN的seq1/批大小62套入LSTM。
+
+所有模型沿用公共训练300/665/1030、364验证原点/年、gap7、训练折内缩放/原流量评分。protocol先落盘，同目录包含原持久性参照；不加日历统计拟合/外部数据/未来天气，不改变teacher正式模型家族/数量。增加输入维度影响LSTM初始化、RF可选分裂特征集合，效果称整个输入方案，不作纯信息因果推断。
+
+先重跑tests/test_models.py原生输出/恢复检查；研究源码未变，上一阶段全量245测试仅作为对应版本历史证据，不冒称本轮重跑。首轮结束后从原字段/Date独立检查新输入和真值、全部原流量/洪峰指标/汇总、训练边界/训练Q95、真实参数、输入、LSTM70轮loss/批次与源码哈希；RF旧预测用rtol1e-10/atol1e-8容差复现，LSTM按float32原精度对照。若每家族有可保留最差年或平均分且其他误差可接受收益，最多冻结一个新输入和原weather/较强参照在seed13/2026复核，先明确新增拟合数。若仅胜过较弱weather而不及较强参照，须明确写出，不冒称家族整体升级。无收益则停止，不扩大目标/网络/日历组合。仍不新评估2004或改正式产物。
+
+原生输出/恢复测试20项通过，10条是其中ANN10轮预算警告，不能当作真实RF/LSTM研究警告。三个旧来源的complete与verification均已检查通过。源代码仍afe57ac，先保存本登记的Git版本，再执行24拟合。
