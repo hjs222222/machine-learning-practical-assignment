@@ -24,7 +24,7 @@ RAIN_WINDOWS = {'weather_rain_sum30':1.,'weather_rain_decay05':.5,
 FLOW_INTERACTIONS = ('weather_qdiff1','weather_rain_q','weather_rain_qdiff1')
 CALENDAR_INPUTS = {'weather_month':('month_sin','month_cos'),
                    'weather_season':('season_winter','season_spring','season_summer','season_autumn')}
-MODES = DEFAULT_MODES + ('compact','target_mi','climate','daily','weather') + tuple(WEATHER_ABLATIONS) + tuple(RAIN_WINDOWS) + FLOW_INTERACTIONS + tuple(CALENDAR_INPUTS) + ('weather_radiation',)
+MODES = DEFAULT_MODES + ('compact','target_mi','climate','daily','weather') + tuple(WEATHER_ABLATIONS) + tuple(RAIN_WINDOWS) + FLOW_INTERACTIONS + tuple(CALENDAR_INPUTS) + ('weather_radiation','climate_radiation','daily_radiation','climate_solar_raw')
 BASE = {'RF': dict(trees=120, leaf=1),
         'ANN': dict(hidden=64, iterations=350, alpha=.1),
         'LSTM': dict(hidden=32, seq_len=14, epochs=70, alpha=.1)}
@@ -87,7 +87,10 @@ def prepare_data(raw, cutoff='2003-12-31', horizons=1, available_weather=False):
     result = dict(dates=dates, y=np.column_stack([raw.Discharge.shift(-h).iloc[ids].to_numpy() for h in range(1,horizons+1)]),
                   raw=raw)
     frames = dict(hydro=hydro,compact=compact,climate=climate,daily=daily,weather=weather)
-    frames['weather_radiation'] = weather.assign(Srad_energy_MJ_m2_lag0=raw.Srad*raw.Dayl/1_000_000)
+    energy = raw.Srad*raw.Dayl/1_000_000
+    for mode in ('weather','climate','daily'):
+        frames[f'{mode}_radiation'] = frames[mode].assign(Srad_energy_MJ_m2_lag0=energy)
+    frames['climate_solar_raw'] = climate.assign(Srad_lag0=raw.Srad,Dayl_lag0=raw.Dayl)
     frames.update({mode:pd.concat([weather,base[list(columns)]],axis=1) for mode,columns in CALENDAR_INPUTS.items()})
     frames.update(dict(weather_qdiff1=weather.assign(Discharge_diff1=raw.Discharge.diff(1)),
         weather_rain_q=weather.assign(Prcp_times_Discharge=raw.Prcp*raw.Discharge),
@@ -315,6 +318,7 @@ def run_stage(stage, output, previous=None, seed=42, families=('RF','ANN','LSTM'
                     last_batch_size=(len(tr)-1)%batch_size+1 if batch_size else None,
                     ann_activation=model.ann_activation,ann_history=model.ann_history,
                     input_width=getattr(model.estimator_,'n_features_in_',None),
+                    rf_max_features_per_split=model.estimator_.estimators_[0].max_features_ if model.family == 'RF' else None,
                     lstm_raw_loss=model.lstm_raw_loss,lstm_learning_rate=model.lstm_learning_rate,
                     lstm_readout=model.lstm_readout,
                     lstm_readout_width=lstm_head.in_features if lstm_head is not None else None,

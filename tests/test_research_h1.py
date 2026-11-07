@@ -58,6 +58,57 @@ def test_teacher_radiation_smoke_records_formula_column(tmp_path):
         assert row['selected_indices']==list(range(16))
 
 
+@pytest.mark.parametrize('horizons',[1,7])
+@pytest.mark.parametrize('mode,original,width',[('climate_radiation','climate',40),('daily_radiation','daily',8),('climate_solar_raw','climate',41)])
+def test_radiation_transfer_inputs_preserve_sources_and_full_window(horizons,mode,original,width):
+    raw=raw_data();d=rh.prepare_data(raw,horizons=horizons);new=d[mode];old=d[original]
+    assert 'Srad_lag0' not in d['climate']['names'] and 'Dayl_lag0' not in d['climate']['names']
+    assert new['X'].shape==(len(d['dates']),30,width)
+    np.testing.assert_array_equal(new['X'][:,:,:len(old['names'])],old['X'])
+    np.testing.assert_array_equal(new['dates'],d['dates'])
+    end=raw.index.get_indexer(d['dates']);steps=end[:,None]+np.arange(-29,1)[None,:]
+    if mode=='climate_solar_raw':
+        assert new['names']==old['names']+['Srad_lag0','Dayl_lag0']
+        np.testing.assert_array_equal(new['X'][:,:,-2],raw.Srad.to_numpy()[steps].astype('float32'))
+        np.testing.assert_array_equal(new['X'][:,:,-1],raw.Dayl.to_numpy()[steps].astype('float32'))
+    else:
+        assert new['names']==old['names']+['Srad_energy_MJ_m2_lag0']
+        expected=(raw.Srad.to_numpy()[steps]*raw.Dayl.to_numpy()[steps]/1_000_000).astype('float32')
+        np.testing.assert_array_equal(new['X'][:,:,-1],expected)
+    expected_y=np.column_stack([raw.Discharge.shift(-h).reindex(d['dates']) for h in range(1,horizons+1)])
+    np.testing.assert_array_equal(d['y'],expected_y)
+
+
+def test_radiation_transfer_modes_are_explicit_only():
+    modes=('climate_radiation','daily_radiation','climate_solar_raw')
+    assert all(mode in rh.MODES for mode in modes)
+    for family in ('RF','LSTM'):
+        assert {c['mode'] for c in rh.stage_candidates('features',families=[family])}==set(rh.DEFAULT_MODES)
+        assert {c['mode'] for c in rh.stage_candidates('features',families=[family],modes=modes)}==set(modes)
+
+
+def test_radiation_transfer_smoke_logs_width_and_rf_split_count(tmp_path):
+    candidates=[dict(id=mode,family='RF',mode=mode,transform='sqrt',residual=False,
+        params=dict(trees=2,leaf=5,max_features=.5)) for mode in ('climate','climate_radiation','climate_solar_raw')]
+    candidates.extend(dict(id=mode,family='LSTM',mode=mode,transform='log',residual=False,
+        params=dict(hidden=2,epochs=1,seq_len=7)) for mode in ('daily','daily_radiation'))
+    out=tmp_path/'radiation_transfer';rh.run_stage('features',out,raw=raw_data(),candidates=candidates)
+    fits=json.loads((out/'fits.json').read_text());assert len(fits)==15
+    widths=dict(climate=39,climate_radiation=40,climate_solar_raw=41,daily=7,daily_radiation=8)
+    for row in fits:
+        assert len(row['selected_names'])==widths[row['candidate']]
+        if row['candidate'].startswith('climate'):
+            assert row['input_width']==widths[row['candidate']]
+            assert row['rf_max_features_per_split']==int(widths[row['candidate']]*.5)
+        else:assert row['rf_max_features_per_split'] is None
+
+
+def test_rf_existing_config_records_actual_split_feature_count(tmp_path):
+    c=dict(id='RF',family='RF',mode='climate',transform='sqrt',residual=False,params=dict(trees=2,leaf=5,max_features=.5))
+    out=tmp_path/'split_count';rh.run_stage('features',out,raw=raw_data(),candidates=[c])
+    for row in json.loads((out/'fits.json').read_text()):assert row['rf_max_features_per_split']==19
+
+
 def test_cutoff_causality_and_common_origins():
     raw = raw_data()
     a = rh.prepare_data(raw)

@@ -897,3 +897,16 @@ ann_refinement_verification.json已独立恢复本轮9模型、逐项复现3276�
 旧21模式四类情形的值/顺序/形状/dtype/日期/标签精确兼容核验与398全量测试均实际通过（10条既有测试预算警告）。models.py仍是第35阶段实现，本轮仅可选输入生成的两行生产改动。所有训练/核验/测试句柄结束，完整目录不重启；未增加观测、没有新2004评分、没有改正式报告/验收/ZIP，整体0.8目标未完成。
 
 下一项仅提出同一教师公式的跨家族迁移问题，而不继续扩ANN：保持原较强RF climate39与LSTM daily7各自目标/预算/日期，分别检查加同一辐射列是否有收益。公式不变、不引入额外气象或物理补值，不同家族结论不能从ANN结果直接推断。需要先审查旧RF/LSTM固定配置及相应参考预测/特征，设计显式climate_radiation/daily_radiation与默认兼容/因果TDD和独立事前门槛；尚未设计接口/实现/训练，不以此绕过本轮ANN的失败门槛。最终教师24+16要求仍保留。
+
+## 第三十七阶段：教师辐射向RF/LSTM迁移及原始字段对照（设计与训练前登记）
+
+已核对weather_calendar_transfer_seed42协议：RF_climate_sqrt_abs使用climate39/sqrt绝对/trees120/leaf5/max_features0.5（seq_len默认14）；LSTM_daily_log_w7_h32_e70使用daily7/log绝对/hidden32/seq7/70轮/alpha0.1/lr默认0.003。不改这些参数或比较horizon。teacher公式仍E=Srad*Dayl/1e6，仅t及历史，不生成新观测/记录。停止扩第36阶段ANN网格。
+
+源审查发现RF的climate39未直接含Srad/Dayl，因此增加一个必要原始信息对照：climate_solar_raw41仅附加Srad_lag0/Dayl_lag0；climate_radiation40附加同一E列。RF若改善不能不经对照就归因公式。LSTM原daily7已有Srad/Dayl，只比较daily7/daily_radiation8。新增MODE三个，原weather_radiation生成改为同公式循环复用，旧22模式必须逐项兼容；available_weather早返回与默认四模式不变。RF输入维数39/40/41使max_features0.5的实际每次split特征数19/20/20，这是整体输入策略效应，不宣称纯物理机制；research fits新增rf_max_features_per_split记录实际首棵树max_features_，非RF为None。models.py/正式网格/CLI默认不改。
+
+- [x] 改动前保存旧22模式在h1/h7×common/available四情形数组/顺序/形状/dtype/日期/标签哈希。TDD先失败：三个新输入×h1/h7独立全30步公式/原列/标签对齐；RF旧climate确实缺两个原始字段；默认不扩展、显式MODE支持；真实小RF/LSTM smoke记录39/40/41与7/8维和实际split数；旧RF配置也记录实际split数。全模式未来/2004扰动测试覆盖新输入。
+- [x] 最小实现后所有旧哈希精确一致，相关/全量测试/diff/Git保存后才真实训练；不改变旧结果/公式/模型家族，不混称新增实测数据。
+- [ ] teacher_radiation_transfer_seed42：RF三个输入候选9拟合，LSTM两个输入候选6拟合，共15年度拟合。公共30步原点、每年364验证日/gap7、原流量/峰评分保持。复制上述旧基准候选，只改变新mode与ID；6个旧年度参照需重放（RF仅允许浮点求和量级误差，绝对1e-9；LSTM按原float32逐项相同，完整loss一致）。冻结配置/源码/teacher文件/原始CSV/参照哈希后训练。
+- [ ] 家族内新输入对各自旧输入的事前门槛：最差年及平均R²均不降（1e-10）、至少一项>1e-6，MAE/平均峰RMSE各最多+1%。RF最多一个输入按最差年再均值选入固定seed13/2026配对；LSTM独立决定是否配对，合格家族每seed最多两候选6拟合。不按种子或验证年选择输入，不跨家族掩盖失败，不扩大公式/目标/参数/窗口。配对任一seed困难年或均值下降，不称稳定升级/替换默认；完整列所有取舍、同家族较强原参照与ANN参考。无新2004评价、不改报告/验收/ZIP，教师24+16保留。
+
+9项新测试先因缺新输入/实际split日志全部失败，最小实现后全部通过；原CSV旧22模式在四个horizon/原点情形下的全部值/列顺序/shape/dtype/日期/标签SHA逐项一致（radiation_transfer_old_modes_compatibility.json）。全量407测试实际通过，10条既有ANN10轮测试警告。只改可选输入生成/显式MODE与RF实际split元数据，models.py/正式默认不改；Git保存后执行已登记15拟合，尚无精度收益结论。
