@@ -463,3 +463,18 @@ ann_batch_geometry_verification.json独立核验3运行42拟合/18564预测，39
 weather_batch_interaction_verification.json独立核验通过：全部四格36个ANN年度单元重新从教师原始流量复算，旧三格9828条模型预测明确复用而非新增拟合；每个seed四格的验证日期/真值/训练Q95/峰标签逐项一致。源码来源与Git的fd2c36f/9d4f35c内容哈希核对（允许正常检出换行），旧运行的既有核验文件及协议/预测/fits/warnings哈希全部记录；新格实际几何、轮数/loss/警告、训练边界和持久性核验通过。yearly/summary/effects三CSV给出逐年、逐seed和描述性交互差分；平均R²差分之差为-0.002329/-0.003896/-0.002398，说明这里不能把独立收益相加，不作为独立因果推断。
 
 本轮重跑相关33项有效原点/批次测试通过，源码仍fd2c36f（未新增生产代码，上一阶段全量233项）；真实训练进程已明确终止，无需重启。没有新2004评价，旧正式报告/验收/ZIP和模型默认不变。整体0.8目标仍未完成。下一项应换到新的输入假设，而非继续这一失败组合：可先审查“原始降雨×当日流量状态”的少量因果派生交互，与weather15做一列一列的固定对照；当前climate模式已含warm_rain0/warming_wet7，不应把旧温度×降雨公式包装成新方法。该流量状态交互尚未设计/实现/训练。
+
+## 第二十四阶段：固定天气输入下的流量状态/降雨交互（设计与训练前登记）
+
+设计选择：不采用自动多项式扩展（大量组合易过拟合），不重复climate已有温度×降雨或长历史降雨（已研究）。在weather15之外每次只加一列，固定三个有限表示：weather_qdiff1增加Q(t)-Q(t-1)作为趋势对照；weather_rain_q增加P(t)*Q(t)；weather_rain_qdiff1增加P(t)*(Q(t)-Q(t-1))。后两者不冒称实测土壤状态或新的观测，不使用Q(t+1)/未来降雨/外部参数。原Q(t)已经包含在weather15中，增加的是显式趋势或乘积表示，数据来源并未扩大。
+
+三个新输入均16列，可在相同输入维数下比较趋势与交互；旧weather15仍为参照。相对15列参照，ANN输入权重维度/初始化也会变化，因此这是输入方案总效果，不宣称隔离纯信息因果。已知困难年主要洪峰前一天P(t)=0，两个乘积在该原点为0，不保证能直接解决该洪峰；保留趋势对照，仍评价所有原始日/峰值，不据此删点或调评分。
+
+改动面仅code/research_h1.py的MODES及prepare_data中三个可选frame、tests/test_research_h1.py和MD；不改models.py/正式网格/默认四模式/available_weather守卫。CLI的既有choices随MODES自动支持，程序candidates使用同一模式名。available_weather仍只允许原weather一步ANN，不同时改训练起点或批量。输出额外列名分别Discharge_diff1、Prcp_times_Discharge、Prcp_times_Discharge_diff1；其余15列/共同日期/标签逐项相同。
+
+- [x] 测试先行：1/7标签下独立用原字段逐步计算三列，覆盖零雨/零流量、正负变化和30步全部位置；模式未实现时应因KeyError失败。小预算RF原生七输出确认协议/列名/16维/默认模式不变；既有遍历MODES的未来扰动/2004截断测试自动覆盖新模式。
+- [x] 最小实现：在frames加入`weather.assign(Discharge_diff1=raw.Discharge.diff(1))`及两个原字段乘积，各一列；MODES增加三个名字。运行`D:\anaconda3\python.exe -m pytest tests/test_research_h1.py -q`及全量pytest，检查diff，Git保存后才真实训练。
+- [ ] 首轮flow_interactions_seed42：4输入（weather15及三种16列）×3固定ANN（sqrt增量lr0.001、power025增量lr0.001、log增量lr0.003）×3年，共36拟合。hidden16/alpha1/350上限/seq1/Z-score/批量64/无峰权重/common训练数300/665/1030，验证364日/年及gap7。旧weather三条须逐条复现weather_origins_common_seed42，不同时调网络、批量或起点。
+- [ ] 独立验证：从教师CSV重建三列公式，检查同日期/原始真值/Q95/全年度与洪峰指标/汇总、实际输入列/轮数/loss和源码哈希。仅存在可保留的最差年或平均分收益、其他误差可接受时，最多冻结两条新输入/目标组合，按同参数与weather参照配对复核seed13/2026；无收益即停止，不扩交互/阈值/网络网格。研究仅2000--2003，不新评价2004或改正式产物。
+
+新7测试先因缺少三模式KeyError失败，最小实现后研究相关90项通过；全量240测试通过，10条为既有10轮ANN测试预算警告。真实教师数据还与fd2c36f旧prepare_data逐项比较：原所有模式及available_weather两条路径的日期/标签/名称/输入数值完全相同；CLI help已显示新模式且默认四模式保留。新增生产逻辑仅三个frame及模式登记，models.py未改；保存Git后执行已登记的36拟合。

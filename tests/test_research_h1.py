@@ -219,6 +219,55 @@ def test_weather_ablation_removes_only_named_derivative_group():
         np.testing.assert_array_equal(mode['X'],data['weather']['X'][:,:,ids])
 
 
+@pytest.mark.parametrize('horizons',[1,7])
+@pytest.mark.parametrize('mode,column',[
+    ('weather_qdiff1','Discharge_diff1'),
+    ('weather_rain_q','Prcp_times_Discharge'),
+    ('weather_rain_qdiff1','Prcp_times_Discharge_diff1')])
+def test_flow_interactions_match_independent_original_field_formula(horizons,mode,column):
+    raw=raw_data();rng=np.random.default_rng(916)
+    raw['Discharge']=rng.choice([0.,1.,20.,100.,10000.],len(raw))
+    raw['Prcp']=rng.choice([0.,1.,5.,30.],len(raw))
+    data=rh.prepare_data(raw,horizons=horizons);part=data[mode]
+    assert part['names']==data['weather']['names']+[column]
+    assert part['X'].shape==(len(data['dates']),30,16)
+    np.testing.assert_array_equal(part['dates'],data['dates'])
+    np.testing.assert_array_equal(part['X'][:,:,:15],data['weather']['X'])
+    q=raw.Discharge.to_numpy();p=raw.Prcp.to_numpy();expected=[]
+    for i in range(1,len(raw)):
+        expected.append(q[i]-q[i-1] if mode=='weather_qdiff1' else
+                        p[i]*q[i] if mode=='weather_rain_q' else p[i]*(q[i]-q[i-1]))
+    values=np.asarray(expected)
+    for sample,date in enumerate(data['dates']):
+        end=raw.index.get_loc(date)
+        np.testing.assert_array_equal(part['X'][sample,:,-1],values[end-30:end].astype('float32'))
+    assert np.any(part['X'][:,:,-1]==0) and np.isfinite(part['X']).all()
+    if mode!='weather_rain_q':
+        assert np.any(part['X'][:,:,-1]>0) and np.any(part['X'][:,:,-1]<0)
+    expected_y=np.column_stack([raw.Discharge.shift(-h).reindex(data['dates']) for h in range(1,horizons+1)])
+    np.testing.assert_array_equal(data['y'],expected_y)
+
+
+def test_flow_interaction_run_records_columns_native_outputs_and_default_modes(tmp_path):
+    modes=['weather_qdiff1','weather_rain_q','weather_rain_qdiff1']
+    candidates=[dict(id=mode,family='RF',mode=mode,transform='sqrt',residual=True,
+        outputs=7,params=dict(trees=2,seq_len=1)) for mode in modes]
+    out=tmp_path/'flow_interaction'
+    rh.run_stage('features',out,raw=raw_data(),candidates=candidates)
+    protocol=json.loads((out/'protocol.json').read_text())
+    fits=json.loads((out/'fits.json').read_text())
+    assert [c['mode'] for c in protocol['candidates']]==modes and protocol['label_horizon']==7
+    assert not protocol['available_weather'] and len(fits)==9
+    for row in fits:
+        assert row['outputs']==7 and row['input_width']==len(row['selected_names'])==16
+        assert row['selected_names'][0]=='Discharge_lag0'
+        assert row['selected_names'][-1]==dict(weather_qdiff1='Discharge_diff1',
+            weather_rain_q='Prcp_times_Discharge',weather_rain_qdiff1='Prcp_times_Discharge_diff1')[row['candidate']]
+    assert {c['mode'] for c in rh.stage_candidates('features',families=['RF'])}=={'mi','forced','all','hydro'}
+    assert {c['mode'] for c in rh.stage_candidates('features',families=['RF'],modes=modes)}==set(modes)
+    assert json.loads((out/'complete.json').read_text())['status']=='complete'
+
+
 def test_rain_windows_are_exact_prior_only_weighted_sums():
     raw=raw_data()
     raw['Prcp']=np.random.default_rng(218).uniform(0,30,len(raw))
