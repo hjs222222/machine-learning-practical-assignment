@@ -530,6 +530,21 @@ def test_lstm_research_records_actual_readout_head(tmp_path):
             assert row['lstm_head_parameters']==row['lstm_readout_width']+1
 
 
+def test_ann_research_records_refinement_separately_from_first_stage(tmp_path):
+    candidates=[dict(id=mode,family='ANN',mode='weather',transform='sqrt',residual=True,
+        params=dict(ann_backend='torch',ann_refinement=mode,hidden=2,iterations=1,seq_len=1))
+        for mode in ('none','adam_full45','lbfgs20')]
+    out=tmp_path/'refinement';rh.run_stage('features',out,raw=raw_data(),candidates=candidates)
+    fits=json.loads((out/'fits.json').read_text());assert len(fits)==9
+    for row in fits:
+        assert row['ann_refinement']==row['candidate'] and len(row['loss_history'])==row['n_iter']==1
+        if row['candidate']=='none':assert row['ann_refinement_state'] is None
+        else:
+            state=row['ann_refinement_state']
+            assert state['mode']==row['candidate'] and 1<=state['gradient_evaluations']<=45
+            assert state['full_train_rows'] in (300,665,1030) and state['first_stage_epochs']==1
+
+
 def test_ann_research_records_actual_batch_geometry(tmp_path):
     candidates=[dict(id=f'ANN_{backend}',family='ANN',mode='weather',transform='sqrt',
         residual=True,params=dict(ann_backend=backend,ann_batch_size=62,hidden=2,

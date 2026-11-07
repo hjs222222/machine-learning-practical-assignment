@@ -1,6 +1,7 @@
 """原生单/多输出模型；每次 fit 内重新做选择、缩放和训练。"""
 import numpy as np
 import warnings
+import time
 from sklearn.base import BaseEstimator, RegressorMixin, clone
 from sklearn.metrics import r2_score
 from sklearn.exceptions import ConvergenceWarning
@@ -69,7 +70,8 @@ class RunoffRegressor(RegressorMixin, BaseEstimator):
                  lstm_chrono_stop=False, ann_history=False, first_day_weight=1.0,
                  x_scaling='standard', input_transform='raw',
                  ann_backend='sklearn', ann_raw_loss=0.0, ann_batch_size=64, ann_linear_skip=False,
-                 ann_grad_clip=1.0, ann_lr_schedule='constant', lstm_readout='last'):
+                 ann_grad_clip=1.0, ann_lr_schedule='constant', lstm_readout='last',
+                 ann_refinement='none'):
         self.family = family
         self.transform = transform
         self.top_k = top_k
@@ -104,6 +106,7 @@ class RunoffRegressor(RegressorMixin, BaseEstimator):
         self.ann_grad_clip = ann_grad_clip
         self.ann_lr_schedule = ann_lr_schedule
         self.lstm_readout = lstm_readout
+        self.ann_refinement = ann_refinement
 
     def target(self, y):
         if self.transform == 'log':
@@ -185,6 +188,10 @@ class RunoffRegressor(RegressorMixin, BaseEstimator):
         if (not isinstance(self.lstm_readout,str) or self.lstm_readout not in ('last','last_mean') or
                 (self.lstm_readout != 'last' and self.family != 'LSTM')):
             raise ValueError('lstm_readout仅支持last/last_mean，非last仅适用于LSTM')
+        if (not isinstance(self.ann_refinement,str) or self.ann_refinement not in ('none','adam_full45','lbfgs20') or
+                (self.ann_refinement != 'none' and
+                 (self.family != 'ANN' or self.ann_backend != 'torch' or self.ann_lr_schedule != 'constant'))):
+            raise ValueError('ann_refinement仅支持none/adam_full45/lbfgs20；非none仅适用于constant的torch ANN')
         if (self.ann_backend not in ('sklearn','torch') or
                 (self.ann_backend == 'torch' and (self.family != 'ANN' or self.ann_solver != 'adam' or self.ann_chrono_stop))):
             raise ValueError('ann_backend torch仅支持无ann_chrono_stop的Adam ANN')
@@ -321,6 +328,71 @@ class RunoffRegressor(RegressorMixin, BaseEstimator):
         self.lstm_training_ = info
         return self
 
+    def _ann_full_objective(self, net, x, z, current, truth):
+        batches = (len(x)+self.ann_batch_size-1)//self.ann_batch_size
+        penalty = sum(p.square().sum() for name,p in net.named_parameters() if name.endswith('weight'))
+        return .5*self._torch_objective(net(x),z,current,truth)+self.alpha*batches*penalty/(2*len(x))
+
+    def _refine_ann(self, net, optimizer, x, z, current, truth):
+        started = time.perf_counter()
+        snapshot = {name:value.detach().clone() for name,value in net.state_dict().items()}
+        calls, objective_calls = 0,0
+        history,norms = [],[]
+        def objective():
+            nonlocal objective_calls
+            objective_calls += 1
+            value = self._ann_full_objective(net,x,z,current,truth)
+            if not torch.isfinite(value):
+                raise ValueError('ANN精修目标出现非有限值')
+            return value
+        with torch.no_grad():
+            initial = float(objective().item())
+        refiner = (optimizer if self.ann_refinement == 'adam_full45' else
+                   torch.optim.LBFGS(net.parameters(),lr=1.,max_iter=20,max_eval=20,line_search_fn='strong_wolfe'))
+        def closure():
+            nonlocal calls
+            if calls >= 45:
+                raise ValueError('ANN精修超出45次完整梯度预算')
+            calls += 1
+            refiner.zero_grad()
+            value = objective()
+            value.backward()
+            gradients = [p.grad for p in net.parameters() if p.grad is not None]
+            if any(not torch.isfinite(g).all() for g in gradients):
+                raise ValueError('ANN精修梯度出现非有限值')
+            norm = torch.linalg.vector_norm(torch.stack([g.norm() for g in gradients]))
+            if not torch.isfinite(norm):
+                raise ValueError('ANN精修梯度范数出现非有限值')
+            norms.append(float(norm.item()))
+            history.append(float(value.detach().item()))
+            return value
+        if self.ann_refinement == 'adam_full45':
+            for _ in range(45):
+                closure()
+                refiner.step()
+            iterations = 45
+        else:
+            refiner.step(closure)
+            state = refiner.state[next(iter(net.parameters()))]
+            if state['func_evals'] != calls:
+                raise ValueError('ANN精修闭包计数与优化器状态不一致')
+            iterations = state['n_iter']
+        with torch.no_grad():
+            proposed = float(objective().item())
+            rolled_back = proposed > initial
+            if rolled_back:
+                net.load_state_dict(snapshot)
+                selected = float(objective().item())
+            else:
+                selected = proposed
+        batches = (len(x)+self.ann_batch_size-1)//self.ann_batch_size
+        self.ann_refinement_ = dict(mode=self.ann_refinement,full_train_rows=len(x),batch_count=batches,
+            full_l2_coefficient=self.alpha*batches/(2*len(x)),first_stage_epochs=len(self.loss_history_),
+            gradient_budget=45,gradient_evaluations=calls,full_objective_evaluations=objective_calls,
+            optimizer_iterations=iterations,objective_history=history,gradient_norm_history=norms,
+            initial_objective=initial,proposed_final_objective=proposed,selected_final_objective=selected,
+            rolled_back=rolled_back,unclipped_gradients=True,elapsed_seconds=time.perf_counter()-started)
+
     def _fit_torch(self, x, z, current, truth, validation=None):
         torch.manual_seed(self.seed)
         if torch.cuda.is_available():
@@ -402,6 +474,9 @@ class RunoffRegressor(RegressorMixin, BaseEstimator):
                                        best_inner_r2=best_score,history=history)
         if is_ann and epoch == max_epochs and stale_epochs <= 10:
             warnings.warn('Torch ANN reached its iteration budget without training-loss convergence',ConvergenceWarning)
+        self.ann_refinement_ = None
+        if is_ann and self.ann_refinement != 'none':
+            self._refine_ann(net,optimizer,tx,ty,tq,truth_tensor)
         self.estimator_ = net.cpu().eval()
         if is_ann:
             self.estimator_.n_iter_ = len(self.loss_history_)
