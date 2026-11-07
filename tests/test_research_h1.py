@@ -143,6 +143,106 @@ def test_forced_selection_and_skip_mi(monkeypatch):
     assert len(RunoffRegressor(top_k=None, trees=2).fit(x,y).selected_) == 8
 
 
+def initialization_training_table():
+    dates=pd.date_range('2000-01-01',periods=3)
+    return pd.DataFrame([dict(candidate='A',year=2001,seed=seed,origin=str(date.date()),
+        target_date=str((date+pd.Timedelta(days=1)).date()),truth=float(i+1),
+        prediction=float(i+1+(1 if seed==13 else .5)))
+        for seed in (13,42,2026) for i,date in enumerate(dates)])
+
+
+def test_select_initializations_uses_raw_training_mse_ties_and_independent_groups():
+    a=initialization_training_table();b=a.copy();b['candidate']='B'
+    b['prediction']=b.truth+np.where(b.seed==13,0.,2.)
+    result=rh.select_initializations(pd.concat([a,b],ignore_index=True))
+    assert result.to_dict('records')==[dict(candidate='A',year=2001,seed=42,training_mse=.25),
+                                      dict(candidate='B',year=2001,seed=13,training_mse=0.)]
+    changed=pd.concat([a,b],ignore_index=True).sample(frac=1,random_state=8)
+    changed['validation_r2']=np.where(changed.seed==13,1e9,-1e9)
+    pd.testing.assert_frame_equal(result,rh.select_initializations(changed))
+
+
+@pytest.mark.parametrize('bad',['missing_seed','missing_row','duplicate','truth','date','future',
+                               'nonfinite','overflow','empty','missing_column'])
+def test_select_initializations_rejects_incomparable_or_invalid_training_tables(bad):
+    frame=initialization_training_table()
+    if bad=='missing_seed':frame=frame[frame.seed!=2026]
+    elif bad=='missing_row':frame=frame.iloc[:-1]
+    elif bad=='duplicate':frame=pd.concat([frame,frame.iloc[:1]],ignore_index=True)
+    elif bad=='truth':frame.loc[0,'truth']+=1
+    elif bad=='date':frame.loc[0,'target_date']='2000-01-03'
+    elif bad=='future':
+        frame['origin']='2001-01-01';frame['target_date']='2001-01-02'
+        frame=frame.groupby('seed',as_index=False).head(1)
+    elif bad=='nonfinite':frame.loc[0,'prediction']=np.nan
+    elif bad=='overflow':frame.loc[0,'prediction']=1e308
+    elif bad=='empty':frame=frame.iloc[:0]
+    elif bad=='missing_column':frame=frame.drop(columns='origin')
+    with pytest.raises(ValueError):rh.select_initializations(frame)
+
+
+@pytest.mark.parametrize('family',['RF','ANN','LSTM'])
+@pytest.mark.filterwarnings('ignore::sklearn.exceptions.ConvergenceWarning')
+def test_record_training_uses_final_fit_predictions_and_keeps_validation_unchanged(family,tmp_path):
+    raw=raw_data();c=dict(id=family,family=family,mode='weather',transform='sqrt',residual=True,
+        params=dict(trees=2,hidden=2,epochs=1,iterations=1,seq_len=1))
+    plain=tmp_path/'plain';recorded=tmp_path/'recorded'
+    rh.run_stage('features',plain,raw=raw,candidates=[c],seed=13)
+    rh.run_stage('features',recorded,raw=raw,candidates=[c],seed=13,record_training=True)
+    assert not (plain/'training_predictions.csv').exists()
+    assert not json.loads((plain/'protocol.json').read_text())['record_training']
+    assert json.loads((recorded/'protocol.json').read_text())['record_training']
+    np.testing.assert_allclose(pd.read_csv(plain/'predictions.csv').prediction,
+        pd.read_csv(recorded/'predictions.csv').prediction,rtol=1e-10,atol=1e-8)
+    train=pd.read_csv(recorded/'training_predictions.csv',float_precision='round_trip')
+    fits=json.loads((recorded/'fits.json').read_text());old_fits=json.loads((plain/'fits.json').read_text())
+    assert set(train.candidate)=={family} and set(train.seed)=={13}
+    data=rh.prepare_data(raw)
+    for (year,tr,_),fit,old in zip(rh.annual_splits(data['dates']),fits,old_fits):
+        part=train[train.year==year]
+        assert len(part)==len(tr) and fit['loss_history']==old['loss_history']
+        assert old['training_mse'] is None
+        np.testing.assert_array_equal(pd.to_datetime(part.origin),data['dates'][tr])
+        np.testing.assert_array_equal(pd.to_datetime(part.target_date),data['dates'][tr]+pd.Timedelta(days=1))
+        np.testing.assert_array_equal(part.truth,data['y'][tr,0])
+        assert pd.to_datetime(part.target_date).max()<pd.Timestamp(year,1,1)
+        manual=RunoffRegressor(family=family,top_k=None,transform='sqrt',residual=True,
+            seed=13,**c['params']).fit(data['weather']['X'][tr],data['y'][tr])
+        expected=manual.predict(data['weather']['X'][tr])[:,0]
+        np.testing.assert_allclose(part.prediction,expected,rtol=1e-10,atol=1e-8)
+        assert fit['training_mse']==pytest.approx(np.mean((expected-data['y'][tr,0])**2))
+
+
+@pytest.mark.parametrize('flag',[1,'yes',None])
+def test_record_training_rejects_nonboolean_flag_before_output(flag,tmp_path):
+    out=tmp_path/'invalid'
+    with pytest.raises(ValueError,match='record_training'):
+        rh.run_stage('features',out,raw=raw_data(),candidates=[dict(id='RF',family='RF',mode='weather',
+            transform='sqrt',residual=False,params=dict(trees=2))],record_training=flag)
+    assert not out.exists()
+
+
+def test_record_training_rejects_seven_outputs_before_output(tmp_path):
+    out=tmp_path/'invalid'
+    with pytest.raises(ValueError,match='record_training'):
+        rh.run_stage('features',out,raw=raw_data(),record_training=True,candidates=[dict(id='RF',
+            family='RF',mode='weather',transform='sqrt',residual=False,outputs=7,params=dict(trees=2))])
+    assert not out.exists()
+
+
+@pytest.mark.parametrize('bad',['shape','nonfinite'])
+def test_record_training_rejects_invalid_final_training_prediction(bad,tmp_path,monkeypatch):
+    original=RunoffRegressor.predict
+    def capture(self,X):
+        if len(X)==300:
+            return np.ones((len(X),2)) if bad=='shape' else np.full((len(X),1),np.nan)
+        return original(self,X)
+    monkeypatch.setattr(RunoffRegressor,'predict',capture)
+    with pytest.raises(ValueError,match='training prediction'):
+        rh.run_stage('features',tmp_path/'bad',raw=raw_data(),record_training=True,candidates=[dict(
+            id='RF',family='RF',mode='weather',transform='sqrt',residual=False,params=dict(trees=2))])
+
+
 def test_minmax_only_fits_training_rows_and_does_not_clip_future_extremes():
     x=np.random.default_rng(106).uniform(1,10,(40,3,4)).astype('float32')
     x[30:]=1e5

@@ -121,6 +121,42 @@ def metrics(truth, prediction, threshold):
                 peak_bias=float(np.mean(peak)) if len(peak) else None, peak_count=int(len(peak)))
 
 
+def select_initializations(training_predictions):
+    """Choose one seed per configuration/year using only final raw-flow training MSE."""
+    columns = ['candidate','year','seed','origin','target_date','truth','prediction']
+    if (not isinstance(training_predictions,pd.DataFrame) or training_predictions.empty or
+            not set(columns).issubset(training_predictions.columns)):
+        raise ValueError('Incomplete training prediction table')
+    frame = training_predictions[columns].copy()
+    if frame.isna().any().any() or not np.isfinite(frame[['truth','prediction']].to_numpy(float)).all():
+        raise ValueError('Nonfinite training prediction table')
+    if frame.duplicated(['candidate','year','seed','origin']).any():
+        raise ValueError('Duplicate training origins')
+    chosen = []
+    for (candidate,year),part in frame.groupby(['candidate','year'],sort=True):
+        if set(part.seed) != {13,42,2026}:
+            raise ValueError('Expected training predictions for seeds 13/42/2026')
+        origin,target = pd.to_datetime(part.origin),pd.to_datetime(part.target_date)
+        if not (target == origin+pd.Timedelta(days=1)).all() or (target >= pd.Timestamp(int(year),1,1)).any():
+            raise ValueError('Training target dates cross validation boundary or are misaligned')
+        reference = None
+        scores = []
+        for seed,group in part.groupby('seed',sort=True):
+            group = group.sort_values('origin').reset_index(drop=True)
+            keys = group[['origin','target_date','truth']]
+            if reference is not None and not reference.equals(keys):
+                raise ValueError('Incomparable training origins or truth across seeds')
+            reference = keys
+            with np.errstate(over='ignore',invalid='ignore'):
+                mse = float(np.mean((group.prediction.to_numpy(float)-group.truth.to_numpy(float))**2))
+            if not np.isfinite(mse):
+                raise ValueError('Nonfinite training MSE')
+            scores.append((mse,int(seed)))
+        mse,seed = min(scores)
+        chosen.append(dict(candidate=candidate,year=int(year),seed=seed,training_mse=mse))
+    return pd.DataFrame(chosen)
+
+
 def stage_candidates(stage, previous=None, families=('RF','ANN','LSTM'), modes=DEFAULT_MODES):
     if stage != 'features' and tuple(modes) != DEFAULT_MODES:
         raise ValueError('--modes is supported only for features')
@@ -157,7 +193,9 @@ def stage_candidates(stage, previous=None, families=('RF','ANN','LSTM'), modes=D
 
 
 def run_stage(stage, output, previous=None, seed=42, families=('RF','ANN','LSTM'), limit=None,
-              raw=None, candidates=None, modes=DEFAULT_MODES, available_weather=False):
+              raw=None, candidates=None, modes=DEFAULT_MODES, available_weather=False, record_training=False):
+    if not isinstance(record_training,bool):
+        raise ValueError('record_training须为bool')
     if stage != 'features' and tuple(modes) != DEFAULT_MODES:
         raise ValueError('--modes is supported only for features')
     output = Path(output)
@@ -177,11 +215,13 @@ def run_stage(stage, output, previous=None, seed=42, families=('RF','ANN','LSTM'
             c.get('params',{}).get('seq_len') != 1 for c in candidates):
         raise ValueError('available_weather仅支持显式seq_len=1的weather ANN候选')
     label_horizon = max(candidate.get('outputs',1) for candidate in candidates)
+    if record_training and label_horizon != 1:
+        raise ValueError('record_training仅支持h1')
     data = prepare_data(load_raw() if raw is None else raw,horizons=label_horizon,available_weather=available_weather)
     splits = list(annual_splits(data['dates'],horizons=label_horizon))
     output.mkdir(parents=True)
     protocol = dict(stage=stage,seed=seed,data_cutoff='2003-12-31',horizon=1,label_horizon=label_horizon,gap=7,
-                    sequence_length=1 if available_weather else 30,available_weather=available_weather,
+                    sequence_length=1 if available_weather else 30,available_weather=available_weather,record_training=record_training,
                     selection='worst annual R2, then mean annual R2',
                     limitation='Training-period selection is biased; no independent generalization claim',
                     sample_note=('Available original weather origins, one-step ANN; same annual validation dates' if available_weather else
@@ -196,6 +236,7 @@ def run_stage(stage, output, previous=None, seed=42, families=('RF','ANN','LSTM'
                                 train_count=len(tr),valid_count=len(va)) for year,tr,va in splits])
     save_json(output/'protocol.json',protocol)
     rows, predictions, warning_rows, fits, horizon_rows = [], [], [], [], []
+    training_predictions = []
     for candidate in [dict(id='persistence',family='persistence',mode='weather' if available_weather else 'all')] + candidates:
         for year,tr,va in splits:
             print(f"[{stage}] {candidate['id']} year={year} train={len(tr)} valid={len(va)}",flush=True)
@@ -217,6 +258,14 @@ def run_stage(stage, output, previous=None, seed=42, families=('RF','ANN','LSTM'
                     warnings.simplefilter('always')
                     model.fit(current['X'][tr],data['y'][tr,:outputs])
                     pred = model.predict(current['X'][va])
+                    train_pred = model.predict(current['X'][tr]) if record_training else None
+                if record_training:
+                    if train_pred.shape != (len(tr),1) or not np.isfinite(train_pred).all():
+                        raise ValueError('Nonfinite or misaligned training prediction')
+                    training_predictions.extend(dict(candidate=candidate['id'],seed=seed,year=year,
+                        origin=str(date.date()),target_date=str((date+pd.Timedelta(days=1)).date()),
+                        truth=float(y),prediction=float(p))
+                        for date,y,p in zip(data['dates'][tr],data['y'][tr,0],train_pred[:,0]))
                 warning_rows.append(dict(candidate=candidate['id'],year=year,
                     warnings=[dict(category=w.category.__name__,message=str(w.message)) for w in caught]))
                 ann_training = getattr(model,'ann_training_',None)
@@ -250,6 +299,7 @@ def run_stage(stage, output, previous=None, seed=42, families=('RF','ANN','LSTM'
                     input_width=getattr(model.estimator_,'n_features_in_',None),
                     lstm_raw_loss=model.lstm_raw_loss,lstm_learning_rate=model.lstm_learning_rate,
                     raw_loss_scale=getattr(model,'raw_loss_scale_',None),
+                    training_mse=float(np.mean((train_pred-data['y'][tr,:1])**2)) if record_training else None,
                     ann_training=ann_training,lstm_training=lstm_training,
                     threshold=threshold,n_iter=getattr(model.estimator_,'n_iter_',None),
                     convergence_warning=any(w.category.__name__=='ConvergenceWarning' for w in caught),
@@ -269,6 +319,8 @@ def run_stage(stage, output, previous=None, seed=42, families=('RF','ANN','LSTM'
                 for date,y,p,vector,truth in zip(data['dates'][va],data['y'][va,0],pred[:,0],pred,data['y'][va]))
             pd.DataFrame(rows).to_csv(output/'fold_metrics.csv',index=False)
             pd.DataFrame(predictions).to_csv(output/'predictions.csv',index=False)
+            if record_training and training_predictions:
+                pd.DataFrame(training_predictions).to_csv(output/'training_predictions.csv',index=False)
             if label_horizon > 1:
                 pd.DataFrame(horizon_rows).to_csv(output/'horizon_metrics.csv',index=False)
             save_json(output/'warnings.json',warning_rows)
