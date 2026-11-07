@@ -485,6 +485,20 @@ def test_ann_research_records_actual_linear_skip_parameters(tmp_path):
             assert row['linear_skip_parameters']==0 and row['linear_skip_weight_norm'] is row['linear_skip_bias_norm'] is None
 
 
+def test_ann_research_records_effective_gradient_clip(tmp_path):
+    candidates=[dict(id='torch5',family='ANN',mode='weather',transform='sqrt',residual=True,
+        params=dict(ann_backend='torch',ann_grad_clip=5.,hidden=2,iterations=1,seq_len=1)),
+        dict(id='sklearn',family='ANN',mode='weather',transform='sqrt',residual=True,params=dict(hidden=2,iterations=1,seq_len=1)),
+        dict(id='LSTM',family='LSTM',mode='weather',transform='sqrt',residual=True,params=dict(hidden=2,epochs=1,seq_len=1)),
+        dict(id='RF',family='RF',mode='weather',transform='sqrt',residual=True,params=dict(trees=2,seq_len=1))]
+    out=tmp_path/'gradient_clip';rh.run_stage('features',out,raw=raw_data(),candidates=candidates)
+    fits=json.loads((out/'fits.json').read_text())
+    assert len(fits)==12
+    for row in fits:
+        assert row['ann_grad_clip']==(5. if row['candidate']=='torch5' else 1.)
+        assert row['gradient_clip']==dict(torch5=5.,LSTM=1.,sklearn=None,RF=None)[row['candidate']]
+
+
 def test_ann_research_records_actual_batch_geometry(tmp_path):
     candidates=[dict(id=f'ANN_{backend}',family='ANN',mode='weather',transform='sqrt',
         residual=True,params=dict(ann_backend=backend,ann_batch_size=62,hidden=2,

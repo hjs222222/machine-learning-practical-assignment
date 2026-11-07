@@ -64,7 +64,8 @@ class RunoffRegressor(RegressorMixin, BaseEstimator):
                  ann_activation='relu', lstm_raw_loss=0.0, lstm_learning_rate=0.003,
                  lstm_chrono_stop=False, ann_history=False, first_day_weight=1.0,
                  x_scaling='standard', input_transform='raw',
-                 ann_backend='sklearn', ann_raw_loss=0.0, ann_batch_size=64, ann_linear_skip=False):
+                 ann_backend='sklearn', ann_raw_loss=0.0, ann_batch_size=64, ann_linear_skip=False,
+                 ann_grad_clip=1.0):
         self.family = family
         self.transform = transform
         self.top_k = top_k
@@ -96,6 +97,7 @@ class RunoffRegressor(RegressorMixin, BaseEstimator):
         self.ann_raw_loss = ann_raw_loss
         self.ann_batch_size = ann_batch_size
         self.ann_linear_skip = ann_linear_skip
+        self.ann_grad_clip = ann_grad_clip
 
     def target(self, y):
         if self.transform == 'log':
@@ -166,6 +168,11 @@ class RunoffRegressor(RegressorMixin, BaseEstimator):
         if (not isinstance(self.ann_linear_skip,bool) or
                 (self.ann_linear_skip and (self.family != 'ANN' or self.ann_backend != 'torch'))):
             raise ValueError('ann_linear_skip须为bool，True仅适用于torch ANN')
+        if (isinstance(self.ann_grad_clip,(bool,np.bool_)) or
+                not isinstance(self.ann_grad_clip,(int,float,np.integer,np.floating)) or
+                not np.isfinite(self.ann_grad_clip) or self.ann_grad_clip <= 0 or
+                (self.ann_grad_clip != 1 and (self.family != 'ANN' or self.ann_backend != 'torch'))):
+            raise ValueError('ann_grad_clip须为有限非bool正实数，非1仅适用于torch ANN')
         if (self.ann_backend not in ('sklearn','torch') or
                 (self.ann_backend == 'torch' and (self.family != 'ANN' or self.ann_solver != 'adam' or self.ann_chrono_stop))):
             raise ValueError('ann_backend torch仅支持无ann_chrono_stop的Adam ANN')
@@ -349,7 +356,7 @@ class RunoffRegressor(RegressorMixin, BaseEstimator):
                 if not torch.isfinite(loss):
                     raise ValueError('神经网络训练损失出现非有限值')
                 loss.backward()
-                nn.utils.clip_grad_norm_(net.parameters(),1.0)
+                nn.utils.clip_grad_norm_(net.parameters(),self.ann_grad_clip if is_ann else 1.0)
                 optimizer.step()
                 loss_sum += loss.item()*len(pred)
             self.loss_history_.append(loss_sum/len(x))
