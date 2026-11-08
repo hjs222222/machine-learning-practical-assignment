@@ -325,6 +325,7 @@ def run_stage(stage, output, previous=None, seed=42, families=('RF','ANN','LSTM'
                     input_width=getattr(model.estimator_,'n_features_in_',None),
                     rf_max_features_per_split=model.estimator_.estimators_[0].max_features_ if model.family == 'RF' else None,
                     rf_bootstrap=model.estimator_.bootstrap if model.family == 'RF' else None,
+                    rf_monotonic_cst=model.estimator_.monotonic_cst if model.family == 'RF' else None,
                     rf_first_tree_sample_count=len(rf_samples) if rf_samples is not None else None,
                     rf_first_tree_unique_count=len(np.unique(rf_samples)) if rf_samples is not None else None,
                     lstm_raw_loss=model.lstm_raw_loss,lstm_learning_rate=model.lstm_learning_rate,
