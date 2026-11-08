@@ -18,7 +18,8 @@ from models import RunoffRegressor
 DEFAULT_MODES = ('mi', 'forced', 'all', 'hydro')
 WEATHER_ABLATIONS = {'weather_no_vp':('Vp_diff1','Vp_diff3'),
                     'weather_no_srad':('Srad_diff1','Srad_diff3'),
-                    'weather_no_temp':('Tavg_diff1','Tavg_diff3','Trange_lag0','Trange_diff1')}
+                    'weather_no_temp':('Tavg_diff1','Tavg_diff3','Trange_lag0','Trange_diff1'),
+                    'weather_no_trange0':('Trange_lag0',)}
 RAIN_WINDOWS = {'weather_rain_sum30':1.,'weather_rain_decay05':.5,
                 'weather_rain_decay08':.8,'weather_rain_decay095':.95}
 FLOW_INTERACTIONS = ('weather_qdiff1','weather_rain_q','weather_rain_qdiff1')
