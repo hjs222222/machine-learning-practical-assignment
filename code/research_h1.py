@@ -322,6 +322,10 @@ def run_stage(stage, output, previous=None, seed=42, families=('RF','ANN','LSTM'
                     rf_max_features_per_split=model.estimator_.estimators_[0].max_features_ if model.family == 'RF' else None,
                     lstm_raw_loss=model.lstm_raw_loss,lstm_learning_rate=model.lstm_learning_rate,
                     lstm_readout=model.lstm_readout,
+                    lstm_bidirectional=model.lstm_bidirectional,
+                    lstm_directions=(2 if model.estimator_.lstm.bidirectional else 1) if model.family == 'LSTM' else None,
+                    lstm_hidden_per_direction=model.estimator_.lstm.hidden_size if model.family == 'LSTM' else None,
+                    lstm_total_parameters=sum(p.numel() for p in model.estimator_.parameters()) if model.family == 'LSTM' else None,
                     lstm_linear_skip=model.lstm_linear_skip,
                     lstm_skip_parameters=(model.estimator_.skip_weight.numel()+model.estimator_.skip_bias.numel()
                                           if model.family == 'LSTM' and hasattr(model.estimator_,'skip_weight') else 0),
