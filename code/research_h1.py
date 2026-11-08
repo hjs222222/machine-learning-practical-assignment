@@ -321,6 +321,13 @@ def run_stage(stage, output, previous=None, seed=42, families=('RF','ANN','LSTM'
                     rf_max_features_per_split=model.estimator_.estimators_[0].max_features_ if model.family == 'RF' else None,
                     lstm_raw_loss=model.lstm_raw_loss,lstm_learning_rate=model.lstm_learning_rate,
                     lstm_readout=model.lstm_readout,
+                    lstm_linear_skip=model.lstm_linear_skip,
+                    lstm_skip_parameters=(model.estimator_.skip_weight.numel()+model.estimator_.skip_bias.numel()
+                                          if model.family == 'LSTM' and hasattr(model.estimator_,'skip_weight') else 0),
+                    lstm_skip_weight_norm=(float(model.estimator_.skip_weight.detach().norm().item())
+                                          if model.family == 'LSTM' and hasattr(model.estimator_,'skip_weight') else None),
+                    lstm_skip_bias_norm=(float(model.estimator_.skip_bias.detach().norm().item())
+                                        if model.family == 'LSTM' and hasattr(model.estimator_,'skip_weight') else None),
                     lstm_readout_width=lstm_head.in_features if lstm_head is not None else None,
                     lstm_head_parameters=sum(p.numel() for p in lstm_head.parameters()) if lstm_head is not None else None,
                     raw_loss_scale=getattr(model,'raw_loss_scale_',None),

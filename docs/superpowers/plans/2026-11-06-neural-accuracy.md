@@ -977,3 +977,12 @@ audit_flow_state_errors.py完成，flow_state_error_audit/verification.json与pe
 最大真实峰仍为目标2003-12-18的13700，原点Q1210/Prcp0。三seed sqrt ANN预测约1098.781--1159.881，新Ridge约1093.450--1122.631；引入原点信息没有解决该突涨。不是数据错误证明、删峰理由或理论上限。原评分/所有峰保留。
 
 排重审查确认LSTM原流量混合损失早已做过：daily7/log绝对/hidden32/70轮，lr0.0003/0.001/0.003×mix0/.25/1及部分150/300轮，原0.003/mix0仍优；不重新包装成新实验。当前SequenceNet仅由隐藏态输出（可选last/last_mean），没有原点特征线性直连。下一项仅审查该直连假设与公平初始化/批次对照：零参数初始化不额外消耗随机数，保持起始输出和旧默认完全一致；不能将Ridge局部收益外推为LSTM必然提高。尚未设计接口/实现/训练，不扩窗口/目标/lr网格。
+
+## 第40阶段：LSTM零初始化原点线性直连（训练前登记）
+
+用户授权自主决策。相较重试已否定的混合损失/学习率或扩展原点状态路由，选择有限检验“隐藏态输出之外加入当前标准化七字段的线性通路”。仅变结构，不增加数据或采用真实未来峰标签。RunoffRegressor新增末尾lstm_linear_skip=False，仅LSTM允许True；SequenceNet新增linear_skip=False。True直接注册torch.zeros构造的skip_weight(outputs, inputs)/skip_bias(outputs)，不构建随机初始化Linear，确保LSTM/head初始化及其后随机状态精确一致。forward仅加F.linear(x[:,-1],weight,bias)，旧无属性模型用getattr回退原路径；False没有新增参数或随机数调用。当前训练逐批按原时间顺序固定，不存在随机shuffle批次；保持该循环、Adam/clip1/weight_decay、输入选择缩放、目标、预算和默认不变。全局裁剪同时包含新参数梯度，因此后续旧参数更新可能改变，这是结构整体效果，不冒称只改输出或纯物理机制。
+
+- [ ] TDD先失败：默认/显式False和True的旧权重、随机状态、起始输出完全一致；仅最后时间步进入线性分支；零参数可得梯度并更新；旧分支梯度在裁剪前相同；严格bool及非LSTM禁止True；clone/原生1和7输出/保存恢复与旧缺属性推理；研究smoke记录开关、实际参数数、最终范数和旧head宽度。
+- [ ] 最小修改code/models.py/研究fits日志及测试，调用点SequenceNet与RunoffRegressor均覆盖，不修改正式网格/CLI/数据。相关/全量测试及diff/Git后才能训练。
+- [ ] 首轮固定seed42，daily7/log绝对/hidden32/seq7/epochs70/alpha0.1/lr0.003/readout last，比较False/True，共6年度拟合，所有h1三年364日/gap7和评分不变。从旧lstm_readout_seed42取last参照，冻结配置/源码/数据/旧协议和预测哈希；False三年度预测及完整loss须精确复现。新参数8个（7权重+1bias），hidden head仍33，不额外训练/初始化搜索。
+- [ ] 门槛：新结构最差年/均值R²都不降（1e-10），至少一项>1e-6，MAE/平均峰RMSE各不超旧结构1%；通过才固定seed13/2026配对各6拟合，不扩输入/目标/窗口/lr。任一seed困难年或均值下降不称稳定升级；须列旧ANN参考，不以击败LSTM就声称全局更优。独立核验原始输入/目标日期/真值/Q95/gap、所有年度/汇总/峰指标、实际预算/参数/源码哈希，保留失败。无新2004/报告/验收/ZIP更改，教师24+16保留。

@@ -18,18 +18,26 @@ torch.set_num_threads(2)
 
 
 class SequenceNet(nn.Module):
-    def __init__(self, inputs, hidden, outputs, readout='last'):
+    def __init__(self, inputs, hidden, outputs, readout='last', linear_skip=False):
         super().__init__()
         if not isinstance(readout,str) or readout not in ('last','last_mean'):
             raise ValueError('readout仅支持last/last_mean')
+        if not isinstance(linear_skip,(bool,np.bool_)):
+            raise ValueError('linear_skip须为bool')
         self.readout = readout
         self.lstm = nn.LSTM(inputs, hidden, batch_first=True)
         self.head = nn.Linear(hidden*(2 if readout == 'last_mean' else 1), outputs)
+        if linear_skip:
+            # Zero Parameters preserve the old initialization and RNG state.
+            self.skip_weight = nn.Parameter(torch.zeros(outputs,inputs))
+            self.skip_bias = nn.Parameter(torch.zeros(outputs))
 
     def forward(self, x):
         sequence, _ = self.lstm(x)
         last = sequence[:, -1]
-        return self.head(torch.cat((last,sequence.mean(dim=1)),dim=1) if getattr(self,'readout','last') == 'last_mean' else last)
+        prediction = self.head(torch.cat((last,sequence.mean(dim=1)),dim=1) if getattr(self,'readout','last') == 'last_mean' else last)
+        weight = getattr(self,'skip_weight',None)
+        return prediction if weight is None else prediction+nn.functional.linear(x[:,-1],weight,self.skip_bias)
 
 
 class DenseNet(nn.Module):
@@ -71,7 +79,7 @@ class RunoffRegressor(RegressorMixin, BaseEstimator):
                  x_scaling='standard', input_transform='raw',
                  ann_backend='sklearn', ann_raw_loss=0.0, ann_batch_size=64, ann_linear_skip=False,
                  ann_grad_clip=1.0, ann_lr_schedule='constant', lstm_readout='last',
-                 ann_refinement='none'):
+                 ann_refinement='none', lstm_linear_skip=False):
         self.family = family
         self.transform = transform
         self.top_k = top_k
@@ -107,6 +115,7 @@ class RunoffRegressor(RegressorMixin, BaseEstimator):
         self.ann_lr_schedule = ann_lr_schedule
         self.lstm_readout = lstm_readout
         self.ann_refinement = ann_refinement
+        self.lstm_linear_skip = lstm_linear_skip
 
     def target(self, y):
         if self.transform == 'log':
@@ -188,6 +197,9 @@ class RunoffRegressor(RegressorMixin, BaseEstimator):
         if (not isinstance(self.lstm_readout,str) or self.lstm_readout not in ('last','last_mean') or
                 (self.lstm_readout != 'last' and self.family != 'LSTM')):
             raise ValueError('lstm_readout仅支持last/last_mean，非last仅适用于LSTM')
+        if (not isinstance(self.lstm_linear_skip,(bool,np.bool_)) or
+                (self.lstm_linear_skip and self.family != 'LSTM')):
+            raise ValueError('lstm_linear_skip须为bool，True仅适用于LSTM')
         if (not isinstance(self.ann_refinement,str) or self.ann_refinement not in ('none','adam_full45','lbfgs20') or
                 (self.ann_refinement != 'none' and
                  (self.family != 'ANN' or self.ann_backend != 'torch' or self.ann_lr_schedule != 'constant'))):
@@ -406,7 +418,8 @@ class RunoffRegressor(RegressorMixin, BaseEstimator):
             net = DenseNet(inputs,self.hidden,z.shape[1],self.ann_activation,self.ann_history,self.seed,
                            linear_skip=self.ann_linear_skip).to(device)
         else:
-            net = SequenceNet(x.shape[-1],self.hidden,z.shape[1],readout=self.lstm_readout).to(device)
+            net = SequenceNet(x.shape[-1],self.hidden,z.shape[1],readout=self.lstm_readout,
+                              linear_skip=self.lstm_linear_skip).to(device)
         optimizer = torch.optim.Adam(net.parameters(),
             lr=self.ann_learning_rate if is_ann else self.lstm_learning_rate,
             weight_decay=0. if is_ann else self.alpha*0.001)
