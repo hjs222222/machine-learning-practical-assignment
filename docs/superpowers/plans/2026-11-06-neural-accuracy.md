@@ -1116,3 +1116,12 @@ ann_activation_audit/verification.json与persisted_verification.json均passed，
 这里只诊断Torch sqrt基线，不是sklearn较强候选；原训练峰偏差约-1888/-1167/-951，依旧有较大高流量误差。未产生新模型或精度提升。首轮审计的valid掩码遗漏年内目标约束，364计数断言提前拦截；修正为origin和target同年后重放同一只读模型，未训练或改变旧产物。落盘独立核验发现float32最短十进制被当float64计算的微差，恢复原float32 dtype后贡献统计差精确归零，未放宽容差或改原指标。全部审计/核验句柄终止。
 
 下一项仅先审查较强weather15 ANN是否已做过严格折内、针对模型残差目标的MI筛选；需与旧all91/hydro的target_mi及天气分组消融区别，不把已做实验包装为新方法。教师有特征选择要求，但不代表任意新筛选都有效。不直接扩top_k网格或新增数据，具体对照尚未设计/执行；不继续失活假设下的激活搜索。保持无新2004及正式产物不变。
+
+## 第46阶段：weather15的固定残差MI筛选（训练前登记）
+
+排重确认旧target_mi针对原91列，weather消融按预定气象分组去列，当前weather模式top_k=None，没有weather15上的残差MI实验。教师要求特征选择，因而采用现有RunoffRegressor的折内MI流程做有限迁移，不改模型实现。新增显式weather_target_mi输入别名，与weather15的X/列名完全相同；只改该模式的选择政策：按最终变换残差目标取MI前8列，再与原Qlag0并集。复用既有并集规则，实际维数为8或9，不冒称严格8或改全局强制特征语义。8取约原15列一半，是单个事前选择，不按验证分数搜索k。MI只在外层训练最后时步输入/对应训练目标拟合，随机seed固定；输出7时复用逐输出MI均值，不偷用验证标签。
+
+- [ ] 改动前保存旧25模式在h1/h7×common/available四情形的输入/列名/dtype/形状/日期/标签哈希。TDD先失败：新别名与weather逐值相同、默认不扩、旧available仅weather保持；实际run_stage强制Q/top8/model_target与MI分数/维数日志；原生1/7标签的实际训练MI目标与独立sklearn计算一致，未来/2004扰动边界保持。
+- [ ] 仅改research_h1.py模式/别名/选择参数与mi_top_k/mi_scores日志，models.py/正式网格/CLI默认不动；相关/全量测试、旧哈希兼容/diff/Git后训练。复制teacher_radiation_seed42的三个原weather sklearn ANN参照（sqrt/power025 lr0.001、log lr0.003；hidden16/alpha1/350轮/seq1/批64/公共原点），各比较weather与weather_target_mi，共18年度拟合；先冻结来源/源码/数据/脚本SHA。9旧年度原weather预测/loss必须精确复现。
+- [ ] 每目标MI相对对应原weather的最差年/均值R²均不降（1e-10），至少一项>1e-6，MAE/平均峰RMSE<=1.01原参照才合格；最多一个按最差年再均值选入固定seed13/2026配对，各两候选6拟合。不改k、强制列、目标/lr/隐藏宽度，不按年/seed挑列；配对任一seed困难年或均值下降不称稳定升级。失败不扩MI网格。
+- [ ] 独立原CSV weather公式/真值/日期/gap/Q95/全部指标/预算/来源SHA核验；用当前安装sklearn的独立训练行MI调用复算9个MI选择及分数、并集Q与真实8/9维，记录MI是训练期估计不是因果解释。无新2004/正式产物变化，更新MD/Git。

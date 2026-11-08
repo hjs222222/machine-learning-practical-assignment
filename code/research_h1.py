@@ -24,7 +24,7 @@ RAIN_WINDOWS = {'weather_rain_sum30':1.,'weather_rain_decay05':.5,
 FLOW_INTERACTIONS = ('weather_qdiff1','weather_rain_q','weather_rain_qdiff1')
 CALENDAR_INPUTS = {'weather_month':('month_sin','month_cos'),
                    'weather_season':('season_winter','season_spring','season_summer','season_autumn')}
-MODES = DEFAULT_MODES + ('compact','target_mi','climate','daily','weather') + tuple(WEATHER_ABLATIONS) + tuple(RAIN_WINDOWS) + FLOW_INTERACTIONS + tuple(CALENDAR_INPUTS) + ('weather_radiation','climate_radiation','daily_radiation','climate_solar_raw')
+MODES = DEFAULT_MODES + ('compact','target_mi','climate','daily','weather') + tuple(WEATHER_ABLATIONS) + tuple(RAIN_WINDOWS) + FLOW_INTERACTIONS + tuple(CALENDAR_INPUTS) + ('weather_radiation','climate_radiation','daily_radiation','climate_solar_raw','weather_target_mi')
 BASE = {'RF': dict(trees=120, leaf=1),
         'ANN': dict(hidden=64, iterations=350, alpha=.1),
         'LSTM': dict(hidden=32, seq_len=14, epochs=70, alpha=.1)}
@@ -87,6 +87,7 @@ def prepare_data(raw, cutoff='2003-12-31', horizons=1, available_weather=False):
     result = dict(dates=dates, y=np.column_stack([raw.Discharge.shift(-h).iloc[ids].to_numpy() for h in range(1,horizons+1)]),
                   raw=raw)
     frames = dict(hydro=hydro,compact=compact,climate=climate,daily=daily,weather=weather)
+    frames['weather_target_mi'] = weather
     energy = raw.Srad*raw.Dayl/1_000_000
     for mode in ('weather','climate','daily'):
         frames[f'{mode}_radiation'] = frames[mode].assign(Srad_energy_MJ_m2_lag0=energy)
@@ -256,11 +257,11 @@ def run_stage(stage, output, previous=None, seed=42, families=('RF','ANN','LSTM'
             else:
                 mode = candidate['mode']
                 forced = tuple(current['names'].index(n) for n in ('Discharge_lag0','Prcp_lag0','Prcp_lag1','Prcp_lag2','Prcp_lag3')) if mode == 'forced' else ()
-                if mode == 'target_mi':
+                if mode in ('target_mi','weather_target_mi'):
                     forced = (0,)
                 model = RunoffRegressor(family=candidate['family'],transform=candidate['transform'],
-                    residual=candidate['residual'],seed=seed,top_k=24 if mode in ('mi','forced','target_mi') else None,
-                    forced_indices=forced,mi_target='model_target' if mode == 'target_mi' else 'raw',
+                    residual=candidate['residual'],seed=seed,top_k=8 if mode == 'weather_target_mi' else 24 if mode in ('mi','forced','target_mi') else None,
+                    forced_indices=forced,mi_target='model_target' if mode in ('target_mi','weather_target_mi') else 'raw',
                     **candidate['params'])
                 with warnings.catch_warnings(record=True) as caught:
                     warnings.simplefilter('always')
@@ -295,6 +296,7 @@ def run_stage(stage, output, previous=None, seed=42, families=('RF','ANN','LSTM'
                 fits.append(dict(candidate=candidate['id'],year=year,outputs=outputs,selected_indices=model.selected_.tolist(),
                     selected_names=[current['names'][i] for i in model.selected_],
                     mi_target=model.mi_target,
+                    mi_top_k=model.top_k,mi_scores=model.mi_.tolist() if model.mi_ is not None else None,
                     x_scaling=model.x_scaling,
                     input_transform=model.input_transform,
                     first_day_weight=model.first_day_weight,output_scale=model.output_scale_.tolist(),
