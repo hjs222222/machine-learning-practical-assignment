@@ -87,7 +87,8 @@ class RunoffRegressor(RegressorMixin, BaseEstimator):
                  x_scaling='standard', input_transform='raw',
                  ann_backend='sklearn', ann_raw_loss=0.0, ann_batch_size=64, ann_linear_skip=False,
                  ann_grad_clip=1.0, ann_lr_schedule='constant', lstm_readout='last',
-                 ann_refinement='none', lstm_linear_skip=False, lstm_grad_clip=1.0, lstm_bidirectional=False):
+                 ann_refinement='none', lstm_linear_skip=False, lstm_grad_clip=1.0, lstm_bidirectional=False,
+                 rf_bootstrap=True):
         self.family = family
         self.transform = transform
         self.top_k = top_k
@@ -126,6 +127,7 @@ class RunoffRegressor(RegressorMixin, BaseEstimator):
         self.lstm_linear_skip = lstm_linear_skip
         self.lstm_grad_clip = lstm_grad_clip
         self.lstm_bidirectional = lstm_bidirectional
+        self.rf_bootstrap = rf_bootstrap
 
     def target(self, y):
         if self.transform == 'log':
@@ -181,6 +183,9 @@ class RunoffRegressor(RegressorMixin, BaseEstimator):
         return np.sign(values)*np.log1p(np.abs(values)) if self.input_transform == 'signed_log' else values
 
     def fit(self, X, y):
+        if (not isinstance(self.rf_bootstrap,(bool,np.bool_)) or
+                (not self.rf_bootstrap and self.family != 'RF')):
+            raise ValueError('rf_bootstrap须为bool，False仅适用于RF')
         X = np.asarray(X, dtype=np.float32)[:, -self.seq_len:]
         y = np.asarray(y).reshape(len(X), -1)
         if not np.isfinite(X).all() or not np.isfinite(y).all() or (y < 0).any():
@@ -257,7 +262,7 @@ class RunoffRegressor(RegressorMixin, BaseEstimator):
         x,z = self._fit_preprocessing(X,y)
         if self.family == 'RF':
             self.estimator_ = RandomForestRegressor(n_estimators=self.trees, min_samples_leaf=self.leaf,
-                max_features=self.max_features, random_state=self.seed, n_jobs=4)
+                max_features=self.max_features, random_state=self.seed, n_jobs=4,bootstrap=bool(self.rf_bootstrap))
             weights = None
             if self.peak_weight != 1:
                 self.peak_threshold_ = float(np.quantile(y[:,0],.95))

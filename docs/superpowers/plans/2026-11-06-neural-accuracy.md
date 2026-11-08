@@ -1207,3 +1207,12 @@ raw_offset_seed42/verification.json独立复算7644记录（6552原/校正模型
 原训练偏移均为正：sqrt三个折+66.147/+35.135/+28.449，power025+87.247/+45.691/+37.043，log+90.351/+52.833/+43.144。困难年及峰误差三目标均有小收益，但均值都下降、MAE增加约22.84/36.43/40.34。训练整体偏差不能自动推广到下一年度，也不支持把所有流量统一抬高。三个均值/MAE门槛失败，promotion_gate.json selected_base=null；不追加seed/偏移比例/分箱校正或原验证追分，不存晋级配方/改默认。全部评估/核验/测试句柄终止，无新2004/正式产物修改，0.8目标未完成。
 
 下一项转回RF，先只读排查现有bootstrap政策是否已研究及其原生多输出兼容性；不是新增模型家族或手工重采样/补观测，不立即改bootstrap或加网格。需要先核对旧RF固定参照/教师材料及库接口，避免重复已有树/leaf/max_features调参，具体对照尚未设计/训练。
+
+## 第50阶段：RF默认bootstrap与完整训练折对照（训练前登记）
+
+代码与旧协议排重未见bootstrap对照；当前RandomForestRegressor隐式默认True。本机sklearn1.6.1与官方1.6接口支持False时每棵树使用完整训练折、原生多输出仍由同一森林实现：https://sklearn.org/1.6/modules/generated/sklearn.ensemble.RandomForestRegressor.html 。这不是ExtraTrees或新模型家族，也不是手工重采样/新增观测。教师要求RF但未单独指定此变体，不冒称教师示例。固定climate39/sqrt绝对/120树/leaf5/max_features0.5/原默认seq14，随机分裂仍保留；不修改损失、特征、权重或树数。
+
+- [ ] TDD缺接口先失败：末尾rf_bootstrap=True严格bool，False仅RF；原生1/7输出、clone/保存/旧缺属性推理；默认/显式True预测在1e-9内一致；False每棵树抽样索引是全部训练行且根节点行数完整，True仍有重复抽样；研究日志实际开关/第一棵树抽样数及唯一行数。models.py仅参数/验证/RF唯一调用点与研究日志变动，正式默认不变。
+- [ ] 新测试/全量/diff/Git后运行seed42两个配置6年度拟合。复制teacher_radiation_transfer_seed42的RF_climate_sqrt_abs原参照，冻结源码/数据/旧来源/launcher SHA；True三年度旧预测须在绝对1e-9内重放，实际RF原尺度指标/输入39列/120树/leaf5/max_features0.5/训练日期/gap7/Q95均核对。
+- [ ] False最差年/均值R²不降（1e-10）、至少一项>1e-6、MAE/平均峰RMSE各<=1.01参照才进入seed13/2026各6拟合。任一seed困难年或均值退步不晋级；失败不扩采样率/树数/leaf/组合。保留抽样政策改变也改变森林随机路径的限制，不将单棵树行数或训练误差称泛化收益。
+- [ ] 独立原始真值/日期/训练行数/gap/Q95及全部年度/峰指标/汇总、实际采样日志/预算/源码数据来源哈希复算；不恢复权重则明示。无新2004/正式产物变动，更新MD/Git。

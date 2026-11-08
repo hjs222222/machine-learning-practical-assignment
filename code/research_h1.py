@@ -292,6 +292,7 @@ def run_stage(stage, output, previous=None, seed=42, families=('RF','ANN','LSTM'
                         inner_validation_end=data['dates'][tr[-1]])
                 linear_skip = getattr(model.estimator_,'skip',None)
                 lstm_head = model.estimator_.head if model.family == 'LSTM' else None
+                rf_samples = model.estimator_.estimators_samples_[0] if model.family == 'RF' else None
                 batch_size = (min(model.ann_batch_size,len(tr)) if model.family == 'ANN' and model.ann_solver == 'adam' else
                               min(128,len(tr)) if model.family == 'LSTM' else None)
                 fits.append(dict(candidate=candidate['id'],year=year,outputs=outputs,selected_indices=model.selected_.tolist(),
@@ -323,6 +324,9 @@ def run_stage(stage, output, previous=None, seed=42, families=('RF','ANN','LSTM'
                     ann_activation=model.ann_activation,ann_history=model.ann_history,
                     input_width=getattr(model.estimator_,'n_features_in_',None),
                     rf_max_features_per_split=model.estimator_.estimators_[0].max_features_ if model.family == 'RF' else None,
+                    rf_bootstrap=model.estimator_.bootstrap if model.family == 'RF' else None,
+                    rf_first_tree_sample_count=len(rf_samples) if rf_samples is not None else None,
+                    rf_first_tree_unique_count=len(np.unique(rf_samples)) if rf_samples is not None else None,
                     lstm_raw_loss=model.lstm_raw_loss,lstm_learning_rate=model.lstm_learning_rate,
                     lstm_readout=model.lstm_readout,
                     lstm_bidirectional=model.lstm_bidirectional,
