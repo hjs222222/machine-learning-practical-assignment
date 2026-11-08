@@ -307,8 +307,9 @@ def run_stage(stage, output, previous=None, seed=42, families=('RF','ANN','LSTM'
                     ann_lr_schedule=model.ann_lr_schedule,
                     learning_rate_history=getattr(model,'learning_rate_history_',None),
                     ann_grad_clip=model.ann_grad_clip,
+                    lstm_grad_clip=model.lstm_grad_clip,
                     gradient_clip=(model.ann_grad_clip if model.family == 'ANN' and model.ann_backend == 'torch' else
-                                   1.0 if model.family == 'LSTM' else None),
+                                   model.lstm_grad_clip if model.family == 'LSTM' else None),
                     ann_linear_skip=model.ann_linear_skip,
                     linear_skip_parameters=sum(p.numel() for p in linear_skip.parameters()) if linear_skip is not None else 0,
                     linear_skip_weight_norm=float(linear_skip.weight.detach().norm().item()) if linear_skip is not None else None,
