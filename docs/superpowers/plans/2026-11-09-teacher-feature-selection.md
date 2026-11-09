@@ -30,3 +30,7 @@
 - [ ] Git 分阶段保存实现、试验记录和交接。不将计划标记成完成。
 
 技术：Python、numpy、scikit-learn、现有 PyTorch；不增加依赖。
+
+## 第二轮预注册：内部选择，外部年度比较
+
+RF原生7输出，sqrt残差目标，seed42，trees120，seq_len1。GridSearchCV在每个外层训练段内做2折时序验证gap7，按第一天原始R²选择。候选是mi_policy=[mean,first]、top_k=[12,24,36]、leaf=[1,5]，共12组；保留固定mean/top_k24/leaf1作每年的同日期对照。外层2001/2002/2003，报告全部七天。三种子已发现intersection不稳定，此轮不扩大其搜索。共72次内层拟合、3次最佳配置重拟合、3次基线拟合。先用tests/test_selection_search.py验证边界、日志及输出，再运行真实数据。不得利用外层成绩回填内层选择。输出完整保存到output/teacher_selection_20261109/nested_rf。
