@@ -1,0 +1,122 @@
+[
+  {
+    "candidate": "ANN_mean_k24",
+    "year": 2001,
+    "warnings": []
+  },
+  {
+    "candidate": "ANN_mean_k24",
+    "year": 2002,
+    "warnings": []
+  },
+  {
+    "candidate": "ANN_mean_k24",
+    "year": 2003,
+    "warnings": []
+  },
+  {
+    "candidate": "ANN_intersection_k24",
+    "year": 2001,
+    "warnings": []
+  },
+  {
+    "candidate": "ANN_intersection_k24",
+    "year": 2002,
+    "warnings": []
+  },
+  {
+    "candidate": "ANN_intersection_k24",
+    "year": 2003,
+    "warnings": []
+  },
+  {
+    "candidate": "ANN_union_k24",
+    "year": 2001,
+    "warnings": []
+  },
+  {
+    "candidate": "ANN_union_k24",
+    "year": 2002,
+    "warnings": []
+  },
+  {
+    "candidate": "ANN_union_k24",
+    "year": 2003,
+    "warnings": []
+  },
+  {
+    "candidate": "ANN_first_k24",
+    "year": 2001,
+    "warnings": []
+  },
+  {
+    "candidate": "ANN_first_k24",
+    "year": 2002,
+    "warnings": []
+  },
+  {
+    "candidate": "ANN_first_k24",
+    "year": 2003,
+    "warnings": []
+  },
+  {
+    "candidate": "RF_mean_k24",
+    "year": 2001,
+    "warnings": []
+  },
+  {
+    "candidate": "RF_mean_k24",
+    "year": 2002,
+    "warnings": []
+  },
+  {
+    "candidate": "RF_mean_k24",
+    "year": 2003,
+    "warnings": []
+  },
+  {
+    "candidate": "RF_intersection_k24",
+    "year": 2001,
+    "warnings": []
+  },
+  {
+    "candidate": "RF_intersection_k24",
+    "year": 2002,
+    "warnings": []
+  },
+  {
+    "candidate": "RF_intersection_k24",
+    "year": 2003,
+    "warnings": []
+  },
+  {
+    "candidate": "RF_union_k24",
+    "year": 2001,
+    "warnings": []
+  },
+  {
+    "candidate": "RF_union_k24",
+    "year": 2002,
+    "warnings": []
+  },
+  {
+    "candidate": "RF_union_k24",
+    "year": 2003,
+    "warnings": []
+  },
+  {
+    "candidate": "RF_first_k24",
+    "year": 2001,
+    "warnings": []
+  },
+  {
+    "candidate": "RF_first_k24",
+    "year": 2002,
+    "warnings": []
+  },
+  {
+    "candidate": "RF_first_k24",
+    "year": 2003,
+    "warnings": []
+  }
+]

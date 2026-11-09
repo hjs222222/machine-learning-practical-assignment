@@ -1,0 +1,47 @@
+[
+  {
+    "candidate": "RF_mean_k24",
+    "year": 2001,
+    "warnings": []
+  },
+  {
+    "candidate": "RF_mean_k24",
+    "year": 2002,
+    "warnings": []
+  },
+  {
+    "candidate": "RF_mean_k24",
+    "year": 2003,
+    "warnings": []
+  },
+  {
+    "candidate": "RF_intersection_k24",
+    "year": 2001,
+    "warnings": []
+  },
+  {
+    "candidate": "RF_intersection_k24",
+    "year": 2002,
+    "warnings": []
+  },
+  {
+    "candidate": "RF_intersection_k24",
+    "year": 2003,
+    "warnings": []
+  },
+  {
+    "candidate": "RF_first_k24",
+    "year": 2001,
+    "warnings": []
+  },
+  {
+    "candidate": "RF_first_k24",
+    "year": 2002,
+    "warnings": []
+  },
+  {
+    "candidate": "RF_first_k24",
+    "year": 2003,
+    "warnings": []
+  }
+]
