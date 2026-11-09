@@ -261,7 +261,7 @@ def run_stage(stage, output, previous=None, seed=42, families=('RF','ANN','LSTM'
                 if mode in ('target_mi','weather_target_mi'):
                     forced = (0,)
                 model = RunoffRegressor(family=candidate['family'],transform=candidate['transform'],
-                    residual=candidate['residual'],seed=seed,top_k=8 if mode == 'weather_target_mi' else 24 if mode in ('mi','forced','target_mi') else None,
+                    residual=candidate['residual'],seed=seed,top_k=candidate.get('top_k',8 if mode == 'weather_target_mi' else 24 if mode in ('mi','forced','target_mi') else None),
                     forced_indices=forced,mi_target='model_target' if mode in ('target_mi','weather_target_mi') else 'raw',
                     **candidate['params'])
                 with warnings.catch_warnings(record=True) as caught:
@@ -297,7 +297,7 @@ def run_stage(stage, output, previous=None, seed=42, families=('RF','ANN','LSTM'
                               min(128,len(tr)) if model.family == 'LSTM' else None)
                 fits.append(dict(candidate=candidate['id'],year=year,outputs=outputs,selected_indices=model.selected_.tolist(),
                     selected_names=[current['names'][i] for i in model.selected_],
-                    mi_target=model.mi_target,
+                    mi_target=model.mi_target,mi_policy=model.mi_policy,
                     mi_top_k=model.top_k,mi_scores=model.mi_.tolist() if model.mi_ is not None else None,
                     x_scaling=model.x_scaling,
                     input_transform=model.input_transform,

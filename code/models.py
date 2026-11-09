@@ -88,7 +88,7 @@ class RunoffRegressor(RegressorMixin, BaseEstimator):
                  ann_backend='sklearn', ann_raw_loss=0.0, ann_batch_size=64, ann_linear_skip=False,
                  ann_grad_clip=1.0, ann_lr_schedule='constant', lstm_readout='last',
                  ann_refinement='none', lstm_linear_skip=False, lstm_grad_clip=1.0, lstm_bidirectional=False,
-                 rf_bootstrap=True, rf_monotonic_flow=False):
+                 rf_bootstrap=True, rf_monotonic_flow=False, mi_policy='mean'):
         self.family = family
         self.transform = transform
         self.top_k = top_k
@@ -129,6 +129,7 @@ class RunoffRegressor(RegressorMixin, BaseEstimator):
         self.lstm_bidirectional = lstm_bidirectional
         self.rf_bootstrap = rf_bootstrap
         self.rf_monotonic_flow = rf_monotonic_flow
+        self.mi_policy = mi_policy
 
     def target(self, y):
         if self.transform == 'log':
@@ -155,7 +156,9 @@ class RunoffRegressor(RegressorMixin, BaseEstimator):
         target = self.target(y)
         if self.residual:
             target = target - self.target(X[:,-1,:1])
-        # 多输出用逐 h MI 的均值，不偷用验证标签，也不只偏向单一输出。
+        # Each policy is fitted on this training fold only.
+        if self.mi_policy not in ('mean', 'intersection', 'union', 'first'):
+            raise ValueError('mi_policy仅支持mean/intersection/union/first')
         if self.mi_target not in ('raw', 'transformed', 'model_target'):
             raise ValueError('未知 MI 目标')
         if any(i < 0 or i >= X.shape[-1] for i in self.forced_indices):
@@ -165,10 +168,19 @@ class RunoffRegressor(RegressorMixin, BaseEstimator):
             self.selected_ = np.arange(X.shape[-1])
         else:
             mi_y = y if self.mi_target == 'raw' else self.target(y) if self.mi_target == 'transformed' else target
-            self.mi_ = np.mean([mutual_info_regression(X[:,-1], mi_y[:,h], random_state=self.seed)
-                                for h in range(y.shape[1])], axis=0)
-            self.selected_ = np.union1d(np.argsort(self.mi_, kind='stable')[-min(self.top_k,X.shape[-1]):],
-                                        self.forced_indices).astype(int)
+            scores = np.array([mutual_info_regression(X[:,-1], mi_y[:,h], random_state=self.seed)
+                               for h in range(y.shape[1])])
+            self.mi_ = scores.mean(axis=0)
+            k = min(self.top_k, X.shape[-1])
+            selected = np.argsort(self.mi_, kind='stable')[-k:]
+            if self.mi_policy != 'mean':
+                sets = [set(np.argsort(score, kind='stable')[-k:]) for score in scores]
+                selected = sorted(sets[0] if self.mi_policy == 'first' else
+                                  set.intersection(*sets) if self.mi_policy == 'intersection' else
+                                  set.union(*sets))
+            self.selected_ = np.union1d(selected, self.forced_indices).astype(int)
+            if not len(self.selected_):
+                raise ValueError('特征交集为空；禁止静默回退')
         part = self._transform_inputs(X[:,:,self.selected_])
         self.x_scaler_ = (StandardScaler() if self.x_scaling == 'standard' else MinMaxScaler()).fit(
             part.reshape(-1,len(self.selected_)))
