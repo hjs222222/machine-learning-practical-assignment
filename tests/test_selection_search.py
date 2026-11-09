@@ -14,12 +14,16 @@ def test_h1_score_does_not_average_other_outputs():
     assert search.h1_score(Estimator(), None, truth) == 1
 
 
-def test_nested_search_is_training_only_and_reproducible(tmp_path):
+@pytest.mark.parametrize('family', ['RF','ANN'])
+def test_nested_search_is_training_only_and_reproducible(tmp_path, family):
     output = tmp_path/'run'
-    grid = dict(mi_policy=['mean','first'], top_k=[3], leaf=[1])
-    search.run(output, raw=raw_data(), grid=grid, trees=2)
+    extra = dict(leaf=[1]) if family == 'RF' else dict(alpha=[.1],iterations=[1])
+    grid = dict(mi_policy=['mean','first'], top_k=[3], **extra)
+    search.run(output, raw=raw_data(), grid=grid, trees=2, family=family)
     protocol = json.loads((output/'protocol.json').read_text())
     assert protocol['data_cutoff'] == '2003-12-31'
+    assert protocol['family'] == family
+    assert protocol['estimator']['family'] == family
     splits = pd.read_csv(output/'splits.csv')
     for row in splits.itertuples():
         assert pd.Timestamp(row.train_end)+pd.Timedelta(days=7) < pd.Timestamp(row.valid_start)
@@ -30,7 +34,14 @@ def test_nested_search_is_training_only_and_reproducible(tmp_path):
     assert pd.to_datetime(pred.origin).max()+pd.Timedelta(days=7) < pd.Timestamp('2004-01-01')
     selected = json.loads((output/'selected.json').read_text())
     assert len(selected) == 3
-    assert all(row['params'] in [dict(mi_policy=p,top_k=3,leaf=1) for p in ['mean','first']] for row in selected)
+    expected = [dict(mi_policy=p,top_k=3,**{k:v[0] for k,v in extra.items()}) for p in ['mean','first']]
+    assert all(row['params'] in expected for row in selected)
     assert json.loads((output/'complete.json').read_text())['outer_fits'] == 6
     with pytest.raises(FileExistsError):
         search.run(output, raw=raw_data(), grid=grid, trees=2)
+
+
+def test_unknown_family_rejected_before_creating_output(tmp_path):
+    with pytest.raises(ValueError,match='family'):
+        search.run(tmp_path/'bad', family='unknown')
+    assert not (tmp_path/'bad').exists()

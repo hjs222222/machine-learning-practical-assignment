@@ -2,7 +2,20 @@
 
 工作目录：`D:\machinelearning`。教师原始 CSV 是唯一数据来源，原始资料保持只读。
 
-## 当前工作：只提升一天预测精度
+## 当前工作：按三次验收要求提升预测精度
+
+2026-11-09：重点仍是第一天，但同时保留七天完整指标和教师规定的全部模型/策略。最新方案与结果见 `docs/三次验收突破实验-2026-11-09.md`，执行计划见 `docs/superpowers/plans/2026-11-09-teacher-feature-selection.md`。中间以MD记录，教师要求的Word/PPT展示版另行整理；最终Word保留，身份与分工按用户要求待填写。尚未完成的交付项不得写成已完成。
+
+训练期联合网格搜索入口（输出目录必须尚不存在）：
+
+```powershell
+python code/research_selection_search.py --family RF --output output/新的RF研究目录
+python code/research_selection_search.py --family ANN --output output/新的ANN研究目录
+```
+
+上述命令仅在2000—2003内部做嵌套时序验证，不运行2004测试。研究结果不自动覆盖正式报告、模型或代码包。2004的已授权单次ANN回溯已完成，不应通过另起目录规避一次性评价边界。
+
+### 早期一天研究入口
 
 暂不修改最终报告。先阅读`docs/一天预测精度提升记录.md`和`docs/superpowers/plans/2026-11-05-h1-accuracy-research.md`。研究入口`code/research_h1.py`在构造样本前切断2004，逐年验证2001/2002/2003；输出为训练期探索结果，不是新的独立测试成绩。原正式运行和交付文件保持不变。
 

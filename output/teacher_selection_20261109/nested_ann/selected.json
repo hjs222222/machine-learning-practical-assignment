@@ -1,0 +1,101 @@
+[
+  {
+    "year": 2001,
+    "params": {
+      "alpha": 1.0,
+      "mi_policy": "first",
+      "top_k": 12
+    },
+    "inner_r2": 0.16867550614629973,
+    "features": [
+      "Discharge_lag0",
+      "Discharge_lag1",
+      "Discharge_roll3_mean",
+      "Discharge_roll3_max",
+      "Discharge_roll7_mean",
+      "Discharge_roll7_max",
+      "Discharge_roll14_mean",
+      "Discharge_roll14_std",
+      "Discharge_roll14_max",
+      "Prcp_roll14_max",
+      "Tmax_roll14_max",
+      "Tmin_roll14_max"
+    ],
+    "train_count": 300,
+    "valid_count": 358
+  },
+  {
+    "year": 2002,
+    "params": {
+      "alpha": 1.0,
+      "mi_policy": "mean",
+      "top_k": 36
+    },
+    "inner_r2": 0.6953031277498548,
+    "features": [
+      "Discharge_lag0",
+      "Discharge_lag1",
+      "Discharge_lag2",
+      "Discharge_lag3",
+      "Discharge_lag7",
+      "Discharge_lag14",
+      "Dayl_lag0",
+      "Dayl_lag1",
+      "Dayl_lag2",
+      "Dayl_lag3",
+      "Dayl_lag7",
+      "Dayl_lag14",
+      "Dayl_lag30",
+      "Discharge_roll3_mean",
+      "Discharge_roll3_max",
+      "Discharge_roll7_mean",
+      "Discharge_roll7_std",
+      "Discharge_roll7_max",
+      "Discharge_roll14_mean",
+      "Discharge_roll14_std",
+      "Discharge_roll14_max",
+      "Prcp_roll7_mean",
+      "Prcp_roll7_std",
+      "Prcp_roll7_max",
+      "Prcp_roll14_mean",
+      "Prcp_roll14_std",
+      "Prcp_roll14_max",
+      "Tmax_roll3_max",
+      "Tmax_roll7_max",
+      "Tmax_roll14_mean",
+      "Tmax_roll14_max",
+      "Tmin_roll3_max",
+      "Tmin_roll7_max",
+      "Tmin_roll14_mean",
+      "Tmin_roll14_max",
+      "month_sin"
+    ],
+    "train_count": 665,
+    "valid_count": 358
+  },
+  {
+    "year": 2003,
+    "params": {
+      "alpha": 1.0,
+      "mi_policy": "first",
+      "top_k": 12
+    },
+    "inner_r2": 0.8957211199145753,
+    "features": [
+      "Discharge_lag0",
+      "Discharge_lag1",
+      "Discharge_lag2",
+      "Discharge_roll3_mean",
+      "Discharge_roll3_max",
+      "Discharge_roll7_mean",
+      "Discharge_roll7_max",
+      "Discharge_roll14_mean",
+      "Discharge_roll14_max",
+      "Prcp_roll14_max",
+      "Tmax_roll14_max",
+      "Tmin_roll14_max"
+    ],
+    "train_count": 1030,
+    "valid_count": 358
+  }
+]

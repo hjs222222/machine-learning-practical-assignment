@@ -34,3 +34,7 @@
 ## 第二轮预注册：内部选择，外部年度比较
 
 RF原生7输出，sqrt残差目标，seed42，trees120，seq_len1。GridSearchCV在每个外层训练段内做2折时序验证gap7，按第一天原始R²选择。候选是mi_policy=[mean,first]、top_k=[12,24,36]、leaf=[1,5]，共12组；保留固定mean/top_k24/leaf1作每年的同日期对照。外层2001/2002/2003，报告全部七天。三种子已发现intersection不稳定，此轮不扩大其搜索。共72次内层拟合、3次最佳配置重拟合、3次基线拟合。先用tests/test_selection_search.py验证边界、日志及输出，再运行真实数据。不得利用外层成绩回填内层选择。输出完整保存到output/teacher_selection_20261109/nested_rf。
+
+## 第三轮预注册：ANN联合搜索
+
+复用第二轮的嵌套时序结构与日期。ANN原生7输出，sqrt残差，hidden32、iterations350、seed42、seq_len1。网格mi_policy=[mean,first]、top_k=[12,24,36]、alpha=[0.1,1.0]共12组；对应mean/k24/alpha0.1固定基线。内层按h1原始R²选择，完整记录7天指标、参数、特征和警告，共78次拟合。不修改2004或正式报告。输出output/teacher_selection_20261109/nested_ann。扩展运行器只增加family选择并保留RF默认行为，先测试后训练。

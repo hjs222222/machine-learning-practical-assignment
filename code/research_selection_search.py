@@ -18,14 +18,21 @@ def h1_score(estimator, X, y):
     return r2_score(y[:, 0], estimator.predict(X)[:, 0])
 
 
-def run(output, raw=None, grid=None, trees=120):
+def run(output, raw=None, grid=None, trees=120, family='RF'):
+    if family not in ('RF','ANN'):
+        raise ValueError('family must be RF or ANN')
     output = Path(output)
     output.mkdir(parents=True, exist_ok=False)
-    grid = grid or dict(mi_policy=['mean', 'first'], top_k=[12, 24, 36], leaf=[1, 5])
+    grid = grid or dict(mi_policy=['mean', 'first'], top_k=[12, 24, 36],
+                        **(dict(leaf=[1,5]) if family == 'RF' else dict(alpha=[.1,1.])))
+    settings = dict(family=family,trees=trees,leaf=1,transform='sqrt',residual=True,seq_len=1)
+    if family == 'ANN':
+        settings.update(hidden=32,iterations=350,alpha=.1)
     data = prepare_data(load_raw() if raw is None else raw, horizons=7)
     X, y, dates = data['mi']['X'], data['y'], data['dates']
     save_json(output/'protocol.json', dict(data_cutoff='2003-12-31', grid=grid, seed=42,
-        family='RF', trees=trees, transform='sqrt', residual=True, seq_len=1,
+        family=family, estimator=RunoffRegressor(**settings).get_params(),
+        trees=trees, transform='sqrt', residual=True, seq_len=1,
         baseline=dict(mi_policy='mean',top_k=24,leaf=1), selection='inner h1 raw R2',
         outer='2001/2002/2003 annual', inner='TimeSeriesSplit(2), gap=7',
         data_sha256=digest(DATA_PATH) if raw is None else 'unit-test fixture',
@@ -38,7 +45,7 @@ def run(output, raw=None, grid=None, trees=120):
         splits.append(dict(year=year,kind='outer',train_end=dates[tr[-1]],valid_start=dates[va[0]]))
         for it, iv in inner:
             splits.append(dict(year=year,kind='inner',train_end=dates[tr[it[-1]]],valid_start=dates[tr[iv[0]]]))
-        base = RunoffRegressor(family='RF',trees=trees,leaf=1,transform='sqrt',residual=True,seq_len=1)
+        base = RunoffRegressor(**settings)
         search = GridSearchCV(base, grid, cv=inner, scoring=h1_score, n_jobs=1,
                               error_score='raise', refit=True)
         with warnings.catch_warnings(record=True) as caught:
@@ -70,4 +77,5 @@ def run(output, raw=None, grid=None, trees=120):
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--output',type=Path,required=True)
+    parser.add_argument('--family',choices=['RF','ANN'],default='RF')
     run(**vars(parser.parse_args()))
