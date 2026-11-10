@@ -1,0 +1,17 @@
+{
+  "purpose": "h1-only paired comparison of single-output and native-seven-output ANN searches",
+  "seeds": [42, 13, 2026],
+  "weights": [0.3333333333333333, 0.3333333333333333, 0.3333333333333333],
+  "weight_fitting": false,
+  "seed_selection": false,
+  "source_models": ["selected", "baseline"],
+  "direct_sources": ["direct_ann_seed42", "direct_ann_seed13", "direct_ann_seed2026"],
+  "multi_sources": ["nested_ann", "nested_ann_seed13", "nested_ann_seed2026"],
+  "validation_years": [2001, 2002, 2003],
+  "validation_origins_per_year": 358,
+  "prediction_column": "prediction_h1",
+  "date_matching": "Exact year/model/origin equality checked across all seeds and both strategies",
+  "truth": "Teacher CSV Discharge at origin + 1 day",
+  "test_2004_evaluated": false,
+  "limitation": "Training-period development; not independent generalization evidence. ANN seed average is supplementary, not the required ANN/RF/LSTM simple average."
+}

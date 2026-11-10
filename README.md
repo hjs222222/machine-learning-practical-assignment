@@ -4,6 +4,8 @@
 
 ## 当前工作：按三次验收要求提升预测精度
 
+2026-11-10用户更新：第一天原始R²是首要指标，后六天只保留教师必做项，不要求同步改善。`--outputs 1`可运行第一天单输出联合搜索；默认7输出，两者使用相同日期掩码，禁止把年度高分当2004成绩。三份验收Word展示版已经生成，MD保留。
+
 2026-11-09：重点仍是第一天，但同时保留七天完整指标和教师规定的全部模型/策略。最新方案与结果见 `docs/三次验收突破实验-2026-11-09.md`，执行计划见 `docs/superpowers/plans/2026-11-09-teacher-feature-selection.md`。中间以MD记录，教师要求的Word/PPT展示版另行整理；最终Word保留，身份与分工按用户要求待填写。尚未完成的交付项不得写成已完成。
 
 训练期联合网格搜索入口（输出目录必须尚不存在）：
@@ -11,6 +13,7 @@
 ```powershell
 python code/research_selection_search.py --family RF --output output/新的RF研究目录
 python code/research_selection_search.py --family ANN --output output/新的ANN研究目录
+python code/research_selection_search.py --family ANN --outputs 1 --seed 42 --output output/新的第一天研究目录
 ```
 
 上述命令仅在2000—2003内部做嵌套时序验证，不运行2004测试。研究结果不自动覆盖正式报告、模型或代码包。2004的已授权单次ANN回溯已完成，不应通过另起目录规避一次性评价边界。

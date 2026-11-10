@@ -1,0 +1,92 @@
+{
+  "data_cutoff": "2003-12-31",
+  "grid": {
+    "mi_policy": [
+      "mean"
+    ],
+    "top_k": [
+      12,
+      24,
+      36
+    ],
+    "alpha": [
+      0.1,
+      1.0
+    ]
+  },
+  "seed": 2026,
+  "family": "ANN",
+  "outputs": 1,
+  "sample_horizon": 7,
+  "estimator": {
+    "alpha": 0.1,
+    "ann_activation": "relu",
+    "ann_backend": "sklearn",
+    "ann_batch_size": 64,
+    "ann_chrono_stop": false,
+    "ann_grad_clip": 1.0,
+    "ann_history": false,
+    "ann_learning_rate": 0.003,
+    "ann_linear_skip": false,
+    "ann_lr_schedule": "constant",
+    "ann_raw_loss": 0.0,
+    "ann_refinement": "none",
+    "ann_solver": "adam",
+    "epochs": 40,
+    "family": "ANN",
+    "first_day_weight": 1.0,
+    "forced_indices": [],
+    "hidden": 32,
+    "input_transform": "raw",
+    "iterations": 350,
+    "leaf": 1,
+    "lstm_bidirectional": false,
+    "lstm_chrono_stop": false,
+    "lstm_grad_clip": 1.0,
+    "lstm_learning_rate": 0.003,
+    "lstm_linear_skip": false,
+    "lstm_raw_loss": 0.0,
+    "lstm_readout": "last",
+    "max_features": 1.0,
+    "mi_policy": "mean",
+    "mi_target": "raw",
+    "peak_weight": 1.0,
+    "residual": true,
+    "rf_bootstrap": true,
+    "rf_monotonic_flow": false,
+    "seed": 2026,
+    "seq_len": 1,
+    "top_k": 24,
+    "transform": "sqrt",
+    "trees": 120,
+    "x_scaling": "standard"
+  },
+  "trees": 120,
+  "transform": "sqrt",
+  "residual": true,
+  "seq_len": 1,
+  "baseline": {
+    "mi_policy": "mean",
+    "top_k": 24,
+    "leaf": 1
+  },
+  "selection": "inner h1 raw R2",
+  "outer": "2001/2002/2003 annual",
+  "inner": "TimeSeriesSplit(2), gap=7",
+  "data_sha256": "ab09410b23118510bb4e8787a62b97693336a1c46477a01329f587c64bc57151",
+  "code_sha256": {
+    "config.py": "e119746e9d0e9717b10ce778c1cc748a3b77bc651218918c857df65d2777c63b",
+    "data.py": "0a5d3701debaf61db54979676ab204575f7d4a65b221327ee581213eec7c43f9",
+    "data_analysis.py": "435a08461fa1314bf405afec93bdc774477406ce09d523dfc6e2c3f716d02d45",
+    "evaluation.py": "282fc94c8abe135b3aefc2097e466af5c94b0a6ef5105f05c53b167c6ce5d075",
+    "experiment.py": "dca3f5c1df19aa6429c3f8f51fba79b8f6c39822d549872e7e3afd9f04735c49",
+    "features.py": "d3c7e9ceae98f5abecc5abcae5d0b71cd01695f14b0381d82441e24fcbf577b3",
+    "models.py": "648e52a4ae989d5af2f1c7880900e244b64c57ad0544fc587252f4b9329e3ac4",
+    "research_h1.py": "035f0af8a4c7be398f3b673c593b92e862d45012a55a05c08a1bab54e4347324",
+    "research_raw_offset.py": "f94558682691e5adb853f2b64a535f2112150772a03fdb3af0fa9994c70e69df",
+    "research_selection_search.py": "295765431d5f2853fbeb942d9a96a9ed70899a2bfe4bfe3c343da21bada54857",
+    "research_stacking_context.py": "2e11c26432657dc9237adc03ee76147c7e42d46337b3c59c142f35ecc6cad134",
+    "run_all.py": "ff4e01b48925ea6b1e23db92c91c5dd6d68c2e2c2bc9d6ff06db0fd7b723b39b"
+  },
+  "limitation": "Repeated training-period development; not an independent blind test."
+}
