@@ -1,0 +1,46 @@
+{
+  "data_cutoff": "2003-12-31",
+  "data_sha256": "ab09410b23118510bb4e8787a62b97693336a1c46477a01329f587c64bc57151",
+  "alphas": [
+    0.1,
+    1.0,
+    10.0,
+    100.0,
+    1000.0
+  ],
+  "inner": "TimeSeriesSplit(2),gap7,h1 R2 after clipping",
+  "years": [
+    2002,
+    2003
+  ],
+  "inputs": [
+    "ANN",
+    "RF",
+    "LSTM"
+  ],
+  "base_fits": 0,
+  "seed": 42,
+  "selection": "inner CV only",
+  "sources": [
+    {
+      "directory": "output\\teacher_selection_20261109\\nested_ann",
+      "candidate": "selected",
+      "predictions_sha256": "731b9f68c56f902fe27fbd3558683641139328a1139a641ce90b09537ed39401",
+      "protocol_sha256": "eccfe76b4f62ef1fa335e2ef17598908b1d3684c884d5aab0f3377e3946eb6df"
+    },
+    {
+      "directory": "output\\teacher_selection_20261109\\nested_rf",
+      "candidate": "selected",
+      "predictions_sha256": "926caf797fdf9f5b095be1a56ae550e8f77065e024c4a8d01b70364f56bc6166",
+      "protocol_sha256": "23a8c0c229694d271df5f690d59c55512b822d0b69bc599a91991b6d5d802ca8"
+    },
+    {
+      "directory": "output\\teacher_selection_20261109\\lstm_selection_seed42",
+      "candidate": "LSTM_mean_k16",
+      "predictions_sha256": "c403264df806bd432e93c89dd18be187747b8d77ef9dbe9295699b15d3dcd160",
+      "protocol_sha256": "7727a3cf274fb594422f4958f3ed103b851a0a0431e71173a9da8f7a1e365f79"
+    }
+  ],
+  "code_sha256": "1b744697ab62d3aaf722bee8e54f221f5a53c0650b6bf911cde043ab2ea49e86",
+  "limitation": "Repeated training-period development; no independent blind generalization claim."
+}

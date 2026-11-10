@@ -54,3 +54,7 @@ RF原生7输出，sqrt残差目标，seed42，trees120，seq_len1。GridSearchCV
 后六天只保留教师明确要求，不再把多步平均提升作为晋级前提。暂不继续弱LSTM或版式扩展。先对ANN联合搜索比较单输出h1与原生7输出：同一mi输入、训练/验证日期、gap7、hidden32/iterations350/sqrt残差，seed42/13/2026；单输出的mean与first等价，因此只保留mean，网格k12/24/36×alpha0.1/1.0共6组。各年按内部h1原始R²选参，对比各自固定k24/alpha0.1基线以及已保存的同seed7输出结果。每seed36次CV拟合+3次重拟合+3次基线共42次。保留7日可用性掩码以保证日期相同，明确单输出没有多使用年末6天。输出direct_ann_seed42/13/2026；不读取2004，不事后挑seed。
 
 在查看本轮结果前固定补充比较：对三个指定seed预测等权算术平均，分别对direct/multi、selected/baseline四组计算h1指标。权重固定1/3，不挑seed或按验证成绩拟合权重；标为ANN多种子研究平均，不能冒充教师要求的三种模型简单平均。仅复用已保存训练期预测，不新增2004评价。
+
+## 第七轮：第一天Stacking正则化
+
+固定seed42历史OOF来源：nested_ann/selected、nested_rf/selected、lstm_selection_seed42/LSTM_mean_k16。只用各自h1，严格匹配2001—2003每年358个原点。保留预先指定LSTM基线，不根据本轮融合成绩择LSTM。元模型评价2002/2003，每次只用此前OOF、gap7。StandardScaler+Ridge，内部TimeSeriesSplit(2,gap7)以非负截断后的h1原始R²选择alpha=[0.1,1,10,100,1000]；对照固定alpha10、三模型等权平均及单独ANN/RF/LSTM。报告两个年度全部结果，旧同年度研究选择偏差继续披露。并非独立盲测，也不是重新完成40个正式模型。实现/测试见research_h1_fusion.py及test_h1_fusion.py，输出h1_fusion_ridge。2004不参与，旧正式数据不变。
