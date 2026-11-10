@@ -1,0 +1,7 @@
+{
+  "status": "started",
+  "code_sha256": "cf722b6dd5d8cd4f971ddada531fcdb1701d7e25d0e00bda41b59375bbbb9e06",
+  "frozen_sha256": "3c7b76564f5d7d8b63d787dc24aae2413a633a018e2d6253b03659c1f74ae03a",
+  "fit_calls": 0,
+  "planned_predict_calls": 3
+}

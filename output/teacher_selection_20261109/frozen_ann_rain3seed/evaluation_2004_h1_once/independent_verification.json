@@ -1,0 +1,13 @@
+{
+  "status": "passed",
+  "rows": 359,
+  "metrics": {
+    "R2": 0.5030792580704941,
+    "RMSE": 593.5442380028996,
+    "MAE": 195.3751980029773
+  },
+  "fit_calls": 0,
+  "predict_calls": 0,
+  "checks": "raw truth, dates, equal weights, metrics, data/model/code/authorization hashes",
+  "verifier_sha256": "8841e74509a5c2b37780bb897327075b1011904d2286b9e24bc85d0b7a247637"
+}

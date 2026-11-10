@@ -1,0 +1,12 @@
+{
+  "status": "complete",
+  "candidate_frozen_sha256": "3c7b76564f5d7d8b63d787dc24aae2413a633a018e2d6253b03659c1f74ae03a",
+  "test_origins": 359,
+  "horizon": 1,
+  "fit_calls": 0,
+  "predict_calls": 3,
+  "predictions_sha256": "ad86f369d72a783183a437afe549bcd6bdf4eeb55de808766f41bce66bebb13e",
+  "data_sha256": "ab09410b23118510bb4e8787a62b97693336a1c46477a01329f587c64bc57151",
+  "authorization_sha256": "7f75f4b0a7cfc293d7d9c80a4404b0b78739176e9f6051c0efb0827dc279d788",
+  "limitation": "Retrospective evaluation of an already exposed test year; no tuning based on this result"
+}

@@ -1,0 +1,7 @@
+{
+  "granted_by_user": true,
+  "user_reply": "允许这个候选回溯一次2004",
+  "candidate_frozen_sha256": "3c7b76564f5d7d8b63d787dc24aae2413a633a018e2d6253b03659c1f74ae03a",
+  "scope": "one 2004 h1 ensemble backtest; saved weights only; no refit or tuning",
+  "supersedes_prior_pending_authorization": true
+}
