@@ -1,0 +1,62 @@
+[
+  {
+    "candidate": "LSTM_mean_k12",
+    "year": 2001,
+    "warnings": []
+  },
+  {
+    "candidate": "LSTM_mean_k12",
+    "year": 2002,
+    "warnings": []
+  },
+  {
+    "candidate": "LSTM_mean_k12",
+    "year": 2003,
+    "warnings": []
+  },
+  {
+    "candidate": "LSTM_mean_k16",
+    "year": 2001,
+    "warnings": []
+  },
+  {
+    "candidate": "LSTM_mean_k16",
+    "year": 2002,
+    "warnings": []
+  },
+  {
+    "candidate": "LSTM_mean_k16",
+    "year": 2003,
+    "warnings": []
+  },
+  {
+    "candidate": "LSTM_first_k12",
+    "year": 2001,
+    "warnings": []
+  },
+  {
+    "candidate": "LSTM_first_k12",
+    "year": 2002,
+    "warnings": []
+  },
+  {
+    "candidate": "LSTM_first_k12",
+    "year": 2003,
+    "warnings": []
+  },
+  {
+    "candidate": "LSTM_first_k16",
+    "year": 2001,
+    "warnings": []
+  },
+  {
+    "candidate": "LSTM_first_k16",
+    "year": 2002,
+    "warnings": []
+  },
+  {
+    "candidate": "LSTM_first_k16",
+    "year": 2003,
+    "warnings": []
+  }
+]
