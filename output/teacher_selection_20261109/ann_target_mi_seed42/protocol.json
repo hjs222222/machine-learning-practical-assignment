@@ -1,0 +1,92 @@
+{
+  "stage": "features",
+  "seed": 42,
+  "data_cutoff": "2003-12-31",
+  "horizon": 1,
+  "label_horizon": 7,
+  "gap": 7,
+  "sequence_length": 30,
+  "available_weather": false,
+  "record_training": false,
+  "selection": "worst annual R2, then mean annual R2",
+  "limitation": "Training-period selection is biased; no independent generalization claim",
+  "sample_note": "Common 30-day sequences for new annual comparisons; not reproduction of old formal folds",
+  "data_sha256": "ab09410b23118510bb4e8787a62b97693336a1c46477a01329f587c64bc57151",
+  "code_hashes": {
+    "code\\config.py": "e119746e9d0e9717b10ce778c1cc748a3b77bc651218918c857df65d2777c63b",
+    "code\\data.py": "0a5d3701debaf61db54979676ab204575f7d4a65b221327ee581213eec7c43f9",
+    "code\\data_analysis.py": "435a08461fa1314bf405afec93bdc774477406ce09d523dfc6e2c3f716d02d45",
+    "code\\evaluate_frozen_rain_h1_once.py": "cf722b6dd5d8cd4f971ddada531fcdb1701d7e25d0e00bda41b59375bbbb9e06",
+    "code\\evaluation.py": "282fc94c8abe135b3aefc2097e466af5c94b0a6ef5105f05c53b167c6ce5d075",
+    "code\\experiment.py": "dca3f5c1df19aa6429c3f8f51fba79b8f6c39822d549872e7e3afd9f04735c49",
+    "code\\features.py": "d3c7e9ceae98f5abecc5abcae5d0b71cd01695f14b0381d82441e24fcbf577b3",
+    "code\\freeze_h1_candidate.py": "199167a59aa3feaeea96566b6a33dabb23e9e191cd9a6926d858226a75534b0c",
+    "code\\freeze_h1_rain_candidate.py": "57e47c634621ca80cd116090ff158e759eb52eed32e63fa283c5193fb8a064f1",
+    "code\\models.py": "a29c8fe6f6d9699fa3f602bb23501c1c2140cf26a4aedad4e15e9a7736b06647",
+    "code\\research_h1.py": "035f0af8a4c7be398f3b673c593b92e862d45012a55a05c08a1bab54e4347324",
+    "code\\research_h1_fusion.py": "1b744697ab62d3aaf722bee8e54f221f5a53c0650b6bf911cde043ab2ea49e86",
+    "code\\research_h1_rain.py": "003e876996e05eeae5ce2c6e0ba1333e9735a10156f0f4f2d050f4999c49eb51",
+    "code\\research_h1_target_mi.py": "ea24e2105d73e051dd3fdc752cec4e401e5b82d87a2361e0637112773356c113",
+    "code\\research_raw_offset.py": "f94558682691e5adb853f2b64a535f2112150772a03fdb3af0fa9994c70e69df",
+    "code\\research_selection_search.py": "295765431d5f2853fbeb942d9a96a9ed70899a2bfe4bfe3c343da21bada54857",
+    "code\\research_stacking_context.py": "2e11c26432657dc9237adc03ee76147c7e42d46337b3c59c142f35ecc6cad134",
+    "code\\run_all.py": "ff4e01b48925ea6b1e23db92c91c5dd6d68c2e2c2bc9d6ff06db0fd7b723b39b",
+    "code\\verify_frozen_h1_candidate.py": "6c8193b7777e6fe4ec12426c75fa224df17602737d57df72dbed0377db9b82eb",
+    "code\\verify_rain_h1_backtest.py": "8841e74509a5c2b37780bb897327075b1011904d2286b9e24bc85d0b7a247637",
+    "code\\verify_rf_direct_comparison.py": "48e3639e9554441224e42b1e8b69cb5f279dc20f7dc6e494bb3b98b6891cb394"
+  },
+  "previous": null,
+  "candidates": [
+    {
+      "id": "ANN_first_target_mi",
+      "family": "ANN",
+      "mode": "target_mi",
+      "outputs": 7,
+      "transform": "sqrt",
+      "residual": true,
+      "top_k": 12,
+      "params": {
+        "hidden": 32,
+        "seq_len": 1,
+        "iterations": 350,
+        "alpha": 1.0,
+        "mi_policy": "first"
+      }
+    }
+  ],
+  "folds": [
+    {
+      "year": 2001,
+      "train_start": "2000-02-29 00:00:00",
+      "train_end": "2000-12-24 00:00:00",
+      "train_label_end": "2000-12-31 00:00:00",
+      "valid_start": "2001-01-01 00:00:00",
+      "valid_end": "2001-12-24 00:00:00",
+      "valid_label_end": "2001-12-31 00:00:00",
+      "train_count": 300,
+      "valid_count": 358
+    },
+    {
+      "year": 2002,
+      "train_start": "2000-02-29 00:00:00",
+      "train_end": "2001-12-24 00:00:00",
+      "train_label_end": "2001-12-31 00:00:00",
+      "valid_start": "2002-01-01 00:00:00",
+      "valid_end": "2002-12-24 00:00:00",
+      "valid_label_end": "2002-12-31 00:00:00",
+      "train_count": 665,
+      "valid_count": 358
+    },
+    {
+      "year": 2003,
+      "train_start": "2000-02-29 00:00:00",
+      "train_end": "2002-12-24 00:00:00",
+      "train_label_end": "2002-12-31 00:00:00",
+      "valid_start": "2003-01-01 00:00:00",
+      "valid_end": "2003-12-24 00:00:00",
+      "valid_label_end": "2003-12-31 00:00:00",
+      "train_count": 1030,
+      "valid_count": 358
+    }
+  ]
+}
