@@ -1,0 +1,13 @@
+{
+  "status": "passed",
+  "metric_rows": 6,
+  "prediction_rows": 2148,
+  "restored_models": 3,
+  "verifier_training_fits": 0,
+  "test_evaluations": 0,
+  "data_sha256": "ab09410b23118510bb4e8787a62b97693336a1c46477a01329f587c64bc57151",
+  "predictions_sha256": "b87f253d6102e6a9c4392a19010e008e20e862e55cd06e52ab9f0712442a0f21",
+  "verifier_sha256": "bc796b7af3aec6da0fd25879c6c6d29858eff01ef1f3507539963adc6534688a",
+  "comparison_rows": 12,
+  "source_commit": null
+}
