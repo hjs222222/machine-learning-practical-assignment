@@ -1,0 +1,89 @@
+[
+  {
+    "seed": 42,
+    "params": {
+      "alpha": 1.0,
+      "mi_policy": "first",
+      "top_k": 12
+    },
+    "forced_indices": [
+      14
+    ],
+    "model_file": "ann_seed42.joblib",
+    "model_sha256": "65d5049a11cd5ffe1660ef674d96d810dff0e2675d1db6b76d392e0b6b587624",
+    "actual_iterations": 90,
+    "features": [
+      "Discharge_lag0",
+      "Discharge_lag1",
+      "Discharge_lag2",
+      "Discharge_lag3",
+      "Prcp_lag0",
+      "Discharge_roll3_mean",
+      "Discharge_roll3_max",
+      "Discharge_roll7_mean",
+      "Discharge_roll7_max",
+      "Discharge_roll14_mean",
+      "Discharge_roll14_max",
+      "Tmax_roll14_max",
+      "Tmin_roll14_max"
+    ]
+  },
+  {
+    "seed": 13,
+    "params": {
+      "alpha": 1.0,
+      "mi_policy": "first",
+      "top_k": 12
+    },
+    "forced_indices": [
+      14
+    ],
+    "model_file": "ann_seed13.joblib",
+    "model_sha256": "ff85061e1a2fe88fea46af7f89bc9526793a3865297cc5aa158195cea0d0a43d",
+    "actual_iterations": 84,
+    "features": [
+      "Discharge_lag0",
+      "Discharge_lag1",
+      "Discharge_lag2",
+      "Discharge_lag3",
+      "Prcp_lag0",
+      "Discharge_roll3_mean",
+      "Discharge_roll3_max",
+      "Discharge_roll7_mean",
+      "Discharge_roll7_max",
+      "Discharge_roll14_mean",
+      "Discharge_roll14_max",
+      "Tmax_roll14_max",
+      "Tmin_roll14_max"
+    ]
+  },
+  {
+    "seed": 2026,
+    "params": {
+      "alpha": 1.0,
+      "mi_policy": "first",
+      "top_k": 12
+    },
+    "forced_indices": [
+      14
+    ],
+    "model_file": "ann_seed2026.joblib",
+    "model_sha256": "1a864f70e42d1a4dfd8257210cc6f595380d20815e53f412ed678ffc314d2335",
+    "actual_iterations": 78,
+    "features": [
+      "Discharge_lag0",
+      "Discharge_lag1",
+      "Discharge_lag2",
+      "Discharge_lag3",
+      "Prcp_lag0",
+      "Discharge_roll3_mean",
+      "Discharge_roll3_max",
+      "Discharge_roll7_mean",
+      "Discharge_roll7_max",
+      "Discharge_roll14_mean",
+      "Discharge_roll14_max",
+      "Tmax_roll14_max",
+      "Tmin_roll14_max"
+    ]
+  }
+]
