@@ -18,19 +18,19 @@ def h1_score(estimator, X, y):
     return r2_score(y[:, 0], estimator.predict(X)[:, 0])
 
 
-def run(output, raw=None, grid=None, trees=120, family='RF'):
+def run(output, raw=None, grid=None, trees=120, family='RF', seed=42):
     if family not in ('RF','ANN'):
         raise ValueError('family must be RF or ANN')
     output = Path(output)
     output.mkdir(parents=True, exist_ok=False)
     grid = grid or dict(mi_policy=['mean', 'first'], top_k=[12, 24, 36],
                         **(dict(leaf=[1,5]) if family == 'RF' else dict(alpha=[.1,1.])))
-    settings = dict(family=family,trees=trees,leaf=1,transform='sqrt',residual=True,seq_len=1)
+    settings = dict(family=family,seed=seed,trees=trees,leaf=1,transform='sqrt',residual=True,seq_len=1)
     if family == 'ANN':
         settings.update(hidden=32,iterations=350,alpha=.1)
     data = prepare_data(load_raw() if raw is None else raw, horizons=7)
     X, y, dates = data['mi']['X'], data['y'], data['dates']
-    save_json(output/'protocol.json', dict(data_cutoff='2003-12-31', grid=grid, seed=42,
+    save_json(output/'protocol.json', dict(data_cutoff='2003-12-31', grid=grid, seed=seed,
         family=family, estimator=RunoffRegressor(**settings).get_params(),
         trees=trees, transform='sqrt', residual=True, seq_len=1,
         baseline=dict(mi_policy='mean',top_k=24,leaf=1), selection='inner h1 raw R2',
@@ -78,4 +78,5 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--output',type=Path,required=True)
     parser.add_argument('--family',choices=['RF','ANN'],default='RF')
+    parser.add_argument('--seed',type=int,default=42)
     run(**vars(parser.parse_args()))

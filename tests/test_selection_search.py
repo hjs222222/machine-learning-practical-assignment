@@ -19,11 +19,12 @@ def test_nested_search_is_training_only_and_reproducible(tmp_path, family):
     output = tmp_path/'run'
     extra = dict(leaf=[1]) if family == 'RF' else dict(alpha=[.1],iterations=[1])
     grid = dict(mi_policy=['mean','first'], top_k=[3], **extra)
-    search.run(output, raw=raw_data(), grid=grid, trees=2, family=family)
+    search.run(output, raw=raw_data(), grid=grid, trees=2, family=family, seed=13)
     protocol = json.loads((output/'protocol.json').read_text())
     assert protocol['data_cutoff'] == '2003-12-31'
     assert protocol['family'] == family
     assert protocol['estimator']['family'] == family
+    assert protocol['seed'] == protocol['estimator']['seed'] == 13
     splits = pd.read_csv(output/'splits.csv')
     for row in splits.itertuples():
         assert pd.Timestamp(row.train_end)+pd.Timedelta(days=7) < pd.Timestamp(row.valid_start)

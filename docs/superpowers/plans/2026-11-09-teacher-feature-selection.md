@@ -38,3 +38,7 @@ RF原生7输出，sqrt残差目标，seed42，trees120，seq_len1。GridSearchCV
 ## 第三轮预注册：ANN联合搜索
 
 复用第二轮的嵌套时序结构与日期。ANN原生7输出，sqrt残差，hidden32、iterations350、seed42、seq_len1。网格mi_policy=[mean,first]、top_k=[12,24,36]、alpha=[0.1,1.0]共12组；对应mean/k24/alpha0.1固定基线。内层按h1原始R²选择，完整记录7天指标、参数、特征和警告，共78次拟合。不修改2004或正式报告。输出output/teacher_selection_20261109/nested_ann。扩展运行器只增加family选择并保留RF默认行为，先测试后训练。
+
+## 第四轮预注册：ANN搜索流程稳定性
+
+完全保持第三轮的12组网格、日期、78次拟合流程，只分别换为seed13和seed2026。新增seed参数默认42，协议和实际估计器保持一致。分别输出nested_ann_seed13、nested_ann_seed2026；报告两个复核与原seed42所有结果，不选择最优seed。种子同时影响MI估计与模型初始化，结论是整条搜索流程的稳定性，而非纯网络初始化效应。每种子与自己的固定mean/k24/alpha0.1基线配对，未经2004测试不更新正式成绩。
