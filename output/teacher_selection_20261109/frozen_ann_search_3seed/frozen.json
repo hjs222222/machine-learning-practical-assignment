@@ -1,0 +1,88 @@
+{
+  "status": "frozen_verified_pending_test_authorization",
+  "protocol_sha256": "fb7400608368325348e27d8c44bb8b5802e11898c7c6fda63ab989c04c145139",
+  "models": [
+    {
+      "seed": 42,
+      "params": {
+        "alpha": 1.0,
+        "mi_policy": "first",
+        "top_k": 12
+      },
+      "inner_cv_h1_r2": 0.7354701630478953,
+      "model_file": "ann_seed42.joblib",
+      "model_sha256": "6a908a0c4ea83bbe5f2e428018067ebb96d1ba39bad9c3deb5dce1e7ef173541",
+      "actual_iterations": 107,
+      "features": [
+        "Discharge_lag0",
+        "Discharge_lag1",
+        "Discharge_lag2",
+        "Discharge_lag3",
+        "Discharge_roll3_mean",
+        "Discharge_roll3_max",
+        "Discharge_roll7_mean",
+        "Discharge_roll7_max",
+        "Discharge_roll14_mean",
+        "Discharge_roll14_max",
+        "Tmax_roll14_max",
+        "Tmin_roll14_max"
+      ]
+    },
+    {
+      "seed": 13,
+      "params": {
+        "alpha": 1.0,
+        "mi_policy": "first",
+        "top_k": 12
+      },
+      "inner_cv_h1_r2": 0.7277535388514217,
+      "model_file": "ann_seed13.joblib",
+      "model_sha256": "ea7f88d378fbd0fb56fbdcd1b8bf3c57fdb59634e3b4398ee4381b3b1de5037c",
+      "actual_iterations": 86,
+      "features": [
+        "Discharge_lag0",
+        "Discharge_lag1",
+        "Discharge_lag2",
+        "Discharge_lag3",
+        "Discharge_roll3_mean",
+        "Discharge_roll3_max",
+        "Discharge_roll7_mean",
+        "Discharge_roll7_max",
+        "Discharge_roll14_mean",
+        "Discharge_roll14_max",
+        "Tmax_roll14_max",
+        "Tmin_roll14_max"
+      ]
+    },
+    {
+      "seed": 2026,
+      "params": {
+        "alpha": 1.0,
+        "mi_policy": "first",
+        "top_k": 12
+      },
+      "inner_cv_h1_r2": 0.728789379180196,
+      "model_file": "ann_seed2026.joblib",
+      "model_sha256": "46303890cf5e0ef019b4c215be437f2865f302ec834d607ec7a9d6e4d1670508",
+      "actual_iterations": 90,
+      "features": [
+        "Discharge_lag0",
+        "Discharge_lag1",
+        "Discharge_lag2",
+        "Discharge_lag3",
+        "Discharge_roll3_mean",
+        "Discharge_roll3_max",
+        "Discharge_roll7_mean",
+        "Discharge_roll7_max",
+        "Discharge_roll14_mean",
+        "Discharge_roll14_max",
+        "Tmax_roll14_max",
+        "Tmin_roll14_max"
+      ]
+    }
+  ],
+  "base_fits": 75,
+  "test_evaluated": false,
+  "test_authorized": false,
+  "verification_sha256": "4e50201de2b6c4b9e1fa9b65a257f43964632c6f015b8753182d88cd93f648c9"
+}

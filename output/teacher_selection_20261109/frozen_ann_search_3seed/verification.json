@@ -1,0 +1,11 @@
+{
+  "status": "passed",
+  "models": 3,
+  "training_origins": 1395,
+  "probe_values": 63,
+  "largest_probe_difference": 0.0003662109375,
+  "test_evaluated": false,
+  "fit_calls": 0,
+  "predict_calls": 0,
+  "verifier_sha256": "6c8193b7777e6fe4ec12426c75fa224df17602737d57df72dbed0377db9b82eb"
+}

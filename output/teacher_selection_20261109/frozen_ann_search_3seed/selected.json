@@ -1,0 +1,80 @@
+[
+  {
+    "seed": 42,
+    "params": {
+      "alpha": 1.0,
+      "mi_policy": "first",
+      "top_k": 12
+    },
+    "inner_cv_h1_r2": 0.7354701630478953,
+    "model_file": "ann_seed42.joblib",
+    "model_sha256": "6a908a0c4ea83bbe5f2e428018067ebb96d1ba39bad9c3deb5dce1e7ef173541",
+    "actual_iterations": 107,
+    "features": [
+      "Discharge_lag0",
+      "Discharge_lag1",
+      "Discharge_lag2",
+      "Discharge_lag3",
+      "Discharge_roll3_mean",
+      "Discharge_roll3_max",
+      "Discharge_roll7_mean",
+      "Discharge_roll7_max",
+      "Discharge_roll14_mean",
+      "Discharge_roll14_max",
+      "Tmax_roll14_max",
+      "Tmin_roll14_max"
+    ]
+  },
+  {
+    "seed": 13,
+    "params": {
+      "alpha": 1.0,
+      "mi_policy": "first",
+      "top_k": 12
+    },
+    "inner_cv_h1_r2": 0.7277535388514217,
+    "model_file": "ann_seed13.joblib",
+    "model_sha256": "ea7f88d378fbd0fb56fbdcd1b8bf3c57fdb59634e3b4398ee4381b3b1de5037c",
+    "actual_iterations": 86,
+    "features": [
+      "Discharge_lag0",
+      "Discharge_lag1",
+      "Discharge_lag2",
+      "Discharge_lag3",
+      "Discharge_roll3_mean",
+      "Discharge_roll3_max",
+      "Discharge_roll7_mean",
+      "Discharge_roll7_max",
+      "Discharge_roll14_mean",
+      "Discharge_roll14_max",
+      "Tmax_roll14_max",
+      "Tmin_roll14_max"
+    ]
+  },
+  {
+    "seed": 2026,
+    "params": {
+      "alpha": 1.0,
+      "mi_policy": "first",
+      "top_k": 12
+    },
+    "inner_cv_h1_r2": 0.728789379180196,
+    "model_file": "ann_seed2026.joblib",
+    "model_sha256": "46303890cf5e0ef019b4c215be437f2865f302ec834d607ec7a9d6e4d1670508",
+    "actual_iterations": 90,
+    "features": [
+      "Discharge_lag0",
+      "Discharge_lag1",
+      "Discharge_lag2",
+      "Discharge_lag3",
+      "Discharge_roll3_mean",
+      "Discharge_roll3_max",
+      "Discharge_roll7_mean",
+      "Discharge_roll7_max",
+      "Discharge_roll14_mean",
+      "Discharge_roll14_max",
+      "Tmax_roll14_max",
+      "Tmin_roll14_max"
+    ]
+  }
+]
