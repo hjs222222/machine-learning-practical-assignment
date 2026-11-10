@@ -1,0 +1,62 @@
+[
+  {
+    "candidate": "ANN_mean_one",
+    "year": 2001,
+    "warnings": []
+  },
+  {
+    "candidate": "ANN_mean_one",
+    "year": 2002,
+    "warnings": []
+  },
+  {
+    "candidate": "ANN_mean_one",
+    "year": 2003,
+    "warnings": []
+  },
+  {
+    "candidate": "ANN_mean_two",
+    "year": 2001,
+    "warnings": []
+  },
+  {
+    "candidate": "ANN_mean_two",
+    "year": 2002,
+    "warnings": []
+  },
+  {
+    "candidate": "ANN_mean_two",
+    "year": 2003,
+    "warnings": []
+  },
+  {
+    "candidate": "ANN_first_one",
+    "year": 2001,
+    "warnings": []
+  },
+  {
+    "candidate": "ANN_first_one",
+    "year": 2002,
+    "warnings": []
+  },
+  {
+    "candidate": "ANN_first_one",
+    "year": 2003,
+    "warnings": []
+  },
+  {
+    "candidate": "ANN_first_two",
+    "year": 2001,
+    "warnings": []
+  },
+  {
+    "candidate": "ANN_first_two",
+    "year": 2002,
+    "warnings": []
+  },
+  {
+    "candidate": "ANN_first_two",
+    "year": 2003,
+    "warnings": []
+  }
+]
