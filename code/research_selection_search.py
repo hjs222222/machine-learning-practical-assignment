@@ -18,20 +18,22 @@ def h1_score(estimator, X, y):
     return r2_score(y[:, 0], estimator.predict(X)[:, 0])
 
 
-def run(output, raw=None, grid=None, trees=120, family='RF', seed=42):
+def run(output, raw=None, grid=None, trees=120, family='RF', seed=42, outputs=7):
     if family not in ('RF','ANN'):
         raise ValueError('family must be RF or ANN')
+    if isinstance(outputs,bool) or outputs not in (1,7):
+        raise ValueError('outputs must be 1 or 7')
     output = Path(output)
     output.mkdir(parents=True, exist_ok=False)
-    grid = grid or dict(mi_policy=['mean', 'first'], top_k=[12, 24, 36],
+    grid = grid or dict(mi_policy=['mean'] if outputs == 1 else ['mean', 'first'], top_k=[12, 24, 36],
                         **(dict(leaf=[1,5]) if family == 'RF' else dict(alpha=[.1,1.])))
     settings = dict(family=family,seed=seed,trees=trees,leaf=1,transform='sqrt',residual=True,seq_len=1)
     if family == 'ANN':
         settings.update(hidden=32,iterations=350,alpha=.1)
     data = prepare_data(load_raw() if raw is None else raw, horizons=7)
-    X, y, dates = data['mi']['X'], data['y'], data['dates']
+    X, y, dates = data['mi']['X'], data['y'][:,:outputs], data['dates']
     save_json(output/'protocol.json', dict(data_cutoff='2003-12-31', grid=grid, seed=seed,
-        family=family, estimator=RunoffRegressor(**settings).get_params(),
+        family=family, outputs=outputs, sample_horizon=7, estimator=RunoffRegressor(**settings).get_params(),
         trees=trees, transform='sqrt', residual=True, seq_len=1,
         baseline=dict(mi_policy='mean',top_k=24,leaf=1), selection='inner h1 raw R2',
         outer='2001/2002/2003 annual', inner='TimeSeriesSplit(2), gap=7',
@@ -60,11 +62,11 @@ def run(output, raw=None, grid=None, trees=120, family='RF', seed=42):
         threshold = float(np.quantile(y[tr,0],.95))
         for name, model in [('selected',search.best_estimator_),('baseline',base)]:
             pred = model.predict(X[va])
-            for h in range(7):
+            for h in range(outputs):
                 scores.append(dict(year=year,model=name,horizon=h+1,
                     **metrics(y[va,h],pred[:,h],threshold)))
             predictions.extend(dict(year=year,model=name,origin=str(date.date()),
-                **{f'prediction_h{h+1}':float(vector[h]) for h in range(7)})
+                **{f'prediction_h{h+1}':float(vector[h]) for h in range(outputs)})
                 for date,vector in zip(dates[va],pred))
         pd.DataFrame(scores).to_csv(output/'metrics.csv',index=False)
         pd.DataFrame(predictions).to_csv(output/'predictions.csv',index=False)
@@ -79,4 +81,5 @@ if __name__ == '__main__':
     parser.add_argument('--output',type=Path,required=True)
     parser.add_argument('--family',choices=['RF','ANN'],default='RF')
     parser.add_argument('--seed',type=int,default=42)
+    parser.add_argument('--outputs',type=int,choices=[1,7],default=7)
     run(**vars(parser.parse_args()))
