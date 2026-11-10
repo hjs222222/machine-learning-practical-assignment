@@ -1,0 +1,51 @@
+{
+  "seeds": [
+    42,
+    13,
+    2026
+  ],
+  "data_cutoff": "2003-12-31",
+  "data_sha256": "ab09410b23118510bb4e8787a62b97693336a1c46477a01329f587c64bc57151",
+  "feature": "Prcp_lag0",
+  "top_k": 12,
+  "forced_union": true,
+  "model": {
+    "family": "ANN",
+    "hidden": 32,
+    "alpha": 1.0,
+    "iterations": 350,
+    "seq_len": 1,
+    "transform": "sqrt",
+    "residual": true,
+    "mi_policy": "first",
+    "outputs": 7
+  },
+  "sources": [
+    {
+      "seed": 42,
+      "source": "output\\teacher_selection_20261109\\ann_depth_seed42",
+      "predictions_sha256": "cfd12a3c96933f6fe186aadec016cd5bd8168327ad6ecf4734dd480e2b1da34e",
+      "protocol_sha256": "2f8a9ca776d9c649a300db40e5b0e7b36355a0dd87bae58860786fc1acbf124d",
+      "fits_sha256": "f74d9a52b668b13b3a1ae575db352364bf1c61d57e184817834601c6c77722e5"
+    },
+    {
+      "seed": 13,
+      "source": "output\\teacher_selection_20261109\\ann_depth_seed13",
+      "predictions_sha256": "9a4f1e4f45784b5660deeadb9523d925d411400238a35d27a7dec6464eb2f3a8",
+      "protocol_sha256": "6e7b77f1306cfdd624a1a5e05519480b97c75c22d1bed48315ff51ae7307b4bb",
+      "fits_sha256": "67ed8718ce0f28efc2fc7c881314e2de6c43907a546ebb126dc48ab6778dc91b"
+    },
+    {
+      "seed": 2026,
+      "source": "output\\teacher_selection_20261109\\ann_depth_seed2026",
+      "predictions_sha256": "4d663137a17707ac9ece437a7a30ed5eb518378573f1e74b50c0d542149d29e9",
+      "protocol_sha256": "d997166e8d044c96b80f197718047bafafb7f8f3af282f0b0806542e932d7033",
+      "fits_sha256": "c4ab0f68c3e86a46beb25e150df7acc3a48689e43e94adcd9c3b34042878c49c"
+    }
+  ],
+  "planned_base_fits": 9,
+  "primary": "h1 raw R2",
+  "gap": 7,
+  "code_sha256": "003e876996e05eeae5ce2c6e0ba1333e9735a10156f0f4f2d050f4999c49eb51",
+  "limitation": "Training-period exploratory feature hypothesis; not an independent blind test."
+}
