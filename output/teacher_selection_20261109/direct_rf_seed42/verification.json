@@ -1,0 +1,25 @@
+{
+  "status": "passed",
+  "metric_rows": 12,
+  "prediction_rows": 4296,
+  "cv_candidates_per_year": 6,
+  "total_training_fits": 42,
+  "verifier_fit_calls": 0,
+  "verifier_predict_calls": 0,
+  "data_sha256": "ab09410b23118510bb4e8787a62b97693336a1c46477a01329f587c64bc57151",
+  "sources": {
+    "direct": {
+      "protocol.json": "aff031950a3ef0292c1faa6b95cf2c0fed40923c1baf375487ec9d91848f8e00",
+      "predictions.csv": "ad52be018f1869ad6956176e71648d56deb217ad81d4f015c51a22b52e16b460",
+      "metrics.csv": "119aa82de6170e4f73da042a5a9f1c524e87bf74c4434afd98b17c7b4b4da5e9",
+      "splits.csv": "948b4d3c4f6716fa2a7c4acf2a5c566bc971b9bce9d6380d69bafe0b617a0a8e"
+    },
+    "native7": {
+      "protocol.json": "23a8c0c229694d271df5f690d59c55512b822d0b69bc599a91991b6d5d802ca8",
+      "predictions.csv": "926caf797fdf9f5b095be1a56ae550e8f77065e024c4a8d01b70364f56bc6166",
+      "metrics.csv": "ca97e98c5469978d384c60a0a65a1455a9a9c9a7ef3508b961f20d2baef45888",
+      "splits.csv": "948b4d3c4f6716fa2a7c4acf2a5c566bc971b9bce9d6380d69bafe0b617a0a8e"
+    }
+  },
+  "verifier_sha256": "48e3639e9554441224e42b1e8b69cb5f279dc20f7dc6e494bb3b98b6891cb394"
+}
