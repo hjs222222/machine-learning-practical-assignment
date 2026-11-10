@@ -196,6 +196,10 @@ class RunoffRegressor(RegressorMixin, BaseEstimator):
         return np.sign(values)*np.log1p(np.abs(values)) if self.input_transform == 'signed_log' else values
 
     def fit(self, X, y):
+        if isinstance(self.hidden,tuple) and (self.family != 'ANN' or self.ann_backend != 'sklearn' or
+                not self.hidden or any(isinstance(h,(bool,np.bool_)) or not isinstance(h,(int,np.integer)) or h < 1
+                                       for h in self.hidden)):
+            raise ValueError('hidden tuple须为正整数层宽，仅支持sklearn ANN')
         if (not isinstance(self.rf_bootstrap,(bool,np.bool_)) or
                 (not self.rf_bootstrap and self.family != 'RF')):
             raise ValueError('rf_bootstrap须为bool，False仅适用于RF')
@@ -301,7 +305,7 @@ class RunoffRegressor(RegressorMixin, BaseEstimator):
         return x.reshape(len(x),-1) if self.ann_history else x[:,-1]
 
     def _ann_estimator(self, samples):
-        return MLPRegressor(hidden_layer_sizes=(self.hidden,),max_iter=self.iterations,
+        return MLPRegressor(hidden_layer_sizes=self.hidden if isinstance(self.hidden,tuple) else (self.hidden,),max_iter=self.iterations,
             early_stopping=False,shuffle=False,alpha=self.alpha,random_state=self.seed,
             solver=self.ann_solver,learning_rate_init=self.ann_learning_rate,
             activation=self.ann_activation,

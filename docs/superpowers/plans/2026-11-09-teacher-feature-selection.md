@@ -58,3 +58,9 @@ RF原生7输出，sqrt残差目标，seed42，trees120，seq_len1。GridSearchCV
 ## 第七轮：第一天Stacking正则化
 
 固定seed42历史OOF来源：nested_ann/selected、nested_rf/selected、lstm_selection_seed42/LSTM_mean_k16。只用各自h1，严格匹配2001—2003每年358个原点。保留预先指定LSTM基线，不根据本轮融合成绩择LSTM。元模型评价2002/2003，每次只用此前OOF、gap7。StandardScaler+Ridge，内部TimeSeriesSplit(2,gap7)以非负截断后的h1原始R²选择alpha=[0.1,1,10,100,1000]；对照固定alpha10、三模型等权平均及单独ANN/RF/LSTM。报告两个年度全部结果，旧同年度研究选择偏差继续披露。并非独立盲测，也不是重新完成40个正式模型。实现/测试见research_h1_fusion.py及test_h1_fusion.py，输出h1_fusion_ridge。2004不参与，旧正式数据不变。
+
+## 第八轮：ANN两层结构
+
+教师未限定ANN为单隐藏层，当前sklearn包装始终构造单层。最小扩展：hidden允许正整数tuple表示sklearn层宽，整数默认行为保持；Torch ANN/LSTM/RF拒绝tuple。测试原生1/7输出、clone和恢复及非法输入。比较hidden32与hidden(32,16)，mi_policy mean/first各top_k12，sqrt残差、alpha1、350轮、seed42、seq_len1，原生7输出。4组×3年=12拟合，输出ann_depth_seed42；仅h1决定是否扩展seed，保留全部七天数据。两层增加参数，结果解释为结构/容量联合变化，不称纯深度因果效果。2004不参与。
+
+seed42结果first两层h1最差年0.551426略高于单层0.549640，三年h1均值也略高，但mean规则下降。因收益仅约0.0018，固定复核seed13/2026同四组条件各12拟合，不择seed、不扩其他层宽，输出ann_depth_seed13/2026。用三个seed的配对h1结果判断，不根据七天均值晋级。
