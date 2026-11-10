@@ -15,18 +15,22 @@ from threadpoolctl import threadpool_limits
 from config import ROOT, DATA_PATH, digest, save_json
 from data import load_raw, development_splits
 from research_h1 import prepare_data, annual_splits, metrics
+from boosting import SqrtResidualHistGradientBoostingRegressor
 
 
 def clipped_r2(truth, prediction):
     return r2_score(truth, np.maximum(prediction, 0))
 
 
-def run(output, raw=None, grid=None, max_iter=200):
+def run(output, raw=None, grid=None, max_iter=200, target='raw'):
+    if target not in ('raw', 'sqrt_residual'):
+        raise ValueError('target must be raw or sqrt_residual')
     output = Path(output)
     if output.exists():
         raise FileExistsError('Output exists; inspect it instead of repeating the run')
     grid = grid if grid is not None else dict(max_leaf_nodes=[7, 15], min_samples_leaf=[10, 30])
-    model = HistGradientBoostingRegressor(loss='squared_error', learning_rate=.05,
+    model_type = HistGradientBoostingRegressor if target == 'raw' else SqrtResidualHistGradientBoostingRegressor
+    model = model_type(loss='squared_error', learning_rate=.05,
         max_iter=max_iter, l2_regularization=1., early_stopping=False, warm_start=False,
         categorical_features=None, random_state=42)
     data = prepare_data(load_raw() if raw is None else raw, horizons=7)
@@ -42,7 +46,9 @@ def run(output, raw=None, grid=None, max_iter=200):
         input_shape=X.shape, input_sha256=hashlib.sha256(X.tobytes()+y.tobytes()+dates.asi8.tobytes()).hexdigest(),
         data_sha256=digest(DATA_PATH) if raw is None else 'unit-test fixture',
         code_hashes={str(p.relative_to(ROOT)):digest(p) for p in (ROOT/'code').glob('*.py')},
-        target='untransformed h1 flow', prediction_policy='nonnegative clipping, including CV scoring',
+        target_mode=target, estimator_class=model_type.__name__,
+        target='untransformed h1 flow' if target == 'raw' else 'sqrt(Q(t+1))-sqrt(Q(t)); decoded to original flow',
+        prediction_policy='nonnegative original flow, including CV scoring',
         outer='2001/2002/2003 annual', inner='TimeSeriesSplit(2), gap7',
         limitation='Repeated development years; not a blind test or theoretical upper bound.'))
     rows, predictions, fits, splits, caught_rows = [], [], [], [], []
@@ -87,4 +93,5 @@ def run(output, raw=None, grid=None, max_iter=200):
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--output', type=Path, required=True)
+    parser.add_argument('--target', choices=['raw', 'sqrt_residual'], default='raw')
     print(run(**vars(parser.parse_args())).to_string(index=False))

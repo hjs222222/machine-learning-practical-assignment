@@ -16,15 +16,17 @@ def test_clipped_score_matches_prediction_policy():
     assert boost.clipped_r2(np.array([0., 1., 2.]), np.array([1., 1., 1.])) == 0.
 
 
-def test_training_only_grid_and_saved_predictions(tmp_path):
+@pytest.mark.parametrize('target', ['raw', 'sqrt_residual'])
+def test_training_only_grid_and_saved_predictions(tmp_path, target):
     import research_h1_boost as boost
     raw = raw_data()
     grid = dict(max_leaf_nodes=[3], min_samples_leaf=[5])
     first = tmp_path/'first'
-    boost.run(first, raw=raw, grid=grid, max_iter=2)
+    boost.run(first, raw=raw, grid=grid, max_iter=2, target=target)
     protocol = json.loads((first/'protocol.json').read_text())
     assert protocol['data_cutoff'] == '2003-12-31'
     assert protocol['sample_horizon'] == 7 and protocol['outputs'] == 1
+    assert protocol['target_mode'] == target
     assert protocol['estimator']['early_stopping'] is False
     assert protocol['estimator']['warm_start'] is False
     assert protocol['estimator']['loss'] == 'squared_error'
@@ -45,10 +47,42 @@ def test_training_only_grid_and_saved_predictions(tmp_path):
         assert model.n_iter_ == 2 and model.do_early_stopping_ is False
     assert json.loads((first/'complete.json').read_text())['total_training_fits'] == 9
     with pytest.raises(FileExistsError):
-        boost.run(first, raw=raw, grid=grid, max_iter=2)
+        boost.run(first, raw=raw, grid=grid, max_iter=2, target=target)
     changed = raw.copy()
     changed.loc['2004-01-01':] *= 100
     second = tmp_path/'second'
-    boost.run(second, raw=changed, grid=grid, max_iter=2)
+    boost.run(second, raw=changed, grid=grid, max_iter=2, target=target)
     assert json.loads((second/'protocol.json').read_text())['input_sha256'] == protocol['input_sha256']
     pd.testing.assert_frame_equal(pd.read_csv(first/'predictions.csv'), pd.read_csv(second/'predictions.csv'))
+
+
+def test_residual_estimator_matches_manual_target_and_roundtrip(tmp_path):
+    from boosting import SqrtResidualHistGradientBoostingRegressor
+    from sklearn.base import clone
+    from sklearn.ensemble import HistGradientBoostingRegressor
+    from threadpoolctl import threadpool_limits
+    x = np.column_stack([np.arange(1., 81.), np.cos(np.arange(80))])
+    y = (np.sqrt(x[:, 0]) + .2*x[:, 1])**2
+    params = dict(max_iter=3, max_leaf_nodes=3, min_samples_leaf=5, early_stopping=False, random_state=42)
+    with threadpool_limits(limits=2):
+        wrapped = SqrtResidualHistGradientBoostingRegressor(**params).fit(x, y)
+        manual = HistGradientBoostingRegressor(**params).fit(x, np.sqrt(y)-np.sqrt(x[:, 0]))
+        expected = np.maximum(manual.predict(x)+np.sqrt(x[:, 0]), 0)**2
+        np.testing.assert_array_equal(wrapped.predict(x), expected)
+        assert clone(wrapped).get_params() == wrapped.get_params()
+        path = tmp_path/'model.joblib'
+        joblib.dump(wrapped, path)
+        np.testing.assert_array_equal(joblib.load(path).predict(x), expected)
+        with pytest.raises(ValueError, match='nonnegative'):
+            wrapped.fit(x, -y)
+        with pytest.raises(ValueError, match='nonnegative'):
+            wrapped.predict(-x)
+        with pytest.raises(ValueError, match='early_stopping'):
+            SqrtResidualHistGradientBoostingRegressor(**(params | {'early_stopping':True})).fit(x, y)
+
+
+def test_invalid_target_rejected_before_output_creation(tmp_path):
+    import research_h1_boost as boost
+    with pytest.raises(ValueError, match='target'):
+        boost.run(tmp_path/'bad', target='unknown')
+    assert not (tmp_path/'bad').exists()
