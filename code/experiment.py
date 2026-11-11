@@ -17,6 +17,40 @@ from models import RunoffRegressor, simple_average, fit_stacking
 from evaluation import metric_rows
 
 
+# 教师指导书第四.2/四.3 规定的模型清单。这三个常量是整个实验的模型口径来源，
+# 报告、清单与自查脚本都从这里取，避免出现与实现对不上的手写数字。
+STRATEGIES = ('direct', 'multi')      # 多步直接 / 多输出
+FAMILIES = ('RF', 'ANN', 'LSTM')      # 2 种机器学习 + 1 种深度学习
+ENSEMBLES = ('Mean', 'Stacking')      # 2 种集成学习
+
+
+def horizon_groups(strategy):
+    """返回 [(预见期, 目标列切片)]。
+
+    多步直接：每个预见期各训 1 个模型，共 7 个；
+    多输出：只有 1 个模型，同时输出 t+1..t+7。
+    """
+    if strategy == 'direct':
+        return [(h, slice(h - 1, h)) for h in range(1, 8)]
+    if strategy == 'multi':
+        return [(7, slice(0, 7))]
+    raise ValueError(f'未知预测策略：{strategy}')
+
+
+def base_model_names():
+    """24 个个体模型：3 方法 × (7 直接 + 1 多输出) = 24。"""
+    return [f'{s}_{f}_h{h}' for s in STRATEGIES for f in FAMILIES for h, _ in horizon_groups(s)]
+
+
+def ensemble_model_names():
+    """16 个集成模型：2 集成方法 × (7 直接 + 1 多输出) = 16。
+
+    Mean 不训练、在评价时按成员预测求平均；Stacking 需要拟合元学习器。
+    两者都计入教师要求的集成模型数量。
+    """
+    return [f'{s}_{e}_h{h}' for s in STRATEGIES for e in ENSEMBLES for h, _ in horizon_groups(s)]
+
+
 def frozen_grids():
     grids = {
         'RF': [dict(transform=[t],leaf=[leaf],trees=[120],top_k=[24])
@@ -99,12 +133,12 @@ def develop(ds, run):
         validation_start=str(dates[va[0]].date()),validation_origin_end=str(dates[va[-1]].date()),
         n_train=len(tr),n_validation=len(va)) for i,(tr,va,_) in enumerate(oof_specs)]).to_csv(run/'oof'/'splits.csv',index=False)
     selected, scores = {}, []
-    for strategy in ('direct','multi'):
-        horizon_groups = [(h,slice(h-1,h)) for h in range(1,8)] if strategy == 'direct' else [(7,slice(0,7))]
+    for strategy in STRATEGIES:
+        groups = horizon_groups(strategy)
         oof_family, fitted = {}, {}
-        for family in ('RF','ANN','LSTM'):
+        for family in FAMILIES:
             oof_family[family] = np.full(y.shape,np.nan)
-            for h,sl in horizon_groups:
+            for h,sl in groups:
                 key = f'{strategy}_{family}_h{h}'
                 print('DEVELOP',key,flush=True)
                 gs = search(family,X,y[:,sl],development_splits(dates),grids[family],run/'cv'/f'{key}.csv')
@@ -186,7 +220,8 @@ def evaluate(ds, run):
     pd.DataFrame(metric_rows('baseline','Persistence',y,baseline)).to_csv(run/'baseline.csv',index=False)
     np.savez_compressed(run/'predictions.npz',truth=y,dates=dates.astype(str).to_numpy(),**all_predictions)
     manifest = json.loads((run/'manifest.json').read_text(encoding='utf-8'))
-    manifest.update(status='completed',n_test=len(test),actual_base_models=24,actual_ensemble_models=16,
+    manifest.update(status='completed',n_test=len(test),
+        actual_base_models=len(base_model_names()),actual_ensemble_models=len(ensemble_model_names()),
         best_h1_R2=max(row['R2'] for row in rows if row['h']==1),test_evaluated=True)
     save_json(run/'manifest.json',manifest)
     print('FORMAL COMPLETE',manifest['best_h1_R2'],flush=True)
