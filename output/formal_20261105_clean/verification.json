@@ -1,0 +1,11 @@
+{
+  "status": "passed",
+  "base_models": 24,
+  "ensemble_models": 16,
+  "metrics_recomputed": 70,
+  "daily_predictions": 25130,
+  "test_origins": 359,
+  "independent_nested_searches": 96,
+  "formal_convergence_warnings": 37,
+  "note": "仅复算冻结结果文件，没有重新预测、训练或按测试选参"
+}

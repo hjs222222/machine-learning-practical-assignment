@@ -1,0 +1,300 @@
+{
+  "selected": {
+    "direct_RF_h1": {
+      "params": {
+        "leaf": 1,
+        "residual": true,
+        "top_k": 24,
+        "transform": "log",
+        "trees": 120
+      },
+      "cv_R2": 0.6925269979314468
+    },
+    "direct_RF_h2": {
+      "params": {
+        "leaf": 1,
+        "residual": true,
+        "top_k": 24,
+        "transform": "log",
+        "trees": 120
+      },
+      "cv_R2": 0.502297585740163
+    },
+    "direct_RF_h3": {
+      "params": {
+        "leaf": 1,
+        "residual": true,
+        "top_k": 24,
+        "transform": "log",
+        "trees": 120
+      },
+      "cv_R2": 0.37984755734449116
+    },
+    "direct_RF_h4": {
+      "params": {
+        "leaf": 1,
+        "residual": true,
+        "top_k": 24,
+        "transform": "log",
+        "trees": 120
+      },
+      "cv_R2": 0.3275002857358232
+    },
+    "direct_RF_h5": {
+      "params": {
+        "leaf": 1,
+        "residual": true,
+        "top_k": 24,
+        "transform": "log",
+        "trees": 120
+      },
+      "cv_R2": 0.2716589662438407
+    },
+    "direct_RF_h6": {
+      "params": {
+        "leaf": 1,
+        "residual": true,
+        "top_k": 24,
+        "transform": "log",
+        "trees": 120
+      },
+      "cv_R2": 0.25496423435245513
+    },
+    "direct_RF_h7": {
+      "params": {
+        "leaf": 1,
+        "residual": true,
+        "top_k": 24,
+        "transform": "log",
+        "trees": 120
+      },
+      "cv_R2": 0.28432164485163625
+    },
+    "direct_ANN_h1": {
+      "params": {
+        "alpha": 0.1,
+        "hidden": 64,
+        "iterations": 350,
+        "residual": true,
+        "top_k": 24,
+        "transform": "log"
+      },
+      "cv_R2": 0.7076073149922572
+    },
+    "direct_ANN_h2": {
+      "params": {
+        "alpha": 0.1,
+        "hidden": 64,
+        "iterations": 350,
+        "top_k": 24,
+        "transform": "sqrt"
+      },
+      "cv_R2": 0.4664767664063244
+    },
+    "direct_ANN_h3": {
+      "params": {
+        "alpha": 0.1,
+        "hidden": 64,
+        "iterations": 350,
+        "residual": true,
+        "top_k": 24,
+        "transform": "log"
+      },
+      "cv_R2": 0.37480295249919743
+    },
+    "direct_ANN_h4": {
+      "params": {
+        "alpha": 0.1,
+        "hidden": 32,
+        "iterations": 350,
+        "top_k": 24,
+        "transform": "sqrt"
+      },
+      "cv_R2": 0.2903485082301888
+    },
+    "direct_ANN_h5": {
+      "params": {
+        "alpha": 0.1,
+        "hidden": 32,
+        "iterations": 350,
+        "top_k": 24,
+        "transform": "log"
+      },
+      "cv_R2": 0.25552075324347717
+    },
+    "direct_ANN_h6": {
+      "params": {
+        "alpha": 0.1,
+        "hidden": 32,
+        "iterations": 350,
+        "top_k": 24,
+        "transform": "log"
+      },
+      "cv_R2": 0.19432082586094468
+    },
+    "direct_ANN_h7": {
+      "params": {
+        "alpha": 0.1,
+        "hidden": 64,
+        "iterations": 350,
+        "top_k": 24,
+        "transform": "log"
+      },
+      "cv_R2": 0.2184019989268599
+    },
+    "direct_LSTM_h1": {
+      "params": {
+        "alpha": 0.1,
+        "epochs": 70,
+        "hidden": 32,
+        "seq_len": 14,
+        "top_k": 16,
+        "transform": "sqrt"
+      },
+      "cv_R2": 0.67468075402242
+    },
+    "direct_LSTM_h2": {
+      "params": {
+        "alpha": 0.1,
+        "epochs": 70,
+        "hidden": 32,
+        "seq_len": 14,
+        "top_k": 16,
+        "transform": "log"
+      },
+      "cv_R2": 0.27203206032338745
+    },
+    "direct_LSTM_h3": {
+      "params": {
+        "alpha": 0.1,
+        "epochs": 70,
+        "hidden": 32,
+        "seq_len": 14,
+        "top_k": 16,
+        "transform": "log"
+      },
+      "cv_R2": 0.18697924831702623
+    },
+    "direct_LSTM_h4": {
+      "params": {
+        "alpha": 0.1,
+        "epochs": 70,
+        "hidden": 32,
+        "seq_len": 14,
+        "top_k": 16,
+        "transform": "log"
+      },
+      "cv_R2": 0.10056193803548863
+    },
+    "direct_LSTM_h5": {
+      "params": {
+        "alpha": 0.1,
+        "epochs": 70,
+        "hidden": 32,
+        "seq_len": 14,
+        "top_k": 16,
+        "transform": "log"
+      },
+      "cv_R2": 0.005050872540557805
+    },
+    "direct_LSTM_h6": {
+      "params": {
+        "alpha": 0.1,
+        "epochs": 30,
+        "hidden": 32,
+        "seq_len": 7,
+        "top_k": 16,
+        "transform": "raw"
+      },
+      "cv_R2": -0.04031315387260598
+    },
+    "direct_LSTM_h7": {
+      "params": {
+        "alpha": 0.1,
+        "epochs": 30,
+        "hidden": 32,
+        "seq_len": 7,
+        "top_k": 16,
+        "transform": "raw"
+      },
+      "cv_R2": 0.11683339271354476
+    },
+    "multi_RF_h7": {
+      "params": {
+        "leaf": 1,
+        "residual": true,
+        "top_k": 24,
+        "transform": "log",
+        "trees": 120
+      },
+      "cv_R2": 0.40185314283579265
+    },
+    "multi_ANN_h7": {
+      "params": {
+        "alpha": 0.1,
+        "hidden": 32,
+        "iterations": 350,
+        "top_k": 24,
+        "transform": "log"
+      },
+      "cv_R2": 0.30584323065624563
+    },
+    "multi_LSTM_h7": {
+      "params": {
+        "alpha": 0.1,
+        "epochs": 70,
+        "hidden": 32,
+        "seq_len": 14,
+        "top_k": 16,
+        "transform": "log"
+      },
+      "cv_R2": 0.2298220771110442
+    }
+  },
+  "model_hashes": {
+    "direct_ANN_h1.joblib": "d9f72e454e3203ecac8d942ce5f2421e3696f394f20838462eac7a47f97da27e",
+    "direct_ANN_h2.joblib": "6fb6ce1ac6612bd2c6a0d9cfc310e04a738fd58296207a4cb4f8edf91c871da4",
+    "direct_ANN_h3.joblib": "b0e420d7c78ac4d6916477adb0a261ee8f5ae14bfa8a447b9e2907bb94a72a9e",
+    "direct_ANN_h4.joblib": "58c4eff5c47da7bdf1d1006ecb0bbeb8356e54540b63e482750acffa5eb8accb",
+    "direct_ANN_h5.joblib": "f7a83f70f707ba1f58e5433c55d234be3e308708c68c3761caae87c65d974022",
+    "direct_ANN_h6.joblib": "83ea4746647fc340b0785a53fad66e2e80eb932e765e0b853975fc2e632988bb",
+    "direct_ANN_h7.joblib": "3bc059074a0eb86171999272aa673e560fe02a6ef7bf64017eb7fafb4b0504fe",
+    "direct_LSTM_h1.joblib": "4cb48c78d157a471a0ea3b7eb1e1896cbb98026c429c3f123b121d211f9dc1ef",
+    "direct_LSTM_h2.joblib": "c854eec4efae8b926225d6d295007a5ef3db2d5508c8834a96b3583e838ff324",
+    "direct_LSTM_h3.joblib": "ae4bf8486d333ff7d648f98e1c3fd5e80df4bbad610546b1a4b9f948158f152d",
+    "direct_LSTM_h4.joblib": "2ce7ff806eefeb6015d735c4ce883db358f9d9566244b651e4b89d75368289f1",
+    "direct_LSTM_h5.joblib": "1d0309d726354376df38419e97f7bf1e8de9feec6021c0a7424a303516aef564",
+    "direct_LSTM_h6.joblib": "62536010ab6e7bffb036f6695bc5a61972c0e192c0a79bdcf1221508cd15ad9b",
+    "direct_LSTM_h7.joblib": "64f588fdc84a7a879a1288d838d29d0de9284bc61f0df6257fb24424a7663ca2",
+    "direct_RF_h1.joblib": "ea7014168c7acce2340d57b6c347ee540a37a5027615cabecdafcadbc5e711ab",
+    "direct_RF_h2.joblib": "653c03cae683416e993064b658ebca32c29fdaa2b93218bd5cade8f64eaeb074",
+    "direct_RF_h3.joblib": "ef1ddc64917b92a615fb26244cefaf888f0f2661254df0d9b9828753564d6393",
+    "direct_RF_h4.joblib": "b68499cc169e9550bec6fd9a0a9851187530f28cd9d368aa77c0f927eb99aa33",
+    "direct_RF_h5.joblib": "3bfe2a830010fa897401e51ae129aa578d90be64531ce43fcfd7cc278087f20d",
+    "direct_RF_h6.joblib": "7701928d230253f901cedc47ac359597ace70cc0934c5081fe19ba9ce72ca2bf",
+    "direct_RF_h7.joblib": "e96ec7e605a5debb3767bb2d303ed512afeba58542a4a484c76170639d0cc04d",
+    "direct_Stacking_h1.joblib": "950d277cfcf9eccb48ff944b0fc23d1c59dd31c09ed15ff1dfa4af2e2cdf38e4",
+    "direct_Stacking_h2.joblib": "d1fccb46aadde86ae6048966a2425d06f80a1977ed9a1cdb409b613d9941ad61",
+    "direct_Stacking_h3.joblib": "f47c9d28be3083fde6f6f7fe5ec7a16c2cfb5d148107ffc5ae9b13238343123c",
+    "direct_Stacking_h4.joblib": "7abc7fcd7ed53cb1e4f5b7bd23ac70611d7ed23e2d0a845bd77bb3cf2a3d20ff",
+    "direct_Stacking_h5.joblib": "3a56e1bf8708a8e29cfdf0f4cd27e15cc55bd3174568432faf27c7aca1c8287a",
+    "direct_Stacking_h6.joblib": "9db7a5dedb667fc77b61b690201d7a300514e70bad982cad0a27075cf7b4b2b9",
+    "direct_Stacking_h7.joblib": "031bb940b861c67b3e88a160f18b4f558082a7ff90d72cdf8baf5fd0eac9fd70",
+    "multi_ANN_h7.joblib": "d2ec9132991664b8935b126b1ce22bc3ca5e18fb108b6bf1eda72ecebb7b0d13",
+    "multi_LSTM_h7.joblib": "c7979ea10435bc16ac1e1a8f3a12a7f1de61d8ce62d501898fa3fb581206729b",
+    "multi_RF_h7.joblib": "d5fa6a65b1d03121bfbad4e3591a1137ef4179f1131863e7732a6b5a523aa996",
+    "multi_Stacking.joblib": "690be2d346979b0790969defed14a2b4b49bde7f4c64520022fe6c9c4c1d034a"
+  },
+  "source_hashes": {
+    "config.py": "e119746e9d0e9717b10ce778c1cc748a3b77bc651218918c857df65d2777c63b",
+    "data.py": "0a5d3701debaf61db54979676ab204575f7d4a65b221327ee581213eec7c43f9",
+    "data_analysis.py": "435a08461fa1314bf405afec93bdc774477406ce09d523dfc6e2c3f716d02d45",
+    "evaluation.py": "282fc94c8abe135b3aefc2097e466af5c94b0a6ef5105f05c53b167c6ce5d075",
+    "experiment.py": "dca3f5c1df19aa6429c3f8f51fba79b8f6c39822d549872e7e3afd9f04735c49",
+    "features.py": "d3c7e9ceae98f5abecc5abcae5d0b71cd01695f14b0381d82441e24fcbf577b3",
+    "models.py": "d2adb0918edb6a85a17847f1eed4f17ec5b52d59cf2d7d2768a0fa2e3d5b5de9",
+    "run_all.py": "ff4e01b48925ea6b1e23db92c91c5dd6d68c2e2c2bc9d6ff06db0fd7b723b39b"
+  },
+  "data_sha256": "ab09410b23118510bb4e8787a62b97693336a1c46477a01329f587c64bc57151",
+  "test_evaluated": false
+}
