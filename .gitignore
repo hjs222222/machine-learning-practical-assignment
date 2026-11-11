@@ -9,3 +9,6 @@ __pycache__/
 .env
 report code/**/qa/
 report code/**/template.docx
+
+.pytest_tmp/
+.workbuddy/
