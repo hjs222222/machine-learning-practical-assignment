@@ -22,12 +22,25 @@ def clipped_r2(truth, prediction):
     return r2_score(truth, np.maximum(prediction, 0))
 
 
-def run(output, raw=None, grid=None, max_iter=200, target='raw'):
+def select_inputs(data, features):
+    if features not in ('all', 'lag14'):
+        raise ValueError('features must be all or lag14')
+    names = data['mi']['names']
+    X = data['mi']['X'][:, -1]
+    if features == 'lag14':
+        selected = [f'{col}_lag{lag}' for col in ('Discharge','Prcp') for lag in (0,1,2,3,7,14,30)]
+        return X[:, [names.index(n) for n in selected]], selected
+    return X, names
+
+
+def run(output, raw=None, grid=None, max_iter=200, target='raw', features='all'):
     model_types = dict(raw=HistGradientBoostingRegressor,
         sqrt_residual=SqrtResidualHistGradientBoostingRegressor,
         raw_residual=RawResidualHistGradientBoostingRegressor)
     if target not in model_types:
         raise ValueError('target must be raw, sqrt_residual or raw_residual')
+    if features not in ('all', 'lag14'):
+        raise ValueError('features must be all or lag14')
     output = Path(output)
     if output.exists():
         raise FileExistsError('Output exists; inspect it instead of repeating the run')
@@ -37,8 +50,8 @@ def run(output, raw=None, grid=None, max_iter=200, target='raw'):
         max_iter=max_iter, l2_regularization=1., early_stopping=False, warm_start=False,
         categorical_features=None, random_state=42)
     data = prepare_data(load_raw() if raw is None else raw, horizons=7)
-    X = data['mi']['X'][:, -1]
-    assert data['mi']['names'][0] == 'Discharge_lag0'
+    X, names = select_inputs(data, features)
+    assert names[0] == 'Discharge_lag0'
     y, dates = data['y'][:, 0], data['dates']
     assert dates.max()+pd.Timedelta(days=7) <= pd.Timestamp('2003-12-31')
     assert np.isfinite(X).all() and np.isfinite(y).all()
@@ -46,7 +59,7 @@ def run(output, raw=None, grid=None, max_iter=200, target='raw'):
     output.mkdir(parents=True, exist_ok=False)
     save_json(output/'protocol.json', dict(data_cutoff='2003-12-31', outputs=1, sample_horizon=7,
         authorized_scope='Supplementary boosting; required ANN/RF/LSTM and ensembles unchanged; no 2004',
-        estimator=model.get_params(), grid=grid, seed=42, input_features=data['mi']['names'],
+        estimator=model.get_params(), grid=grid, seed=42, feature_mode=features, input_features=names,
         input_shape=X.shape, input_sha256=hashlib.sha256(X.tobytes()+y.tobytes()+dates.asi8.tobytes()).hexdigest(),
         data_sha256=digest(DATA_PATH) if raw is None else 'unit-test fixture',
         code_hashes={str(p.relative_to(ROOT)):digest(p) for p in (ROOT/'code').glob('*.py')},
@@ -100,4 +113,5 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--output', type=Path, required=True)
     parser.add_argument('--target', choices=['raw', 'sqrt_residual', 'raw_residual'], default='raw')
+    parser.add_argument('--features', choices=['all', 'lag14'], default='all')
     print(run(**vars(parser.parse_args())).to_string(index=False))

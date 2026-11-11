@@ -47,6 +47,15 @@ def main(output, source_ref=None):
     raw = load_raw().loc[:'2003-12-31']
     data = prepare_data(raw, horizons=7)
     X, y, dates = data['mi']['X'][:, -1], data['y'][:, 0], data['dates']
+    feature_mode = protocol.get('feature_mode', 'all')
+    assert feature_mode in ('all', 'lag14')
+    if feature_mode == 'lag14':
+        names = [f'{col}_lag{lag}' for col in ('Discharge','Prcp') for lag in (0,1,2,3,7,14,30)]
+        assert protocol['input_features'] == names
+        X = X[:, [data['mi']['names'].index(n) for n in names]]
+    else:
+        assert protocol['input_features'] == data['mi']['names']
+    assert list(X.shape) == protocol['input_shape']
     assert hashlib.sha256(X.tobytes()+y.tobytes()+dates.asi8.tobytes()).hexdigest() == protocol['input_sha256']
     predictions = pd.read_csv(output/'predictions.csv', parse_dates=['origin', 'target_date'], float_precision='round_trip')
     assert len(predictions) == 2148
@@ -67,6 +76,7 @@ def main(output, source_ref=None):
         path = output/fit['model_file']
         assert digest(path) == fit['model_sha256'] == complete['model_sha256'][path.name]
         model = joblib.load(path)
+        assert model.n_features_in_ == X.shape[1]
         assert type(model).__name__ == protocol.get('estimator_class', 'HistGradientBoostingRegressor')
         assert model.get_params() == dict(protocol['estimator'], **fit['params'])
         assert model.n_iter_ == fit['actual_iterations'] == 200 and model.do_early_stopping_ is False
@@ -95,6 +105,7 @@ def main(output, source_ref=None):
                 np.testing.assert_allclose(value, saved[name], rtol=1e-11, atol=1e-9)
             comparisons.append(dict(year=year, model=label, **result))
     parent = output.parent
+    comparison_sources = {}
     for folder, candidate, origin_col, prediction_col, label in [
         (parent/'direct_rf_seed42', 'selected', 'origin', 'prediction_h1', 'direct_rf_selected'),
         (parent/'ann_depth_seed42', 'ANN_first_one', 'origin', 'prediction', 'ann_first_one')]:
@@ -108,13 +119,30 @@ def main(output, source_ref=None):
             threshold = float(raw.Discharge.loc[:pd.Timestamp(year, 1, 1)-pd.Timedelta(days=8)].quantile(.95))
             comparisons.append(dict(year=int(year), model=label,
                 **raw_scores(truth, group[prediction_col].to_numpy(), threshold)))
+    if feature_mode == 'lag14':
+        baseline = parent/'h1_boost_sqrt_residual_seed42'
+        baseline_protocol = read(baseline/'protocol.json')
+        assert protocol['target_mode'] == baseline_protocol['target_mode'] == 'sqrt_residual'
+        for key in ('estimator', 'grid', 'seed', 'data_sha256', 'data_cutoff', 'sample_horizon'):
+            assert protocol[key] == baseline_protocol[key], key
+        path = baseline/'predictions.csv'
+        comparison_sources[str(path.relative_to(ROOT))] = digest(path)
+        frame = pd.read_csv(path, parse_dates=['origin','target_date'], float_precision='round_trip')
+        for year, group in frame.loc[frame.model == 'boost'].groupby('year'):
+            group = group.sort_values('origin').reset_index(drop=True)
+            current = predictions.loc[(predictions.year == year) & (predictions.model == 'boost')].sort_values('origin').reset_index(drop=True)
+            pd.testing.assert_frame_equal(group[['origin','target_date','truth']], current[['origin','target_date','truth']])
+            threshold = float(raw.Discharge.loc[:pd.Timestamp(year,1,1)-pd.Timedelta(days=8)].quantile(.95))
+            comparisons.append(dict(year=int(year), model='boost_all91',
+                **raw_scores(group.truth.to_numpy(), group.prediction.to_numpy(), threshold)))
     verification_file = 'verification.json' if source_commit is None else 'verification_source_review.json'
     comparison_file = 'paired_h1_comparison.csv' if source_commit is None else 'paired_h1_source_review.csv'
     pd.DataFrame(comparisons).to_csv(output/comparison_file, index=False)
     save_json(output/verification_file, dict(status='passed', metric_rows=6, prediction_rows=2148,
         restored_models=3, verifier_training_fits=0, test_evaluations=0,
         data_sha256=digest(DATA_PATH), predictions_sha256=digest(output/'predictions.csv'),
-        verifier_sha256=digest(__file__), comparison_rows=len(comparisons), source_commit=source_commit))
+        verifier_sha256=digest(__file__), comparison_rows=len(comparisons), source_commit=source_commit,
+        feature_mode=feature_mode, input_features=X.shape[1], comparison_sources=comparison_sources))
     print(pd.DataFrame(comparisons)[['year', 'model', 'r2', 'rmse', 'mae']].to_string(index=False))
 
 
