@@ -1,0 +1,47 @@
+[
+  {
+    "year": 2001,
+    "params": {
+      "max_leaf_nodes": 7,
+      "min_samples_leaf": 30
+    },
+    "inner_r2": -0.09570304830416432,
+    "actual_iterations": 200,
+    "train_count": 300,
+    "valid_count": 358,
+    "train_end": "2000-12-24 00:00:00",
+    "train_h1_label_end": "2000-12-25 00:00:00",
+    "model_file": "model_2001.joblib",
+    "model_sha256": "94c3b7d6f809487e240cc7f307c55d8b3e0d23a982a80b917627233f910026ba"
+  },
+  {
+    "year": 2002,
+    "params": {
+      "max_leaf_nodes": 7,
+      "min_samples_leaf": 30
+    },
+    "inner_r2": 0.5235940399373973,
+    "actual_iterations": 200,
+    "train_count": 665,
+    "valid_count": 358,
+    "train_end": "2001-12-24 00:00:00",
+    "train_h1_label_end": "2001-12-25 00:00:00",
+    "model_file": "model_2002.joblib",
+    "model_sha256": "b08a06970ebae2e89ecb85224b3625a6fa21a2483827a90512635cfcf1dd4de6"
+  },
+  {
+    "year": 2003,
+    "params": {
+      "max_leaf_nodes": 15,
+      "min_samples_leaf": 10
+    },
+    "inner_r2": 0.7481677133842914,
+    "actual_iterations": 200,
+    "train_count": 1030,
+    "valid_count": 358,
+    "train_end": "2002-12-24 00:00:00",
+    "train_h1_label_end": "2002-12-25 00:00:00",
+    "model_file": "model_2003.joblib",
+    "model_sha256": "ba13cd30e53bf8fb65a2ec9a4bf3893ec15a7e45f813bc6e9b421ce31050c9f9"
+  }
+]

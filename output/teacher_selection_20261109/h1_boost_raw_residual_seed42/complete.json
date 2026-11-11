@@ -1,0 +1,11 @@
+{
+  "status": "complete",
+  "total_training_fits": 27,
+  "outer_refits": 3,
+  "test_evaluations": 0,
+  "model_sha256": {
+    "model_2001.joblib": "94c3b7d6f809487e240cc7f307c55d8b3e0d23a982a80b917627233f910026ba",
+    "model_2002.joblib": "b08a06970ebae2e89ecb85224b3625a6fa21a2483827a90512635cfcf1dd4de6",
+    "model_2003.joblib": "ba13cd30e53bf8fb65a2ec9a4bf3893ec15a7e45f813bc6e9b421ce31050c9f9"
+  }
+}
