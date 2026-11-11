@@ -26,7 +26,7 @@ def raw_scores(truth, prediction, threshold):
 
 
 def main(output, source_ref=None):
-    output = Path(output)
+    output = Path(output).resolve()
     read = lambda p: json.loads(p.read_text(encoding='utf-8'))
     protocol, complete = read(output/'protocol.json'), read(output/'complete.json')
     assert protocol['data_cutoff'] == '2003-12-31' and protocol['data_sha256'] == digest(DATA_PATH)
