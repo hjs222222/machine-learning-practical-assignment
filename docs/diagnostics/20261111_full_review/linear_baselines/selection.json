@@ -1,0 +1,52 @@
+[
+  {
+    "representation": "Q_current",
+    "alpha": 10.0,
+    "inner_RMSE": 390.061428544561,
+    "features": [
+      "Discharge_current"
+    ]
+  },
+  {
+    "representation": "AR",
+    "alpha": 1.0,
+    "inner_RMSE": 376.14102060322494,
+    "features": [
+      "Discharge_current",
+      "Discharge_lag1",
+      "Discharge_lag2",
+      "Discharge_lag3",
+      "Discharge_lag7",
+      "Discharge_lag14",
+      "Discharge_lag30"
+    ]
+  },
+  {
+    "representation": "ARX",
+    "alpha": 1.0,
+    "inner_RMSE": 353.30032793961885,
+    "features": [
+      "Discharge_current",
+      "Discharge_lag1",
+      "Discharge_lag2",
+      "Discharge_lag3",
+      "Discharge_lag7",
+      "Discharge_lag14",
+      "Discharge_lag30",
+      "Prcp",
+      "Tmax",
+      "Tmin",
+      "Vp",
+      "Srad",
+      "Dayl",
+      "doy_sin",
+      "doy_cos",
+      "Prcp_lag1",
+      "Prcp_lag2",
+      "Prcp_lag3",
+      "Prcp_lag7",
+      "Prcp_lag14",
+      "Prcp_lag30"
+    ]
+  }
+]

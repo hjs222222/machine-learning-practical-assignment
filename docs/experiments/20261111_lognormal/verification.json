@@ -1,0 +1,10 @@
+{
+  "status": "passed",
+  "smoke": false,
+  "required_metric_rows": 42,
+  "fit_records": 728,
+  "frozen_files_verified": 672,
+  "reused_files_verified": 5,
+  "all_models_restored": true,
+  "test_type": "retrospective"
+}

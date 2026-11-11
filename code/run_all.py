@@ -11,7 +11,7 @@
 流程：
     第一部分 数据分析      data_analysis.run()
     第二部分 特征工程      feature_engineering.run()
-    第三部分 径流预测      experiment.run()
+    第三部分 径流预测      experiment_v6.run()
     第四部分 结果可视化    results_analysis.main()
     报告生成              make_report.main()
 """

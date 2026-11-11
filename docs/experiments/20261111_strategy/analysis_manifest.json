@@ -1,0 +1,29 @@
+{
+  "status": "completed",
+  "run_id": "formal_20261111_strategy_v1",
+  "run_manifest_sha256": "7d7f4d44ebdcf89e95ac45aa85e5466c6ece8e817b7075d4a63b49c8cb33ba93",
+  "bootstrap_repeats": 600,
+  "bootstrap_seed": 20261111,
+  "block_days": [
+    7,
+    14,
+    30
+  ],
+  "files": {
+    "annual_summary.csv": "d0cd857d64cf496187b9c6495037e5886dfa98eb3773a6eba1fa0af9cf447749",
+    "error_segments.csv": "832c4595f2edb619847cf23413eee5902ab867c4c4460f7cc5a8400ce4f86e49",
+    "inner_splits.csv": "003274becdcce8c8891d0d3ca4269b0f627bb7a4c95e338dfe5bf32d390538c2",
+    "manifest.json": "7d7f4d44ebdcf89e95ac45aa85e5466c6ece8e817b7075d4a63b49c8cb33ba93",
+    "metrics.csv": "d3ea100e4fce9ef9a1ab8f64d1f3ee8ab375db803dd9f0987c5bd57660285264",
+    "paired_block_sensitivity.csv": "1168610686a8f34ea3b24f05460cd45cb3089edc8b1ef7ec9c3e842b9e99595b",
+    "paired_changes.csv": "362785a30d1386c45dea64577af5728e002eb2f25f4b035f2181570e760e05c2",
+    "persistence.csv": "f6797bc3e442f3db107f7d0fd224e5bbecba6ae22617c2a08c2cf4246fb6d34d",
+    "quarter_metrics.csv": "bf3ee65e03bc7f14fb4539f60cb7a8f523f721b3bc49926d0e01ae1532a3173a",
+    "README.md": "da6a3beffb6f3fe260adc7f0b2f5439446b576ed63fc6298a7820e3adede3433",
+    "selection.json": "f5af60a82d5d3ccd07f8c3e490f245208ba11ff39ba4528af1a8efb07d5ce23b",
+    "verification.json": "e9bf696141648a0ceb924828d2129598d4a9613be04b2059725df042b98377f8",
+    "analysis_source/analyze_runoff_controlled.py": "583ba79c0ad978736c18cb3965c18d9789f0e7f3c21896163925e9f2ee6b171d",
+    "analysis_source/analyze_runoff_strategy.py": "0c344e0f846129ef1069fbb66b1c6ab3e97530194b9b3bd6843ae0fc37513f7c",
+    "analysis_source/verify_runoff_strategy.py": "60cba69a9406eb60270e96c44aaca2e4168e304bbb7578975efebdb9013b23ec"
+  }
+}

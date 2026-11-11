@@ -1,0 +1,1374 @@
+{
+  "records": [
+    {
+      "year": 2002,
+      "task_h": 1,
+      "seed": 42,
+      "tag": "y2002_direct_h1_plain_log_s42",
+      "variant": {
+        "name": "plain_log",
+        "residual": false,
+        "loss_space": "log"
+      },
+      "epochs": 30,
+      "inner_RMSE": 659.8253402793526,
+      "inner_fold_RMSE": [
+        1841.0387434561014,
+        71.09367993531114,
+        67.34359744664549
+      ]
+    },
+    {
+      "year": 2002,
+      "task_h": 1,
+      "seed": 43,
+      "tag": "y2002_direct_h1_plain_log_s43",
+      "variant": {
+        "name": "plain_log",
+        "residual": false,
+        "loss_space": "log"
+      },
+      "epochs": 30,
+      "inner_RMSE": 596.9280459719706,
+      "inner_fold_RMSE": [
+        1684.3805817395237,
+        65.4827715432834,
+        40.92078463310456
+      ]
+    },
+    {
+      "year": 2002,
+      "task_h": 1,
+      "seed": 44,
+      "tag": "y2002_direct_h1_plain_log_s44",
+      "variant": {
+        "name": "plain_log",
+        "residual": false,
+        "loss_space": "log"
+      },
+      "epochs": 30,
+      "inner_RMSE": 648.0530222086522,
+      "inner_fold_RMSE": [
+        1819.9126155552685,
+        60.14777720403761,
+        64.0986738666507
+      ]
+    },
+    {
+      "year": 2002,
+      "task_h": 1,
+      "seed": 42,
+      "tag": "y2002_direct_h1_residual_log_s42",
+      "variant": {
+        "name": "residual_log",
+        "residual": true,
+        "loss_space": "log"
+      },
+      "epochs": 10,
+      "inner_RMSE": 228.49924588164995,
+      "inner_fold_RMSE": [
+        617.4468073741663,
+        38.91954814367351,
+        29.131382127110125
+      ]
+    },
+    {
+      "year": 2002,
+      "task_h": 1,
+      "seed": 43,
+      "tag": "y2002_direct_h1_residual_log_s43",
+      "variant": {
+        "name": "residual_log",
+        "residual": true,
+        "loss_space": "log"
+      },
+      "epochs": 10,
+      "inner_RMSE": 224.29768865725995,
+      "inner_fold_RMSE": [
+        606.1481254459529,
+        38.40421594563607,
+        28.340724580190795
+      ]
+    },
+    {
+      "year": 2002,
+      "task_h": 1,
+      "seed": 44,
+      "tag": "y2002_direct_h1_residual_log_s44",
+      "variant": {
+        "name": "residual_log",
+        "residual": true,
+        "loss_space": "log"
+      },
+      "epochs": 10,
+      "inner_RMSE": 225.1516657647743,
+      "inner_fold_RMSE": [
+        609.0665248384659,
+        38.857339112528344,
+        27.531133343328612
+      ]
+    },
+    {
+      "year": 2002,
+      "task_h": 1,
+      "seed": 42,
+      "tag": "y2002_direct_h1_plain_physical_s42",
+      "variant": {
+        "name": "plain_physical",
+        "residual": false,
+        "loss_space": "physical"
+      },
+      "epochs": 30,
+      "inner_RMSE": 706.787375247202,
+      "inner_fold_RMSE": [
+        1858.052375331638,
+        189.27669134743408,
+        73.03305906253415
+      ]
+    },
+    {
+      "year": 2002,
+      "task_h": 1,
+      "seed": 43,
+      "tag": "y2002_direct_h1_plain_physical_s43",
+      "variant": {
+        "name": "plain_physical",
+        "residual": false,
+        "loss_space": "physical"
+      },
+      "epochs": 30,
+      "inner_RMSE": 701.4889093147641,
+      "inner_fold_RMSE": [
+        1832.0057535968065,
+        162.2894625876633,
+        110.17151175982247
+      ]
+    },
+    {
+      "year": 2002,
+      "task_h": 1,
+      "seed": 44,
+      "tag": "y2002_direct_h1_plain_physical_s44",
+      "variant": {
+        "name": "plain_physical",
+        "residual": false,
+        "loss_space": "physical"
+      },
+      "epochs": 30,
+      "inner_RMSE": 710.6935523251022,
+      "inner_fold_RMSE": [
+        1770.1993717354255,
+        200.06471479372343,
+        161.81657044615764
+      ]
+    },
+    {
+      "year": 2002,
+      "task_h": 1,
+      "seed": 42,
+      "tag": "y2002_direct_h1_residual_physical_s42",
+      "variant": {
+        "name": "residual_physical",
+        "residual": true,
+        "loss_space": "physical"
+      },
+      "epochs": 1,
+      "inner_RMSE": 232.86714635319512,
+      "inner_fold_RMSE": [
+        625.6549930202424,
+        40.78600873030075,
+        32.16043730904223
+      ]
+    },
+    {
+      "year": 2002,
+      "task_h": 1,
+      "seed": 43,
+      "tag": "y2002_direct_h1_residual_physical_s43",
+      "variant": {
+        "name": "residual_physical",
+        "residual": true,
+        "loss_space": "physical"
+      },
+      "epochs": 1,
+      "inner_RMSE": 232.53080774702576,
+      "inner_fold_RMSE": [
+        624.80378210097,
+        40.75455871689273,
+        32.03408242321462
+      ]
+    },
+    {
+      "year": 2002,
+      "task_h": 1,
+      "seed": 44,
+      "tag": "y2002_direct_h1_residual_physical_s44",
+      "variant": {
+        "name": "residual_physical",
+        "residual": true,
+        "loss_space": "physical"
+      },
+      "epochs": 30,
+      "inner_RMSE": 222.88580882651175,
+      "inner_fold_RMSE": [
+        597.5846073860802,
+        38.08933517820752,
+        32.98348391524754
+      ]
+    },
+    {
+      "year": 2002,
+      "task_h": 3,
+      "seed": 42,
+      "tag": "y2002_direct_h3_plain_log_s42",
+      "variant": {
+        "name": "plain_log",
+        "residual": false,
+        "loss_space": "log"
+      },
+      "epochs": 30,
+      "inner_RMSE": 676.8768431462481,
+      "inner_fold_RMSE": [
+        1849.8630617527776,
+        77.88728189441622,
+        102.88018579155062
+      ]
+    },
+    {
+      "year": 2002,
+      "task_h": 3,
+      "seed": 43,
+      "tag": "y2002_direct_h3_plain_log_s43",
+      "variant": {
+        "name": "plain_log",
+        "residual": false,
+        "loss_space": "log"
+      },
+      "epochs": 30,
+      "inner_RMSE": 629.3054735156649,
+      "inner_fold_RMSE": [
+        1726.47303129176,
+        71.10402961438302,
+        90.33935964085157
+      ]
+    },
+    {
+      "year": 2002,
+      "task_h": 3,
+      "seed": 44,
+      "tag": "y2002_direct_h3_plain_log_s44",
+      "variant": {
+        "name": "plain_log",
+        "residual": false,
+        "loss_space": "log"
+      },
+      "epochs": 30,
+      "inner_RMSE": 681.2679811874121,
+      "inner_fold_RMSE": [
+        1842.276208869844,
+        80.73540229678595,
+        120.79233239560666
+      ]
+    },
+    {
+      "year": 2002,
+      "task_h": 3,
+      "seed": 42,
+      "tag": "y2002_direct_h3_residual_log_s42",
+      "variant": {
+        "name": "residual_log",
+        "residual": true,
+        "loss_space": "log"
+      },
+      "epochs": 1,
+      "inner_RMSE": 497.9099365237353,
+      "inner_fold_RMSE": [
+        1358.9286152164102,
+        68.6228881503742,
+        66.17830620442169
+      ]
+    },
+    {
+      "year": 2002,
+      "task_h": 3,
+      "seed": 43,
+      "tag": "y2002_direct_h3_residual_log_s43",
+      "variant": {
+        "name": "residual_log",
+        "residual": true,
+        "loss_space": "log"
+      },
+      "epochs": 30,
+      "inner_RMSE": 454.12328679296587,
+      "inner_fold_RMSE": [
+        1223.3123913877764,
+        67.15696110826582,
+        71.90050788285554
+      ]
+    },
+    {
+      "year": 2002,
+      "task_h": 3,
+      "seed": 44,
+      "tag": "y2002_direct_h3_residual_log_s44",
+      "variant": {
+        "name": "residual_log",
+        "residual": true,
+        "loss_space": "log"
+      },
+      "epochs": 30,
+      "inner_RMSE": 441.7303312403648,
+      "inner_fold_RMSE": [
+        1197.9724940975968,
+        67.45506934208123,
+        59.76343028141633
+      ]
+    },
+    {
+      "year": 2002,
+      "task_h": 3,
+      "seed": 42,
+      "tag": "y2002_direct_h3_plain_physical_s42",
+      "variant": {
+        "name": "plain_physical",
+        "residual": false,
+        "loss_space": "physical"
+      },
+      "epochs": 10,
+      "inner_RMSE": 761.3401166144231,
+      "inner_fold_RMSE": [
+        1875.3663999222279,
+        241.2018066610677,
+        167.45214325997344
+      ]
+    },
+    {
+      "year": 2002,
+      "task_h": 3,
+      "seed": 43,
+      "tag": "y2002_direct_h3_plain_physical_s43",
+      "variant": {
+        "name": "plain_physical",
+        "residual": false,
+        "loss_space": "physical"
+      },
+      "epochs": 1,
+      "inner_RMSE": 738.2121710757459,
+      "inner_fold_RMSE": [
+        1903.8311943076483,
+        187.7305647543427,
+        123.07475416524699
+      ]
+    },
+    {
+      "year": 2002,
+      "task_h": 3,
+      "seed": 44,
+      "tag": "y2002_direct_h3_plain_physical_s44",
+      "variant": {
+        "name": "plain_physical",
+        "residual": false,
+        "loss_space": "physical"
+      },
+      "epochs": 1,
+      "inner_RMSE": 729.4790367711083,
+      "inner_fold_RMSE": [
+        1904.9626554321526,
+        169.82318603421453,
+        113.65126884695796
+      ]
+    },
+    {
+      "year": 2002,
+      "task_h": 3,
+      "seed": 42,
+      "tag": "y2002_direct_h3_residual_physical_s42",
+      "variant": {
+        "name": "residual_physical",
+        "residual": true,
+        "loss_space": "physical"
+      },
+      "epochs": 30,
+      "inner_RMSE": 451.65986606762414,
+      "inner_fold_RMSE": [
+        1231.507372353867,
+        62.78707031504922,
+        60.685155533956305
+      ]
+    },
+    {
+      "year": 2002,
+      "task_h": 3,
+      "seed": 43,
+      "tag": "y2002_direct_h3_residual_physical_s43",
+      "variant": {
+        "name": "residual_physical",
+        "residual": true,
+        "loss_space": "physical"
+      },
+      "epochs": 30,
+      "inner_RMSE": 424.03052513064955,
+      "inner_fold_RMSE": [
+        1152.296558803895,
+        63.22663045549787,
+        56.56838613255592
+      ]
+    },
+    {
+      "year": 2002,
+      "task_h": 3,
+      "seed": 44,
+      "tag": "y2002_direct_h3_residual_physical_s44",
+      "variant": {
+        "name": "residual_physical",
+        "residual": true,
+        "loss_space": "physical"
+      },
+      "epochs": 30,
+      "inner_RMSE": 430.6869360031831,
+      "inner_fold_RMSE": [
+        1172.1395383765005,
+        62.10506054262922,
+        57.81620909041974
+      ]
+    },
+    {
+      "year": 2002,
+      "task_h": 7,
+      "seed": 42,
+      "tag": "y2002_direct_h7_plain_log_s42",
+      "variant": {
+        "name": "plain_log",
+        "residual": false,
+        "loss_space": "log"
+      },
+      "epochs": 10,
+      "inner_RMSE": 699.7311669298548,
+      "inner_fold_RMSE": [
+        1881.2622309499532,
+        102.30114680783375,
+        115.63012303177774
+      ]
+    },
+    {
+      "year": 2002,
+      "task_h": 7,
+      "seed": 43,
+      "tag": "y2002_direct_h7_plain_log_s43",
+      "variant": {
+        "name": "plain_log",
+        "residual": false,
+        "loss_space": "log"
+      },
+      "epochs": 10,
+      "inner_RMSE": 686.0716662646619,
+      "inner_fold_RMSE": [
+        1887.3433379261498,
+        84.26364465734592,
+        86.6080162104899
+      ]
+    },
+    {
+      "year": 2002,
+      "task_h": 7,
+      "seed": 44,
+      "tag": "y2002_direct_h7_plain_log_s44",
+      "variant": {
+        "name": "plain_log",
+        "residual": false,
+        "loss_space": "log"
+      },
+      "epochs": 10,
+      "inner_RMSE": 708.7877358272495,
+      "inner_fold_RMSE": [
+        1892.1646830005018,
+        91.80255636325862,
+        142.39596811798822
+      ]
+    },
+    {
+      "year": 2002,
+      "task_h": 7,
+      "seed": 42,
+      "tag": "y2002_direct_h7_residual_log_s42",
+      "variant": {
+        "name": "residual_log",
+        "residual": true,
+        "loss_space": "log"
+      },
+      "epochs": 10,
+      "inner_RMSE": 582.8693775409259,
+      "inner_fold_RMSE": [
+        1609.9511665589062,
+        54.010480761265505,
+        84.6464853026062
+      ]
+    },
+    {
+      "year": 2002,
+      "task_h": 7,
+      "seed": 43,
+      "tag": "y2002_direct_h7_residual_log_s43",
+      "variant": {
+        "name": "residual_log",
+        "residual": true,
+        "loss_space": "log"
+      },
+      "epochs": 10,
+      "inner_RMSE": 572.874934924268,
+      "inner_fold_RMSE": [
+        1583.2913548964045,
+        54.51865498240851,
+        80.81479489399113
+      ]
+    },
+    {
+      "year": 2002,
+      "task_h": 7,
+      "seed": 44,
+      "tag": "y2002_direct_h7_residual_log_s44",
+      "variant": {
+        "name": "residual_log",
+        "residual": true,
+        "loss_space": "log"
+      },
+      "epochs": 10,
+      "inner_RMSE": 581.6150541863826,
+      "inner_fold_RMSE": [
+        1609.3530765836126,
+        52.54165234018882,
+        82.95043363534637
+      ]
+    },
+    {
+      "year": 2002,
+      "task_h": 7,
+      "seed": 42,
+      "tag": "y2002_direct_h7_plain_physical_s42",
+      "variant": {
+        "name": "plain_physical",
+        "residual": false,
+        "loss_space": "physical"
+      },
+      "epochs": 1,
+      "inner_RMSE": 767.7659158794418,
+      "inner_fold_RMSE": [
+        1882.4955959353597,
+        252.2421806053591,
+        168.55997109760662
+      ]
+    },
+    {
+      "year": 2002,
+      "task_h": 7,
+      "seed": 43,
+      "tag": "y2002_direct_h7_plain_physical_s43",
+      "variant": {
+        "name": "plain_physical",
+        "residual": false,
+        "loss_space": "physical"
+      },
+      "epochs": 1,
+      "inner_RMSE": 737.6656462430678,
+      "inner_fold_RMSE": [
+        1902.0550002154089,
+        190.85268232154303,
+        120.08925619225147
+      ]
+    },
+    {
+      "year": 2002,
+      "task_h": 7,
+      "seed": 44,
+      "tag": "y2002_direct_h7_plain_physical_s44",
+      "variant": {
+        "name": "plain_physical",
+        "residual": false,
+        "loss_space": "physical"
+      },
+      "epochs": 1,
+      "inner_RMSE": 729.0106365092503,
+      "inner_fold_RMSE": [
+        1903.0434373617677,
+        173.4885002156682,
+        110.49997195031466
+      ]
+    },
+    {
+      "year": 2002,
+      "task_h": 7,
+      "seed": 42,
+      "tag": "y2002_direct_h7_residual_physical_s42",
+      "variant": {
+        "name": "residual_physical",
+        "residual": true,
+        "loss_space": "physical"
+      },
+      "epochs": 30,
+      "inner_RMSE": 529.6714697326807,
+      "inner_fold_RMSE": [
+        1439.959386378875,
+        71.63222863299825,
+        77.4227941861689
+      ]
+    },
+    {
+      "year": 2002,
+      "task_h": 7,
+      "seed": 43,
+      "tag": "y2002_direct_h7_residual_physical_s43",
+      "variant": {
+        "name": "residual_physical",
+        "residual": true,
+        "loss_space": "physical"
+      },
+      "epochs": 30,
+      "inner_RMSE": 522.615450375209,
+      "inner_fold_RMSE": [
+        1419.5855320510495,
+        72.35078766735715,
+        75.91003140722042
+      ]
+    },
+    {
+      "year": 2002,
+      "task_h": 7,
+      "seed": 44,
+      "tag": "y2002_direct_h7_residual_physical_s44",
+      "variant": {
+        "name": "residual_physical",
+        "residual": true,
+        "loss_space": "physical"
+      },
+      "epochs": 30,
+      "inner_RMSE": 525.1225349021131,
+      "inner_fold_RMSE": [
+        1431.7409048427253,
+        64.83397350423196,
+        78.79272635938202
+      ]
+    },
+    {
+      "year": 2003,
+      "task_h": 1,
+      "seed": 42,
+      "tag": "y2003_direct_h1_plain_log_s42",
+      "variant": {
+        "name": "plain_log",
+        "residual": false,
+        "loss_space": "log"
+      },
+      "epochs": 30,
+      "inner_RMSE": 268.05572988179347,
+      "inner_fold_RMSE": [
+        617.3091762391209,
+        61.618278557881325,
+        125.23973484837816
+      ]
+    },
+    {
+      "year": 2003,
+      "task_h": 1,
+      "seed": 43,
+      "tag": "y2003_direct_h1_plain_log_s43",
+      "variant": {
+        "name": "plain_log",
+        "residual": false,
+        "loss_space": "log"
+      },
+      "epochs": 30,
+      "inner_RMSE": 235.50627237010994,
+      "inner_fold_RMSE": [
+        522.8529956193355,
+        66.00004516378361,
+        117.66577632721072
+      ]
+    },
+    {
+      "year": 2003,
+      "task_h": 1,
+      "seed": 44,
+      "tag": "y2003_direct_h1_plain_log_s44",
+      "variant": {
+        "name": "plain_log",
+        "residual": false,
+        "loss_space": "log"
+      },
+      "epochs": 30,
+      "inner_RMSE": 265.2167045959043,
+      "inner_fold_RMSE": [
+        604.1232403808223,
+        66.63987237621032,
+        124.88700103068028
+      ]
+    },
+    {
+      "year": 2003,
+      "task_h": 1,
+      "seed": 42,
+      "tag": "y2003_direct_h1_residual_log_s42",
+      "variant": {
+        "name": "residual_log",
+        "residual": true,
+        "loss_space": "log"
+      },
+      "epochs": 10,
+      "inner_RMSE": 199.18680172819677,
+      "inner_fold_RMSE": [
+        442.5737028730521,
+        51.382859761602624,
+        103.60384254993552
+      ]
+    },
+    {
+      "year": 2003,
+      "task_h": 1,
+      "seed": 43,
+      "tag": "y2003_direct_h1_residual_log_s43",
+      "variant": {
+        "name": "residual_log",
+        "residual": true,
+        "loss_space": "log"
+      },
+      "epochs": 10,
+      "inner_RMSE": 202.8632775851869,
+      "inner_fold_RMSE": [
+        449.4430165821678,
+        53.986776010381426,
+        105.16004016301142
+      ]
+    },
+    {
+      "year": 2003,
+      "task_h": 1,
+      "seed": 44,
+      "tag": "y2003_direct_h1_residual_log_s44",
+      "variant": {
+        "name": "residual_log",
+        "residual": true,
+        "loss_space": "log"
+      },
+      "epochs": 10,
+      "inner_RMSE": 200.0006200625801,
+      "inner_fold_RMSE": [
+        446.7609252635886,
+        49.714837555287026,
+        103.52609736886471
+      ]
+    },
+    {
+      "year": 2003,
+      "task_h": 1,
+      "seed": 42,
+      "tag": "y2003_direct_h1_plain_physical_s42",
+      "variant": {
+        "name": "plain_physical",
+        "residual": false,
+        "loss_space": "physical"
+      },
+      "epochs": 30,
+      "inner_RMSE": 316.52180301129937,
+      "inner_fold_RMSE": [
+        684.4471996593431,
+        64.77178465069603,
+        200.3464247238588
+      ]
+    },
+    {
+      "year": 2003,
+      "task_h": 1,
+      "seed": 43,
+      "tag": "y2003_direct_h1_plain_physical_s43",
+      "variant": {
+        "name": "plain_physical",
+        "residual": false,
+        "loss_space": "physical"
+      },
+      "epochs": 30,
+      "inner_RMSE": 283.0318716245443,
+      "inner_fold_RMSE": [
+        620.4245295779021,
+        67.70655882340729,
+        160.9645264723235
+      ]
+    },
+    {
+      "year": 2003,
+      "task_h": 1,
+      "seed": 44,
+      "tag": "y2003_direct_h1_plain_physical_s44",
+      "variant": {
+        "name": "plain_physical",
+        "residual": false,
+        "loss_space": "physical"
+      },
+      "epochs": 30,
+      "inner_RMSE": 281.2033073185207,
+      "inner_fold_RMSE": [
+        613.7817882395293,
+        78.30305045522027,
+        151.5250832608125
+      ]
+    },
+    {
+      "year": 2003,
+      "task_h": 1,
+      "seed": 42,
+      "tag": "y2003_direct_h1_residual_physical_s42",
+      "variant": {
+        "name": "residual_physical",
+        "residual": true,
+        "loss_space": "physical"
+      },
+      "epochs": 1,
+      "inner_RMSE": 217.84649362798731,
+      "inner_fold_RMSE": [
+        471.3268128256552,
+        65.43523063203352,
+        116.77743742627315
+      ]
+    },
+    {
+      "year": 2003,
+      "task_h": 1,
+      "seed": 43,
+      "tag": "y2003_direct_h1_residual_physical_s43",
+      "variant": {
+        "name": "residual_physical",
+        "residual": true,
+        "loss_space": "physical"
+      },
+      "epochs": 1,
+      "inner_RMSE": 217.26814147968196,
+      "inner_fold_RMSE": [
+        470.2138569598066,
+        65.06150679887081,
+        116.52906068036849
+      ]
+    },
+    {
+      "year": 2003,
+      "task_h": 1,
+      "seed": 44,
+      "tag": "y2003_direct_h1_residual_physical_s44",
+      "variant": {
+        "name": "residual_physical",
+        "residual": true,
+        "loss_space": "physical"
+      },
+      "epochs": 1,
+      "inner_RMSE": 217.8739492899475,
+      "inner_fold_RMSE": [
+        471.5030723394983,
+        65.36601819193507,
+        116.75275733840904
+      ]
+    },
+    {
+      "year": 2003,
+      "task_h": 3,
+      "seed": 42,
+      "tag": "y2003_direct_h3_plain_log_s42",
+      "variant": {
+        "name": "plain_log",
+        "residual": false,
+        "loss_space": "log"
+      },
+      "epochs": 30,
+      "inner_RMSE": 409.86047362284165,
+      "inner_fold_RMSE": [
+        948.671725402382,
+        106.48953973486218,
+        174.42015573128077
+      ]
+    },
+    {
+      "year": 2003,
+      "task_h": 3,
+      "seed": 43,
+      "tag": "y2003_direct_h3_plain_log_s43",
+      "variant": {
+        "name": "plain_log",
+        "residual": false,
+        "loss_space": "log"
+      },
+      "epochs": 30,
+      "inner_RMSE": 379.11673798509906,
+      "inner_fold_RMSE": [
+        839.2585898468383,
+        122.1459421382104,
+        175.94568197024853
+      ]
+    },
+    {
+      "year": 2003,
+      "task_h": 3,
+      "seed": 44,
+      "tag": "y2003_direct_h3_plain_log_s44",
+      "variant": {
+        "name": "plain_log",
+        "residual": false,
+        "loss_space": "log"
+      },
+      "epochs": 30,
+      "inner_RMSE": 418.267029805103,
+      "inner_fold_RMSE": [
+        971.2193463842555,
+        108.32276788441057,
+        175.25897514664302
+      ]
+    },
+    {
+      "year": 2003,
+      "task_h": 3,
+      "seed": 42,
+      "tag": "y2003_direct_h3_residual_log_s42",
+      "variant": {
+        "name": "residual_log",
+        "residual": true,
+        "loss_space": "log"
+      },
+      "epochs": 10,
+      "inner_RMSE": 367.52950754488137,
+      "inner_fold_RMSE": [
+        801.8740734358504,
+        109.09433747490293,
+        191.6201117238907
+      ]
+    },
+    {
+      "year": 2003,
+      "task_h": 3,
+      "seed": 43,
+      "tag": "y2003_direct_h3_residual_log_s43",
+      "variant": {
+        "name": "residual_log",
+        "residual": true,
+        "loss_space": "log"
+      },
+      "epochs": 10,
+      "inner_RMSE": 380.4839721015716,
+      "inner_fold_RMSE": [
+        840.4664866576178,
+        112.85124177726749,
+        188.13418786982947
+      ]
+    },
+    {
+      "year": 2003,
+      "task_h": 3,
+      "seed": 44,
+      "tag": "y2003_direct_h3_residual_log_s44",
+      "variant": {
+        "name": "residual_log",
+        "residual": true,
+        "loss_space": "log"
+      },
+      "epochs": 10,
+      "inner_RMSE": 369.18607319142626,
+      "inner_fold_RMSE": [
+        805.7744258993908,
+        112.09528838389318,
+        189.68850529099475
+      ]
+    },
+    {
+      "year": 2003,
+      "task_h": 3,
+      "seed": 42,
+      "tag": "y2003_direct_h3_plain_physical_s42",
+      "variant": {
+        "name": "plain_physical",
+        "residual": false,
+        "loss_space": "physical"
+      },
+      "epochs": 30,
+      "inner_RMSE": 430.68894786947743,
+      "inner_fold_RMSE": [
+        964.2542672646764,
+        128.70882101814652,
+        199.10375532560943
+      ]
+    },
+    {
+      "year": 2003,
+      "task_h": 3,
+      "seed": 43,
+      "tag": "y2003_direct_h3_plain_physical_s43",
+      "variant": {
+        "name": "plain_physical",
+        "residual": false,
+        "loss_space": "physical"
+      },
+      "epochs": 10,
+      "inner_RMSE": 454.4961421459845,
+      "inner_fold_RMSE": [
+        1053.533158127341,
+        142.26939587242563,
+        167.68587243818695
+      ]
+    },
+    {
+      "year": 2003,
+      "task_h": 3,
+      "seed": 44,
+      "tag": "y2003_direct_h3_plain_physical_s44",
+      "variant": {
+        "name": "plain_physical",
+        "residual": false,
+        "loss_space": "physical"
+      },
+      "epochs": 30,
+      "inner_RMSE": 477.738694390656,
+      "inner_fold_RMSE": [
+        1075.2877410983149,
+        154.33435575504132,
+        203.59398631861177
+      ]
+    },
+    {
+      "year": 2003,
+      "task_h": 3,
+      "seed": 42,
+      "tag": "y2003_direct_h3_residual_physical_s42",
+      "variant": {
+        "name": "residual_physical",
+        "residual": true,
+        "loss_space": "physical"
+      },
+      "epochs": 10,
+      "inner_RMSE": 393.2538057721753,
+      "inner_fold_RMSE": [
+        854.6065205581442,
+        120.2097908918189,
+        204.9451058665628
+      ]
+    },
+    {
+      "year": 2003,
+      "task_h": 3,
+      "seed": 43,
+      "tag": "y2003_direct_h3_residual_physical_s43",
+      "variant": {
+        "name": "residual_physical",
+        "residual": true,
+        "loss_space": "physical"
+      },
+      "epochs": 10,
+      "inner_RMSE": 389.8392653381073,
+      "inner_fold_RMSE": [
+        855.7741091312148,
+        120.82523241518707,
+        192.9184544679199
+      ]
+    },
+    {
+      "year": 2003,
+      "task_h": 3,
+      "seed": 44,
+      "tag": "y2003_direct_h3_residual_physical_s44",
+      "variant": {
+        "name": "residual_physical",
+        "residual": true,
+        "loss_space": "physical"
+      },
+      "epochs": 10,
+      "inner_RMSE": 391.4515227072404,
+      "inner_fold_RMSE": [
+        850.8564104625824,
+        122.32000897929312,
+        201.17814867984544
+      ]
+    },
+    {
+      "year": 2003,
+      "task_h": 7,
+      "seed": 42,
+      "tag": "y2003_direct_h7_plain_log_s42",
+      "variant": {
+        "name": "plain_log",
+        "residual": false,
+        "loss_space": "log"
+      },
+      "epochs": 30,
+      "inner_RMSE": 407.4605776232991,
+      "inner_fold_RMSE": [
+        998.6895640964808,
+        43.10522780046148,
+        180.58694097295503
+      ]
+    },
+    {
+      "year": 2003,
+      "task_h": 7,
+      "seed": 43,
+      "tag": "y2003_direct_h7_plain_log_s43",
+      "variant": {
+        "name": "plain_log",
+        "residual": false,
+        "loss_space": "log"
+      },
+      "epochs": 30,
+      "inner_RMSE": 391.62095237356266,
+      "inner_fold_RMSE": [
+        954.9339437436151,
+        50.075488739133505,
+        169.85342463793936
+      ]
+    },
+    {
+      "year": 2003,
+      "task_h": 7,
+      "seed": 44,
+      "tag": "y2003_direct_h7_plain_log_s44",
+      "variant": {
+        "name": "plain_log",
+        "residual": false,
+        "loss_space": "log"
+      },
+      "epochs": 30,
+      "inner_RMSE": 394.58715002939374,
+      "inner_fold_RMSE": [
+        977.233568949875,
+        36.11434861047638,
+        170.41353252782977
+      ]
+    },
+    {
+      "year": 2003,
+      "task_h": 7,
+      "seed": 42,
+      "tag": "y2003_direct_h7_residual_log_s42",
+      "variant": {
+        "name": "residual_log",
+        "residual": true,
+        "loss_space": "log"
+      },
+      "epochs": 10,
+      "inner_RMSE": 430.4055718571726,
+      "inner_fold_RMSE": [
+        1036.0968137914188,
+        50.3401209172069,
+        204.77978086289218
+      ]
+    },
+    {
+      "year": 2003,
+      "task_h": 7,
+      "seed": 43,
+      "tag": "y2003_direct_h7_residual_log_s43",
+      "variant": {
+        "name": "residual_log",
+        "residual": true,
+        "loss_space": "log"
+      },
+      "epochs": 10,
+      "inner_RMSE": 450.6023701620497,
+      "inner_fold_RMSE": [
+        1092.9070781930827,
+        57.63529038663177,
+        201.2647419064345
+      ]
+    },
+    {
+      "year": 2003,
+      "task_h": 7,
+      "seed": 44,
+      "tag": "y2003_direct_h7_residual_log_s44",
+      "variant": {
+        "name": "residual_log",
+        "residual": true,
+        "loss_space": "log"
+      },
+      "epochs": 10,
+      "inner_RMSE": 433.8331812634017,
+      "inner_fold_RMSE": [
+        1041.9044939468045,
+        58.881848435970966,
+        200.71320140742964
+      ]
+    },
+    {
+      "year": 2003,
+      "task_h": 7,
+      "seed": 42,
+      "tag": "y2003_direct_h7_plain_physical_s42",
+      "variant": {
+        "name": "plain_physical",
+        "residual": false,
+        "loss_space": "physical"
+      },
+      "epochs": 30,
+      "inner_RMSE": 341.07214572705203,
+      "inner_fold_RMSE": [
+        730.6265016007537,
+        123.72092293834356,
+        168.86901264205878
+      ]
+    },
+    {
+      "year": 2003,
+      "task_h": 7,
+      "seed": 43,
+      "tag": "y2003_direct_h7_plain_physical_s43",
+      "variant": {
+        "name": "plain_physical",
+        "residual": false,
+        "loss_space": "physical"
+      },
+      "epochs": 30,
+      "inner_RMSE": 401.94734955134203,
+      "inner_fold_RMSE": [
+        869.5558090409137,
+        132.64212892709966,
+        203.64411068601274
+      ]
+    },
+    {
+      "year": 2003,
+      "task_h": 7,
+      "seed": 44,
+      "tag": "y2003_direct_h7_plain_physical_s44",
+      "variant": {
+        "name": "plain_physical",
+        "residual": false,
+        "loss_space": "physical"
+      },
+      "epochs": 10,
+      "inner_RMSE": 467.54064654905727,
+      "inner_fold_RMSE": [
+        1091.3079714097767,
+        138.19459038478627,
+        173.11937785260884
+      ]
+    },
+    {
+      "year": 2003,
+      "task_h": 7,
+      "seed": 42,
+      "tag": "y2003_direct_h7_residual_physical_s42",
+      "variant": {
+        "name": "residual_physical",
+        "residual": true,
+        "loss_space": "physical"
+      },
+      "epochs": 30,
+      "inner_RMSE": 421.5620237782243,
+      "inner_fold_RMSE": [
+        974.1882823714174,
+        90.23532468488897,
+        200.26246427836634
+      ]
+    },
+    {
+      "year": 2003,
+      "task_h": 7,
+      "seed": 43,
+      "tag": "y2003_direct_h7_residual_physical_s43",
+      "variant": {
+        "name": "residual_physical",
+        "residual": true,
+        "loss_space": "physical"
+      },
+      "epochs": 30,
+      "inner_RMSE": 426.8449932284072,
+      "inner_fold_RMSE": [
+        1008.8562487920886,
+        75.9097443917685,
+        195.7689865013645
+      ]
+    },
+    {
+      "year": 2003,
+      "task_h": 7,
+      "seed": 44,
+      "tag": "y2003_direct_h7_residual_physical_s44",
+      "variant": {
+        "name": "residual_physical",
+        "residual": true,
+        "loss_space": "physical"
+      },
+      "epochs": 30,
+      "inner_RMSE": 407.9224532814451,
+      "inner_fold_RMSE": [
+        923.6672912674009,
+        105.47787966607291,
+        194.62218891086138
+      ]
+    }
+  ],
+  "selections": [
+    {
+      "year": 2002,
+      "h": 1,
+      "inner_scores": {
+        "plain_log": 634.9354694866585,
+        "residual_log": 225.98286676789473,
+        "plain_physical": 706.3232789623562,
+        "residual_physical": 229.42792097557754
+      },
+      "selected_variant": "residual_log",
+      "selected_log": "residual_log"
+    },
+    {
+      "year": 2002,
+      "h": 3,
+      "inner_scores": {
+        "plain_log": 662.4834326164417,
+        "residual_log": 464.587851519022,
+        "plain_physical": 743.0104414870925,
+        "residual_physical": 435.45910906715227
+      },
+      "selected_variant": "residual_physical",
+      "selected_log": "residual_log"
+    },
+    {
+      "year": 2002,
+      "h": 7,
+      "inner_scores": {
+        "plain_log": 698.1968563405886,
+        "residual_log": 579.1197888838589,
+        "plain_physical": 744.8140662105866,
+        "residual_physical": 525.803151670001
+      },
+      "selected_variant": "residual_physical",
+      "selected_log": "residual_log"
+    },
+    {
+      "year": 2003,
+      "h": 1,
+      "inner_scores": {
+        "plain_log": 256.25956894926924,
+        "residual_log": 200.68356645865458,
+        "plain_physical": 293.5856606514548,
+        "residual_physical": 217.66286146587228
+      },
+      "selected_variant": "residual_log",
+      "selected_log": "residual_log"
+    },
+    {
+      "year": 2003,
+      "h": 3,
+      "inner_scores": {
+        "plain_log": 402.4147471376812,
+        "residual_log": 372.39985094595977,
+        "plain_physical": 454.3079281353726,
+        "residual_physical": 391.514864605841
+      },
+      "selected_variant": "residual_log",
+      "selected_log": "residual_log"
+    },
+    {
+      "year": 2003,
+      "h": 7,
+      "inner_scores": {
+        "plain_log": 397.88956000875186,
+        "residual_log": 438.28037442754135,
+        "plain_physical": 403.52004727581715,
+        "residual_physical": 418.77649009602555
+      },
+      "selected_variant": "plain_log",
+      "selected_log": "plain_log"
+    }
+  ]
+}

@@ -1,0 +1,138 @@
+[
+  {
+    "strategy": "direct",
+    "h": 1,
+    "params": {
+      "dropout": 0.1,
+      "feature_mode": "compact_lag",
+      "fixed_epochs": 10,
+      "input_transform": "signed_log",
+      "lr": 0.001,
+      "residual": true,
+      "units": [
+        32
+      ]
+    },
+    "cv_RMSE": 179.33073555662452,
+    "latest_search_target": "2002-12-31"
+  },
+  {
+    "strategy": "direct",
+    "h": 2,
+    "params": {
+      "dropout": 0.1,
+      "feature_mode": "compact_lag",
+      "fixed_epochs": 30,
+      "input_transform": "signed_log",
+      "lr": 0.001,
+      "residual": false,
+      "units": [
+        32
+      ]
+    },
+    "cv_RMSE": 290.766132453664,
+    "latest_search_target": "2002-12-31"
+  },
+  {
+    "strategy": "direct",
+    "h": 3,
+    "params": {
+      "dropout": 0.1,
+      "feature_mode": "compact_lag",
+      "fixed_epochs": 30,
+      "input_transform": "signed_log",
+      "lr": 0.001,
+      "residual": false,
+      "units": [
+        32
+      ]
+    },
+    "cv_RMSE": 323.39494627050493,
+    "latest_search_target": "2002-12-31"
+  },
+  {
+    "strategy": "direct",
+    "h": 4,
+    "params": {
+      "dropout": 0.1,
+      "feature_mode": "compact_lag",
+      "fixed_epochs": 30,
+      "input_transform": "signed_log",
+      "lr": 0.001,
+      "residual": false,
+      "units": [
+        32
+      ]
+    },
+    "cv_RMSE": 331.8005656922983,
+    "latest_search_target": "2002-12-31"
+  },
+  {
+    "strategy": "direct",
+    "h": 5,
+    "params": {
+      "dropout": 0.1,
+      "feature_mode": "compact_lag",
+      "fixed_epochs": 30,
+      "input_transform": "signed_log",
+      "lr": 0.001,
+      "residual": false,
+      "units": [
+        32
+      ]
+    },
+    "cv_RMSE": 325.9229727143602,
+    "latest_search_target": "2002-12-31"
+  },
+  {
+    "strategy": "direct",
+    "h": 6,
+    "params": {
+      "dropout": 0.1,
+      "feature_mode": "compact_lag",
+      "fixed_epochs": 30,
+      "input_transform": "signed_log",
+      "lr": 0.001,
+      "residual": false,
+      "units": [
+        32
+      ]
+    },
+    "cv_RMSE": 326.8846939008166,
+    "latest_search_target": "2002-12-31"
+  },
+  {
+    "strategy": "direct",
+    "h": 7,
+    "params": {
+      "dropout": 0.1,
+      "feature_mode": "compact_lag",
+      "fixed_epochs": 30,
+      "input_transform": "signed_log",
+      "lr": 0.001,
+      "residual": false,
+      "units": [
+        32
+      ]
+    },
+    "cv_RMSE": 326.60106907320903,
+    "latest_search_target": "2002-12-31"
+  },
+  {
+    "strategy": "multi",
+    "h": 7,
+    "params": {
+      "dropout": 0.1,
+      "feature_mode": "compact_lag",
+      "fixed_epochs": 30,
+      "input_transform": "signed_log",
+      "lr": 0.001,
+      "residual": true,
+      "units": [
+        64
+      ]
+    },
+    "cv_RMSE": 316.3496772340715,
+    "latest_search_target": "2002-12-31"
+  }
+]

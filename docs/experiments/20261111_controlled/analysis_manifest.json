@@ -1,0 +1,49 @@
+{
+  "status": "completed",
+  "run_id": "formal_20261111_controlled_v1",
+  "bootstrap_repeats": 600,
+  "bootstrap_seed": 20261111,
+  "block_days": [
+    7,
+    14,
+    30
+  ],
+  "run_manifest_sha256": "cc76a2d6afd761468700a0c4f960aa644a7e6b04c20d746b7048edf420027f0b",
+  "verification": {
+    "status": "passed",
+    "smoke": false,
+    "models": 108,
+    "metrics": 324,
+    "prediction_rows": 115992,
+    "fits": 756,
+    "frozen_files": 1412,
+    "max_target": "2003-12-31",
+    "checks": [
+      "原CSV/hash",
+      "全部h日期/真值",
+      "特征重建",
+      "时间净化",
+      "内层epoch和输入选择",
+      "全部最终模型恢复",
+      "逐h指标重建",
+      "实际fit证据"
+    ]
+  },
+  "files": {
+    "annual_summary.csv": "fc6a499f24dfbfb992f3f8ff277b8f8499e8ebbfeb775b2da1b9865b7fae1f39",
+    "error_segments.csv": "686ce37d1c8c2b05c1a99d04994b0103ffda089e47f4e0d4f46affd99138c29f",
+    "inner_splits.csv": "13f19d3989ce63d3b229fd37dcc5d38e65e8bbd1b6c6d6d7aba82ce1c76a5a6f",
+    "input_selection.json": "9d57a343ce71b0196ed504f6486c50ed1d25ce70772b6d3c6f9604c4f65a572a",
+    "manifest.json": "cc76a2d6afd761468700a0c4f960aa644a7e6b04c20d746b7048edf420027f0b",
+    "metrics.csv": "771044b697aa38aaf73b57696f5675941db9610d6736b5c2df6b4e3a9bd19866",
+    "paired_block_sensitivity.csv": "fb9f5741d545d0fdd9137ad1000f4ca3e83448e1b128f07ae092f416ab0340d0",
+    "paired_changes.csv": "adc8e3bd1c6ebf3646a02039c603236ebd6ffb64adfbe71c5bb8d5e059e256a2",
+    "persistence.csv": "510de3bb07741d2a926e08a20a3794859ec5abcb50b737b1ff409e3a53a47bbf",
+    "quarter_metrics.csv": "98a6d2ba55bfceb2070417dbec554eab0ffed2823a416179f81202992a1ec37d",
+    "README.md": "85411a7f71c050b469fe48946e424612114c56befa52aa5a6c6523ad8d03ba75",
+    "verification.json": "730a70b78b98e65a1ed24dba27e1a2576f77b8dca7b67c39d3601c2ded60683b",
+    "analysis_source\\analyze_runoff_controlled.py": "583ba79c0ad978736c18cb3965c18d9789f0e7f3c21896163925e9f2ee6b171d",
+    "analysis_source\\test_runoff_controlled_analysis.py": "14092f919301e1d3379238503ddc3809783ffc6321df83304b840cfea2d91047",
+    "analysis_source\\verify_runoff_controlled.py": "f00b89cc481131a1c52160027cdf1ff1fa811391e04068428591a397a3daeeb8"
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "status": "passed",
+  "smoke": false,
+  "fits": 720,
+  "models": 72,
+  "prediction_rows": 25776,
+  "frozen_files": 1098,
+  "max_target": "2003-12-31",
+  "selection_frozen_before_outer": true,
+  "checks": [
+    "固定协议/工件hash",
+    "因果历史数组重建",
+    "逐fit配置/原尺度归一化统计",
+    "实际log scaler/网络/buffer",
+    "全部恢复/日期/指标",
+    "CV和选择重算"
+  ],
+  "limitations": [
+    "审计声明不独立证明随机过程",
+    "内层log scaler未全部保存；重算实际外层scaler"
+  ]
+}

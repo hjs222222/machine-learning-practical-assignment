@@ -1,0 +1,82 @@
+{
+  "grid": {
+    "objective": [
+      "log_mse",
+      "lognormal"
+    ],
+    "units": [
+      [
+        32
+      ],
+      [
+        64
+      ]
+    ],
+    "fixed_epochs": [
+      15,
+      40
+    ],
+    "residual": [
+      false,
+      true
+    ],
+    "dropout": [
+      0.1
+    ],
+    "lr": [
+      0.001
+    ],
+    "batch_size": [
+      64
+    ],
+    "weight_decay": [
+      0.001
+    ]
+  },
+  "tasks": [
+    [
+      "direct",
+      1
+    ],
+    [
+      "direct",
+      2
+    ],
+    [
+      "direct",
+      3
+    ],
+    [
+      "direct",
+      4
+    ],
+    [
+      "direct",
+      5
+    ],
+    [
+      "direct",
+      6
+    ],
+    [
+      "direct",
+      7
+    ],
+    [
+      "multi",
+      7
+    ]
+  ],
+  "seeds": [
+    42,
+    43,
+    44
+  ],
+  "expected_new_fits": 728,
+  "gate": {
+    "RMSE_ratio": 0.995,
+    "MAE_ratio": 1.02,
+    "worst_quarter_ratio": 1.15,
+    "require_all_three_seeds": true
+  }
+}

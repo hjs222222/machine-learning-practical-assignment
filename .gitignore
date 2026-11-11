@@ -27,3 +27,9 @@ Thumbs.db
 # 其余各轮 formal/smoke/explore 产物体积大（共约 1.3G），不入库
 output/acceptance3_runs/*
 !output/acceptance3_runs/formal_20261101_v3_stage_d/
+
+# 训练比较中间产物；核验后的轻量指标另存 docs/experiments/
+output/acceptance3_comparisons/
+
+# 本地助手工作区（会话记忆等），不入库
+.workbuddy/

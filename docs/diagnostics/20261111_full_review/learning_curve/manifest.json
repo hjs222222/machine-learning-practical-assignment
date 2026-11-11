@@ -1,0 +1,20 @@
+{
+  "status": "completed",
+  "new_diagnostic_trajectories": 24,
+  "max_epoch": 120,
+  "max_validation_target": "2003-12-31",
+  "read_2004": false,
+  "kind": "非交付选参；只诊断欠拟合/过拟合，不根据本表回填历史OOF",
+  "constant_config": {
+    "units": [
+      32
+    ],
+    "dropout": 0.1,
+    "lr": 0.001,
+    "batch_size": 64,
+    "optimizer": "Adam",
+    "residual": false,
+    "shuffle": false,
+    "weight_decay": 0.0
+  }
+}

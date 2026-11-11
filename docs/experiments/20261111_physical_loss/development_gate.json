@@ -1,0 +1,28 @@
+{
+  "status": "historical_development",
+  "advance": false,
+  "years": [
+    {
+      "year": 2002,
+      "RMSE": 446.12390452783325,
+      "RMSE_log": 453.8863053183505,
+      "RMSE_gain_pct": 1.7102081952159343,
+      "MAE_change_pct": 1.288753170500434,
+      "improved_seeds": 3,
+      "improved_horizons": 2,
+      "worst_h_RMSE_change_pct": 0.0,
+      "passed": false
+    },
+    {
+      "year": 2003,
+      "RMSE": 1162.5858183553762,
+      "RMSE_log": 1162.5858183553762,
+      "RMSE_gain_pct": 0.0,
+      "MAE_change_pct": 0.0,
+      "improved_seeds": 0,
+      "improved_horizons": 0,
+      "worst_h_RMSE_change_pct": 0.0,
+      "passed": false
+    }
+  ]
+}

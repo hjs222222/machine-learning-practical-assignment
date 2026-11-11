@@ -1,0 +1,17 @@
+{
+  "status": "passed",
+  "required_metric_rows": 42,
+  "required_metric_values": 126,
+  "test_origins": 359,
+  "seeds": [
+    42,
+    43,
+    44
+  ],
+  "fit_records": 872,
+  "all_models_restored": true,
+  "frozen_hashes_unchanged": true,
+  "test_type": "retrospective",
+  "smoke": false,
+  "all_seven_direct_horizons_trained": true
+}

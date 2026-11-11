@@ -1,0 +1,13 @@
+{
+  "status": "passed",
+  "all_seed_metric_rows": 210,
+  "all_seed_prediction_rows": 75390,
+  "required_primary_rows": 42,
+  "mean_reconstructed": true,
+  "stacking_reconstructed": true,
+  "metrics_reconstructed": true,
+  "dates_and_truth_verified": true,
+  "fit_records": 872,
+  "frozen_files_verified": 840,
+  "test_origins": 359
+}

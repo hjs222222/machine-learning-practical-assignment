@@ -1,0 +1,23 @@
+{
+  "status": "completed",
+  "run_id": "smoke_20261111_day1_delta_v2",
+  "run_manifest_sha256": "60020fc9b0a46df9dbf86178b90c12de11c4a8f4488cd18fbc5ead65b525a16f",
+  "files": {
+    "all_candidates.csv": "51cbe9a2e8932cfbd2c54a391c29af0344484099fc55929f8cb6e37e7a36d0e9",
+    "development_gate.json": "d5aab7005918dd3b857257265b8ef2fdb50998dbaa5548cbd619a453fa7d2c39",
+    "family_winners.csv": "56b1979058fae0619296fda6d4137a91dbeb86bfc1ebdcbc04f6fab535855c57",
+    "highflow_diagnostics.csv": "8199d61f290440fd68decc33f7a731caa1cbe621cf6de9f067480d22adfd06a5",
+    "inner_splits.csv": "06762b7cad0a69d9c0f94da9149d20578c61c567c41b5efd4bb0d134f4ace1d2",
+    "legacy_sources.json": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+    "LSTM_predictions.csv": "a94bd3dca29818ada0f25c429fec3f5742dc4b2b67f6dcbd22c418af7032af33",
+    "manifest.json": "60020fc9b0a46df9dbf86178b90c12de11c4a8f4488cd18fbc5ead65b525a16f",
+    "metrics.csv": "d33fbef253683ebb41f77481d2f9bae78f6d8f02201778ef3badf3c5a1b9ad53",
+    "persistence.csv": "381260d2db1a653da90a93e1fc3d302ab2dc40a517d31edc701bcf22c2685419",
+    "quarter_metrics.csv": "b2e2b20ee62e260ada2e5862ec0890f261cdc41b70aeba0b23097bbae069d78d",
+    "README.md": "7249a56fb379093c2f5ec469d78c07266e91f5abe824af5f8f95317c22c65e85",
+    "selected_predictions.csv": "18dc1830ef78178c1e21b9540818bebfb5dcb06fda5be1366ca4c8f36593d4ea",
+    "selection.json": "1cd9a896b847a5ab1e297480bfda90f0de4b5adb3748a583a3017a6465b196e1",
+    "verification.json": "76182c21c8272cf77e41b4dc29fce6dd1e6f6aea109f171993a75408519aab9c",
+    "analysis_source/verify_runoff_day1.py": "309c8d7ec3f291c707c1c4cf5b4e8d1fd222d76ad2d651ac273318e99b95a7e6"
+  }
+}

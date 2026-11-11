@@ -1,0 +1,5 @@
+stage,kind,fold,n_train,n_validation,train_last_id,validation_first_id,max_train_target,validation_origin_start,validation_origin_end
+direct_h6,distribution_search,0,663,90,662,670,2001-12-29,2001-12-30,2002-03-29
+direct_h6,distribution_search,1,753,90,752,760,2002-03-29,2002-03-30,2002-06-27
+direct_h6,distribution_search,2,843,90,842,850,2002-06-27,2002-06-28,2002-09-25
+direct_h6,distribution_search,3,933,90,932,940,2002-09-25,2002-09-26,2002-12-24

@@ -1,0 +1,20 @@
+{
+  "status": "passed",
+  "smoke": false,
+  "models": 108,
+  "metrics": 324,
+  "prediction_rows": 115992,
+  "fits": 756,
+  "frozen_files": 1412,
+  "max_target": "2003-12-31",
+  "checks": [
+    "原CSV/hash",
+    "全部h日期/真值",
+    "特征重建",
+    "时间净化",
+    "内层epoch和输入选择",
+    "全部最终模型恢复",
+    "逐h指标重建",
+    "实际fit证据"
+  ]
+}

@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-实验V2：第二次阶段验收版 —— 按预测策略/预见期重做特征选择并重训全部模型
+实验V5：历史实验入口（基于V2演化，非当前验收训练入口）
 =====================================================================
 
 相比 V1（experiment.py）的改进：
@@ -13,7 +13,7 @@
 3. 其余保持与 V1 一致：对数目标变换、Z-score（仅训练集拟合）、
    TimeSeriesSplit + GridSearchCV、Stacking 用 OOF 元特征防泄漏、评价在原始尺度。
 
-用法：python experiment_v2.py
+用法：python experiment_v5.py（历史流程，会覆盖共享output结果，请勿与新实验混用）
 输出：覆盖 output/results 下 pred_*.npz 与 10~14 号结果表；模型保存到 output/models
 （运行前请将旧模型移出 output/models，特征子集变化后旧权重不兼容）。
 """

@@ -1,0 +1,146 @@
+[
+  {
+    "strategy": "direct",
+    "h": 1,
+    "params": {
+      "batch_size": 64,
+      "dropout": 0.1,
+      "fixed_epochs": 40,
+      "lr": 0.001,
+      "objective": "lognormal",
+      "residual": true,
+      "units": [
+        64
+      ],
+      "weight_decay": 0.001
+    },
+    "cv_RMSE": 175.9338371006607,
+    "max_search_target": "2002-12-31"
+  },
+  {
+    "strategy": "direct",
+    "h": 2,
+    "params": {
+      "batch_size": 64,
+      "dropout": 0.1,
+      "fixed_epochs": 15,
+      "lr": 0.001,
+      "objective": "lognormal",
+      "residual": true,
+      "units": [
+        32
+      ],
+      "weight_decay": 0.001
+    },
+    "cv_RMSE": 286.1422712495457,
+    "max_search_target": "2002-12-31"
+  },
+  {
+    "strategy": "direct",
+    "h": 3,
+    "params": {
+      "batch_size": 64,
+      "dropout": 0.1,
+      "fixed_epochs": 40,
+      "lr": 0.001,
+      "objective": "lognormal",
+      "residual": false,
+      "units": [
+        32
+      ],
+      "weight_decay": 0.001
+    },
+    "cv_RMSE": 320.9217515426621,
+    "max_search_target": "2002-12-31"
+  },
+  {
+    "strategy": "direct",
+    "h": 4,
+    "params": {
+      "batch_size": 64,
+      "dropout": 0.1,
+      "fixed_epochs": 15,
+      "lr": 0.001,
+      "objective": "log_mse",
+      "residual": false,
+      "units": [
+        64
+      ],
+      "weight_decay": 0.001
+    },
+    "cv_RMSE": 341.58690758371665,
+    "max_search_target": "2002-12-31"
+  },
+  {
+    "strategy": "direct",
+    "h": 5,
+    "params": {
+      "batch_size": 64,
+      "dropout": 0.1,
+      "fixed_epochs": 15,
+      "lr": 0.001,
+      "objective": "log_mse",
+      "residual": false,
+      "units": [
+        64
+      ],
+      "weight_decay": 0.001
+    },
+    "cv_RMSE": 321.5393508543266,
+    "max_search_target": "2002-12-31"
+  },
+  {
+    "strategy": "direct",
+    "h": 6,
+    "params": {
+      "batch_size": 64,
+      "dropout": 0.1,
+      "fixed_epochs": 15,
+      "lr": 0.001,
+      "objective": "log_mse",
+      "residual": false,
+      "units": [
+        64
+      ],
+      "weight_decay": 0.001
+    },
+    "cv_RMSE": 309.61312885112693,
+    "max_search_target": "2002-12-31"
+  },
+  {
+    "strategy": "direct",
+    "h": 7,
+    "params": {
+      "batch_size": 64,
+      "dropout": 0.1,
+      "fixed_epochs": 15,
+      "lr": 0.001,
+      "objective": "lognormal",
+      "residual": false,
+      "units": [
+        32
+      ],
+      "weight_decay": 0.001
+    },
+    "cv_RMSE": 332.8393951618017,
+    "max_search_target": "2002-12-31"
+  },
+  {
+    "strategy": "multi",
+    "h": 7,
+    "params": {
+      "batch_size": 64,
+      "dropout": 0.1,
+      "fixed_epochs": 40,
+      "lr": 0.001,
+      "objective": "lognormal",
+      "residual": false,
+      "units": [
+        32
+      ],
+      "weight_decay": 0.001
+    },
+    "cv_RMSE": 315.86026584394733,
+    "max_search_target": "2002-12-31"
+  }
+]

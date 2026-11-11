@@ -1,0 +1,21 @@
+{
+  "status": "passed",
+  "smoke": true,
+  "fits": 40,
+  "models": 8,
+  "prediction_rows": 2864,
+  "frozen_files": 88,
+  "max_target": "2003-12-31",
+  "checks": [
+    "固定协议/全部工件hash",
+    "历史数组重建",
+    "四折净化/逐fit配置与审计统计",
+    "实际外层scaler/网络结构",
+    "全部模型恢复/日期/真值/指标",
+    "合并R²/配置选择重算"
+  ],
+  "limitations": [
+    "内层未保存全部权重及scaler，审计不独立证明随机过程或内层实际预测",
+    "合并R²从逐折R²和相同真值SST还原SSE；不是独立重训"
+  ]
+}

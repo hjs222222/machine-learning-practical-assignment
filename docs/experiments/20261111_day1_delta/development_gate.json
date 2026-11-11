@@ -1,0 +1,26 @@
+{
+  "status": "historical_development",
+  "advance": false,
+  "years": [
+    {
+      "year": 2002,
+      "R2": 0.8812591397900006,
+      "R2_old": 0.8802176000810181,
+      "R2_gain": 0.001041539708982575,
+      "MAE_change_pct": 16.488583367219235,
+      "improved_seeds": 2,
+      "target_08_reached": true,
+      "passed": false
+    },
+    {
+      "year": 2003,
+      "R2": 0.4766121074396863,
+      "R2_old": 0.46985210145727074,
+      "R2_gain": 0.006760005982415607,
+      "MAE_change_pct": 7.53697266187221,
+      "improved_seeds": 2,
+      "target_08_reached": false,
+      "passed": false
+    }
+  ]
+}

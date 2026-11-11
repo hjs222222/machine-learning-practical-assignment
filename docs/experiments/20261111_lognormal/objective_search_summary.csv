@@ -1,0 +1,17 @@
+﻿strategy,h,objective,best_CV_RMSE,candidates
+direct,1,log_mse,186.1350326551938,8
+direct,1,lognormal,175.9338371006607,8
+direct,2,log_mse,296.6338477276199,8
+direct,2,lognormal,286.1422712495457,8
+direct,3,log_mse,329.057376555459,8
+direct,3,lognormal,320.9217515426621,8
+direct,4,log_mse,341.58690758371665,8
+direct,4,lognormal,360.9011161486008,8
+direct,5,log_mse,321.5393508543266,8
+direct,5,lognormal,344.45191627240524,8
+direct,6,log_mse,309.61312885112693,8
+direct,6,lognormal,338.28548831551126,8
+direct,7,log_mse,333.7651853393984,8
+direct,7,lognormal,332.8393951618017,8
+multi,7,log_mse,322.90756549019176,8
+multi,7,lognormal,315.86026584394733,8

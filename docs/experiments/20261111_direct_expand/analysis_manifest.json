@@ -1,0 +1,33 @@
+{
+  "status": "completed",
+  "run_id": "formal_20261111_direct_expand_v1",
+  "run_manifest_sha256": "1159b16abb3779f1e4f6ba32b1b574fe31dba4e2ac4d916f598cd84ee36d6c84",
+  "original_sources": null,
+  "bootstrap_seed": 20261111,
+  "block_days": [
+    7,
+    14,
+    30
+  ],
+  "repeats": 600,
+  "files": {
+    "annual_summary.csv": "eefef3763a6f821083c6a51b214b63ef801f290a1317a7488192874f50bc84f6",
+    "inner_splits.csv": "003274becdcce8c8891d0d3ca4269b0f627bb7a4c95e338dfe5bf32d390538c2",
+    "manifest.json": "1159b16abb3779f1e4f6ba32b1b574fe31dba4e2ac4d916f598cd84ee36d6c84",
+    "metrics.csv": "bce509d7ec7380c4698da32b687e2c0c06dc28c819f11177db2ec0e1e26591d8",
+    "paired_block_sensitivity.csv": "d7ff21e3cf0fda62fc865f5a00677ae54b8f462f07a8e226e56693a7ce3d0101",
+    "paired_changes.csv": "50632a73dd0a31568ae432e5c5435172351b2ed078fabbdddefa030770c5c286",
+    "persistence.csv": "54857811e0758709aff1125c6e24c52f2b6093627da0e56291a6b0f2a4339806",
+    "quarter_metrics.csv": "d13c3626265d8bcfdaf704d2d8e91b0fad00c0d468335fac6a52ef0b6c381c8d",
+    "README.md": "1636c488c40d0675662b3be8fe3c0c417e7024484e6429ba8267b3ee10332213",
+    "same_epoch_ablation.csv": "e5cd712f6b8c1f42b415d0ee1682fc570e93ba4265f6275931216b479ad00e64",
+    "selected_predictions.csv": "a2b7a15ab547d0ba6fcbdc92294f0a81d25f132af5f1a8a57eaa96ba4ceb8651",
+    "selected_summary.csv": "334f9b250d4df0bfdf8a1d2beccf8daa6586a33215d0f289b031e8368d516cae",
+    "selection.json": "3764dc14fe9b3b1279193032e58945f462ef508fbc13b90f8c7b7fafecaa45eb",
+    "verification.json": "e2912722f3015687741e43b202a3f38ec5e5de44b1a01c551bb1fd0cd1d500e3",
+    "analysis_source/analyze_runoff_controlled.py": "583ba79c0ad978736c18cb3965c18d9789f0e7f3c21896163925e9f2ee6b171d",
+    "analysis_source/analyze_runoff_direct.py": "8d974c202760b3052736db72bd5421c31a10c49ff67a51145fdec2143ab54bd3",
+    "analysis_source/analyze_runoff_strategy.py": "0c344e0f846129ef1069fbb66b1c6ab3e97530194b9b3bd6843ae0fc37513f7c",
+    "analysis_source/verify_runoff_direct.py": "5ec56246eb6c0ced7a186e582ab6b1cc331e5235b51217f41d509606b11355ae"
+  }
+}

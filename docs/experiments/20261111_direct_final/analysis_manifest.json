@@ -1,0 +1,40 @@
+{
+  "status": "completed",
+  "run_id": "formal_20261111_direct_final_v1",
+  "run_manifest_sha256": "c2841d575e3ed44b718c45c3d2e8d771b9e5fd72b206bf6ab5d31d3a9386d5d6",
+  "original_sources": {
+    "验收\\Acceptance 3\\data\\任务1至7+三seed完整指标与来源.csv": "f1a2d5b20c8eff0b58af0a129045e76749081b6a5c80c7728344eb9b35019654",
+    "验收\\Acceptance 3\\data\\任务1至7+三seed逐日预测与来源.csv": "187e8a99bbcc02107000eb5bf66cf8aa267a5102507e4c63fb5e9a80df51304a"
+  },
+  "bootstrap_seed": 20261111,
+  "block_days": [
+    7,
+    14,
+    30
+  ],
+  "repeats": 600,
+  "files": {
+    "annual_summary.csv": "e7f0050a4e97cb2449eecabdf080e004276db6ca854560c4bc93ce197b6c5bbc",
+    "comparison_by_horizon.csv": "0d319737a3d2ebd0ebadebe54b1d45f9c9afef09fef36536d1e2d510ef5d2b15",
+    "comparison_by_seed.csv": "52ab734e5fc715afcd255940b503573b4e49d959cf4f14712b259b0ea27e3560",
+    "comparison_summary.json": "fb3fa2882e90e8e0f4923433b7a7277b2c57f158f4c1092e3d83a57920f87731",
+    "inner_splits.csv": "7419713e7dc23d62086203fdc870eaf91d13fe4d66e551b4cbc1e0cf70bcc8ea",
+    "manifest.json": "c2841d575e3ed44b718c45c3d2e8d771b9e5fd72b206bf6ab5d31d3a9386d5d6",
+    "metrics.csv": "7c4070a5f92fd0578ab5cc4cb240c4621c7c66e07506cbba3be72195853eedf6",
+    "original_block_sensitivity.csv": "d6b29ddd65a585976f94406dc79b9bd77e7922036d3653ab4c456cdb03b234b2",
+    "paired_block_sensitivity.csv": "0fbe0f8cedc7d0eb656a5e21a4ff3bd8779e7819e049bcd1ebb39dba4afae664",
+    "paired_changes.csv": "9a3e7d71d9b654770b8cbc8894f34c4c9766b4d2cf6fb7267d4f1c29866cc286",
+    "persistence.csv": "c2af6bb0a969d01fa0f6c7ed2ac8d87dd5a7926b4721db916309f4c5227d417c",
+    "quarter_metrics.csv": "26dbdd0e122bfc904ce5fdb22fc4c9a96846fc7fb5e2b101345ee928801f1678",
+    "README.md": "0ce9aea5758fa06fec3fece5bb51bd752d39f09056d7497f2dd093c3e1531608",
+    "same_epoch_ablation.csv": "f01a374e9c81e3db89b3a42940c4d6a5447684986a1296e42bf13f196eed6295",
+    "selected_predictions.csv": "f5aecb078696e9f98ae4f3c8fdb12597dfaab68a57f35ca569b0d66a81ce7b45",
+    "selected_summary.csv": "6743120059fd4c5737f965f01b61a4a78dff2801333ac6cc51d2002218efe64f",
+    "selection.json": "12a75a9c948edd21594038725c59693a04510b059dd6782c7ae7c9e848a434f0",
+    "verification.json": "7b398bc3dd6f7905bce238b60538a78506a83188014ffa80191c49d89b30eb37",
+    "analysis_source/analyze_runoff_controlled.py": "583ba79c0ad978736c18cb3965c18d9789f0e7f3c21896163925e9f2ee6b171d",
+    "analysis_source/analyze_runoff_direct.py": "8d974c202760b3052736db72bd5421c31a10c49ff67a51145fdec2143ab54bd3",
+    "analysis_source/analyze_runoff_strategy.py": "0c344e0f846129ef1069fbb66b1c6ab3e97530194b9b3bd6843ae0fc37513f7c",
+    "analysis_source/verify_runoff_direct.py": "5ec56246eb6c0ced7a186e582ab6b1cc331e5235b51217f41d509606b11355ae"
+  }
+}

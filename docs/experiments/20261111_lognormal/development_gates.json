@@ -1,0 +1,482 @@
+[
+  {
+    "strategy": "direct",
+    "h": 1,
+    "reference": "original",
+    "passed_all_seeds": false,
+    "seed_results": [
+      {
+        "seed": 42,
+        "RMSE_ratio": 0.8944418216676003,
+        "MAE_ratio": 0.8550371343401288,
+        "worst_quarter_ratio": 1.0602565357215605,
+        "passed": true
+      },
+      {
+        "seed": 43,
+        "RMSE_ratio": 1.101716545187552,
+        "MAE_ratio": 0.9980537969404674,
+        "worst_quarter_ratio": 1.1896403821888697,
+        "passed": false
+      },
+      {
+        "seed": 44,
+        "RMSE_ratio": 0.8681168502338142,
+        "MAE_ratio": 0.7451177579947981,
+        "worst_quarter_ratio": 1.1081475631904851,
+        "passed": true
+      }
+    ],
+    "policy": "参数只用2002选择；2003三种子门槛只决定是否推荐，不反选OOF参数"
+  },
+  {
+    "strategy": "direct",
+    "h": 1,
+    "reference": "previous",
+    "passed_all_seeds": false,
+    "seed_results": [
+      {
+        "seed": 42,
+        "RMSE_ratio": 1.0685204511254176,
+        "MAE_ratio": 1.0787973686891048,
+        "worst_quarter_ratio": 1.2516943075702787,
+        "passed": false
+      },
+      {
+        "seed": 43,
+        "RMSE_ratio": 1.2603613703000485,
+        "MAE_ratio": 1.2153769437533564,
+        "worst_quarter_ratio": 1.6065632071034244,
+        "passed": false
+      },
+      {
+        "seed": 44,
+        "RMSE_ratio": 1.0524136436675502,
+        "MAE_ratio": 1.041657391901925,
+        "worst_quarter_ratio": 1.097364620414415,
+        "passed": false
+      }
+    ],
+    "policy": "参数只用2002选择；2003三种子门槛只决定是否推荐，不反选OOF参数"
+  },
+  {
+    "strategy": "direct",
+    "h": 2,
+    "reference": "original",
+    "passed_all_seeds": true,
+    "seed_results": [
+      {
+        "seed": 42,
+        "RMSE_ratio": 0.9143302400135689,
+        "MAE_ratio": 0.8786917124234987,
+        "worst_quarter_ratio": 0.992449488394601,
+        "passed": true
+      },
+      {
+        "seed": 43,
+        "RMSE_ratio": 0.9147071672001661,
+        "MAE_ratio": 0.8739735164417064,
+        "worst_quarter_ratio": 0.961565376628446,
+        "passed": true
+      },
+      {
+        "seed": 44,
+        "RMSE_ratio": 0.8587596085083599,
+        "MAE_ratio": 0.8458097087688993,
+        "worst_quarter_ratio": 0.9294691561198782,
+        "passed": true
+      }
+    ],
+    "policy": "参数只用2002选择；2003三种子门槛只决定是否推荐，不反选OOF参数"
+  },
+  {
+    "strategy": "direct",
+    "h": 2,
+    "reference": "previous",
+    "passed_all_seeds": true,
+    "seed_results": [
+      {
+        "seed": 42,
+        "RMSE_ratio": 0.9362224345662471,
+        "MAE_ratio": 0.902031869367771,
+        "worst_quarter_ratio": 1.0249135667469371,
+        "passed": true
+      },
+      {
+        "seed": 43,
+        "RMSE_ratio": 0.9378066236577597,
+        "MAE_ratio": 0.8780998037300104,
+        "worst_quarter_ratio": 1.017986562861817,
+        "passed": true
+      },
+      {
+        "seed": 44,
+        "RMSE_ratio": 0.9012817525529777,
+        "MAE_ratio": 0.878360049355271,
+        "worst_quarter_ratio": 0.9922937852239672,
+        "passed": true
+      }
+    ],
+    "policy": "参数只用2002选择；2003三种子门槛只决定是否推荐，不反选OOF参数"
+  },
+  {
+    "strategy": "direct",
+    "h": 3,
+    "reference": "original",
+    "passed_all_seeds": false,
+    "seed_results": [
+      {
+        "seed": 42,
+        "RMSE_ratio": 1.1781779674938626,
+        "MAE_ratio": 1.2575145151139095,
+        "worst_quarter_ratio": 2.1639115788705445,
+        "passed": false
+      },
+      {
+        "seed": 43,
+        "RMSE_ratio": 1.076657080464846,
+        "MAE_ratio": 1.1626669001124628,
+        "worst_quarter_ratio": 1.3215615907214944,
+        "passed": false
+      },
+      {
+        "seed": 44,
+        "RMSE_ratio": 1.1508378587835169,
+        "MAE_ratio": 1.1975351990207763,
+        "worst_quarter_ratio": 1.9201075128821528,
+        "passed": false
+      }
+    ],
+    "policy": "参数只用2002选择；2003三种子门槛只决定是否推荐，不反选OOF参数"
+  },
+  {
+    "strategy": "direct",
+    "h": 3,
+    "reference": "previous",
+    "passed_all_seeds": false,
+    "seed_results": [
+      {
+        "seed": 42,
+        "RMSE_ratio": 1.0845545318855858,
+        "MAE_ratio": 1.1097822781634807,
+        "worst_quarter_ratio": 1.3540281752847287,
+        "passed": false
+      },
+      {
+        "seed": 43,
+        "RMSE_ratio": 1.027375749465691,
+        "MAE_ratio": 1.0594981508213626,
+        "worst_quarter_ratio": 1.1427262509819567,
+        "passed": false
+      },
+      {
+        "seed": 44,
+        "RMSE_ratio": 0.9119693959976894,
+        "MAE_ratio": 0.898822516094024,
+        "worst_quarter_ratio": 1.0694704274001055,
+        "passed": true
+      }
+    ],
+    "policy": "参数只用2002选择；2003三种子门槛只决定是否推荐，不反选OOF参数"
+  },
+  {
+    "strategy": "direct",
+    "h": 4,
+    "reference": "original",
+    "passed_all_seeds": false,
+    "seed_results": [
+      {
+        "seed": 42,
+        "RMSE_ratio": 1.043239034513723,
+        "MAE_ratio": 1.0575584411183245,
+        "worst_quarter_ratio": 1.3948963387197826,
+        "passed": false
+      },
+      {
+        "seed": 43,
+        "RMSE_ratio": 1.0421860085117332,
+        "MAE_ratio": 1.0596037918378618,
+        "worst_quarter_ratio": 1.5146075564777943,
+        "passed": false
+      },
+      {
+        "seed": 44,
+        "RMSE_ratio": 1.0203358142364933,
+        "MAE_ratio": 0.9965445841237446,
+        "worst_quarter_ratio": 1.324407850101946,
+        "passed": false
+      }
+    ],
+    "policy": "参数只用2002选择；2003三种子门槛只决定是否推荐，不反选OOF参数"
+  },
+  {
+    "strategy": "direct",
+    "h": 4,
+    "reference": "previous",
+    "passed_all_seeds": true,
+    "seed_results": [
+      {
+        "seed": 42,
+        "RMSE_ratio": 0.9176784194237252,
+        "MAE_ratio": 0.9196425336787851,
+        "worst_quarter_ratio": 1.0774806913847625,
+        "passed": true
+      },
+      {
+        "seed": 43,
+        "RMSE_ratio": 0.9474506480446958,
+        "MAE_ratio": 0.907106183845698,
+        "worst_quarter_ratio": 1.0617970198596196,
+        "passed": true
+      },
+      {
+        "seed": 44,
+        "RMSE_ratio": 0.8829942434997173,
+        "MAE_ratio": 0.875660981585801,
+        "worst_quarter_ratio": 1.1272575693753062,
+        "passed": true
+      }
+    ],
+    "policy": "参数只用2002选择；2003三种子门槛只决定是否推荐，不反选OOF参数"
+  },
+  {
+    "strategy": "direct",
+    "h": 5,
+    "reference": "original",
+    "passed_all_seeds": false,
+    "seed_results": [
+      {
+        "seed": 42,
+        "RMSE_ratio": 1.0458130806686536,
+        "MAE_ratio": 1.0347416984793865,
+        "worst_quarter_ratio": 1.280247926409933,
+        "passed": false
+      },
+      {
+        "seed": 43,
+        "RMSE_ratio": 1.1882228082532909,
+        "MAE_ratio": 1.2272765545146989,
+        "worst_quarter_ratio": 1.9918469190768817,
+        "passed": false
+      },
+      {
+        "seed": 44,
+        "RMSE_ratio": 1.1157991171351678,
+        "MAE_ratio": 1.1178274535195296,
+        "worst_quarter_ratio": 1.6121094340635282,
+        "passed": false
+      }
+    ],
+    "policy": "参数只用2002选择；2003三种子门槛只决定是否推荐，不反选OOF参数"
+  },
+  {
+    "strategy": "direct",
+    "h": 5,
+    "reference": "previous",
+    "passed_all_seeds": false,
+    "seed_results": [
+      {
+        "seed": 42,
+        "RMSE_ratio": 1.0119275179402036,
+        "MAE_ratio": 0.9918312266254966,
+        "worst_quarter_ratio": 1.0888663512043646,
+        "passed": false
+      },
+      {
+        "seed": 43,
+        "RMSE_ratio": 1.0143801140805344,
+        "MAE_ratio": 0.9861958061431326,
+        "worst_quarter_ratio": 1.0654733974733188,
+        "passed": false
+      },
+      {
+        "seed": 44,
+        "RMSE_ratio": 0.9582170437136169,
+        "MAE_ratio": 0.9579042161189507,
+        "worst_quarter_ratio": 1.2064256208508037,
+        "passed": false
+      }
+    ],
+    "policy": "参数只用2002选择；2003三种子门槛只决定是否推荐，不反选OOF参数"
+  },
+  {
+    "strategy": "direct",
+    "h": 6,
+    "reference": "original",
+    "passed_all_seeds": false,
+    "seed_results": [
+      {
+        "seed": 42,
+        "RMSE_ratio": 1.152031385516502,
+        "MAE_ratio": 1.170657703141796,
+        "worst_quarter_ratio": 1.9460039920254957,
+        "passed": false
+      },
+      {
+        "seed": 43,
+        "RMSE_ratio": 1.0728635707481402,
+        "MAE_ratio": 1.0408918615950677,
+        "worst_quarter_ratio": 1.428027727922206,
+        "passed": false
+      },
+      {
+        "seed": 44,
+        "RMSE_ratio": 0.9969276110691851,
+        "MAE_ratio": 0.9604991659623284,
+        "worst_quarter_ratio": 1.0825419201855468,
+        "passed": false
+      }
+    ],
+    "policy": "参数只用2002选择；2003三种子门槛只决定是否推荐，不反选OOF参数"
+  },
+  {
+    "strategy": "direct",
+    "h": 6,
+    "reference": "previous",
+    "passed_all_seeds": false,
+    "seed_results": [
+      {
+        "seed": 42,
+        "RMSE_ratio": 1.02362479867656,
+        "MAE_ratio": 0.9969431659010585,
+        "worst_quarter_ratio": 1.1097834364911239,
+        "passed": false
+      },
+      {
+        "seed": 43,
+        "RMSE_ratio": 1.0206101742497846,
+        "MAE_ratio": 0.9939955884061464,
+        "worst_quarter_ratio": 1.1175974291493154,
+        "passed": false
+      },
+      {
+        "seed": 44,
+        "RMSE_ratio": 0.9849403306338049,
+        "MAE_ratio": 0.980252922677361,
+        "worst_quarter_ratio": 1.1090727039028048,
+        "passed": true
+      }
+    ],
+    "policy": "参数只用2002选择；2003三种子门槛只决定是否推荐，不反选OOF参数"
+  },
+  {
+    "strategy": "direct",
+    "h": 7,
+    "reference": "original",
+    "passed_all_seeds": false,
+    "seed_results": [
+      {
+        "seed": 42,
+        "RMSE_ratio": 1.0433986563013453,
+        "MAE_ratio": 1.0383207476644556,
+        "worst_quarter_ratio": 1.737974580660354,
+        "passed": false
+      },
+      {
+        "seed": 43,
+        "RMSE_ratio": 0.9939015727854918,
+        "MAE_ratio": 0.9715711839327671,
+        "worst_quarter_ratio": 1.1862282537511593,
+        "passed": false
+      },
+      {
+        "seed": 44,
+        "RMSE_ratio": 1.1074661359829052,
+        "MAE_ratio": 1.0920346949231345,
+        "worst_quarter_ratio": 1.798914352334722,
+        "passed": false
+      }
+    ],
+    "policy": "参数只用2002选择；2003三种子门槛只决定是否推荐，不反选OOF参数"
+  },
+  {
+    "strategy": "direct",
+    "h": 7,
+    "reference": "previous",
+    "passed_all_seeds": false,
+    "seed_results": [
+      {
+        "seed": 42,
+        "RMSE_ratio": 1.002692478071451,
+        "MAE_ratio": 0.9989182984915285,
+        "worst_quarter_ratio": 1.0369590442792953,
+        "passed": false
+      },
+      {
+        "seed": 43,
+        "RMSE_ratio": 1.0506857086098536,
+        "MAE_ratio": 1.0351673819787874,
+        "worst_quarter_ratio": 1.146400610801008,
+        "passed": false
+      },
+      {
+        "seed": 44,
+        "RMSE_ratio": 0.9496080170122907,
+        "MAE_ratio": 0.9325933912371596,
+        "worst_quarter_ratio": 1.0068997917804523,
+        "passed": true
+      }
+    ],
+    "policy": "参数只用2002选择；2003三种子门槛只决定是否推荐，不反选OOF参数"
+  },
+  {
+    "strategy": "multi",
+    "h": 7,
+    "reference": "original",
+    "passed_all_seeds": false,
+    "seed_results": [
+      {
+        "seed": 42,
+        "RMSE_ratio": 1.179704361313466,
+        "MAE_ratio": 1.1984746269887208,
+        "worst_quarter_ratio": 2.299395847725325,
+        "passed": false
+      },
+      {
+        "seed": 43,
+        "RMSE_ratio": 1.1790813865980072,
+        "MAE_ratio": 1.2012100904723944,
+        "worst_quarter_ratio": 2.102137369724259,
+        "passed": false
+      },
+      {
+        "seed": 44,
+        "RMSE_ratio": 1.1817162878629017,
+        "MAE_ratio": 1.124098792743413,
+        "worst_quarter_ratio": 1.9839359361808684,
+        "passed": false
+      }
+    ],
+    "policy": "参数只用2002选择；2003三种子门槛只决定是否推荐，不反选OOF参数"
+  },
+  {
+    "strategy": "multi",
+    "h": 7,
+    "reference": "previous",
+    "passed_all_seeds": false,
+    "seed_results": [
+      {
+        "seed": 42,
+        "RMSE_ratio": 1.217436321401701,
+        "MAE_ratio": 1.2867561709732247,
+        "worst_quarter_ratio": 1.9409034584590565,
+        "passed": false
+      },
+      {
+        "seed": 43,
+        "RMSE_ratio": 1.1712039556361067,
+        "MAE_ratio": 1.2172170668121025,
+        "worst_quarter_ratio": 1.4120340065272623,
+        "passed": false
+      },
+      {
+        "seed": 44,
+        "RMSE_ratio": 1.2367806578127036,
+        "MAE_ratio": 1.300318684960932,
+        "worst_quarter_ratio": 1.8115747263528093,
+        "passed": false
+      }
+    ],
+    "policy": "参数只用2002选择；2003三种子门槛只决定是否推荐，不反选OOF参数"
+  }
+]

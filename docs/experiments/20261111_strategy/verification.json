@@ -1,0 +1,21 @@
+{
+  "status": "passed",
+  "smoke": false,
+  "models": 96,
+  "fits": 960,
+  "metrics": 240,
+  "prediction_rows": 85920,
+  "frozen_files": 1451,
+  "selection_frozen_before_outer": true,
+  "max_target": "2003-12-31",
+  "checks": [
+    "源码/工件hash",
+    "按日期重建真值",
+    "全部特征重建",
+    "内外层净化",
+    "每次fit证据",
+    "内层epoch/策略选择",
+    "全部模型恢复",
+    "逐h指标重建"
+  ]
+}

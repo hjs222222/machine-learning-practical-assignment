@@ -1,0 +1,5 @@
+stage,kind,fold,n_train,n_validation,train_last_id,validation_first_id,max_train_target,validation_origin_start,validation_origin_end
+2003Q1,quarterly_oof,0,1030,90,1029,1037,2002-12-31,2003-01-01,2003-03-31
+2003Q2,quarterly_oof,0,1120,91,1119,1127,2003-03-31,2003-04-01,2003-06-30
+2003Q3,quarterly_oof,0,1211,92,1210,1218,2003-06-30,2003-07-01,2003-09-30
+2003Q4,quarterly_oof,0,1303,85,1302,1310,2003-09-30,2003-10-01,2003-12-24

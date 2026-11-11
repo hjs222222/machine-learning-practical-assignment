@@ -1,0 +1,394 @@
+[
+  {
+    "strategy": "direct",
+    "h": 1,
+    "passed": true,
+    "folds": [
+      {
+        "fold": "2003Q1",
+        "candidate_RMSE": 166.78774760148022,
+        "baseline_RMSE": 275.47484514206656,
+        "candidate_MAE": 59.296166059705946,
+        "baseline_MAE": 98.85768678453233
+      },
+      {
+        "fold": "2003Q2",
+        "candidate_RMSE": 347.9486242977873,
+        "baseline_RMSE": 719.2436847863449,
+        "candidate_MAE": 192.07196195832975,
+        "baseline_MAE": 342.7701199709714
+      },
+      {
+        "fold": "2003Q3",
+        "candidate_RMSE": 80.8517958823825,
+        "baseline_RMSE": 116.50880114720358,
+        "candidate_MAE": 40.14203929901123,
+        "baseline_MAE": 68.814551519311
+      },
+      {
+        "fold": "2003Q4",
+        "candidate_RMSE": 1874.4343352089245,
+        "baseline_RMSE": 1839.5174745113588,
+        "candidate_MAE": 751.85359694537,
+        "baseline_MAE": 805.9660622091855
+      }
+    ],
+    "RMSE_ratio": 0.83708441960613,
+    "worst_quarter_ratio": 1.0189815324841318,
+    "params": {
+      "dropout": 0.1,
+      "feature_mode": "compact_lag",
+      "fixed_epochs": 10,
+      "input_transform": "signed_log",
+      "lr": 0.001,
+      "residual": true,
+      "units": [
+        32
+      ]
+    },
+    "policy": "本次实验固定2002网格胜出参数；准入仅用于是否推荐替换历史交付，不反选OOF配置"
+  },
+  {
+    "strategy": "direct",
+    "h": 2,
+    "passed": false,
+    "folds": [
+      {
+        "fold": "2003Q1",
+        "candidate_RMSE": 330.43057422817765,
+        "baseline_RMSE": 337.3477823411424,
+        "candidate_MAE": 137.51547961764865,
+        "baseline_MAE": 135.27735739813912
+      },
+      {
+        "fold": "2003Q2",
+        "candidate_RMSE": 636.3063401545296,
+        "baseline_RMSE": 540.8221898743699,
+        "candidate_MAE": 415.9150834974352,
+        "baseline_MAE": 306.6030498127361
+      },
+      {
+        "fold": "2003Q3",
+        "candidate_RMSE": 111.04910560397911,
+        "baseline_RMSE": 161.16142985627752,
+        "candidate_MAE": 61.434858322143555,
+        "baseline_MAE": 104.03441072546917
+      },
+      {
+        "fold": "2003Q4",
+        "candidate_RMSE": 2296.4291150108497,
+        "baseline_RMSE": 2415.673988968094,
+        "candidate_MAE": 1206.8222799862133,
+        "baseline_MAE": 1324.1612730138443
+      }
+    ],
+    "RMSE_ratio": 0.9766164602081759,
+    "worst_quarter_ratio": 1.1765536844971916,
+    "params": {
+      "dropout": 0.1,
+      "feature_mode": "compact_lag",
+      "fixed_epochs": 30,
+      "input_transform": "signed_log",
+      "lr": 0.001,
+      "residual": false,
+      "units": [
+        32
+      ]
+    },
+    "policy": "本次实验固定2002网格胜出参数；准入仅用于是否推荐替换历史交付，不反选OOF配置"
+  },
+  {
+    "strategy": "direct",
+    "h": 3,
+    "passed": false,
+    "folds": [
+      {
+        "fold": "2003Q1",
+        "candidate_RMSE": 399.3407883034864,
+        "baseline_RMSE": 433.70548690411283,
+        "candidate_MAE": 173.8964244418674,
+        "baseline_MAE": 169.67256562974717
+      },
+      {
+        "fold": "2003Q2",
+        "candidate_RMSE": 924.5879592721186,
+        "baseline_RMSE": 578.5440401575454,
+        "candidate_MAE": 588.5170648595789,
+        "baseline_MAE": 353.71346408718233
+      },
+      {
+        "fold": "2003Q3",
+        "candidate_RMSE": 120.01029806728783,
+        "baseline_RMSE": 149.18734592340178,
+        "candidate_MAE": 74.02482762544051,
+        "baseline_MAE": 94.81957489511241
+      },
+      {
+        "fold": "2003Q4",
+        "candidate_RMSE": 2410.0320388904033,
+        "baseline_RMSE": 2386.279958265535,
+        "candidate_MAE": 1331.793937772863,
+        "baseline_MAE": 1295.3037046544691
+      }
+    ],
+    "RMSE_ratio": 1.086324322895507,
+    "worst_quarter_ratio": 1.5981289151649385,
+    "params": {
+      "dropout": 0.1,
+      "feature_mode": "compact_lag",
+      "fixed_epochs": 30,
+      "input_transform": "signed_log",
+      "lr": 0.001,
+      "residual": false,
+      "units": [
+        32
+      ]
+    },
+    "policy": "本次实验固定2002网格胜出参数；准入仅用于是否推荐替换历史交付，不反选OOF配置"
+  },
+  {
+    "strategy": "direct",
+    "h": 4,
+    "passed": false,
+    "folds": [
+      {
+        "fold": "2003Q1",
+        "candidate_RMSE": 490.88594714527716,
+        "baseline_RMSE": 536.2137259463076,
+        "candidate_MAE": 218.0690108405219,
+        "baseline_MAE": 218.88386654324
+      },
+      {
+        "fold": "2003Q2",
+        "candidate_RMSE": 1176.0650729991605,
+        "baseline_RMSE": 604.0667312428751,
+        "candidate_MAE": 719.9051691411615,
+        "baseline_MAE": 392.04593264401615
+      },
+      {
+        "fold": "2003Q3",
+        "candidate_RMSE": 127.42879582487133,
+        "baseline_RMSE": 163.20144683194448,
+        "candidate_MAE": 79.5225191116333,
+        "baseline_MAE": 106.31158244091532
+      },
+      {
+        "fold": "2003Q4",
+        "candidate_RMSE": 2488.5680302545375,
+        "baseline_RMSE": 2463.9852631070466,
+        "candidate_MAE": 1443.8182243795957,
+        "baseline_MAE": 1423.0941349702723
+      }
+    ],
+    "RMSE_ratio": 1.1368241994497879,
+    "worst_quarter_ratio": 1.946912505145568,
+    "params": {
+      "dropout": 0.1,
+      "feature_mode": "compact_lag",
+      "fixed_epochs": 30,
+      "input_transform": "signed_log",
+      "lr": 0.001,
+      "residual": false,
+      "units": [
+        32
+      ]
+    },
+    "policy": "本次实验固定2002网格胜出参数；准入仅用于是否推荐替换历史交付，不反选OOF配置"
+  },
+  {
+    "strategy": "direct",
+    "h": 5,
+    "passed": false,
+    "folds": [
+      {
+        "fold": "2003Q1",
+        "candidate_RMSE": 543.5413380518542,
+        "baseline_RMSE": 550.1282236947158,
+        "candidate_MAE": 249.58347227308485,
+        "baseline_MAE": 237.78634897867838
+      },
+      {
+        "fold": "2003Q2",
+        "candidate_RMSE": 986.7291249971485,
+        "baseline_RMSE": 803.7015922333537,
+        "candidate_MAE": 639.9768534230662,
+        "baseline_MAE": 524.9288553091196
+      },
+      {
+        "fold": "2003Q3",
+        "candidate_RMSE": 196.22784194677928,
+        "baseline_RMSE": 221.3050352107799,
+        "candidate_MAE": 99.77226020978844,
+        "baseline_MAE": 122.71949353425398
+      },
+      {
+        "fold": "2003Q4",
+        "candidate_RMSE": 2527.216747263987,
+        "baseline_RMSE": 2540.754875642926,
+        "candidate_MAE": 1505.245910465016,
+        "baseline_MAE": 1505.6942705042222
+      }
+    ],
+    "RMSE_ratio": 1.033486156001988,
+    "worst_quarter_ratio": 1.2277307081788795,
+    "params": {
+      "dropout": 0.1,
+      "feature_mode": "compact_lag",
+      "fixed_epochs": 30,
+      "input_transform": "signed_log",
+      "lr": 0.001,
+      "residual": false,
+      "units": [
+        32
+      ]
+    },
+    "policy": "本次实验固定2002网格胜出参数；准入仅用于是否推荐替换历史交付，不反选OOF配置"
+  },
+  {
+    "strategy": "direct",
+    "h": 6,
+    "passed": false,
+    "folds": [
+      {
+        "fold": "2003Q1",
+        "candidate_RMSE": 563.0021761031823,
+        "baseline_RMSE": 578.960021861001,
+        "candidate_MAE": 253.11327760484482,
+        "baseline_MAE": 230.48139309353297
+      },
+      {
+        "fold": "2003Q2",
+        "candidate_RMSE": 1089.657282233296,
+        "baseline_RMSE": 596.2249516978195,
+        "candidate_MAE": 708.8299988128326,
+        "baseline_MAE": 377.73342945811515
+      },
+      {
+        "fold": "2003Q3",
+        "candidate_RMSE": 213.79265890821864,
+        "baseline_RMSE": 237.99788691096018,
+        "candidate_MAE": 111.59105806765349,
+        "baseline_MAE": 129.94803685727328
+      },
+      {
+        "fold": "2003Q4",
+        "candidate_RMSE": 2526.3360310128974,
+        "baseline_RMSE": 2489.980664778246,
+        "candidate_MAE": 1521.7100208955653,
+        "baseline_MAE": 1471.971765765022
+      }
+    ],
+    "RMSE_ratio": 1.1254430207298205,
+    "worst_quarter_ratio": 1.8275942312215732,
+    "params": {
+      "dropout": 0.1,
+      "feature_mode": "compact_lag",
+      "fixed_epochs": 30,
+      "input_transform": "signed_log",
+      "lr": 0.001,
+      "residual": false,
+      "units": [
+        32
+      ]
+    },
+    "policy": "本次实验固定2002网格胜出参数；准入仅用于是否推荐替换历史交付，不反选OOF配置"
+  },
+  {
+    "strategy": "direct",
+    "h": 7,
+    "passed": false,
+    "folds": [
+      {
+        "fold": "2003Q1",
+        "candidate_RMSE": 587.3410052583118,
+        "baseline_RMSE": 664.8358726630834,
+        "candidate_MAE": 274.0548639933268,
+        "baseline_MAE": 283.6626415676541
+      },
+      {
+        "fold": "2003Q2",
+        "candidate_RMSE": 954.5090483571352,
+        "baseline_RMSE": 569.5059073673443,
+        "candidate_MAE": 628.9017540229546,
+        "baseline_MAE": 373.07425195044215
+      },
+      {
+        "fold": "2003Q3",
+        "candidate_RMSE": 219.21197887855928,
+        "baseline_RMSE": 241.97522749152066,
+        "candidate_MAE": 115.79268588190493,
+        "baseline_MAE": 130.97782549650773
+      },
+      {
+        "fold": "2003Q4",
+        "candidate_RMSE": 2543.451043571337,
+        "baseline_RMSE": 2660.263825762529,
+        "candidate_MAE": 1542.1810462502872,
+        "baseline_MAE": 1676.032821116728
+      }
+    ],
+    "RMSE_ratio": 1.0405968720421512,
+    "worst_quarter_ratio": 1.676030109625281,
+    "params": {
+      "dropout": 0.1,
+      "feature_mode": "compact_lag",
+      "fixed_epochs": 30,
+      "input_transform": "signed_log",
+      "lr": 0.001,
+      "residual": false,
+      "units": [
+        32
+      ]
+    },
+    "policy": "本次实验固定2002网格胜出参数；准入仅用于是否推荐替换历史交付，不反选OOF配置"
+  },
+  {
+    "strategy": "multi",
+    "h": 7,
+    "passed": false,
+    "folds": [
+      {
+        "fold": "2003Q1",
+        "candidate_RMSE": 490.23016488862504,
+        "baseline_RMSE": 510.57569820536133,
+        "candidate_MAE": 201.72396262032646,
+        "baseline_MAE": 234.94485880533855
+      },
+      {
+        "fold": "2003Q2",
+        "candidate_RMSE": 658.9149299869654,
+        "baseline_RMSE": 556.1853422094107,
+        "candidate_MAE": 437.10759662047286,
+        "baseline_MAE": 329.4046357782145
+      },
+      {
+        "fold": "2003Q3",
+        "candidate_RMSE": 153.54503910796774,
+        "baseline_RMSE": 199.74579463130402,
+        "candidate_MAE": 84.6115120242101,
+        "baseline_MAE": 126.91844641940195
+      },
+      {
+        "fold": "2003Q4",
+        "candidate_RMSE": 2286.7235789149277,
+        "baseline_RMSE": 2437.711586045959,
+        "candidate_MAE": 1236.9152510699105,
+        "baseline_MAE": 1413.493488048906
+      }
+    ],
+    "RMSE_ratio": 0.9690070359944639,
+    "worst_quarter_ratio": 1.1847038747361949,
+    "params": {
+      "dropout": 0.1,
+      "feature_mode": "compact_lag",
+      "fixed_epochs": 30,
+      "input_transform": "signed_log",
+      "lr": 0.001,
+      "residual": true,
+      "units": [
+        64
+      ]
+    },
+    "policy": "本次实验固定2002网格胜出参数；准入仅用于是否推荐替换历史交付，不反选OOF配置"
+  }
+]

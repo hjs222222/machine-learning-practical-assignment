@@ -1,0 +1,23 @@
+{
+  "status": "completed",
+  "fits": 0,
+  "models": 36,
+  "run_id": "formal_20261111_controlled_v1",
+  "source_run_manifest_sha256": "cc76a2d6afd761468700a0c4f960aa644a7e6b04c20d746b7048edf420027f0b",
+  "source_sha256": "394fe5806a68654633f0bb2460bde7780588527df724052b6547464d7ef4ba3d",
+  "environment": {
+    "python": "3.12.3 | packaged by conda-forge | (main, Apr 15 2024, 18:20:11) [MSC v.1938 64 bit (AMD64)]",
+    "torch": "2.6.0+cu126",
+    "numpy": "1.26.4",
+    "pandas": "2.2.2",
+    "sklearn": "1.5.1",
+    "cuda": "12.6",
+    "cudnn": 90501,
+    "gpu": "NVIDIA GeForce RTX 4060 Laptop GPU"
+  },
+  "files": {
+    "gradients.csv": "1aeb80753d70b4123d4732d2e7c83b2af2ef4712a72d69eca25c5b3b3f70d98f",
+    "perturbations.csv": "2f6a7c5e7f3c9eab4e9f0be10cc7291092fe290cd77c92f48aa0ff559f92f411",
+    "README.md": "caff915f6ad5961777312d26cd5a70190d2ac9469041c494958084f01af4a7bb"
+  }
+}

@@ -1,0 +1,1659 @@
+{
+  "lstm": [
+    {
+      "strategy": "direct",
+      "h": 1,
+      "params": {
+        "batch_size": 64,
+        "dropout": 0.1,
+        "fixed_epochs": 40,
+        "lr": 0.001,
+        "objective": "lognormal",
+        "residual": true,
+        "units": [
+          64
+        ],
+        "weight_decay": 0.001
+      },
+      "cv_RMSE": 175.9338371006607,
+      "max_search_target": "2002-12-31"
+    },
+    {
+      "strategy": "direct",
+      "h": 2,
+      "params": {
+        "batch_size": 64,
+        "dropout": 0.1,
+        "fixed_epochs": 15,
+        "lr": 0.001,
+        "objective": "lognormal",
+        "residual": true,
+        "units": [
+          32
+        ],
+        "weight_decay": 0.001
+      },
+      "cv_RMSE": 286.1422712495457,
+      "max_search_target": "2002-12-31"
+    },
+    {
+      "strategy": "direct",
+      "h": 3,
+      "params": {
+        "batch_size": 64,
+        "dropout": 0.1,
+        "fixed_epochs": 40,
+        "lr": 0.001,
+        "objective": "lognormal",
+        "residual": false,
+        "units": [
+          32
+        ],
+        "weight_decay": 0.001
+      },
+      "cv_RMSE": 320.9217515426621,
+      "max_search_target": "2002-12-31"
+    },
+    {
+      "strategy": "direct",
+      "h": 4,
+      "params": {
+        "batch_size": 64,
+        "dropout": 0.1,
+        "fixed_epochs": 15,
+        "lr": 0.001,
+        "objective": "log_mse",
+        "residual": false,
+        "units": [
+          64
+        ],
+        "weight_decay": 0.001
+      },
+      "cv_RMSE": 341.58690758371665,
+      "max_search_target": "2002-12-31"
+    },
+    {
+      "strategy": "direct",
+      "h": 5,
+      "params": {
+        "batch_size": 64,
+        "dropout": 0.1,
+        "fixed_epochs": 15,
+        "lr": 0.001,
+        "objective": "log_mse",
+        "residual": false,
+        "units": [
+          64
+        ],
+        "weight_decay": 0.001
+      },
+      "cv_RMSE": 321.5393508543266,
+      "max_search_target": "2002-12-31"
+    },
+    {
+      "strategy": "direct",
+      "h": 6,
+      "params": {
+        "batch_size": 64,
+        "dropout": 0.1,
+        "fixed_epochs": 15,
+        "lr": 0.001,
+        "objective": "log_mse",
+        "residual": false,
+        "units": [
+          64
+        ],
+        "weight_decay": 0.001
+      },
+      "cv_RMSE": 309.61312885112693,
+      "max_search_target": "2002-12-31"
+    },
+    {
+      "strategy": "direct",
+      "h": 7,
+      "params": {
+        "batch_size": 64,
+        "dropout": 0.1,
+        "fixed_epochs": 15,
+        "lr": 0.001,
+        "objective": "lognormal",
+        "residual": false,
+        "units": [
+          32
+        ],
+        "weight_decay": 0.001
+      },
+      "cv_RMSE": 332.8393951618017,
+      "max_search_target": "2002-12-31"
+    },
+    {
+      "strategy": "multi",
+      "h": 7,
+      "params": {
+        "batch_size": 64,
+        "dropout": 0.1,
+        "fixed_epochs": 40,
+        "lr": 0.001,
+        "objective": "lognormal",
+        "residual": false,
+        "units": [
+          32
+        ],
+        "weight_decay": 0.001
+      },
+      "cv_RMSE": 315.86026584394733,
+      "max_search_target": "2002-12-31"
+    }
+  ],
+  "meta": [
+    {
+      "strategy": "direct",
+      "h": 1,
+      "seed": 42,
+      "alpha": 100.0,
+      "candidates": [
+        {
+          "alpha": 10.0,
+          "RMSE": 1019.4069551668143,
+          "folds": [
+            86.04226626030211,
+            1952.7716440733266
+          ]
+        },
+        {
+          "alpha": 100.0,
+          "RMSE": 987.0742816898535,
+          "folds": [
+            114.43515609017837,
+            1859.7134072895285
+          ]
+        },
+        {
+          "alpha": 1000.0,
+          "RMSE": 1175.0164964690925,
+          "folds": [
+            317.57780323887795,
+            2032.4551896993073
+          ]
+        },
+        {
+          "alpha": 10000.0,
+          "RMSE": 1412.1363670686435,
+          "folds": [
+            444.8445858871186,
+            2379.4281482501683
+          ]
+        }
+      ],
+      "input_dim": 3,
+      "output_dim": 1
+    },
+    {
+      "strategy": "direct",
+      "h": 1,
+      "seed": 43,
+      "alpha": 10.0,
+      "candidates": [
+        {
+          "alpha": 10.0,
+          "RMSE": 945.8911447282476,
+          "folds": [
+            86.49189234185508,
+            1805.2903971146402
+          ]
+        },
+        {
+          "alpha": 100.0,
+          "RMSE": 975.0845018176883,
+          "folds": [
+            123.22274892750744,
+            1826.9462547078692
+          ]
+        },
+        {
+          "alpha": 1000.0,
+          "RMSE": 1191.4742616899193,
+          "folds": [
+            322.2178883166264,
+            2060.730635063212
+          ]
+        },
+        {
+          "alpha": 10000.0,
+          "RMSE": 1416.7134559472054,
+          "folds": [
+            445.5468840204885,
+            2387.8800278739222
+          ]
+        }
+      ],
+      "input_dim": 3,
+      "output_dim": 1
+    },
+    {
+      "strategy": "direct",
+      "h": 1,
+      "seed": 44,
+      "alpha": 100.0,
+      "candidates": [
+        {
+          "alpha": 10.0,
+          "RMSE": 976.2039658217816,
+          "folds": [
+            84.81387212893526,
+            1867.5940595146278
+          ]
+        },
+        {
+          "alpha": 100.0,
+          "RMSE": 969.5393831070312,
+          "folds": [
+            111.45711615171189,
+            1827.6216500623505
+          ]
+        },
+        {
+          "alpha": 1000.0,
+          "RMSE": 1176.315851919142,
+          "folds": [
+            315.2518756658539,
+            2037.37982817243
+          ]
+        },
+        {
+          "alpha": 10000.0,
+          "RMSE": 1413.233888548068,
+          "folds": [
+            444.48445689199343,
+            2381.9833202041427
+          ]
+        }
+      ],
+      "input_dim": 3,
+      "output_dim": 1
+    },
+    {
+      "strategy": "direct",
+      "h": 2,
+      "seed": 42,
+      "alpha": 10.0,
+      "candidates": [
+        {
+          "alpha": 10.0,
+          "RMSE": 1187.675349018084,
+          "folds": [
+            111.83219206218148,
+            2263.5185059739865
+          ]
+        },
+        {
+          "alpha": 100.0,
+          "RMSE": 1196.7603012775035,
+          "folds": [
+            141.37206440291044,
+            2252.1485381520965
+          ]
+        },
+        {
+          "alpha": 1000.0,
+          "RMSE": 1342.319346312286,
+          "folds": [
+            326.8519642298989,
+            2357.786728394673
+          ]
+        },
+        {
+          "alpha": 10000.0,
+          "RMSE": 1463.7897753651328,
+          "folds": [
+            445.6541644128882,
+            2481.925386317377
+          ]
+        }
+      ],
+      "input_dim": 3,
+      "output_dim": 1
+    },
+    {
+      "strategy": "direct",
+      "h": 2,
+      "seed": 43,
+      "alpha": 10.0,
+      "candidates": [
+        {
+          "alpha": 10.0,
+          "RMSE": 1198.8026563048907,
+          "folds": [
+            115.78056621100762,
+            2281.8247463987736
+          ]
+        },
+        {
+          "alpha": 100.0,
+          "RMSE": 1213.0562504783234,
+          "folds": [
+            147.3108426554895,
+            2278.801658301157
+          ]
+        },
+        {
+          "alpha": 1000.0,
+          "RMSE": 1354.5732835707727,
+          "folds": [
+            329.0992785177285,
+            2380.0472886238167
+          ]
+        },
+        {
+          "alpha": 10000.0,
+          "RMSE": 1466.2354006886123,
+          "folds": [
+            445.9507575681454,
+            2486.520043809079
+          ]
+        }
+      ],
+      "input_dim": 3,
+      "output_dim": 1
+    },
+    {
+      "strategy": "direct",
+      "h": 2,
+      "seed": 44,
+      "alpha": 10.0,
+      "candidates": [
+        {
+          "alpha": 10.0,
+          "RMSE": 1164.8542108814759,
+          "folds": [
+            111.0411421249857,
+            2218.667279637966
+          ]
+        },
+        {
+          "alpha": 100.0,
+          "RMSE": 1177.8657377846062,
+          "folds": [
+            139.83785905448187,
+            2215.8936165147306
+          ]
+        },
+        {
+          "alpha": 1000.0,
+          "RMSE": 1329.6509188595164,
+          "folds": [
+            325.1110622290255,
+            2334.1907754900076
+          ]
+        },
+        {
+          "alpha": 10000.0,
+          "RMSE": 1461.2968969574197,
+          "folds": [
+            445.3750319496019,
+            2477.2187619652373
+          ]
+        }
+      ],
+      "input_dim": 3,
+      "output_dim": 1
+    },
+    {
+      "strategy": "direct",
+      "h": 3,
+      "seed": 42,
+      "alpha": 10.0,
+      "candidates": [
+        {
+          "alpha": 10.0,
+          "RMSE": 1269.9819096028036,
+          "folds": [
+            124.03935734452897,
+            2415.9244618610783
+          ]
+        },
+        {
+          "alpha": 100.0,
+          "RMSE": 1297.3419882462485,
+          "folds": [
+            171.6094041105901,
+            2423.074572381907
+          ]
+        },
+        {
+          "alpha": 1000.0,
+          "RMSE": 1411.70663888899,
+          "folds": [
+            346.17511063709986,
+            2477.2381671408803
+          ]
+        },
+        {
+          "alpha": 10000.0,
+          "RMSE": 1484.8637686921084,
+          "folds": [
+            448.3472687053226,
+            2521.380268678894
+          ]
+        }
+      ],
+      "input_dim": 3,
+      "output_dim": 1
+    },
+    {
+      "strategy": "direct",
+      "h": 3,
+      "seed": 43,
+      "alpha": 10.0,
+      "candidates": [
+        {
+          "alpha": 10.0,
+          "RMSE": 1277.7627872998191,
+          "folds": [
+            128.00944684981508,
+            2427.516127749823
+          ]
+        },
+        {
+          "alpha": 100.0,
+          "RMSE": 1308.236247145401,
+          "folds": [
+            166.492521849777,
+            2449.979972441025
+          ]
+        },
+        {
+          "alpha": 1000.0,
+          "RMSE": 1416.164746369731,
+          "folds": [
+            340.9556588924149,
+            2491.373833847047
+          ]
+        },
+        {
+          "alpha": 10000.0,
+          "RMSE": 1485.6538190109677,
+          "folds": [
+            447.47824963234484,
+            2523.8293883895903
+          ]
+        }
+      ],
+      "input_dim": 3,
+      "output_dim": 1
+    },
+    {
+      "strategy": "direct",
+      "h": 3,
+      "seed": 44,
+      "alpha": 10.0,
+      "candidates": [
+        {
+          "alpha": 10.0,
+          "RMSE": 1287.5690381522265,
+          "folds": [
+            126.19309958708644,
+            2448.9449767173664
+          ]
+        },
+        {
+          "alpha": 100.0,
+          "RMSE": 1309.2754717411638,
+          "folds": [
+            166.47845256153366,
+            2452.072490920794
+          ]
+        },
+        {
+          "alpha": 1000.0,
+          "RMSE": 1418.2679856604213,
+          "folds": [
+            344.36461280720096,
+            2492.1713585136417
+          ]
+        },
+        {
+          "alpha": 10000.0,
+          "RMSE": 1486.1738042760264,
+          "folds": [
+            448.26468190563537,
+            2524.0829266464175
+          ]
+        }
+      ],
+      "input_dim": 3,
+      "output_dim": 1
+    },
+    {
+      "strategy": "direct",
+      "h": 4,
+      "seed": 42,
+      "alpha": 10.0,
+      "candidates": [
+        {
+          "alpha": 10.0,
+          "RMSE": 1294.094937364816,
+          "folds": [
+            140.17680582672256,
+            2448.0130689029093
+          ]
+        },
+        {
+          "alpha": 100.0,
+          "RMSE": 1331.4187526264354,
+          "folds": [
+            197.99542678398203,
+            2464.8420784688888
+          ]
+        },
+        {
+          "alpha": 1000.0,
+          "RMSE": 1429.6380824451944,
+          "folds": [
+            359.45858700763057,
+            2499.817577882758
+          ]
+        },
+        {
+          "alpha": 10000.0,
+          "RMSE": 1489.7503927965597,
+          "folds": [
+            449.612228395261,
+            2529.8885571978585
+          ]
+        }
+      ],
+      "input_dim": 3,
+      "output_dim": 1
+    },
+    {
+      "strategy": "direct",
+      "h": 4,
+      "seed": 43,
+      "alpha": 10.0,
+      "candidates": [
+        {
+          "alpha": 10.0,
+          "RMSE": 1317.7787791033743,
+          "folds": [
+            135.98972545449385,
+            2499.5678327522546
+          ]
+        },
+        {
+          "alpha": 100.0,
+          "RMSE": 1344.8184362482443,
+          "folds": [
+            191.12423642580526,
+            2498.5126360706836
+          ]
+        },
+        {
+          "alpha": 1000.0,
+          "RMSE": 1435.1748597163253,
+          "folds": [
+            356.21120180733726,
+            2514.1385176253134
+          ]
+        },
+        {
+          "alpha": 10000.0,
+          "RMSE": 1490.6935630070834,
+          "folds": [
+            449.14546321792153,
+            2532.2416627962452
+          ]
+        }
+      ],
+      "input_dim": 3,
+      "output_dim": 1
+    },
+    {
+      "strategy": "direct",
+      "h": 4,
+      "seed": 44,
+      "alpha": 10.0,
+      "candidates": [
+        {
+          "alpha": 10.0,
+          "RMSE": 1308.1517406349428,
+          "folds": [
+            131.21643765084693,
+            2485.087043619039
+          ]
+        },
+        {
+          "alpha": 100.0,
+          "RMSE": 1333.8411405899185,
+          "folds": [
+            185.14219120281953,
+            2482.5400899770175
+          ]
+        },
+        {
+          "alpha": 1000.0,
+          "RMSE": 1429.237462040526,
+          "folds": [
+            351.2852438195106,
+            2507.1896802615415
+          ]
+        },
+        {
+          "alpha": 10000.0,
+          "RMSE": 1489.6997344315087,
+          "folds": [
+            448.31061913073535,
+            2531.088849732282
+          ]
+        }
+      ],
+      "input_dim": 3,
+      "output_dim": 1
+    },
+    {
+      "strategy": "direct",
+      "h": 5,
+      "seed": 42,
+      "alpha": 10.0,
+      "candidates": [
+        {
+          "alpha": 10.0,
+          "RMSE": 1340.4675082834383,
+          "folds": [
+            205.9773250502303,
+            2474.9576915166463
+          ]
+        },
+        {
+          "alpha": 100.0,
+          "RMSE": 1375.5209105376487,
+          "folds": [
+            251.33947876888584,
+            2499.7023423064115
+          ]
+        },
+        {
+          "alpha": 1000.0,
+          "RMSE": 1450.0675900320273,
+          "folds": [
+            381.41728418096443,
+            2518.71789588309
+          ]
+        },
+        {
+          "alpha": 10000.0,
+          "RMSE": 1495.3840837611374,
+          "folds": [
+            458.18621239011713,
+            2532.5819551321574
+          ]
+        }
+      ],
+      "input_dim": 3,
+      "output_dim": 1
+    },
+    {
+      "strategy": "direct",
+      "h": 5,
+      "seed": 43,
+      "alpha": 10.0,
+      "candidates": [
+        {
+          "alpha": 10.0,
+          "RMSE": 1355.978369702736,
+          "folds": [
+            209.7102530269273,
+            2502.246486378545
+          ]
+        },
+        {
+          "alpha": 100.0,
+          "RMSE": 1388.071153122842,
+          "folds": [
+            248.7199972013351,
+            2527.422309044349
+          ]
+        },
+        {
+          "alpha": 1000.0,
+          "RMSE": 1455.494077880443,
+          "folds": [
+            379.79692248742725,
+            2531.1912332734587
+          ]
+        },
+        {
+          "alpha": 10000.0,
+          "RMSE": 1496.2916926337778,
+          "folds": [
+            457.9718354304256,
+            2534.61154983713
+          ]
+        }
+      ],
+      "input_dim": 3,
+      "output_dim": 1
+    },
+    {
+      "strategy": "direct",
+      "h": 5,
+      "seed": 44,
+      "alpha": 10.0,
+      "candidates": [
+        {
+          "alpha": 10.0,
+          "RMSE": 1337.2728500646258,
+          "folds": [
+            199.53208544990517,
+            2475.0136146793466
+          ]
+        },
+        {
+          "alpha": 100.0,
+          "RMSE": 1362.5396345373476,
+          "folds": [
+            240.48769405039292,
+            2484.5915750243025
+          ]
+        },
+        {
+          "alpha": 1000.0,
+          "RMSE": 1443.0550090282131,
+          "folds": [
+            374.79384236417957,
+            2511.316175692247
+          ]
+        },
+        {
+          "alpha": 10000.0,
+          "RMSE": 1494.2563491184383,
+          "folds": [
+            457.1413003506296,
+            2531.371397886247
+          ]
+        }
+      ],
+      "input_dim": 3,
+      "output_dim": 1
+    },
+    {
+      "strategy": "direct",
+      "h": 6,
+      "seed": 42,
+      "alpha": 10.0,
+      "candidates": [
+        {
+          "alpha": 10.0,
+          "RMSE": 1340.5422562325468,
+          "folds": [
+            222.9942204751562,
+            2458.0902919899377
+          ]
+        },
+        {
+          "alpha": 100.0,
+          "RMSE": 1364.525132244917,
+          "folds": [
+            258.8628432647574,
+            2470.1874212250764
+          ]
+        },
+        {
+          "alpha": 1000.0,
+          "RMSE": 1444.2948799737105,
+          "folds": [
+            382.0257149846891,
+            2506.564044962732
+          ]
+        },
+        {
+          "alpha": 10000.0,
+          "RMSE": 1493.6139447872088,
+          "folds": [
+            456.53621430432935,
+            2530.691675270088
+          ]
+        }
+      ],
+      "input_dim": 3,
+      "output_dim": 1
+    },
+    {
+      "strategy": "direct",
+      "h": 6,
+      "seed": 43,
+      "alpha": 100.0,
+      "candidates": [
+        {
+          "alpha": 10.0,
+          "RMSE": 1404.3547432458317,
+          "folds": [
+            240.42780027634976,
+            2568.2816862153136
+          ]
+        },
+        {
+          "alpha": 100.0,
+          "RMSE": 1401.8701836294888,
+          "folds": [
+            267.55332043855213,
+            2536.1870468204256
+          ]
+        },
+        {
+          "alpha": 1000.0,
+          "RMSE": 1458.1756156897532,
+          "folds": [
+            383.4739510544307,
+            2532.8772803250754
+          ]
+        },
+        {
+          "alpha": 10000.0,
+          "RMSE": 1495.8027070899004,
+          "folds": [
+            456.6627680210566,
+            2534.942646158744
+          ]
+        }
+      ],
+      "input_dim": 3,
+      "output_dim": 1
+    },
+    {
+      "strategy": "direct",
+      "h": 6,
+      "seed": 44,
+      "alpha": 10.0,
+      "candidates": [
+        {
+          "alpha": 10.0,
+          "RMSE": 1375.6102307538943,
+          "folds": [
+            248.36804595274236,
+            2502.8524155550463
+          ]
+        },
+        {
+          "alpha": 100.0,
+          "RMSE": 1384.8739179866652,
+          "folds": [
+            272.724738494511,
+            2497.0230974788196
+          ]
+        },
+        {
+          "alpha": 1000.0,
+          "RMSE": 1449.899912090896,
+          "folds": [
+            385.4592798209269,
+            2514.340544360865
+          ]
+        },
+        {
+          "alpha": 10000.0,
+          "RMSE": 1494.4160663137643,
+          "folds": [
+            456.96627812548064,
+            2531.865854502048
+          ]
+        }
+      ],
+      "input_dim": 3,
+      "output_dim": 1
+    },
+    {
+      "strategy": "direct",
+      "h": 7,
+      "seed": 42,
+      "alpha": 100.0,
+      "candidates": [
+        {
+          "alpha": 10.0,
+          "RMSE": 1426.531908193068,
+          "folds": [
+            239.80342421544626,
+            2613.2603921706896
+          ]
+        },
+        {
+          "alpha": 100.0,
+          "RMSE": 1415.3349843471863,
+          "folds": [
+            267.4065725310943,
+            2563.2633961632782
+          ]
+        },
+        {
+          "alpha": 1000.0,
+          "RMSE": 1462.5055986072905,
+          "folds": [
+            381.9308276848172,
+            2543.0803695297636
+          ]
+        },
+        {
+          "alpha": 10000.0,
+          "RMSE": 1495.3389414764704,
+          "folds": [
+            454.1029772978596,
+            2536.5749056550812
+          ]
+        }
+      ],
+      "input_dim": 3,
+      "output_dim": 1
+    },
+    {
+      "strategy": "direct",
+      "h": 7,
+      "seed": 43,
+      "alpha": 100.0,
+      "candidates": [
+        {
+          "alpha": 10.0,
+          "RMSE": 1413.6598865501207,
+          "folds": [
+            239.20175281445725,
+            2588.118020285784
+          ]
+        },
+        {
+          "alpha": 100.0,
+          "RMSE": 1413.425055633844,
+          "folds": [
+            271.13963506723786,
+            2555.71047620045
+          ]
+        },
+        {
+          "alpha": 1000.0,
+          "RMSE": 1462.6116382970456,
+          "folds": [
+            383.59039683750115,
+            2541.6328797565902
+          ]
+        },
+        {
+          "alpha": 10000.0,
+          "RMSE": 1495.3358019021384,
+          "folds": [
+            454.2866358900888,
+            2536.384967914188
+          ]
+        }
+      ],
+      "input_dim": 3,
+      "output_dim": 1
+    },
+    {
+      "strategy": "direct",
+      "h": 7,
+      "seed": 44,
+      "alpha": 100.0,
+      "candidates": [
+        {
+          "alpha": 10.0,
+          "RMSE": 1407.97836045606,
+          "folds": [
+            240.3480555626401,
+            2575.60866534948
+          ]
+        },
+        {
+          "alpha": 100.0,
+          "RMSE": 1407.9038513444136,
+          "folds": [
+            269.22473845352266,
+            2546.5829642353046
+          ]
+        },
+        {
+          "alpha": 1000.0,
+          "RMSE": 1459.7446493497046,
+          "folds": [
+            382.2835651065554,
+            2537.205733592854
+          ]
+        },
+        {
+          "alpha": 10000.0,
+          "RMSE": 1494.8918398068463,
+          "folds": [
+            454.12419729247426,
+            2535.659482321218
+          ]
+        }
+      ],
+      "input_dim": 3,
+      "output_dim": 1
+    },
+    {
+      "strategy": "multi",
+      "h": 7,
+      "seed": 42,
+      "alpha": 100.0,
+      "candidates": [
+        {
+          "alpha": 10.0,
+          "RMSE": 1444.266499435165,
+          "folds": [
+            164.99361282070328,
+            2723.539386049627
+          ]
+        },
+        {
+          "alpha": 100.0,
+          "RMSE": 1252.8518510910824,
+          "folds": [
+            172.83964640721373,
+            2332.864055774951
+          ]
+        },
+        {
+          "alpha": 1000.0,
+          "RMSE": 1282.0477445105385,
+          "folds": [
+            221.43965138961917,
+            2342.655837631458
+          ]
+        },
+        {
+          "alpha": 10000.0,
+          "RMSE": 1414.9190133451737,
+          "folds": [
+            385.43777688293346,
+            2444.4002498074137
+          ]
+        }
+      ],
+      "input_dim": 21,
+      "output_dim": 7
+    },
+    {
+      "strategy": "multi",
+      "h": 7,
+      "seed": 43,
+      "alpha": 10.0,
+      "candidates": [
+        {
+          "alpha": 10.0,
+          "RMSE": 1263.2570669523238,
+          "folds": [
+            167.19441932278846,
+            2359.319714581859
+          ]
+        },
+        {
+          "alpha": 100.0,
+          "RMSE": 1278.680372345639,
+          "folds": [
+            175.12520168730256,
+            2382.235543003975
+          ]
+        },
+        {
+          "alpha": 1000.0,
+          "RMSE": 1321.8516526406418,
+          "folds": [
+            224.40986887017064,
+            2419.293436411113
+          ]
+        },
+        {
+          "alpha": 10000.0,
+          "RMSE": 1432.961196103781,
+          "folds": [
+            385.0443891563363,
+            2480.8780030512257
+          ]
+        }
+      ],
+      "input_dim": 21,
+      "output_dim": 7
+    },
+    {
+      "strategy": "multi",
+      "h": 7,
+      "seed": 44,
+      "alpha": 10.0,
+      "candidates": [
+        {
+          "alpha": 10.0,
+          "RMSE": 1240.2867483731613,
+          "folds": [
+            164.25971857768758,
+            2316.313778168635
+          ]
+        },
+        {
+          "alpha": 100.0,
+          "RMSE": 1245.3069150357942,
+          "folds": [
+            163.58446970893758,
+            2327.029360362651
+          ]
+        },
+        {
+          "alpha": 1000.0,
+          "RMSE": 1282.1733783988532,
+          "folds": [
+            206.18383783587984,
+            2358.1629189618266
+          ]
+        },
+        {
+          "alpha": 10000.0,
+          "RMSE": 1414.5947044058698,
+          "folds": [
+            378.0784517775125,
+            2451.1109570342273
+          ]
+        }
+      ],
+      "input_dim": 21,
+      "output_dim": 7
+    }
+  ],
+  "development_gates": [
+    {
+      "strategy": "direct",
+      "h": 1,
+      "reference": "original",
+      "passed_all_seeds": false,
+      "seed_results": [
+        {
+          "seed": 42,
+          "RMSE_ratio": 0.8944418216676003,
+          "MAE_ratio": 0.8550371343401288,
+          "worst_quarter_ratio": 1.0602565357215605,
+          "passed": true
+        },
+        {
+          "seed": 43,
+          "RMSE_ratio": 1.101716545187552,
+          "MAE_ratio": 0.9980537969404674,
+          "worst_quarter_ratio": 1.1896403821888697,
+          "passed": false
+        },
+        {
+          "seed": 44,
+          "RMSE_ratio": 0.8681168502338142,
+          "MAE_ratio": 0.7451177579947981,
+          "worst_quarter_ratio": 1.1081475631904851,
+          "passed": true
+        }
+      ],
+      "policy": "参数只用2002选择；2003三种子门槛只决定是否推荐，不反选OOF参数"
+    },
+    {
+      "strategy": "direct",
+      "h": 1,
+      "reference": "previous",
+      "passed_all_seeds": false,
+      "seed_results": [
+        {
+          "seed": 42,
+          "RMSE_ratio": 1.0685204511254176,
+          "MAE_ratio": 1.0787973686891048,
+          "worst_quarter_ratio": 1.2516943075702787,
+          "passed": false
+        },
+        {
+          "seed": 43,
+          "RMSE_ratio": 1.2603613703000485,
+          "MAE_ratio": 1.2153769437533564,
+          "worst_quarter_ratio": 1.6065632071034244,
+          "passed": false
+        },
+        {
+          "seed": 44,
+          "RMSE_ratio": 1.0524136436675502,
+          "MAE_ratio": 1.041657391901925,
+          "worst_quarter_ratio": 1.097364620414415,
+          "passed": false
+        }
+      ],
+      "policy": "参数只用2002选择；2003三种子门槛只决定是否推荐，不反选OOF参数"
+    },
+    {
+      "strategy": "direct",
+      "h": 2,
+      "reference": "original",
+      "passed_all_seeds": true,
+      "seed_results": [
+        {
+          "seed": 42,
+          "RMSE_ratio": 0.9143302400135689,
+          "MAE_ratio": 0.8786917124234987,
+          "worst_quarter_ratio": 0.992449488394601,
+          "passed": true
+        },
+        {
+          "seed": 43,
+          "RMSE_ratio": 0.9147071672001661,
+          "MAE_ratio": 0.8739735164417064,
+          "worst_quarter_ratio": 0.961565376628446,
+          "passed": true
+        },
+        {
+          "seed": 44,
+          "RMSE_ratio": 0.8587596085083599,
+          "MAE_ratio": 0.8458097087688993,
+          "worst_quarter_ratio": 0.9294691561198782,
+          "passed": true
+        }
+      ],
+      "policy": "参数只用2002选择；2003三种子门槛只决定是否推荐，不反选OOF参数"
+    },
+    {
+      "strategy": "direct",
+      "h": 2,
+      "reference": "previous",
+      "passed_all_seeds": true,
+      "seed_results": [
+        {
+          "seed": 42,
+          "RMSE_ratio": 0.9362224345662471,
+          "MAE_ratio": 0.902031869367771,
+          "worst_quarter_ratio": 1.0249135667469371,
+          "passed": true
+        },
+        {
+          "seed": 43,
+          "RMSE_ratio": 0.9378066236577597,
+          "MAE_ratio": 0.8780998037300104,
+          "worst_quarter_ratio": 1.017986562861817,
+          "passed": true
+        },
+        {
+          "seed": 44,
+          "RMSE_ratio": 0.9012817525529777,
+          "MAE_ratio": 0.878360049355271,
+          "worst_quarter_ratio": 0.9922937852239672,
+          "passed": true
+        }
+      ],
+      "policy": "参数只用2002选择；2003三种子门槛只决定是否推荐，不反选OOF参数"
+    },
+    {
+      "strategy": "direct",
+      "h": 3,
+      "reference": "original",
+      "passed_all_seeds": false,
+      "seed_results": [
+        {
+          "seed": 42,
+          "RMSE_ratio": 1.1781779674938626,
+          "MAE_ratio": 1.2575145151139095,
+          "worst_quarter_ratio": 2.1639115788705445,
+          "passed": false
+        },
+        {
+          "seed": 43,
+          "RMSE_ratio": 1.076657080464846,
+          "MAE_ratio": 1.1626669001124628,
+          "worst_quarter_ratio": 1.3215615907214944,
+          "passed": false
+        },
+        {
+          "seed": 44,
+          "RMSE_ratio": 1.1508378587835169,
+          "MAE_ratio": 1.1975351990207763,
+          "worst_quarter_ratio": 1.9201075128821528,
+          "passed": false
+        }
+      ],
+      "policy": "参数只用2002选择；2003三种子门槛只决定是否推荐，不反选OOF参数"
+    },
+    {
+      "strategy": "direct",
+      "h": 3,
+      "reference": "previous",
+      "passed_all_seeds": false,
+      "seed_results": [
+        {
+          "seed": 42,
+          "RMSE_ratio": 1.0845545318855858,
+          "MAE_ratio": 1.1097822781634807,
+          "worst_quarter_ratio": 1.3540281752847287,
+          "passed": false
+        },
+        {
+          "seed": 43,
+          "RMSE_ratio": 1.027375749465691,
+          "MAE_ratio": 1.0594981508213626,
+          "worst_quarter_ratio": 1.1427262509819567,
+          "passed": false
+        },
+        {
+          "seed": 44,
+          "RMSE_ratio": 0.9119693959976894,
+          "MAE_ratio": 0.898822516094024,
+          "worst_quarter_ratio": 1.0694704274001055,
+          "passed": true
+        }
+      ],
+      "policy": "参数只用2002选择；2003三种子门槛只决定是否推荐，不反选OOF参数"
+    },
+    {
+      "strategy": "direct",
+      "h": 4,
+      "reference": "original",
+      "passed_all_seeds": false,
+      "seed_results": [
+        {
+          "seed": 42,
+          "RMSE_ratio": 1.043239034513723,
+          "MAE_ratio": 1.0575584411183245,
+          "worst_quarter_ratio": 1.3948963387197826,
+          "passed": false
+        },
+        {
+          "seed": 43,
+          "RMSE_ratio": 1.0421860085117332,
+          "MAE_ratio": 1.0596037918378618,
+          "worst_quarter_ratio": 1.5146075564777943,
+          "passed": false
+        },
+        {
+          "seed": 44,
+          "RMSE_ratio": 1.0203358142364933,
+          "MAE_ratio": 0.9965445841237446,
+          "worst_quarter_ratio": 1.324407850101946,
+          "passed": false
+        }
+      ],
+      "policy": "参数只用2002选择；2003三种子门槛只决定是否推荐，不反选OOF参数"
+    },
+    {
+      "strategy": "direct",
+      "h": 4,
+      "reference": "previous",
+      "passed_all_seeds": true,
+      "seed_results": [
+        {
+          "seed": 42,
+          "RMSE_ratio": 0.9176784194237252,
+          "MAE_ratio": 0.9196425336787851,
+          "worst_quarter_ratio": 1.0774806913847625,
+          "passed": true
+        },
+        {
+          "seed": 43,
+          "RMSE_ratio": 0.9474506480446958,
+          "MAE_ratio": 0.907106183845698,
+          "worst_quarter_ratio": 1.0617970198596196,
+          "passed": true
+        },
+        {
+          "seed": 44,
+          "RMSE_ratio": 0.8829942434997173,
+          "MAE_ratio": 0.875660981585801,
+          "worst_quarter_ratio": 1.1272575693753062,
+          "passed": true
+        }
+      ],
+      "policy": "参数只用2002选择；2003三种子门槛只决定是否推荐，不反选OOF参数"
+    },
+    {
+      "strategy": "direct",
+      "h": 5,
+      "reference": "original",
+      "passed_all_seeds": false,
+      "seed_results": [
+        {
+          "seed": 42,
+          "RMSE_ratio": 1.0458130806686536,
+          "MAE_ratio": 1.0347416984793865,
+          "worst_quarter_ratio": 1.280247926409933,
+          "passed": false
+        },
+        {
+          "seed": 43,
+          "RMSE_ratio": 1.1882228082532909,
+          "MAE_ratio": 1.2272765545146989,
+          "worst_quarter_ratio": 1.9918469190768817,
+          "passed": false
+        },
+        {
+          "seed": 44,
+          "RMSE_ratio": 1.1157991171351678,
+          "MAE_ratio": 1.1178274535195296,
+          "worst_quarter_ratio": 1.6121094340635282,
+          "passed": false
+        }
+      ],
+      "policy": "参数只用2002选择；2003三种子门槛只决定是否推荐，不反选OOF参数"
+    },
+    {
+      "strategy": "direct",
+      "h": 5,
+      "reference": "previous",
+      "passed_all_seeds": false,
+      "seed_results": [
+        {
+          "seed": 42,
+          "RMSE_ratio": 1.0119275179402036,
+          "MAE_ratio": 0.9918312266254966,
+          "worst_quarter_ratio": 1.0888663512043646,
+          "passed": false
+        },
+        {
+          "seed": 43,
+          "RMSE_ratio": 1.0143801140805344,
+          "MAE_ratio": 0.9861958061431326,
+          "worst_quarter_ratio": 1.0654733974733188,
+          "passed": false
+        },
+        {
+          "seed": 44,
+          "RMSE_ratio": 0.9582170437136169,
+          "MAE_ratio": 0.9579042161189507,
+          "worst_quarter_ratio": 1.2064256208508037,
+          "passed": false
+        }
+      ],
+      "policy": "参数只用2002选择；2003三种子门槛只决定是否推荐，不反选OOF参数"
+    },
+    {
+      "strategy": "direct",
+      "h": 6,
+      "reference": "original",
+      "passed_all_seeds": false,
+      "seed_results": [
+        {
+          "seed": 42,
+          "RMSE_ratio": 1.152031385516502,
+          "MAE_ratio": 1.170657703141796,
+          "worst_quarter_ratio": 1.9460039920254957,
+          "passed": false
+        },
+        {
+          "seed": 43,
+          "RMSE_ratio": 1.0728635707481402,
+          "MAE_ratio": 1.0408918615950677,
+          "worst_quarter_ratio": 1.428027727922206,
+          "passed": false
+        },
+        {
+          "seed": 44,
+          "RMSE_ratio": 0.9969276110691851,
+          "MAE_ratio": 0.9604991659623284,
+          "worst_quarter_ratio": 1.0825419201855468,
+          "passed": false
+        }
+      ],
+      "policy": "参数只用2002选择；2003三种子门槛只决定是否推荐，不反选OOF参数"
+    },
+    {
+      "strategy": "direct",
+      "h": 6,
+      "reference": "previous",
+      "passed_all_seeds": false,
+      "seed_results": [
+        {
+          "seed": 42,
+          "RMSE_ratio": 1.02362479867656,
+          "MAE_ratio": 0.9969431659010585,
+          "worst_quarter_ratio": 1.1097834364911239,
+          "passed": false
+        },
+        {
+          "seed": 43,
+          "RMSE_ratio": 1.0206101742497846,
+          "MAE_ratio": 0.9939955884061464,
+          "worst_quarter_ratio": 1.1175974291493154,
+          "passed": false
+        },
+        {
+          "seed": 44,
+          "RMSE_ratio": 0.9849403306338049,
+          "MAE_ratio": 0.980252922677361,
+          "worst_quarter_ratio": 1.1090727039028048,
+          "passed": true
+        }
+      ],
+      "policy": "参数只用2002选择；2003三种子门槛只决定是否推荐，不反选OOF参数"
+    },
+    {
+      "strategy": "direct",
+      "h": 7,
+      "reference": "original",
+      "passed_all_seeds": false,
+      "seed_results": [
+        {
+          "seed": 42,
+          "RMSE_ratio": 1.0433986563013453,
+          "MAE_ratio": 1.0383207476644556,
+          "worst_quarter_ratio": 1.737974580660354,
+          "passed": false
+        },
+        {
+          "seed": 43,
+          "RMSE_ratio": 0.9939015727854918,
+          "MAE_ratio": 0.9715711839327671,
+          "worst_quarter_ratio": 1.1862282537511593,
+          "passed": false
+        },
+        {
+          "seed": 44,
+          "RMSE_ratio": 1.1074661359829052,
+          "MAE_ratio": 1.0920346949231345,
+          "worst_quarter_ratio": 1.798914352334722,
+          "passed": false
+        }
+      ],
+      "policy": "参数只用2002选择；2003三种子门槛只决定是否推荐，不反选OOF参数"
+    },
+    {
+      "strategy": "direct",
+      "h": 7,
+      "reference": "previous",
+      "passed_all_seeds": false,
+      "seed_results": [
+        {
+          "seed": 42,
+          "RMSE_ratio": 1.002692478071451,
+          "MAE_ratio": 0.9989182984915285,
+          "worst_quarter_ratio": 1.0369590442792953,
+          "passed": false
+        },
+        {
+          "seed": 43,
+          "RMSE_ratio": 1.0506857086098536,
+          "MAE_ratio": 1.0351673819787874,
+          "worst_quarter_ratio": 1.146400610801008,
+          "passed": false
+        },
+        {
+          "seed": 44,
+          "RMSE_ratio": 0.9496080170122907,
+          "MAE_ratio": 0.9325933912371596,
+          "worst_quarter_ratio": 1.0068997917804523,
+          "passed": true
+        }
+      ],
+      "policy": "参数只用2002选择；2003三种子门槛只决定是否推荐，不反选OOF参数"
+    },
+    {
+      "strategy": "multi",
+      "h": 7,
+      "reference": "original",
+      "passed_all_seeds": false,
+      "seed_results": [
+        {
+          "seed": 42,
+          "RMSE_ratio": 1.179704361313466,
+          "MAE_ratio": 1.1984746269887208,
+          "worst_quarter_ratio": 2.299395847725325,
+          "passed": false
+        },
+        {
+          "seed": 43,
+          "RMSE_ratio": 1.1790813865980072,
+          "MAE_ratio": 1.2012100904723944,
+          "worst_quarter_ratio": 2.102137369724259,
+          "passed": false
+        },
+        {
+          "seed": 44,
+          "RMSE_ratio": 1.1817162878629017,
+          "MAE_ratio": 1.124098792743413,
+          "worst_quarter_ratio": 1.9839359361808684,
+          "passed": false
+        }
+      ],
+      "policy": "参数只用2002选择；2003三种子门槛只决定是否推荐，不反选OOF参数"
+    },
+    {
+      "strategy": "multi",
+      "h": 7,
+      "reference": "previous",
+      "passed_all_seeds": false,
+      "seed_results": [
+        {
+          "seed": 42,
+          "RMSE_ratio": 1.217436321401701,
+          "MAE_ratio": 1.2867561709732247,
+          "worst_quarter_ratio": 1.9409034584590565,
+          "passed": false
+        },
+        {
+          "seed": 43,
+          "RMSE_ratio": 1.1712039556361067,
+          "MAE_ratio": 1.2172170668121025,
+          "worst_quarter_ratio": 1.4120340065272623,
+          "passed": false
+        },
+        {
+          "seed": 44,
+          "RMSE_ratio": 1.2367806578127036,
+          "MAE_ratio": 1.300318684960932,
+          "worst_quarter_ratio": 1.8115747263528093,
+          "passed": false
+        }
+      ],
+      "policy": "参数只用2002选择；2003三种子门槛只决定是否推荐，不反选OOF参数"
+    }
+  ],
+  "seeds": [
+    42,
+    43,
+    44
+  ],
+  "primary_seed": 42,
+  "previous_run": "formal_20261111_gpu_lag_residual",
+  "max_search_target": "2002-12-31",
+  "max_train_target": "2003-12-31",
+  "test_2004_predicted": false,
+  "reused": [
+    "上轮ANN/RF的2003 OOF及最终模型；逐文件SHA256核对"
+  ],
+  "limitations": [
+    "2004已被查看，本轮仍为回溯评估",
+    "随机批次仅在当前训练折内部",
+    "lognormal是假设边际对数正态，不保证分布或区间已校准",
+    "Stacking保留上轮2003 OOF协议，本轮不把重复训练称为新方法"
+  ]
+}

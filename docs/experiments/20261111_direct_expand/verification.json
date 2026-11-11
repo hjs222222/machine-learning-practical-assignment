@@ -1,0 +1,26 @@
+{
+  "status": "passed",
+  "mode": "historical",
+  "smoke": false,
+  "fits": 864,
+  "models": 108,
+  "metrics": 108,
+  "prediction_rows": 38664,
+  "frozen_files": 1398,
+  "selection_frozen_before_outer": true,
+  "max_target": "2003-12-31",
+  "checks": [
+    "固定正式协议",
+    "源码/工件hash",
+    "因果数据重建",
+    "逐fit配置/seed声明",
+    "时间净化",
+    "实际外层scaler重算",
+    "网络实际容量与buffer",
+    "全部模型恢复",
+    "指标和选择重算"
+  ],
+  "limitations": [
+    "不从审计声明独立证明实际随机过程；依据已冻结训练源码与重复性测试"
+  ]
+}

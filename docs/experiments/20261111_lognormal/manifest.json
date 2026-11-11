@@ -1,0 +1,18 @@
+{
+  "run_id": "formal_20261111_lognormal",
+  "status": "completed",
+  "smoke": false,
+  "started": "2026-11-11T12:31:03+0800",
+  "data_sha256": "ab09410b23118510bb4e8787a62b97693336a1c46477a01329f587c64bc57151",
+  "device": "cuda",
+  "previous_run": "formal_20261111_gpu_lag_residual",
+  "gpu": "NVIDIA GeForce RTX 4060 Laptop GPU",
+  "packages": {
+    "torch": "2.6.0+cu126",
+    "scikit-learn": "1.5.1",
+    "numpy": "1.26.4",
+    "pandas": "2.2.2"
+  },
+  "seconds": 709.0871201,
+  "finished": "2026-11-11T12:42:52+0800"
+}

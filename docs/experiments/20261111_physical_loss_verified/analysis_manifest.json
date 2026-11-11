@@ -1,0 +1,20 @@
+{
+  "status": "completed",
+  "run_id": "formal_20261111_physical_loss_v1",
+  "run_manifest_sha256": "97647e0045b2d3cab83da314e23317e21745f69634e37df9422cb5ea76d36359",
+  "files": {
+    "annual_summary.csv": "453cb3d6cbe3badf2f95bc450cbc11421af6f0ff88e5f61a43d4fc211fde3c05",
+    "development_gate.json": "78137cebdeda88828b8ed235e634be8fa0d1908bcbb3cae777b6f437c74d7224",
+    "highflow_diagnostics.csv": "ec45b4b2e59948fc4c645829a23c42c26c298c9d4ccba43bb06e709f5c53709c",
+    "inner_splits.csv": "003274becdcce8c8891d0d3ca4269b0f627bb7a4c95e338dfe5bf32d390538c2",
+    "legacy_log_baseline_check.csv": "9cf478ca1e9d3a206c16668073366dd56a44359988b171497fbd8f417387e784",
+    "manifest.json": "97647e0045b2d3cab83da314e23317e21745f69634e37df9422cb5ea76d36359",
+    "metrics.csv": "30567ecfe91081b474aa92a202bd585b53697ae5778a0577584ac5c8e2eaaea3",
+    "README.md": "62a28fe6dc4a1138f5584b3898b8dd0c29ee13a60d070e292ff0763d17cec00c",
+    "selected_predictions.csv": "562d52f18ed0e13229f53016aa6851d7c7dc21c7a73e1f9d039baf3690d61bf7",
+    "selected_vs_log.csv": "0a241cad6025420cda6963ad349214cafc496bda8d1007855a517a63ad210c63",
+    "selection.json": "af59cabc71d8700d6fa615fa41c55e3b2a60a1ca9f6353f3438d3a4b3e8f71ca",
+    "verification.json": "cb0f8eebc0b88fb10ed16fe457e67fc582e7d51ed924aa9b5ae83f6beee01bb5",
+    "analysis_source/verify_runoff_loss.py": "c883ea6dbc47fcf74ef0fbf0e23fc416ac37869a7ba4a476c1be946c34805118"
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "status": "completed",
+  "run_id": "formal_20261111_day1_delta_v1",
+  "run_manifest_sha256": "0a1e21bbc7f98524519562d1920130c9f5d5e9ce10c50e73ec88829af54c440f",
+  "files": {
+    "all_candidates.csv": "0c959d372e000df05cefa03387473b55050283c1abd9f0c23d2f28e034a7c732",
+    "development_gate.json": "daf194ca328a2a60f6ddd70638846d1fa36c8a45daf625983df78b2b11c8b29d",
+    "family_winners.csv": "3136de6d955c19e37141d473534f3ee188e94e77a745060b6b00636629220662",
+    "highflow_diagnostics.csv": "0cb83f96eb7e00ade34d263a79f3b142581b637b8fad78522374da08837f19cd",
+    "inner_splits.csv": "06762b7cad0a69d9c0f94da9149d20578c61c567c41b5efd4bb0d134f4ace1d2",
+    "legacy_sources.json": "7ab98e1b9b4f64e429891ecca3bc6f5abf5779cf2d26ec794457ca034d360b89",
+    "LSTM_predictions.csv": "ad7398ffd5bc454d1c482936209b398490a91ba18c5930cbeebe7e981e72fef3",
+    "LSTM_vs_old_log.csv": "c3dd9b68f64cc57a65fcf02c14b23b17dc5538927bdc4b215cad194199d8197c",
+    "manifest.json": "0a1e21bbc7f98524519562d1920130c9f5d5e9ce10c50e73ec88829af54c440f",
+    "metrics.csv": "4629921c730864b43337cb89b26cc19f43166ec304d17eac65bc6bfb957dcef6",
+    "persistence.csv": "381260d2db1a653da90a93e1fc3d302ab2dc40a517d31edc701bcf22c2685419",
+    "quarter_metrics.csv": "6dbca73bb39a5485a2c576c1c5585707e396e8a004e2659e1a6891204efe13cc",
+    "README.md": "82f77b56b7d9e03edaa7118bae591d297edacfc54d77479e76023a7f1c92591a",
+    "selected_predictions.csv": "d6c94e5bae3c5d924d2ff10cde8b3b55c396014332b3bcc15158d93a3866f961",
+    "selection.json": "ce17a668d21740ff8be9fe781a3a71d6ab5f760d5f411623faba6e6fd03d5518",
+    "verification.json": "83aee00aa5661379977700147008b55e69aa9ca20af0624240365e7eef2ac71a",
+    "analysis_source/verify_runoff_day1.py": "309c8d7ec3f291c707c1c4cf5b4e8d1fd222d76ad2d651ac273318e99b95a7e6"
+  }
+}

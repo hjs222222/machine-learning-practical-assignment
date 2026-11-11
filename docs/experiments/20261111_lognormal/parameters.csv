@@ -1,0 +1,9 @@
+﻿strategy,h,objective,units,epoch,residual,CV_RMSE
+direct,1,lognormal,[64],40,True,175.9338371006607
+direct,2,lognormal,[32],15,True,286.1422712495457
+direct,3,lognormal,[32],40,False,320.9217515426621
+direct,4,log_mse,[64],15,False,341.58690758371665
+direct,5,log_mse,[64],15,False,321.5393508543266
+direct,6,log_mse,[64],15,False,309.61312885112693
+direct,7,lognormal,[32],15,False,332.8393951618017
+multi,7,lognormal,[32],40,False,315.86026584394733

@@ -1,0 +1,19 @@
+{
+  "status": "passed",
+  "all_seed_prediction_rows": 75390,
+  "all_seed_metric_rows": 210,
+  "required_primary_rows": 42,
+  "fits": 728,
+  "frozen_files_verified": 672,
+  "reused_files_verified": 5,
+  "previous_frozen_files_verified": 840,
+  "reused_final_model_files_verified": 96,
+  "test_origins": 359,
+  "metrics_rebuilt": true,
+  "mean_rebuilt": true,
+  "stacking_rebuilt": true,
+  "final_lstm_predictions_rebuilt": true,
+  "development_gates_rebuilt": true,
+  "dates_and_truth_verified": true,
+  "ann_rf_identical_to_previous": true
+}

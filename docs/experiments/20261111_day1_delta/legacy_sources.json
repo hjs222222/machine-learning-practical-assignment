@@ -1,0 +1,32 @@
+[
+  {
+    "run_id": "formal_20261111_physical_loss_v1",
+    "path": "predictions/y2002_direct_h1_residual_log_s42.csv",
+    "sha256": "f137a4442aecdf63cdc3cdb119a7e3737bfcb300bcfac29f2a77b23752fe3e14"
+  },
+  {
+    "run_id": "formal_20261111_physical_loss_v1",
+    "path": "predictions/y2002_direct_h1_residual_log_s43.csv",
+    "sha256": "d808f500793a1012a6d3a5021cbdc6093f7d0168d1404909e990ca52de224753"
+  },
+  {
+    "run_id": "formal_20261111_physical_loss_v1",
+    "path": "predictions/y2002_direct_h1_residual_log_s44.csv",
+    "sha256": "05c9276c7f70c46c94cf7f87b67e0971f31f376699d5c8f414505d46808657ec"
+  },
+  {
+    "run_id": "formal_20261111_physical_loss_v1",
+    "path": "predictions/y2003_direct_h1_residual_log_s42.csv",
+    "sha256": "de3e4d86303a1bfae96d886e2a504916c5b82e7b7d0eea8ed8f163f0db55394c"
+  },
+  {
+    "run_id": "formal_20261111_physical_loss_v1",
+    "path": "predictions/y2003_direct_h1_residual_log_s43.csv",
+    "sha256": "259ecb0883a5f71c311a19a06c12ba552b2f84e4a81644ecf670af5562502037"
+  },
+  {
+    "run_id": "formal_20261111_physical_loss_v1",
+    "path": "predictions/y2003_direct_h1_residual_log_s44.csv",
+    "sha256": "a9fca5e15a2bbd590974a5d1252402d273547742d402f0ea2d2780c87ef249fd"
+  }
+]

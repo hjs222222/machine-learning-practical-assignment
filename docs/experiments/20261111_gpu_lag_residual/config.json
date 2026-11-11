@@ -1,0 +1,166 @@
+{
+  "grids": [
+    {
+      "units": [
+        [
+          32
+        ],
+        [
+          64
+        ]
+      ],
+      "fixed_epochs": [
+        10,
+        30
+      ],
+      "dropout": [
+        0.1
+      ],
+      "lr": [
+        0.001
+      ],
+      "feature_mode": [
+        "compact_lag"
+      ],
+      "input_transform": [
+        "identity"
+      ],
+      "residual": [
+        false
+      ]
+    },
+    {
+      "units": [
+        [
+          32
+        ],
+        [
+          64
+        ]
+      ],
+      "fixed_epochs": [
+        10,
+        30
+      ],
+      "dropout": [
+        0.1
+      ],
+      "lr": [
+        0.001
+      ],
+      "feature_mode": [
+        "compact_lag"
+      ],
+      "input_transform": [
+        "signed_log"
+      ],
+      "residual": [
+        false
+      ]
+    },
+    {
+      "units": [
+        [
+          32
+        ],
+        [
+          64
+        ]
+      ],
+      "fixed_epochs": [
+        10,
+        30
+      ],
+      "dropout": [
+        0.1
+      ],
+      "lr": [
+        0.001
+      ],
+      "feature_mode": [
+        "compact_lag"
+      ],
+      "input_transform": [
+        "signed_log"
+      ],
+      "residual": [
+        true
+      ]
+    },
+    {
+      "feature_mode": [
+        "compact"
+      ],
+      "input_transform": [
+        "identity"
+      ],
+      "residual": [
+        false
+      ],
+      "units": [
+        [
+          64
+        ]
+      ],
+      "fixed_epochs": [
+        10,
+        30
+      ],
+      "dropout": [
+        0.1
+      ],
+      "lr": [
+        0.001
+      ],
+      "batch_size": [
+        32
+      ]
+    }
+  ],
+  "tasks": [
+    [
+      "direct",
+      1
+    ],
+    [
+      "direct",
+      2
+    ],
+    [
+      "direct",
+      3
+    ],
+    [
+      "direct",
+      4
+    ],
+    [
+      "direct",
+      5
+    ],
+    [
+      "direct",
+      6
+    ],
+    [
+      "direct",
+      7
+    ],
+    [
+      "multi",
+      7
+    ]
+  ],
+  "primary_seed": 42,
+  "gate": {
+    "quarter_mean_RMSE_ratio": 0.995,
+    "MAE_ratio": 1.02,
+    "worst_quarter_ratio": 1.15
+  },
+  "meta_alphas": [
+    10.0,
+    100.0,
+    1000.0,
+    10000.0
+  ]
+}

@@ -1,0 +1,9 @@
+﻿策略,h,units,epoch,输入,输入变换,残差,开发准入,开发RMSE比值,最差季度比值
+direct,1,[32],10,compact_lag,signed_log,True,True,0.83708441960613,1.0189815324841318
+direct,2,[32],30,compact_lag,signed_log,False,False,0.9766164602081759,1.1765536844971916
+direct,3,[32],30,compact_lag,signed_log,False,False,1.086324322895507,1.5981289151649385
+direct,4,[32],30,compact_lag,signed_log,False,False,1.1368241994497879,1.946912505145568
+direct,5,[32],30,compact_lag,signed_log,False,False,1.033486156001988,1.2277307081788795
+direct,6,[32],30,compact_lag,signed_log,False,False,1.1254430207298205,1.8275942312215732
+direct,7,[32],30,compact_lag,signed_log,False,False,1.0405968720421512,1.676030109625281
+multi,7,[64],30,compact_lag,signed_log,True,False,0.9690070359944639,1.1847038747361949

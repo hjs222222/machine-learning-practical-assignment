@@ -1,0 +1,23 @@
+{
+  "status": "completed",
+  "run_id": "smoke_20261111_day1_delta_v1",
+  "run_manifest_sha256": "e3fe2ca4cd966bff770dd99ae54d03e0dad238b6d601a8f7a3d2ec46cb18d9cd",
+  "files": {
+    "all_candidates.csv": "51cbe9a2e8932cfbd2c54a391c29af0344484099fc55929f8cb6e37e7a36d0e9",
+    "development_gate.json": "d5aab7005918dd3b857257265b8ef2fdb50998dbaa5548cbd619a453fa7d2c39",
+    "family_winners.csv": "56b1979058fae0619296fda6d4137a91dbeb86bfc1ebdcbc04f6fab535855c57",
+    "highflow_diagnostics.csv": "8199d61f290440fd68decc33f7a731caa1cbe621cf6de9f067480d22adfd06a5",
+    "inner_splits.csv": "06762b7cad0a69d9c0f94da9149d20578c61c567c41b5efd4bb0d134f4ace1d2",
+    "legacy_sources.json": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+    "LSTM_predictions.csv": "a94bd3dca29818ada0f25c429fec3f5742dc4b2b67f6dcbd22c418af7032af33",
+    "manifest.json": "e3fe2ca4cd966bff770dd99ae54d03e0dad238b6d601a8f7a3d2ec46cb18d9cd",
+    "metrics.csv": "d33fbef253683ebb41f77481d2f9bae78f6d8f02201778ef3badf3c5a1b9ad53",
+    "persistence.csv": "381260d2db1a653da90a93e1fc3d302ab2dc40a517d31edc701bcf22c2685419",
+    "quarter_metrics.csv": "b2e2b20ee62e260ada2e5862ec0890f261cdc41b70aeba0b23097bbae069d78d",
+    "README.md": "7249a56fb379093c2f5ec469d78c07266e91f5abe824af5f8f95317c22c65e85",
+    "selected_predictions.csv": "18dc1830ef78178c1e21b9540818bebfb5dcb06fda5be1366ca4c8f36593d4ea",
+    "selection.json": "161cbd359e55cbb0c345de480ad9f9c46a0e0342b2c2e350fc7b8bf3768ec6f2",
+    "verification.json": "2e739d4cd6cd5ef81b90fdb9a7092d1b4f13dfbb1f6c15631a8e66c7bce9896e",
+    "analysis_source/verify_runoff_day1.py": "06f5e3525102ab67b22e5f3802c77aa34279efdc2886bfcb7bb0600b334db835"
+  }
+}

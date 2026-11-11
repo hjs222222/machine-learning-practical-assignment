@@ -1,0 +1,8 @@
+{
+  "status": "completed",
+  "max_search_target": "2002-12-31",
+  "max_validation_target": "2003-12-31",
+  "read_2004": false,
+  "fits": 60,
+  "purpose": "轻量诊断，不替代课程ANN/RF/LSTM，不用2004筛选特征"
+}

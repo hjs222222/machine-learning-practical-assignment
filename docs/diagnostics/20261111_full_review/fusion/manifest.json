@@ -1,0 +1,6 @@
+{
+  "status": "failed",
+  "read_2004": false,
+  "error": "系数JSON含numpy.int64，序列化失败；已写出的CSV仅为中间文件，不当作完成产物。",
+  "replacement": "../fusion_verified/manifest.json"
+}

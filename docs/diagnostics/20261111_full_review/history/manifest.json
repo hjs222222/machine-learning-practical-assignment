@@ -1,0 +1,9 @@
+{
+  "status": "completed",
+  "kind": "historical_diagnosis_only",
+  "max_target": "2003-12-31",
+  "read_2004_predictions": false,
+  "new_fits": 0,
+  "model_count": 192,
+  "device": "cuda"
+}

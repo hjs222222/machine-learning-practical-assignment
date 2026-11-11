@@ -1,0 +1,7 @@
+{
+  "output\\acceptance3_runs\\formal_20261111_gpu_lag_residual\\dataset.npz": "06958c68305abded748e616571ed1d482eaf1b98c3c7e094aee55d96cc90174d",
+  "output\\acceptance3_runs\\formal_20261111_gpu_lag_residual\\frozen_config.json": "5915b3eebba33a2e587e9509ad4b60ce679d44087554af7cb510dcfde3338df1",
+  "output\\acceptance3_runs\\formal_20261111_gpu_lag_residual\\manifest.json": "1c10bd569acb9c2b954657a92d76de58f37364e721ff73dca9674e91f747805a",
+  "output\\acceptance3_runs\\formal_20261111_gpu_lag_residual\\model_hashes_before_test.json": "0b871663cc8051a2075027c16cca9950d4c95e8195c8a4918e71f3e57e1944a3",
+  "output\\acceptance3_runs\\formal_20261111_gpu_lag_residual\\oof_predictions.csv": "0ba8712938ca2dea73b013a7cd5da29ffec42cd6d87d99daf5b785b4fb5db40e"
+}
