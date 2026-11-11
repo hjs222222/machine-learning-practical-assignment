@@ -1,0 +1,26 @@
+{
+  "data_cutoff": "2003-12-31",
+  "years": [
+    2002,
+    2003
+  ],
+  "members": [
+    "ANN",
+    "RF",
+    "persistence"
+  ],
+  "state": [
+    "log_q",
+    "prcp",
+    "rain3",
+    "qdiff",
+    "month_sin",
+    "month_cos"
+  ],
+  "max_depth": 2,
+  "min_samples_leaf": 60,
+  "seed": 42,
+  "training_target": "three member daily squared errors",
+  "test_evaluations": 0,
+  "data_sha256": "ab09410b23118510bb4e8787a62b97693336a1c46477a01329f587c64bc57151"
+}

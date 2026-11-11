@@ -1,0 +1,11 @@
+{
+  "status": "passed",
+  "gbdt_predictions": 3222,
+  "gbdt_metric_rows": 9,
+  "model_restores": 9,
+  "new_fits": 55,
+  "test_evaluations": 0,
+  "state_predictions": 4296,
+  "selection_days": 716,
+  "qualified": []
+}

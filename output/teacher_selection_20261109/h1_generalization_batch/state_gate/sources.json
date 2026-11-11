@@ -1,0 +1,14 @@
+[
+  {
+    "directory": "output\\teacher_selection_20261109\\ann_depth_seed42",
+    "candidate": "ANN_first_one",
+    "predictions_sha256": "cfd12a3c96933f6fe186aadec016cd5bd8168327ad6ecf4734dd480e2b1da34e",
+    "protocol_sha256": "2f8a9ca776d9c649a300db40e5b0e7b36355a0dd87bae58860786fc1acbf124d"
+  },
+  {
+    "directory": "output\\teacher_selection_20261109\\direct_rf_seed42",
+    "candidate": "selected",
+    "predictions_sha256": "ad52be018f1869ad6956176e71648d56deb217ad81d4f015c51a22b52e16b460",
+    "protocol_sha256": "aff031950a3ef0292c1faa6b95cf2c0fed40923c1baf375487ec9d91848f8e00"
+  }
+]

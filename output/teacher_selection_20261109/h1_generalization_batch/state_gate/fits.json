@@ -1,0 +1,20 @@
+[
+  {
+    "year":2002,
+    "train_count":358,
+    "train_end":"2001-12-24T00:00:00.000",
+    "validation_start":"2002-01-01T00:00:00.000",
+    "validation_count":358,
+    "prior_winner":"persistence",
+    "tree_sha256":"0e5bc416a7218d482e128870fff52f422cffaad293345aea4b417be5926b9099"
+  },
+  {
+    "year":2003,
+    "train_count":716,
+    "train_end":"2002-12-24T00:00:00.000",
+    "validation_start":"2003-01-01T00:00:00.000",
+    "validation_count":358,
+    "prior_winner":"persistence",
+    "tree_sha256":"dda8884236afaa7f1990b9a3b60e6846fb1bb17e576d10ac68063a682c519704"
+  }
+]

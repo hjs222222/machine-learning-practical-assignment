@@ -1,0 +1,21 @@
+{
+  "status": "complete",
+  "new_fits_by_policy": {
+    "all": 27,
+    "recent730": 1,
+    "half_life365": 27
+  },
+  "new_fits": 55,
+  "test_evaluations": 0,
+  "model_sha256": {
+    "all_2001.joblib": "ba970b667becad81e3cc3ed2ab64aa12ff473c64474bc93e6f6a3050bd65b57a",
+    "all_2002.joblib": "a2877479730d2c5b38a32d03ad339c761738f44406ae3c8cb749fa21970f9277",
+    "all_2003.joblib": "572f0ae4be236ef518411e13bab773ce3c3802d95ee01e2860ac43b9647d10f5",
+    "half_life365_2001.joblib": "7c9f69e572ad78457069d60b4956af55c39ee5cbea14b762a9b4e4adbc959340",
+    "half_life365_2002.joblib": "5d07d0ef8ff98a3777496e92eeb56973eb2b3ecc5abe73e4a96dccf3507621cf",
+    "half_life365_2003.joblib": "2d0e4495f327e8050e5ecf77a2defc537c98f34ee2c32a4338e0de9516f283ee",
+    "recent730_2001.joblib": "ba970b667becad81e3cc3ed2ab64aa12ff473c64474bc93e6f6a3050bd65b57a",
+    "recent730_2002.joblib": "a2877479730d2c5b38a32d03ad339c761738f44406ae3c8cb749fa21970f9277",
+    "recent730_2003.joblib": "8dbb02c64f3e3608aca71f767778021dfaf2fbb3639cb0d9cf86e2c58e5fb67a"
+  }
+}
