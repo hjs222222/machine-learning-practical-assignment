@@ -1,0 +1,7 @@
+candidate,year,params,inner_r2,train_count,valid_count,fallback
+RF_baseline,2001,"{'leaf': 5, 'top_k': 36}",-0.14822126907949806,300,358,
+RF_baseline,2002,"{'leaf': 5, 'top_k': 36}",0.6450928285646647,665,358,
+RF_baseline,2003,"{'leaf': 5, 'top_k': 36}",0.8383090113975304,1030,358,
+TwoStage,2001,"{'leaf': 5, 'top_k': 24}",0.09938351048992722,300,358,"{'dry': False, 'wet': False}"
+TwoStage,2002,"{'leaf': 5, 'top_k': 36}",0.690021334562565,665,358,"{'dry': False, 'wet': False}"
+TwoStage,2003,"{'leaf': 5, 'top_k': 36}",0.8787279290937722,1030,358,"{'dry': False, 'wet': False}"

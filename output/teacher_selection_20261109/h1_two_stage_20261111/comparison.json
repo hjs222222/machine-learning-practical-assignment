@@ -1,0 +1,29 @@
+{
+  "comparison_days": 716,
+  "test_evaluations": 0,
+  "candidate": "TwoStage",
+  "control": "RF_baseline",
+  "combined_r2": 0.604547332656848,
+  "combined_mae": 199.03286915525402,
+  "r2_2002": 0.8648536230571747,
+  "r2_2003": 0.5106447636027182,
+  "control_combined_r2": 0.5842489170716382,
+  "control_combined_mae": 208.5901421639494,
+  "control_r2_2002": 0.8139833535857127,
+  "control_r2_2003": 0.4990721441487156,
+  "r2_2001": 0.8878902065607182,
+  "control_r2_2001": 0.8504045464576871,
+  "delta_r2": 0.02029841558520984,
+  "mae_ratio": 0.9541815691309924,
+  "checks": {
+    "combined_r2": true,
+    "r2_2003": true,
+    "r2_2002": true,
+    "mae": true,
+    "r2_2001": true
+  },
+  "qualified": true,
+  "qualified_list": [
+    "TwoStage"
+  ]
+}
