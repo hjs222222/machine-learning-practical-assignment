@@ -1,9 +1,0 @@
-{
-  "field": "freeze.json:data_sha256",
-  "recorded": "unit-test fixture",
-  "correct_value": "ab09410b23118510bb4e8787a62b97693336a1c46477a01329f587c64bc57151",
-  "cause": "data_sha256 三元条件写反：真实运行(raw=None)被标为 unit-test fixture",
-  "verification": "重新对教师CSV计算SHA-256；训练原点1395、训练期2000-02-29至2003-12-24、标签截止2003-12-31 与真实数据一致；未重新训练或重新评价",
-  "impact": "仅元数据标签错误；模型、参数、预测与指标未受影响",
-  "evaluations_added": 0
-}
