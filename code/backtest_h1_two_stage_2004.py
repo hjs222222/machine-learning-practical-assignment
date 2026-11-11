@@ -69,7 +69,7 @@ def run(output, raw=None, params=None, training_run=None):
         train_origins=int(len(d_tr)), train_start=str(d_tr[0].date()), train_end=str(d_tr[-1].date()),
         train_label_end=str((d_tr[-1] + pd.Timedelta(days=7)).date()),
         rain_rule='Prcp(t+1) > 0.2mm, training label only',
-        data_sha256=digest(DATA_PATH) if raw is not None else 'unit-test fixture',
+        data_sha256='unit-test fixture' if raw is not None else digest(DATA_PATH),
         model_sha256=digest(output / 'model.joblib'),
         code_sha256={p.name: digest(p) for p in (ROOT / 'code').glob('*.py')},
         selection_note='Params fixed by majority of training-period annual selections; no 2004 input.',
