@@ -1,0 +1,19 @@
+{
+  "preregistration_commit": "489f376",
+  "seed": 42,
+  "weights": {
+    "ann": 0.5,
+    "boost": 0.5
+  },
+  "data_cutoff": "2003-12-31",
+  "fits": 0,
+  "test_evaluations": 0,
+  "sources": {
+    "output\\teacher_selection_20261109\\ann_depth_seed42\\protocol.json": "2f8a9ca776d9c649a300db40e5b0e7b36355a0dd87bae58860786fc1acbf124d",
+    "output\\teacher_selection_20261109\\ann_depth_seed42\\predictions.csv": "cfd12a3c96933f6fe186aadec016cd5bd8168327ad6ecf4734dd480e2b1da34e",
+    "output\\teacher_selection_20261109\\h1_boost_sqrt_residual_seed42\\protocol.json": "b5d3e3d84685c30742216e839bd6e11b95b712b19a3cb6dfa05cfaf6c193fc60",
+    "output\\teacher_selection_20261109\\h1_boost_sqrt_residual_seed42\\predictions.csv": "b87f253d6102e6a9c4392a19010e008e20e862e55cd06e52ab9f0712442a0f21"
+  },
+  "code_sha256": "f2a7c0ac8c19c16879c44cf0b7b1596cb39deae69b4f9cbdba1ac88be93e5f4a",
+  "limitation": "Repeated development years; supplementary two-model mean, not required three-family mean."
+}
