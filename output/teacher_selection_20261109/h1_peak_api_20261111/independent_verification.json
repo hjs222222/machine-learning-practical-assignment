@@ -1,0 +1,20 @@
+{
+  "status": "passed",
+  "problems": [],
+  "candidates": [
+    "ANN_api",
+    "ANN_mi",
+    "ANN_torch1",
+    "ANN_torch10",
+    "ANN_torch3",
+    "RF_api",
+    "RF_mi",
+    "RF_peak10",
+    "RF_peak3"
+  ],
+  "rows": 19332,
+  "test_evaluations": 0,
+  "qualified": [
+    "RF_peak10"
+  ]
+}
