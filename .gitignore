@@ -12,3 +12,4 @@ report code/**/template.docx
 
 .pytest_tmp/
 .workbuddy/
+dist/
