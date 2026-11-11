@@ -24,3 +24,18 @@ class SqrtResidualHistGradientBoostingRegressor(HistGradientBoostingRegressor):
     def predict(self, X):
         current = _current_flow(X)
         return np.maximum(super().predict(X)+np.sqrt(current), 0)**2
+
+
+class RawResidualHistGradientBoostingRegressor(HistGradientBoostingRegressor):
+    def fit(self, X, y, sample_weight=None):
+        if self.early_stopping is not False:
+            raise ValueError('Residual target requires early_stopping=False')
+        current = _current_flow(X)
+        truth = np.asarray(y, dtype=np.float64)
+        if truth.ndim != 1 or not np.isfinite(truth).all() or (truth < 0).any():
+            raise ValueError('Target must be finite nonnegative single-output flow')
+        return super().fit(X, truth-current, sample_weight=sample_weight)
+
+    def predict(self, X):
+        current = _current_flow(X)
+        return np.maximum(super().predict(X)+current, 0)

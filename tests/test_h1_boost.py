@@ -16,7 +16,7 @@ def test_clipped_score_matches_prediction_policy():
     assert boost.clipped_r2(np.array([0., 1., 2.]), np.array([1., 1., 1.])) == 0.
 
 
-@pytest.mark.parametrize('target', ['raw', 'sqrt_residual'])
+@pytest.mark.parametrize('target', ['raw', 'sqrt_residual', 'raw_residual'])
 def test_training_only_grid_and_saved_predictions(tmp_path, target):
     import research_h1_boost as boost
     raw = raw_data()
@@ -86,3 +86,30 @@ def test_invalid_target_rejected_before_output_creation(tmp_path):
     with pytest.raises(ValueError, match='target'):
         boost.run(tmp_path/'bad', target='unknown')
     assert not (tmp_path/'bad').exists()
+
+
+def test_raw_residual_matches_manual_and_roundtrip(tmp_path):
+    from boosting import RawResidualHistGradientBoostingRegressor
+    from sklearn.base import clone
+    from sklearn.ensemble import HistGradientBoostingRegressor
+    from threadpoolctl import threadpool_limits
+    x = np.column_stack([np.arange(1., 81.), np.cos(np.arange(80))])
+    y = np.maximum(x[:, 0] + 10*x[:, 1], 0)
+    params = dict(max_iter=3, max_leaf_nodes=3, min_samples_leaf=5, early_stopping=False, random_state=42)
+    with threadpool_limits(limits=2):
+        wrapped = RawResidualHistGradientBoostingRegressor(**params).fit(x, y)
+        manual = HistGradientBoostingRegressor(**params).fit(x, y-x[:, 0])
+        expected = np.maximum(manual.predict(x)+x[:, 0], 0)
+        np.testing.assert_array_equal(wrapped.predict(x), expected)
+        assert clone(wrapped).get_params() == wrapped.get_params()
+        path = tmp_path/'raw_model.joblib'
+        joblib.dump(wrapped, path)
+        np.testing.assert_array_equal(joblib.load(path).predict(x), expected)
+        with pytest.raises(ValueError, match='nonnegative'):
+            wrapped.fit(x, -np.ones(len(x)))
+        with pytest.raises(ValueError, match='nonnegative'):
+            wrapped.predict(-x)
+        with pytest.raises(ValueError, match='early_stopping'):
+            RawResidualHistGradientBoostingRegressor(**(params | {'early_stopping':True})).fit(x, y)
+        zero_target = RawResidualHistGradientBoostingRegressor(**params).fit(x, np.zeros(len(x)))
+        np.testing.assert_array_equal(zero_target.predict(np.zeros((2, 2))), [0., 0.])

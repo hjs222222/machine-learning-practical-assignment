@@ -15,7 +15,7 @@ from threadpoolctl import threadpool_limits
 from config import ROOT, DATA_PATH, digest, save_json
 from data import load_raw, development_splits
 from research_h1 import prepare_data, annual_splits, metrics
-from boosting import SqrtResidualHistGradientBoostingRegressor
+from boosting import SqrtResidualHistGradientBoostingRegressor, RawResidualHistGradientBoostingRegressor
 
 
 def clipped_r2(truth, prediction):
@@ -23,18 +23,22 @@ def clipped_r2(truth, prediction):
 
 
 def run(output, raw=None, grid=None, max_iter=200, target='raw'):
-    if target not in ('raw', 'sqrt_residual'):
-        raise ValueError('target must be raw or sqrt_residual')
+    model_types = dict(raw=HistGradientBoostingRegressor,
+        sqrt_residual=SqrtResidualHistGradientBoostingRegressor,
+        raw_residual=RawResidualHistGradientBoostingRegressor)
+    if target not in model_types:
+        raise ValueError('target must be raw, sqrt_residual or raw_residual')
     output = Path(output)
     if output.exists():
         raise FileExistsError('Output exists; inspect it instead of repeating the run')
     grid = grid if grid is not None else dict(max_leaf_nodes=[7, 15], min_samples_leaf=[10, 30])
-    model_type = HistGradientBoostingRegressor if target == 'raw' else SqrtResidualHistGradientBoostingRegressor
+    model_type = model_types[target]
     model = model_type(loss='squared_error', learning_rate=.05,
         max_iter=max_iter, l2_regularization=1., early_stopping=False, warm_start=False,
         categorical_features=None, random_state=42)
     data = prepare_data(load_raw() if raw is None else raw, horizons=7)
     X = data['mi']['X'][:, -1]
+    assert data['mi']['names'][0] == 'Discharge_lag0'
     y, dates = data['y'][:, 0], data['dates']
     assert dates.max()+pd.Timedelta(days=7) <= pd.Timestamp('2003-12-31')
     assert np.isfinite(X).all() and np.isfinite(y).all()
@@ -47,7 +51,9 @@ def run(output, raw=None, grid=None, max_iter=200, target='raw'):
         data_sha256=digest(DATA_PATH) if raw is None else 'unit-test fixture',
         code_hashes={str(p.relative_to(ROOT)):digest(p) for p in (ROOT/'code').glob('*.py')},
         target_mode=target, estimator_class=model_type.__name__,
-        target='untransformed h1 flow' if target == 'raw' else 'sqrt(Q(t+1))-sqrt(Q(t)); decoded to original flow',
+        target=dict(raw='untransformed h1 flow',
+            sqrt_residual='sqrt(Q(t+1))-sqrt(Q(t)); decoded to original flow',
+            raw_residual='Q(t+1)-Q(t); decoded by adding current flow')[target],
         prediction_policy='nonnegative original flow, including CV scoring',
         outer='2001/2002/2003 annual', inner='TimeSeriesSplit(2), gap7',
         limitation='Repeated development years; not a blind test or theoretical upper bound.'))
@@ -93,5 +99,5 @@ def run(output, raw=None, grid=None, max_iter=200, target='raw'):
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--output', type=Path, required=True)
-    parser.add_argument('--target', choices=['raw', 'sqrt_residual'], default='raw')
+    parser.add_argument('--target', choices=['raw', 'sqrt_residual', 'raw_residual'], default='raw')
     print(run(**vars(parser.parse_args())).to_string(index=False))

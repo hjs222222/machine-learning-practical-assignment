@@ -76,6 +76,10 @@ def main(output, source_ref=None):
                 residual = HistGradientBoostingRegressor.predict(model, X[va])
                 manual = np.maximum(residual+np.sqrt(X[va, 0].astype(np.float64)), 0)**2
                 np.testing.assert_array_equal(restored, manual)
+            elif protocol.get('target_mode') == 'raw_residual':
+                residual = HistGradientBoostingRegressor.predict(model, X[va])
+                manual = np.maximum(residual+X[va, 0].astype(np.float64), 0)
+                np.testing.assert_array_equal(restored, manual)
         threshold = float(raw.Discharge.loc[:dates[tr[-1]]].quantile(.95))
         for label in ('boost', 'persistence'):
             group = predictions.loc[(predictions.year == year) & (predictions.model == label)].sort_values('origin')
