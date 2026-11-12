@@ -1,0 +1,9 @@
+﻿model,cv_R2,parameters
+direct_ANN_h1,0.7076073149922572,"{""alpha"": 0.1, ""hidden"": 64, ""iterations"": 350, ""residual"": true, ""top_k"": 24, ""transform"": ""log""}"
+direct_ANN_h2,0.4664767664063244,"{""alpha"": 0.1, ""hidden"": 64, ""iterations"": 350, ""top_k"": 24, ""transform"": ""sqrt""}"
+direct_ANN_h3,0.37480295249919743,"{""alpha"": 0.1, ""hidden"": 64, ""iterations"": 350, ""residual"": true, ""top_k"": 24, ""transform"": ""log""}"
+direct_ANN_h4,0.2903485082301888,"{""alpha"": 0.1, ""hidden"": 32, ""iterations"": 350, ""top_k"": 24, ""transform"": ""sqrt""}"
+direct_ANN_h5,0.25552075324347717,"{""alpha"": 0.1, ""hidden"": 32, ""iterations"": 350, ""top_k"": 24, ""transform"": ""log""}"
+direct_ANN_h6,0.19432082586094468,"{""alpha"": 0.1, ""hidden"": 32, ""iterations"": 350, ""top_k"": 24, ""transform"": ""log""}"
+direct_ANN_h7,0.2184019989268599,"{""alpha"": 0.1, ""hidden"": 64, ""iterations"": 350, ""top_k"": 24, ""transform"": ""log""}"
+multi_ANN_h7,0.30584323065624563,"{""alpha"": 0.1, ""hidden"": 32, ""iterations"": 350, ""top_k"": 24, ""transform"": ""log""}"

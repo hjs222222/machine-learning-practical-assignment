@@ -1,0 +1,9 @@
+﻿model,cv_R2,parameters
+direct_RF_h1,0.6925269979314468,"{""leaf"": 1, ""residual"": true, ""top_k"": 24, ""transform"": ""log"", ""trees"": 120}"
+direct_RF_h2,0.502297585740163,"{""leaf"": 1, ""residual"": true, ""top_k"": 24, ""transform"": ""log"", ""trees"": 120}"
+direct_RF_h3,0.37984755734449116,"{""leaf"": 1, ""residual"": true, ""top_k"": 24, ""transform"": ""log"", ""trees"": 120}"
+direct_RF_h4,0.3275002857358232,"{""leaf"": 1, ""residual"": true, ""top_k"": 24, ""transform"": ""log"", ""trees"": 120}"
+direct_RF_h5,0.2716589662438407,"{""leaf"": 1, ""residual"": true, ""top_k"": 24, ""transform"": ""log"", ""trees"": 120}"
+direct_RF_h6,0.25496423435245513,"{""leaf"": 1, ""residual"": true, ""top_k"": 24, ""transform"": ""log"", ""trees"": 120}"
+direct_RF_h7,0.28432164485163625,"{""leaf"": 1, ""residual"": true, ""top_k"": 24, ""transform"": ""log"", ""trees"": 120}"
+multi_RF_h7,0.40185314283579265,"{""leaf"": 1, ""residual"": true, ""top_k"": 24, ""transform"": ""log"", ""trees"": 120}"

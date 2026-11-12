@@ -13,3 +13,4 @@ report code/**/template.docx
 .pytest_tmp/
 .workbuddy/
 dist/
+参考报告/

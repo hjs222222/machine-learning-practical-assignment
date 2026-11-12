@@ -1,0 +1,9 @@
+﻿model,cv_R2,parameters
+direct_LSTM_h1,0.67468075402242,"{""alpha"": 0.1, ""epochs"": 70, ""hidden"": 32, ""seq_len"": 14, ""top_k"": 16, ""transform"": ""sqrt""}"
+direct_LSTM_h2,0.27203206032338745,"{""alpha"": 0.1, ""epochs"": 70, ""hidden"": 32, ""seq_len"": 14, ""top_k"": 16, ""transform"": ""log""}"
+direct_LSTM_h3,0.18697924831702623,"{""alpha"": 0.1, ""epochs"": 70, ""hidden"": 32, ""seq_len"": 14, ""top_k"": 16, ""transform"": ""log""}"
+direct_LSTM_h4,0.10056193803548863,"{""alpha"": 0.1, ""epochs"": 70, ""hidden"": 32, ""seq_len"": 14, ""top_k"": 16, ""transform"": ""log""}"
+direct_LSTM_h5,0.005050872540557805,"{""alpha"": 0.1, ""epochs"": 70, ""hidden"": 32, ""seq_len"": 14, ""top_k"": 16, ""transform"": ""log""}"
+direct_LSTM_h6,-0.04031315387260598,"{""alpha"": 0.1, ""epochs"": 30, ""hidden"": 32, ""seq_len"": 7, ""top_k"": 16, ""transform"": ""raw""}"
+direct_LSTM_h7,0.11683339271354476,"{""alpha"": 0.1, ""epochs"": 30, ""hidden"": 32, ""seq_len"": 7, ""top_k"": 16, ""transform"": ""raw""}"
+multi_LSTM_h7,0.2298220771110442,"{""alpha"": 0.1, ""epochs"": 70, ""hidden"": 32, ""seq_len"": 14, ""top_k"": 16, ""transform"": ""log""}"
